@@ -12,11 +12,26 @@ QMAKE_CLEAN += $$DESTDIR/$$TARGET
 
 
 #--------------------------------------------------------------------
+# libraries includes
+#--------------------------------------------------------------------
+
+INCLUDEPATH += ../../gameplay/src/ai
+INCLUDEPATH += ../../gameplay/src/animation
+INCLUDEPATH += ../../gameplay/src/audio
+INCLUDEPATH += ../../gameplay/src/core
+INCLUDEPATH += ../../gameplay/src/graphics
+INCLUDEPATH += ../../gameplay/src/lua
+INCLUDEPATH += ../../gameplay/src/math
+INCLUDEPATH += ../../gameplay/src/org
+INCLUDEPATH += ../../gameplay/src/physics
+INCLUDEPATH += ../../gameplay/src/script
+INCLUDEPATH += ../../gameplay/src/ui
+
+#--------------------------------------------------------------------
 # library depends
 #--------------------------------------------------------------------
 
 unix:!macx:PRE_TARGETDEPS += $${DESTDIR}/libgameplay.a
-
 
 #-------------------------------------------------
 #
@@ -105,7 +120,7 @@ linux: INCLUDEPATH += /usr/include/libpng12
 linux: INCLUDEPATH += /usr/include/harfbuzz
 linux: LIBS += -L$${DESTDIR} -lgameplay
 linux: LIBS += -L$$PWD/../../external-deps/lib/linux/x86_64/ -lgameplay-deps
-linux: LIBS += -lm -lGL -lrt -ldl -lX11 -lpthread -lgtk-x11-2.0 -lglib-2.0 -lgobject-2.0
+linux: LIBS += -lm -lGL -lrt -ldl -lX11 -lpthread -lgtk-x11-2.0 -lglib-2.0 -lgobject-2.0 -lsndio
 linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/../../gameplay/res/shaders ../res$$escape_expand(\n\t))
 linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/../../gameplay/res/ui ../res$$escape_expand(\n\t))
 linux: QMAKE_POST_LINK += $$quote(cp -rf $$PWD/../../gameplay/res/logo_powered_white.png ../res$$escape_expand(\n\t))
