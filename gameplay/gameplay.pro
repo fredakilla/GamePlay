@@ -60,15 +60,9 @@ SOURCES += \
     src/core/FileSystem.cpp \
     src/core/Game.cpp \
     src/core/Gamepad.cpp \
-    src/core/gameplay-main-android.cpp \
-    src/core/gameplay-main-linux.cpp \
-    src/core/gameplay-main-windows.cpp \
     src/core/Logger.cpp \
     src/core/MathUtil.cpp \
     src/core/Platform.cpp \
-    src/core/PlatformAndroid.cpp \
-    src/core/PlatformLinux.cpp \
-    src/core/PlatformWindows.cpp \
     src/core/Properties.cpp \
     src/core/Ref.cpp \
     src/graphics/Camera.cpp \
