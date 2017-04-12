@@ -1,3 +1,23 @@
+#--------------------------------------------------------------------
+# output directory
+#--------------------------------------------------------------------
+
+CONFIG(debug,debug|release){
+    DESTDIR = $$PWD/../../build
+} else {
+    DESTDIR = $$PWD/../../build
+}
+
+QMAKE_CLEAN += $$DESTDIR/$$TARGET
+
+
+#--------------------------------------------------------------------
+# library depends
+#--------------------------------------------------------------------
+
+unix:!macx:PRE_TARGETDEPS += $${DESTDIR}/libgameplay.a
+
+
 #-------------------------------------------------
 #
 # Project created by QtCreator
@@ -83,7 +103,7 @@ linux: INCLUDEPATH += /usr/lib/x86_64-linux-gnu/glib-2.0/include
 linux: INCLUDEPATH += /usr/include/pixman-1
 linux: INCLUDEPATH += /usr/include/libpng12
 linux: INCLUDEPATH += /usr/include/harfbuzz
-linux: LIBS += -L$$PWD/../../gameplay/Debug/ -lgameplay
+linux: LIBS += -L$${DESTDIR} -lgameplay
 linux: LIBS += -L$$PWD/../../external-deps/lib/linux/x86_64/ -lgameplay-deps
 linux: LIBS += -lm -lGL -lrt -ldl -lX11 -lpthread -lgtk-x11-2.0 -lglib-2.0 -lgobject-2.0
 linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/../../gameplay/res/shaders ../res$$escape_expand(\n\t))

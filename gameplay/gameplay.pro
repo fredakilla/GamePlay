@@ -1,3 +1,15 @@
+#--------------------------------------------------------------------
+# output directory
+#--------------------------------------------------------------------
+
+CONFIG(debug,debug|release){
+    DESTDIR = $$PWD/../build
+} else {
+    DESTDIR = $$PWD/../build
+}
+
+QMAKE_CLEAN += $$DESTDIR/$$TARGET
+
 #-------------------------------------------------
 #
 # Project created by QtCreator
