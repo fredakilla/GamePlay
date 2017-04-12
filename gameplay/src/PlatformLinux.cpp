@@ -1137,16 +1137,17 @@ int Platform::enterMessagePump()
     _game->run();
 
     // Setup select for message handling (to allow non-blocking)
-    int x11_fd = ConnectionNumber(__display);
+    //@@int x11_fd = ConnectionNumber(__display);
 
-    pollfd xpolls[1];
-    xpolls[0].fd = x11_fd;
-    xpolls[0].events = POLLIN|POLLPRI;
+    //@@pollfd xpolls[1];
+    //@@xpolls[0].fd = x11_fd;
+    //@@xpolls[0].events = POLLIN|POLLPRI;
 
     // Message loop.
     while (true)
     {
-        poll( xpolls, 1, 16 );
+        //@@poll( xpolls, 1, 16 );
+
         // handle all pending events in one block
         while (XPending(__display))
         {
