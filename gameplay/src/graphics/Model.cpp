@@ -350,7 +350,9 @@ unsigned int Model::draw(bool wireframe)
 
                 if (!wireframe || !drawWireframe(_mesh))
                 {
-                    GL_ASSERT( glDrawArrays(_mesh->getPrimitiveType(), 0, _mesh->getVertexCount()) );
+                    //@@GL_ASSERT( glDrawArrays(_mesh->getPrimitiveType(), 0, _mesh->getVertexCount()) );
+                    _mesh->draw();
+
                 }
                 pass->unbind();
             }
@@ -381,7 +383,8 @@ unsigned int Model::draw(bool wireframe)
 
                     if (!wireframe || !drawWireframe(part))
                     {
-                        GL_ASSERT( glDrawElements(part->getPrimitiveType(), part->getIndexCount(), part->getIndexFormat(), 0) );
+                        //@@GL_ASSERT( glDrawElements(part->getPrimitiveType(), part->getIndexCount(), part->getIndexFormat(), 0) );
+                        part->draw();
                     }
                     pass->unbind();
                 }

@@ -364,4 +364,9 @@ void Mesh::setBoundingSphere(const BoundingSphere& sphere)
     _boundingSphere = sphere;
 }
 
+void Mesh::draw()
+{
+    GL_ASSERT( glDrawArrays(getPrimitiveType(), 0, getVertexCount()) );
+}
+
 }

@@ -143,6 +143,8 @@ private:
     IndexBuffer * _indexBuffer;
     void set(Mesh::IndexFormat indexFormat, unsigned int indexCount, bool dynamic);
 
+public:
+    void draw();
 };
 
 }

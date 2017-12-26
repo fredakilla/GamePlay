@@ -151,4 +151,9 @@ bool MeshPart::isDynamic() const
     return _dynamic;
 }
 
+void MeshPart::draw()
+{
+    GL_ASSERT( glDrawElements(getPrimitiveType(), getIndexCount(), getIndexFormat(), 0) );
+}
+
 }

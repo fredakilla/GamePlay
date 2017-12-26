@@ -364,6 +364,9 @@ private:
 private:
     VertexBuffer * _vertexBuffer;
     void set(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic);
+
+public:
+    void draw();
 };
 
 }
