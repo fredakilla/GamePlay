@@ -1,0 +1,77 @@
+#include "BGFXIndexBuffer.h"
+#include "Mesh.h"
+
+namespace gameplay {
+
+BGFXIndexBuffer::BGFXIndexBuffer(const unsigned int indexFormat, unsigned int indexCount, bool dynamic)
+{
+    _indexFormat = indexFormat;
+    _indexCount = indexCount;
+    _dynamic = dynamic;
+
+    GL_ASSERT( glGenBuffers(1, &_ibh) );
+    GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibh) );
+
+    unsigned int indexSize = 0;
+    switch (indexFormat)
+    {
+    case Mesh::INDEX8:
+        indexSize = 1;
+        break;
+    case Mesh::INDEX16:
+        indexSize = 2;
+        break;
+    case Mesh::INDEX32:
+        indexSize = 4;
+        break;
+    default:
+        GP_ERROR("Unsupported index format (%d).", indexFormat);
+        glDeleteBuffers(1, &_ibh);
+    }
+
+    GL_ASSERT( glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize * indexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
+}
+
+BGFXIndexBuffer::~BGFXIndexBuffer()
+{
+    glDeleteBuffers(1, &_ibh);
+}
+
+void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsigned int indexStart)
+{
+    GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibh) );
+
+        unsigned int indexSize = 0;
+        switch (_indexFormat)
+        {
+        case Mesh::INDEX8:
+            indexSize = 1;
+            break;
+        case Mesh::INDEX16:
+            indexSize = 2;
+            break;
+        case Mesh::INDEX32:
+            indexSize = 4;
+            break;
+        default:
+            GP_ERROR("Unsupported index format (%d).", _indexFormat);
+            return;
+        }
+
+        if (indexStart == 0 && indexCount == 0)
+        {
+            GL_ASSERT( glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize * _indexCount, indexData, _dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
+        }
+        else
+        {
+            if (indexCount == 0)
+            {
+                indexCount = _indexCount - indexStart;
+            }
+
+            GL_ASSERT( glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, indexStart * indexSize, indexCount * indexSize, indexData) );
+        }
+}
+
+
+} // end namespace gameplay

@@ -26,6 +26,7 @@ INCLUDEPATH += ../../gameplay/src/org
 INCLUDEPATH += ../../gameplay/src/physics
 INCLUDEPATH += ../../gameplay/src/script
 INCLUDEPATH += ../../gameplay/src/ui
+INCLUDEPATH += ../../gameplay/src/renderer
 
 #--------------------------------------------------------------------
 # library depends
