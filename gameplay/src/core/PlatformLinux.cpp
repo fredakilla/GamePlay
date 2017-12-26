@@ -24,6 +24,8 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
+#include <bgfx/platform.h>
+
 #define TOUCH_COUNT_MAX     4
 #define MAX_GAMEPADS 4
 
@@ -569,6 +571,8 @@ Platform* Platform::create(Game* game)
     FileSystem::setResourcePath("./");
     Platform* platform = new Platform(game);
 
+    XInitThreads();
+
     // Get the display and initialize
     __display = XOpenDisplay(NULL);
     if (__display == NULL)
@@ -708,6 +712,21 @@ Platform* Platform::create(Game* game)
 
     XStoreName(__display, __window, title ? title : "");
 
+
+
+    bgfx::PlatformData pd;
+    pd.ndt          = (void*)__display;
+    pd.nwh          = (void*)__window;
+    pd.context      = NULL;
+    pd.backBuffer   = NULL;
+    pd.backBufferDS = NULL;
+    bgfx::setPlatformData(pd);
+
+    bgfx::init();
+    bgfx::reset(__width, __height, BGFX_RESET_NONE);
+
+
+
     __context = glXCreateContext(__display, visualInfo, NULL, True);
     if (!__context)
     {
@@ -744,6 +763,8 @@ void cleanupX11()
 {
     if (__display)
     {
+        bgfx::shutdown();
+
         glXMakeCurrent(__display, None, NULL);
 
         if (__context)
@@ -1160,6 +1181,7 @@ int Platform::enterMessagePump()
                         // Handle destroy window message correctly
                         if (evt.xclient.data.l[0] == __atomWmDeleteWindow)
                         {
+                            cleanupX11();
                             _game->exit();
                         }
                     }
@@ -1331,10 +1353,12 @@ int Platform::enterMessagePump()
             if (_game->getState() == Game::UNINITIALIZED)
                 break;
 
+            bgfx::touch(0);
             _game->frame();
         }
 
-        glXSwapBuffers(__display, __window);
+        //@@glXSwapBuffers(__display, __window);
+        swapBuffers();
     }
 
     cleanupX11();
@@ -1393,7 +1417,8 @@ void Platform::setVsync(bool enable)
 
 void Platform::swapBuffers()
 {
-    glXSwapBuffers(__display, __window);
+    //@@glXSwapBuffers(__display, __window);
+    bgfx::frame();
 }
 
 void Platform::sleep(long ms)

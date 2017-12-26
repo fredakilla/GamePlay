@@ -1,4 +1,11 @@
 #--------------------------------------------------------------------
+# global var
+#--------------------------------------------------------------------
+
+linux: BGFX = /home/fred/Documents/fredakilla/bgfx
+linux: BX = /home/fred/Documents/fredakilla/bx
+
+#--------------------------------------------------------------------
 # output directory
 #--------------------------------------------------------------------
 
@@ -28,11 +35,34 @@ INCLUDEPATH += ../../gameplay/src/script
 INCLUDEPATH += ../../gameplay/src/ui
 INCLUDEPATH += ../../gameplay/src/renderer
 
+INCLUDEPATH += $${BGFX}/include
+INCLUDEPATH += $${BX}/include
+INCLUDEPATH += $${BGFX}/tools/shaderc                      # include shaderc as lib for runtime compile
+#unix:!macx:INCLUDEPATH += $${BX}/include/compat/freebsd    # fix <alloca.h> include error (linux)
+#win32:INCLUDEPATH += $${BX}/include/compat/msvc            # fix <alloca.h> include error (windows)
+
 #--------------------------------------------------------------------
 # library depends
 #--------------------------------------------------------------------
 
-unix:!macx:PRE_TARGETDEPS += $${DESTDIR}/libgameplay.a
+
+
+CONFIG(debug,debug|release) {
+    message(debug)
+    linux:PRE_TARGETDEPS += $${DESTDIR}/libgameplay.a
+    linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libshadercDebug.a
+    linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbgfxDebug.a
+    linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbxDebug.a
+    linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbimgDebug.a
+
+} else {
+    message(release)
+    linux:PRE_TARGETDEPS += $${DESTDIR}/libgameplay.a
+    linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbgfxRelease.a
+    linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbxRelease.a
+    linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbimgRelease.a
+    linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libshadercRelease.a
+}
 
 #-------------------------------------------------
 #
@@ -103,7 +133,7 @@ HEADERS += src/Audio3DSample.h \
 INCLUDEPATH += $$PWD/../../gameplay/src
 INCLUDEPATH += $$PWD/../../external-deps/include
 DEFINES += GP_USE_GAMEPAD
-    
+
 linux: DEFINES += __linux__
 linux: QMAKE_CXXFLAGS += -lstdc++ -pthread -w
 linux: INCLUDEPATH += /usr/include/gtk-2.0
@@ -126,6 +156,32 @@ linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/../../gameplay/res/shaders ..
 linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/../../gameplay/res/ui ../res$$escape_expand(\n\t))
 linux: QMAKE_POST_LINK += $$quote(cp -rf $$PWD/../../gameplay/res/logo_powered_white.png ../res$$escape_expand(\n\t))
 
+
+CONFIG(debug,debug|release) {
+    message(debug)
+    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercDebug
+    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbgfxDebug
+    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbimgDebug
+
+
+    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercDebug
+    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lfcppDebug
+    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglsl-optimizerDebug
+    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglslangDebug
+
+    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbxDebug
+
+} else {
+    message(release)
+
+    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbgfxRelease
+    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbimgRelease
+    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbxRelease
+    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercRelease
+}
+
+
+
 macx: QMAKE_CXXFLAGS += -x c++ -x objective-c++ -stdlib=libc++ -w -arch x86_64
 macx: LIBS += -L$$PWD/../../gameplay/Debug/ -lgameplay
 macx: LIBS += -L$$PWD/../../external-deps/lib/macosx/x86_64/ -lgameplay-deps
@@ -140,7 +196,7 @@ macx: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/../../gameplay/res/shaders ../
 macx: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/../../gameplay/res/ui ../res$$escape_expand(\n\t))
 macx: QMAKE_POST_LINK += $$quote(cp -rf $$PWD/../../gameplay/res/logo_powered_white.png ../res$$escape_expand(\n\t))
 macx: ICON = icon.png
-macx 
+macx
 {
     icon.files = icon.png
     icon.path = Contents/Resources

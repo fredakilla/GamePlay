@@ -481,33 +481,75 @@ void Game::updateOnce()
 void Game::setViewport(const Rectangle& viewport)
 {
     _viewport = viewport;
-    glViewport((GLuint)viewport.x, (GLuint)viewport.y, (GLuint)viewport.width, (GLuint)viewport.height);
+    //@@glViewport((GLuint)viewport.x, (GLuint)viewport.y, (GLuint)viewport.width, (GLuint)viewport.height);
+    bgfx::setViewRect(0, viewport.x, viewport.y, viewport.width, viewport.height);
 }
 
 void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, int clearStencil)
 {
-    GLbitfield bits = 0;
+    //@@GLbitfield bits = 0;
+    //@@if (flags & CLEAR_COLOR)
+    //@@{
+    //@@    if (clearColor.x != _clearColor.x ||
+    //@@        clearColor.y != _clearColor.y ||
+    //@@        clearColor.z != _clearColor.z ||
+    //@@        clearColor.w != _clearColor.w )
+    //@@    {
+    //@@        glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
+    //@@        _clearColor.set(clearColor);
+    //@@    }
+    //@@    bits |= GL_COLOR_BUFFER_BIT;
+    //@@}
+    //@@
+    //@@if (flags & CLEAR_DEPTH)
+    //@@{
+    //@@    if (clearDepth != _clearDepth)
+    //@@    {
+    //@@        glClearDepth(clearDepth);
+    //@@        _clearDepth = clearDepth;
+    //@@    }
+    //@@    bits |= GL_DEPTH_BUFFER_BIT;
+    //@@
+    //@@    // We need to explicitly call the static enableDepthWrite() method on StateBlock
+    //@@    // to ensure depth writing is enabled before clearing the depth buffer (and to
+    //@@    // update the global StateBlock render state to reflect this).
+    //@@    RenderState::StateBlock::enableDepthWrite();
+    //@@}
+    //@@
+    //@@if (flags & CLEAR_STENCIL)
+    //@@{
+    //@@    if (clearStencil != _clearStencil)
+    //@@    {
+    //@@        glClearStencil(clearStencil);
+    //@@        _clearStencil = clearStencil;
+    //@@    }
+    //@@    bits |= GL_STENCIL_BUFFER_BIT;
+    //@@}
+    //@@glClear(bits);
+
+
+    unsigned short bits = 0;
+
     if (flags & CLEAR_COLOR)
     {
         if (clearColor.x != _clearColor.x ||
-            clearColor.y != _clearColor.y ||
-            clearColor.z != _clearColor.z ||
-            clearColor.w != _clearColor.w )
+                clearColor.y != _clearColor.y ||
+                clearColor.z != _clearColor.z ||
+                clearColor.w != _clearColor.w )
         {
-            glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
             _clearColor.set(clearColor);
         }
-        bits |= GL_COLOR_BUFFER_BIT;
+        bits |= BGFX_CLEAR_COLOR;
     }
 
     if (flags & CLEAR_DEPTH)
     {
         if (clearDepth != _clearDepth)
         {
-            glClearDepth(clearDepth);
+            //glClearDepth(clearDepth);
             _clearDepth = clearDepth;
         }
-        bits |= GL_DEPTH_BUFFER_BIT;
+        bits |= BGFX_CLEAR_DEPTH;
 
         // We need to explicitly call the static enableDepthWrite() method on StateBlock
         // to ensure depth writing is enabled before clearing the depth buffer (and to
@@ -519,12 +561,20 @@ void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, 
     {
         if (clearStencil != _clearStencil)
         {
-            glClearStencil(clearStencil);
+            //glClearStencil(clearStencil);
             _clearStencil = clearStencil;
         }
-        bits |= GL_STENCIL_BUFFER_BIT;
+        bits |= BGFX_CLEAR_STENCIL;
     }
-    glClear(bits);
+
+    bgfx::setViewClear(0
+                       , bits
+                       , 0xaa3030ff
+                       , 1.0f
+                       , 0
+                       );
+
+
 }
 
 void Game::clear(ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil)
