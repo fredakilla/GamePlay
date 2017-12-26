@@ -6,6 +6,7 @@
 #include "Vector3.h"
 #include "BoundingBox.h"
 #include "BoundingSphere.h"
+#include "VertexBuffer.h"
 
 namespace gameplay
 {
@@ -350,15 +351,19 @@ private:
     Mesh& operator=(const Mesh&);
 
     std::string _url;
-    const VertexFormat _vertexFormat;
+    VertexFormat _vertexFormat;
     unsigned int _vertexCount;
-    VertexBufferHandle _vertexBuffer;
+    //@@VertexBufferHandle _vertexBuffer;
     PrimitiveType _primitiveType;
     unsigned int _partCount;
     MeshPart** _parts;
     bool _dynamic;
     BoundingBox _boundingBox;
     BoundingSphere _boundingSphere;
+
+private:
+    VertexBuffer * _vertexBuffer;
+    void set(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic);
 };
 
 }

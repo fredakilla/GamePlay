@@ -5,6 +5,8 @@
 #include "Model.h"
 #include "Material.h"
 
+#include "OpenGL/GL2VertexBuffer.h"
+
 namespace gameplay
 {
 
@@ -25,28 +27,42 @@ Mesh::~Mesh()
         SAFE_DELETE_ARRAY(_parts);
     }
 
-    if (_vertexBuffer)
-    {
-        glDeleteBuffers(1, &_vertexBuffer);
-        _vertexBuffer = 0;
-    }
+    //@@if (_vertexBuffer)
+    //@@{
+    //@@    glDeleteBuffers(1, &_vertexBuffer);
+    //@@    _vertexBuffer = 0;
+    //@@}
+    SAFE_DELETE(_vertexBuffer);
+}
+
+void Mesh::set(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic)
+{
+    _vertexFormat = vertexFormat;
+    _vertexCount = vertexCount;
+    _dynamic = dynamic;
+
+    // set bgfx vertex declaration from vertex format
+    //_vertexFormat.prepare();
+
+    // create vertex buffer
+    _vertexBuffer = new GL2VertexBuffer(vertexFormat, vertexCount, dynamic);
 }
 
 Mesh* Mesh::createMesh(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic)
 {
-    GLuint vbo;
-    GL_ASSERT( glGenBuffers(1, &vbo) );
-    GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, vbo) );
-    GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
+    //@@GLuint vbo;
+    //@@GL_ASSERT( glGenBuffers(1, &vbo) );
+    //@@GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, vbo) );
+    //@@GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
 
-    Mesh* mesh = new Mesh(vertexFormat);
-    mesh->_vertexCount = vertexCount;
-    mesh->_vertexBuffer = vbo;
-    mesh->_dynamic = dynamic;
+    Mesh* mesh = new Mesh(vertexFormat);    
+    //@@mesh->_vertexCount = vertexCount;
+    //@@mesh->_vertexBuffer = vbo;
+    //@@mesh->_dynamic = dynamic;
+    mesh->set(vertexFormat, vertexCount, dynamic);
 
     return mesh;
 }
-
 
 Mesh* Mesh::createQuad(float x, float y, float width, float height, float s1, float t1, float s2, float t2)
 {
@@ -243,7 +259,7 @@ unsigned int Mesh::getVertexSize() const
 
 VertexBufferHandle Mesh::getVertexBuffer() const
 {
-    return _vertexBuffer;
+    return _vertexBuffer->getHandle();
 }
 
 bool Mesh::isDynamic() const
@@ -263,7 +279,7 @@ void Mesh::setPrimitiveType(PrimitiveType type)
 
 void* Mesh::mapVertexBuffer()
 {
-    GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer) );
+    //@@GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer) );
 
     return (void*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 }
@@ -275,21 +291,23 @@ bool Mesh::unmapVertexBuffer()
 
 void Mesh::setVertexData(const void* vertexData, unsigned int vertexStart, unsigned int vertexCount)
 {
-    GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer) );
+    //@@GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer) );
+    //@@
+    //@@if (vertexStart == 0 && vertexCount == 0)
+    //@@{
+    //@@    GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, _vertexFormat.getVertexSize() * _vertexCount, vertexData, _dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
+    //@@}
+    //@@else
+    //@@{
+    //@@    if (vertexCount == 0)
+    //@@    {
+    //@@        vertexCount = _vertexCount - vertexStart;
+    //@@    }
+    //@@
+    //@@    GL_ASSERT( glBufferSubData(GL_ARRAY_BUFFER, vertexStart * _vertexFormat.getVertexSize(), vertexCount * _vertexFormat.getVertexSize(), vertexData) );
+    //@@}
 
-    if (vertexStart == 0 && vertexCount == 0)
-    {
-        GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, _vertexFormat.getVertexSize() * _vertexCount, vertexData, _dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
-    }
-    else
-    {
-        if (vertexCount == 0)
-        {
-            vertexCount = _vertexCount - vertexStart;
-        }
-
-        GL_ASSERT( glBufferSubData(GL_ARRAY_BUFFER, vertexStart * _vertexFormat.getVertexSize(), vertexCount * _vertexFormat.getVertexSize(), vertexData) );
-    }
+    _vertexBuffer->set(vertexData, vertexCount, vertexStart);
 }
 
 MeshPart* Mesh::addPart(PrimitiveType primitiveType, IndexFormat indexFormat, unsigned int indexCount, bool dynamic)
