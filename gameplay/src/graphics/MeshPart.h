@@ -2,6 +2,7 @@
 #define MESHPART_H_
 
 #include "Mesh.h"
+#include "IndexBuffer.h"
 
 namespace gameplay
 {
@@ -135,8 +136,13 @@ private:
     Mesh::PrimitiveType _primitiveType;
     Mesh::IndexFormat _indexFormat;
     unsigned int _indexCount;
-    IndexBufferHandle _indexBuffer;
+    //@@IndexBufferHandle _indexBuffer;
     bool _dynamic;
+
+private:
+    IndexBuffer * _indexBuffer;
+    void set(Mesh::IndexFormat indexFormat, unsigned int indexCount, bool dynamic);
+
 };
 
 }

@@ -372,7 +372,7 @@ unsigned int Model::draw(bool wireframe)
                     Pass* pass = technique->getPassByIndex(j);
                     GP_ASSERT(pass);
                     pass->bind();
-                    GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->_indexBuffer) );
+                    GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->_indexBuffer->getHandle()) );
                     if (!wireframe || !drawWireframe(part))
                     {
                         GL_ASSERT( glDrawElements(part->getPrimitiveType(), part->getIndexCount(), part->getIndexFormat(), 0) );
