@@ -10,7 +10,8 @@ class GL2IndexBuffer : public IndexBuffer
 public:
     GL2IndexBuffer(const unsigned int indexFormat, unsigned int indexCount, bool dynamic);
     ~GL2IndexBuffer();
-    virtual GLuint getHandle() { return _ibh; }
+    virtual GLuint getHandle() override { return _ibh; }
+    virtual void * bind() override;
 
 protected:
 

@@ -73,5 +73,9 @@ void GL2IndexBuffer::set(const void* indexData, unsigned int indexCount, unsigne
         }
 }
 
+void * GL2IndexBuffer::bind()
+{
+    GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, getHandle()) );
+}
 
 } // end namespace gameplay

@@ -39,4 +39,9 @@ void GL2VertexBuffer::set(const void* vertexData, unsigned int vertexCount, unsi
     }
 }
 
+void * GL2VertexBuffer::bind()
+{
+    GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, getHandle()) );
+}
+
 } // end namespace gameplay

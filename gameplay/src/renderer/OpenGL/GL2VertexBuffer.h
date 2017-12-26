@@ -11,6 +11,7 @@ public:
     GL2VertexBuffer(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic);
     ~GL2VertexBuffer();
     virtual GLuint getHandle() { return _vbh; }
+    virtual void * bind() override;
 
 protected:
 
