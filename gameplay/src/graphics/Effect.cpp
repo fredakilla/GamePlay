@@ -3,6 +3,8 @@
 #include "FileSystem.h"
 #include "Game.h"
 
+#include "BGFX/BGFXGpuProgram.h"
+
 #define OPENGL_ES_DEFINE  "OPENGL_ES"
 
 namespace gameplay
@@ -64,6 +66,35 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
         return itr->second;
     }
 
+
+
+
+
+
+    // Fill ShaderFiles struct.
+    ShaderFiles shaderFiles;
+    shaderFiles.vertex = vshPath;
+    shaderFiles.fragment = fshPath;
+    //shaderFiles.defines = defines;
+
+    // Create gpu program.
+    GpuProgram * _gpuProgram = new BGFXGpuProgram();
+    _gpuProgram->set(shaderFiles);
+
+    // Create and return the new Effect.
+    Effect* effect = new Effect();
+    effect->_gpuProgram = _gpuProgram;
+
+    // Store this effect in the cache.
+    effect->_id = uniqueId;
+    __effectCache[uniqueId] = effect;
+
+    return effect;
+
+
+    //@@------------------------------
+    /*
+
     // Read source from file.
     char* vshSource = FileSystem::readAll(vshPath);
     if (vshSource == NULL)
@@ -96,6 +127,9 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
     }
 
     return effect;
+
+    */
+    //@@------------------------------
 }
 
 Effect* Effect::createFromSource(const char* vshSource, const char* fshSource, const char* defines)

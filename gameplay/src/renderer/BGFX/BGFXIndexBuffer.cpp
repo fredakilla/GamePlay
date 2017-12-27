@@ -73,5 +73,10 @@ void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsign
         }
 }
 
+void BGFXIndexBuffer::bind()
+{
+
+}
+
 
 } // end namespace gameplay

@@ -12,6 +12,7 @@ namespace gameplay
 {
 
 class Uniform;
+class GpuProgram;
 
 /**
  * Defines an effect which can be applied during rendering.
@@ -246,6 +247,9 @@ private:
     std::map<std::string, VertexAttribute> _vertexAttributes;
     mutable std::map<std::string, Uniform*> _uniforms;
     static Uniform _emptyUniform;
+
+private:
+    GpuProgram * _gpuProgram;
 };
 
 /**

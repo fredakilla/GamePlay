@@ -39,4 +39,9 @@ void BGFXVertexBuffer::set(const void* vertexData, unsigned int vertexCount, uns
     }
 }
 
+void BGFXVertexBuffer::bind()
+{
+
+}
+
 } // end namespace gameplay

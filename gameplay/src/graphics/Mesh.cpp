@@ -5,7 +5,7 @@
 #include "Model.h"
 #include "Material.h"
 
-#include "OpenGL/GL2VertexBuffer.h"
+#include "BGFX/BGFXVertexBuffer.h"
 
 namespace gameplay
 {
@@ -45,7 +45,7 @@ void Mesh::set(const VertexFormat& vertexFormat, unsigned int vertexCount, bool 
     //_vertexFormat.prepare();
 
     // create vertex buffer
-    _vertexBuffer = new GL2VertexBuffer(vertexFormat, vertexCount, dynamic);
+    _vertexBuffer = new BGFXVertexBuffer(vertexFormat, vertexCount, dynamic);
 }
 
 Mesh* Mesh::createMesh(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic)

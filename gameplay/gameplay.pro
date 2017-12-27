@@ -172,6 +172,8 @@ HEADERS += \
     src/renderer/VertexBuffer.h \
     src/renderer/IndexBuffer.h \
     src/renderer/Renderer.h \
+    src/renderer/GpuProgram.h \
+
 
 SOURCES += \
     src/ai/AIAgent.cpp \
@@ -283,34 +285,37 @@ SOURCES += \
     src/ui/VerticalLayout.cpp \
 
 
+
 #--------------------------------------------------------------------
 # OpenGL Renderer
 #--------------------------------------------------------------------
 
-SOURCES += \
-    src/renderer/OpenGL/GL2IndexBuffer.cpp \
-    src/renderer/OpenGL/GLVertexBuffer.cpp \
-    src/renderer/OpenGL/GL2Renderer.cpp
-
-HEADERS += \
-    src/renderer/OpenGL/GL2IndexBuffer.h \
-    src/renderer/OpenGL/GL2VertexBuffer.h \
-    src/renderer/OpenGL/GL2Renderer.h
+#SOURCES += \
+#    src/renderer/OpenGL/GL2IndexBuffer.cpp \
+#    src/renderer/OpenGL/GLVertexBuffer.cpp \
+#    src/renderer/OpenGL/GL2Renderer.cpp
+#
+#HEADERS += \
+#    src/renderer/OpenGL/GL2IndexBuffer.h \
+#    src/renderer/OpenGL/GL2VertexBuffer.h \
+#    src/renderer/OpenGL/GL2Renderer.h
 
 
 #--------------------------------------------------------------------
 # BGFX Renderer
 #--------------------------------------------------------------------
 
-#SOURCES += \
-#    src/renderer/BGFX/BGFXIndexBuffer.cpp \
-#    src/renderer/BGFX/BGFXVertexBuffer.cpp \
-#    src/renderer/BGFX/BGFXRenderer.cpp
-#
-#HEADERS += \
-#    src/renderer/BGFX/BGFXIndexBuffer.h \
-#    src/renderer/BGFX/BGFXVertexBuffer.h \
-#    src/renderer/BGFX/BGFXRenderer.h
+HEADERS += \
+    src/renderer/BGFX/BGFXIndexBuffer.h \
+    src/renderer/BGFX/BGFXVertexBuffer.h \
+    src/renderer/BGFX/BGFXRenderer.h \
+    src/renderer/BGFX/BGFXGpuProgram.h
+
+SOURCES += \
+    src/renderer/BGFX/BGFXIndexBuffer.cpp \
+    src/renderer/BGFX/BGFXVertexBuffer.cpp \
+    src/renderer/BGFX/BGFXRenderer.cpp \
+    src/renderer/BGFX/BGFXGpuProgram.cpp
 
 
 #--------------------------------------------------------------------

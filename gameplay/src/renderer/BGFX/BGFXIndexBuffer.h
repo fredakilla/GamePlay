@@ -10,7 +10,8 @@ class BGFXIndexBuffer : public IndexBuffer
 public:
     BGFXIndexBuffer(const unsigned int indexFormat, unsigned int indexCount, bool dynamic);
     ~BGFXIndexBuffer();
-    virtual GLuint getHandle() { return _ibh; }
+    GLuint getHandle() { return _ibh; }
+    void bind() override;
 
 protected:
 

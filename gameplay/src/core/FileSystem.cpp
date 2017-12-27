@@ -589,6 +589,16 @@ std::string FileSystem::getExtension(const char* path)
     return ext;
 }
 
+std::string FileSystem::getBaseName(const char* path)
+{
+    const std::string filename = path;
+
+    size_t lastdot = filename.find_last_of(".");
+    if (lastdot == std::string::npos)
+        return filename;
+    return filename.substr(0, lastdot);
+}
+
 //////////////////
 
 FileStream::FileStream(FILE* file)

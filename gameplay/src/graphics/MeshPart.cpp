@@ -1,7 +1,7 @@
 #include "Base.h"
 #include "MeshPart.h"
 
-#include "OpenGL/GL2IndexBuffer.h"
+#include "BGFX/BGFXIndexBuffer.h"
 
 namespace gameplay
 {
@@ -27,7 +27,7 @@ void MeshPart::set(Mesh::IndexFormat indexFormat, unsigned int indexCount, bool 
     _dynamic = dynamic;
 
     // create vertex buffer
-    _indexBuffer = new GL2IndexBuffer((unsigned int)indexFormat, indexCount, dynamic);
+    _indexBuffer = new BGFXIndexBuffer((unsigned int)indexFormat, indexCount, dynamic);
 }
 
 MeshPart* MeshPart::create(Mesh* mesh, unsigned int meshIndex, Mesh::PrimitiveType primitiveType,
