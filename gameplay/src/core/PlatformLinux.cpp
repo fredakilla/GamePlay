@@ -616,6 +616,7 @@ Platform* Platform::create(Game* game)
         }
     }
 
+
     // GLX version
     GLint majorGLX, minorGLX = 0;
     glXQueryVersion(__display, &majorGLX, &minorGLX);
@@ -727,34 +728,34 @@ Platform* Platform::create(Game* game)
 
 
 
-    __context = glXCreateContext(__display, visualInfo, NULL, True);
-    if (!__context)
-    {
-        perror("glXCreateContext");
-        return NULL;
-    }
-    glXMakeCurrent(__display, __window, __context);
-
-    // Use OpenGL 2.x with GLEW
-    glewExperimental = GL_TRUE;
-    GLenum glewStatus = glewInit();
-    if (glewStatus != GLEW_OK)
-    {
-        perror("glewInit");
-        return NULL;
-    }
-
-    // GL Version
-    int versionGL[2] = {-1, -1};
-    glGetIntegerv(GL_MAJOR_VERSION, versionGL);
-    glGetIntegerv(GL_MINOR_VERSION, versionGL + 1);
-    printf("GL version: %d.%d\n", versionGL[0], versionGL[1]);
-
-    // TODO: Get this workings
-    if (glXSwapIntervalEXT)
-        glXSwapIntervalEXT(__display, __window, __vsync ? 1 : 0);
-    else if(glXSwapIntervalMESA)
-        glXSwapIntervalMESA(__vsync ? 1 : 0);
+    //@@__context = glXCreateContext(__display, visualInfo, NULL, True);
+    //@@if (!__context)
+    //@@{
+    //@@    perror("glXCreateContext");
+    //@@    return NULL;
+    //@@}
+    //@@glXMakeCurrent(__display, __window, __context);
+    //@@
+    //@@// Use OpenGL 2.x with GLEW
+    //@@glewExperimental = GL_TRUE;
+    //@@GLenum glewStatus = glewInit();
+    //@@if (glewStatus != GLEW_OK)
+    //@@{
+    //@@    perror("glewInit");
+    //@@    return NULL;
+    //@@}
+    //@@
+    //@@// GL Version
+    //@@int versionGL[2] = {-1, -1};
+    //@@glGetIntegerv(GL_MAJOR_VERSION, versionGL);
+    //@@glGetIntegerv(GL_MINOR_VERSION, versionGL + 1);
+    //@@printf("GL version: %d.%d\n", versionGL[0], versionGL[1]);
+    //@@
+    //@@// TODO: Get this workings
+    //@@if (glXSwapIntervalEXT)
+    //@@    glXSwapIntervalEXT(__display, __window, __vsync ? 1 : 0);
+    //@@else if(glXSwapIntervalMESA)
+    //@@    glXSwapIntervalMESA(__vsync ? 1 : 0);
 
     return platform;
 }
@@ -765,10 +766,10 @@ void cleanupX11()
     {
         bgfx::shutdown();
 
-        glXMakeCurrent(__display, None, NULL);
+        //@@glXMakeCurrent(__display, None, NULL);
 
-        if (__context)
-            glXDestroyContext(__display, __context);
+        //@@if (__context)
+        //@@    glXDestroyContext(__display, __context);
         if (__window)
             XDestroyWindow(__display, __window);
 
@@ -1409,10 +1410,10 @@ void Platform::setVsync(bool enable)
 {
     __vsync = enable;
 
-    if (glXSwapIntervalEXT)
-        glXSwapIntervalEXT(__display, __window, __vsync ? 1 : 0);
-    else if(glXSwapIntervalMESA)
-        glXSwapIntervalMESA(__vsync ? 1 : 0);
+    //@@if (glXSwapIntervalEXT)
+    //@@    glXSwapIntervalEXT(__display, __window, __vsync ? 1 : 0);
+    //@@else if(glXSwapIntervalMESA)
+    //@@    glXSwapIntervalMESA(__vsync ? 1 : 0);
 }
 
 void Platform::swapBuffers()

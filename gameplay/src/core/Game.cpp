@@ -554,7 +554,7 @@ void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, 
         // We need to explicitly call the static enableDepthWrite() method on StateBlock
         // to ensure depth writing is enabled before clearing the depth buffer (and to
         // update the global StateBlock render state to reflect this).
-        RenderState::StateBlock::enableDepthWrite();
+        //@@RenderState::StateBlock::enableDepthWrite();
     }
 
     if (flags & CLEAR_STENCIL)
