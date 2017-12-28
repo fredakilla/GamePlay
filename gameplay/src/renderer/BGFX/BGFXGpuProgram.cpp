@@ -15,7 +15,14 @@ BGFXGpuProgram::BGFXGpuProgram()
 
 BGFXGpuProgram::~BGFXGpuProgram()
 {
-
+    if(bgfx::isValid(_program))
+        bgfx::destroy(_program);
+    if(bgfx::isValid(_vsh))
+        bgfx::destroy(_vsh);
+    if(bgfx::isValid(_fsh))
+        bgfx::destroy(_fsh);
+    if(bgfx::isValid(_csh))
+        bgfx::destroy(_csh);
 }
 
 void BGFXGpuProgram::set(ShaderFiles shaderFiles)
@@ -31,8 +38,8 @@ void BGFXGpuProgram::set(ShaderFiles shaderFiles)
     GP_ASSERT(bgfx::isValid(_program));
 
     // Query uniforms from shaders.
-    //addUniformsFromShader(vsh);
-    //addUniformsFromShader(fsh);
+    addUniformsFromShader(_vsh);
+    addUniformsFromShader(_fsh);
 
 
     // Set varyingDef filename based on vertex basename.
@@ -45,7 +52,7 @@ void BGFXGpuProgram::set(ShaderFiles shaderFiles)
 
 void BGFXGpuProgram::addUniformsFromShader(bgfx::ShaderHandle shaderHandle)
 {
-    /*bgfx::UniformHandle uniforms[16];
+    bgfx::UniformHandle uniforms[16];
     uint16_t activeUniforms = bgfx::getShaderUniforms(shaderHandle, &uniforms[0], 16);
 
     for (int i = 0; i < activeUniforms; ++i)
@@ -55,7 +62,7 @@ void BGFXGpuProgram::addUniformsFromShader(bgfx::ShaderHandle shaderHandle)
         bgfx::UniformInfo info;
         bgfx::getUniformInfo(uniforms[0], info);
 
-        Uniform* uniform = new Uniform();
+        /*Uniform* uniform = new Uniform();
         uniform->_effect = this;
         uniform->_name = info.name;
         //uniform->_location = uniformLocation;
@@ -70,8 +77,8 @@ void BGFXGpuProgram::addUniformsFromShader(bgfx::ShaderHandle shaderHandle)
             uniform->_index = 0;
         }
 
-        _uniforms[info.name] = uniform;
-    }*/
+        _uniforms[info.name] = uniform;*/
+    }
 }
 
 

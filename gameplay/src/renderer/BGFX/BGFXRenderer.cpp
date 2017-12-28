@@ -64,8 +64,6 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
     bgfx::setTransform(mtx);*/
 
 
-
-
     // Set render states.
     bgfx::setState(0
                    //| BGFX_STATE_DEFAULT
