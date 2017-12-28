@@ -178,7 +178,7 @@ bool Game::startup()
     _scriptController->initialize();
 
     // Load any gamepads, ui or physical.
-    loadGamepads();
+    //@@loadGamepads();
 
     // Set script handler
     if (_properties)

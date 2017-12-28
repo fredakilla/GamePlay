@@ -27,7 +27,7 @@ class GpuProgram
 public:
     virtual ~GpuProgram() {}
     virtual void set(ShaderFiles shaderFiles) = 0;
-    //virtual void bind() = 0;
+    virtual void bind() = 0;
 
 protected:
     ShaderFiles _shaderFiles;

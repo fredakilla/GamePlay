@@ -12,7 +12,7 @@ public:
     BGFXGpuProgram();
     ~BGFXGpuProgram();
     virtual void set(ShaderFiles shaderFiles) override;
-    //virtual void bind() override;
+    void bind() override;
 
 private:
 

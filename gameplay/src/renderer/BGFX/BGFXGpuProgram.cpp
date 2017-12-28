@@ -176,7 +176,10 @@ void BGFXGpuProgram::compilShaderFromSource(ShaderType type, const char *src, co
     GP_ASSERT(bgfx::isValid(shader));
 }
 
-
+void BGFXGpuProgram::bind()
+{
+    //_program
+}
 
 } // end namespace gameplay
 

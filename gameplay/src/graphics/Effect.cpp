@@ -681,7 +681,7 @@ void Effect::setValue(Uniform* uniform, const Texture::Sampler** values, unsigne
 
 void Effect::bind()
 {
-   GL_ASSERT( glUseProgram(_program) );
+   //@@GL_ASSERT( glUseProgram(_program) );
 
     __currentEffect = this;
 }
