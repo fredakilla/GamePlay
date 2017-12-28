@@ -67,7 +67,7 @@ void getBgfxAttributeType(const VertexFormat::Element& element, bgfx::AttribType
         break;
 
         case VertexFormat::COLOR:
-            type = bgfx::AttribType::Uint8;
+            type = bgfx::AttribType::Float;
             normalized = true;
         break;
 
