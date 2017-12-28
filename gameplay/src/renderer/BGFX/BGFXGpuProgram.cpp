@@ -181,5 +181,12 @@ void BGFXGpuProgram::bind()
     //_program
 }
 
+
+const bgfx::ProgramHandle BGFXGpuProgram::getProgram() const
+{
+    return _program;
+}
+
+
 } // end namespace gameplay
 

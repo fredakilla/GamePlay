@@ -6,6 +6,8 @@
 namespace gameplay
 {
 
+class GpuProgram;
+
 class Renderer
 {
     static Renderer * _instance;
@@ -35,6 +37,8 @@ public:
 
     virtual void queryCaps() {}
     virtual const Caps getCaps() const { return _caps; }
+
+    virtual void submit(const GpuProgram* gpuProgram) = 0;
 
 
 protected:

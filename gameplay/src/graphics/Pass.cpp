@@ -3,6 +3,7 @@
 #include "Technique.h"
 #include "Material.h"
 #include "Node.h"
+#include "Renderer.h"
 
 namespace gameplay
 {
@@ -88,6 +89,8 @@ void Pass::unbind()
     //@@{
     //@@    _vaBinding->unbind();
     //@@}
+
+    Renderer::getInstance().submit(_effect->getGpuProgram());
 }
 
 Pass* Pass::clone(Technique* technique, NodeCloneContext &context) const

@@ -14,6 +14,9 @@ public:
     virtual void set(ShaderFiles shaderFiles) override;
     void bind() override;
 
+
+    const bgfx::ProgramHandle getProgram() const;
+
 private:
 
     void addUniformsFromShader(bgfx::ShaderHandle shaderHandle);

@@ -21,6 +21,9 @@ enum ShaderType
     ST_COMPUTE
 };
 
+struct GpuProgramHandle
+{
+};
 
 class GpuProgram
 {
@@ -28,6 +31,8 @@ public:
     virtual ~GpuProgram() {}
     virtual void set(ShaderFiles shaderFiles) = 0;
     virtual void bind() = 0;
+
+    //virtual GpuProgramHandle getHandle();
 
 protected:
     ShaderFiles _shaderFiles;

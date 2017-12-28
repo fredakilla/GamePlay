@@ -2,6 +2,7 @@
 #define BGFX_RENDERER_H_
 
 #include "Renderer.h"
+#include "BGFXGpuProgram.h"
 
 namespace gameplay {
 
@@ -13,6 +14,8 @@ public:
 
 
     void queryCaps() override;
+
+    void submit(const GpuProgram * gpuProgram) override;
 
 protected:
     BGFXRenderer();

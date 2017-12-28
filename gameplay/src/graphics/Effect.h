@@ -248,6 +248,10 @@ private:
     mutable std::map<std::string, Uniform*> _uniforms;
     static Uniform _emptyUniform;
 
+
+public:
+    const GpuProgram * getGpuProgram() const;
+
 private:
     GpuProgram * _gpuProgram;
 };

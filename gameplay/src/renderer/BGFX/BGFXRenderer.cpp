@@ -26,4 +26,13 @@ void BGFXRenderer::queryCaps()
 }
 
 
+void BGFXRenderer::submit(const GpuProgram * gpuProgram)
+{
+    const BGFXGpuProgram * bgfxGpuProgram = static_cast<const BGFXGpuProgram*>(gpuProgram);
+
+    GP_ASSERT(bgfx::isValid(bgfxGpuProgram->getProgram()));
+
+    bgfx::submit(0, bgfxGpuProgram->getProgram());
+}
+
 }

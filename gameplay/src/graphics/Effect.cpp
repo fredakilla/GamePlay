@@ -679,6 +679,11 @@ void Effect::setValue(Uniform* uniform, const Texture::Sampler** values, unsigne
     GL_ASSERT( glUniform1iv(uniform->_location, count, units) );
 }
 
+const GpuProgram *Effect::getGpuProgram() const
+{
+    return _gpuProgram;
+}
+
 void Effect::bind()
 {
    //@@GL_ASSERT( glUseProgram(_program) );
