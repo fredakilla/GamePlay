@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "Form.h"
 #include "ScriptController.h"
+#include "BGFX/BGFXRenderer.h"
 
 #include <X11/X.h>
 #include <X11/Xlib.h>
@@ -541,6 +542,8 @@ static int getUnicode(gameplay::Keyboard::Key key)
 namespace gameplay
 {
 
+Renderer* Renderer::_instance = nullptr;
+
 extern void print(const char* format, ...)
 {
     GP_ASSERT(format);
@@ -726,6 +729,8 @@ Platform* Platform::create(Game* game)
     bgfx::init();
     bgfx::reset(__width, __height, BGFX_RESET_NONE);
 
+    BGFXRenderer::initInstance();
+    Renderer::getInstance().queryCaps();
 
 
     //@@__context = glXCreateContext(__display, visualInfo, NULL, True);
@@ -764,6 +769,8 @@ void cleanupX11()
 {
     if (__display)
     {
+        Renderer::getInstance().destroy();
+
         bgfx::shutdown();
 
         //@@glXMakeCurrent(__display, None, NULL);

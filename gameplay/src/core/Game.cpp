@@ -68,7 +68,6 @@ Game::Game()
       _timeEvents(NULL), _scriptController(NULL), _scriptTarget(NULL)
 {
     GP_ASSERT(__gameInstance == NULL);
-
     __gameInstance = this;
     _timeEvents = new std::priority_queue<TimeEvent, std::vector<TimeEvent>, std::less<TimeEvent> >();
 }
@@ -85,7 +84,6 @@ Game::~Game()
     Ref::printLeaks();
     printMemoryLeaks();
 #endif
-
     __gameInstance = NULL;
 }
 

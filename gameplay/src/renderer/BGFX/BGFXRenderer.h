@@ -5,14 +5,20 @@
 
 namespace gameplay {
 
+
 class BGFXRenderer : public Renderer
 {
 public:
+    static void initInstance();
 
+
+    void queryCaps() override;
+
+protected:
     BGFXRenderer();
     ~BGFXRenderer();
-
 };
+
 
 }
 

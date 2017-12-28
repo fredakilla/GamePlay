@@ -1,6 +1,7 @@
 #include "Base.h"
 #include "FrameBuffer.h"
 #include "Game.h"
+#include "Renderer.h"
 
 #define FRAMEBUFFER_ID_DEFAULT "org.gameplay3d.framebuffer.default"
 
@@ -58,8 +59,9 @@ void FrameBuffer::initialize()
     // Query the max supported color attachments. This glGet operation is not supported
     // on GL ES 2.x, so if the define does not exist, assume a value of 1.
 #ifdef GL_MAX_COLOR_ATTACHMENTS
-        GLint val;
-        GL_ASSERT( glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &val) );
+        //@@GLint val;
+        //@@GL_ASSERT( glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &val) );
+        int val =  Renderer::getInstance().getCaps()._maxFrameBufferAttachments;
         _maxRenderTargets = (unsigned int)std::max(1, val);
 #else
         _maxRenderTargets = 1;
