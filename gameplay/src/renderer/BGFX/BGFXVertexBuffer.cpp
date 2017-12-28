@@ -127,11 +127,12 @@ void BGFXVertexBuffer::set(const void* vertexData, unsigned int vertexCount, uns
     {
         if(!bgfx::isValid(_svbh))
         {
-            // todo create real buffer
-            char * membuff = new char[_vertexDecl.getSize(vertexCount)];
-            memcpy(membuff, vertexData, _vertexDecl.getSize(vertexCount));
 
-            const bgfx::Memory* mem = bgfx::makeRef(membuff, _vertexDecl.getSize(vertexCount));
+            uint32_t size = _vertexDecl.getSize(vertexCount);
+            //const bgfx::Memory* mem = bgfx::alloc(size);
+            const bgfx::Memory* mem = bgfx::copy(vertexData, size);
+            //const bgfx::Memory* mem = bgfx::makeRef(membuff, _vertexDecl.getSize(vertexCount));
+
             uint16_t flags = BGFX_BUFFER_NONE;
             _svbh = bgfx::createVertexBuffer(mem, _vertexDecl, flags);
             GP_ASSERT(bgfx::isValid(_svbh));
