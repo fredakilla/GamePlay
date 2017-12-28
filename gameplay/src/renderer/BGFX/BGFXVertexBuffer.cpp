@@ -64,14 +64,17 @@ void getBgfxAttributeType(const VertexFormat::Element& element, bgfx::AttribType
         case VertexFormat::TEXCOORD7:
             type = bgfx::AttribType::Float;
             normalized = false;
+        break;
 
         case VertexFormat::COLOR:
             type = bgfx::AttribType::Uint8;
             normalized = true;
+        break;
 
         default:
             type = bgfx::AttribType::Float;
             normalized = false;
+        break;
     }
 }
 
@@ -124,9 +127,13 @@ void BGFXVertexBuffer::set(const void* vertexData, unsigned int vertexCount, uns
     {
         if(!bgfx::isValid(_svbh))
         {
-            const bgfx::Memory* mem = bgfx::makeRef(vertexData, _vertexDecl.getSize(vertexCount));// vertexFormat.getVertexSize() * vertexCount);
+            // todo create real buffer
+            char * membuff = new char[_vertexDecl.getSize(vertexCount)];
+            memcpy(membuff, vertexData, _vertexDecl.getSize(vertexCount));
+
+            const bgfx::Memory* mem = bgfx::makeRef(membuff, _vertexDecl.getSize(vertexCount));
             uint16_t flags = BGFX_BUFFER_NONE;
-            _svbh = bgfx::createVertexBuffer(mem, _vertexDecl /*vertexFormat.getDeclaration()*/, flags);
+            _svbh = bgfx::createVertexBuffer(mem, _vertexDecl, flags);
             GP_ASSERT(bgfx::isValid(_svbh));
         }
     }

@@ -41,12 +41,8 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
 
 
 
-
-
-
-
     float at[3]  = { 0.0f, 0.0f,   0.0f };
-    float eye[3] = { 0.0f, 0.0f, -10.0f };
+    float eye[3] = { 0.0f, 0.0f, -5.0f };
 
     float view[16];
     bx::mtxLookAt(view, eye, at);
@@ -61,27 +57,28 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
 
     Transform t;
     t.set(Vector3(1,1,1), Quaternion::identity(), Vector3::zero());
+    bgfx::setTransform(t.getMatrix().m);
 
-    float mtx[16];
+    /*float mtx[16];
     bx::mtxIdentity(mtx);
-                        /*bx::mtxRotateXY(mtx, 0, 0);
-                        mtx[12] = -15.0f + float(0)*3.0f;
-                        mtx[13] = -15.0f + float(0)*3.0f;
-                        mtx[14] = 0.0f;*/
-
-                        // Set model matrix for rendering.
-    //bgfx::setTransform(t.getMatrix().m);
-
-
-
+    bgfx::setTransform(mtx);*/
 
 
 
 
     // Set render states.
     bgfx::setState(0
-                   | BGFX_STATE_DEFAULT
-                   | BGFX_STATE_PT_TRISTRIP
+                   //| BGFX_STATE_DEFAULT
+
+                   | BGFX_STATE_RGB_WRITE
+                   | BGFX_STATE_ALPHA_WRITE
+                   | BGFX_STATE_DEPTH_TEST_LESS
+                   | BGFX_STATE_DEPTH_WRITE
+                   //| BGFX_STATE_CULL_CW
+                   | BGFX_STATE_MSAA
+
+
+                   //| BGFX_STATE_PT_TRISTRIP
                    );
 
 

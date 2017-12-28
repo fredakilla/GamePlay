@@ -41,9 +41,6 @@ void Mesh::set(const VertexFormat& vertexFormat, unsigned int vertexCount, bool 
     _vertexCount = vertexCount;
     _dynamic = dynamic;
 
-    // set bgfx vertex declaration from vertex format
-    //_vertexFormat.prepare();
-
     // create vertex buffer
     _vertexBuffer = new BGFXVertexBuffer(vertexFormat, vertexCount, dynamic);
 }
