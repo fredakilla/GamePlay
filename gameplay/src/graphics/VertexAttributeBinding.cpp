@@ -1,3 +1,5 @@
+#if 0
+
 #include "Base.h"
 #include "VertexAttributeBinding.h"
 #include "Mesh.h"
@@ -294,3 +296,5 @@ void VertexAttributeBinding::unbind()
 }
 
 }
+
+#endif

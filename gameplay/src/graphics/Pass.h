@@ -43,14 +43,14 @@ public:
      *
      * @param binding The VertexAttributeBinding to set (or NULL to remove an existing binding).
      */
-    void setVertexAttributeBinding(VertexAttributeBinding* binding);
+    //@@void setVertexAttributeBinding(VertexAttributeBinding* binding);
 
     /**
      * Sets a vertex attribute binding for this pass.
      *
      * @return The vertex attribute binding for this pass.
      */
-    VertexAttributeBinding* getVertexAttributeBinding() const;
+    //@@VertexAttributeBinding* getVertexAttributeBinding() const;
 
     /**
      * Binds the render state for this pass.
@@ -108,7 +108,7 @@ private:
     std::string _id;
     Technique* _technique;
     Effect* _effect;
-    VertexAttributeBinding* _vaBinding;
+    //@@VertexAttributeBinding* _vaBinding;
 };
 
 }

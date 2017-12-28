@@ -1,6 +1,8 @@
 #ifndef VERTEXATTRIBUTEBINDING_H_
 #define VERTEXATTRIBUTEBINDING_H_
 
+#if 0
+
 #include "Ref.h"
 #include "VertexFormat.h"
 
@@ -117,5 +119,7 @@ private:
 };
 
 }
+
+#endif
 
 #endif

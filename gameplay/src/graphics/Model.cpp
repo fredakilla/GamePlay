@@ -127,41 +127,41 @@ void Model::setMaterial(Material* material, int partIndex)
     // Release existing material and binding.
     if (oldMaterial)
     {
-        for (unsigned int i = 0, tCount = oldMaterial->getTechniqueCount(); i < tCount; ++i)
-        {
-            Technique* t = oldMaterial->getTechniqueByIndex(i);
-            GP_ASSERT(t);
-            for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
-            {
-                GP_ASSERT(t->getPassByIndex(j));
-                t->getPassByIndex(j)->setVertexAttributeBinding(NULL);
-            }
-        }
+        //@@for (unsigned int i = 0, tCount = oldMaterial->getTechniqueCount(); i < tCount; ++i)
+        //@@{
+        //@@    Technique* t = oldMaterial->getTechniqueByIndex(i);
+        //@@    GP_ASSERT(t);
+        //@@    for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
+        //@@    {
+        //@@        GP_ASSERT(t->getPassByIndex(j));
+        //@@        t->getPassByIndex(j)->setVertexAttributeBinding(NULL);
+        //@@    }
+        //@@}
         SAFE_RELEASE(oldMaterial);
     }
 
-    if (material)
-    {
-        // Hookup vertex attribute bindings for all passes in the new material.
-        for (unsigned int i = 0, tCount = material->getTechniqueCount(); i < tCount; ++i)
-        {
-            Technique* t = material->getTechniqueByIndex(i);
-            GP_ASSERT(t);
-            for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
-            {
-                Pass* p = t->getPassByIndex(j);
-                GP_ASSERT(p);
-                VertexAttributeBinding* b = VertexAttributeBinding::create(_mesh, p->getEffect());
-                p->setVertexAttributeBinding(b);
-                SAFE_RELEASE(b);
-            }
-        }
-        // Apply node binding for the new material.
-        if (_node)
-        {
-            setMaterialNodeBinding(material);
-        }
-    }
+    //@@if (material)
+    //@@{
+    //@@    // Hookup vertex attribute bindings for all passes in the new material.
+    //@@    for (unsigned int i = 0, tCount = material->getTechniqueCount(); i < tCount; ++i)
+    //@@    {
+    //@@        Technique* t = material->getTechniqueByIndex(i);
+    //@@        GP_ASSERT(t);
+    //@@        for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
+    //@@        {
+    //@@            Pass* p = t->getPassByIndex(j);
+    //@@            GP_ASSERT(p);
+    //@@            VertexAttributeBinding* b = VertexAttributeBinding::create(_mesh, p->getEffect());
+    //@@            p->setVertexAttributeBinding(b);
+    //@@            SAFE_RELEASE(b);
+    //@@        }
+    //@@    }
+    //@@    // Apply node binding for the new material.
+    //@@    if (_node)
+    //@@    {
+    //@@        setMaterialNodeBinding(material);
+    //@@    }
+    //@@}
 }
 
 Material* Model::setMaterial(const char* vshPath, const char* fshPath, const char* defines, int partIndex)
