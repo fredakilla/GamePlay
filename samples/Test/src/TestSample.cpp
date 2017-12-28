@@ -18,15 +18,15 @@ static Mesh* createTriangleMesh()
     // Create 3 vertices. Each vertex has position (x, y, z) and color (red, green, blue)
     float vertices[] =
     {
-        p1.x, p1.y, 0.0f,     1.0f, 0.0f, 0.0f,
-        p2.x, p2.y, 0.0f,     0.0f, 1.0f, 0.0f,
-        p3.x, p3.y, 0.0f,     0.0f, 0.0f, 1.0f,
+        p1.x, p1.y, 0.0f,    /*1.0f, 0.0f, 0.0f, 1.0f,*/0xffff00ff,
+        p2.x, p2.y, 0.0f,    /*0.0f, 1.0f, 0.0f, 1.0f,*/0xffff00ff,
+        p3.x, p3.y, 0.0f,    /*0.0f, 0.0f, 1.0f, 1.0f,*/0xffff00ff,
     };
     unsigned int vertexCount = 3;
     VertexFormat::Element elements[] =
     {
         VertexFormat::Element(VertexFormat::POSITION, 3),
-        VertexFormat::Element(VertexFormat::COLOR, 3)
+        VertexFormat::Element(VertexFormat::COLOR, 4)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
     if (mesh == NULL)

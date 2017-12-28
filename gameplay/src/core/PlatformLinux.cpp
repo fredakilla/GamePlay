@@ -728,6 +728,7 @@ Platform* Platform::create(Game* game)
 
     bgfx::init();
     bgfx::reset(__width, __height, BGFX_RESET_NONE);
+    bgfx::setDebug(BGFX_DEBUG_STATS);
 
     BGFXRenderer::initInstance();
     Renderer::getInstance().queryCaps();

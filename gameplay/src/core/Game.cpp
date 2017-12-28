@@ -565,12 +565,19 @@ void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, 
         bits |= BGFX_CLEAR_STENCIL;
     }
 
-    bgfx::setViewClear(0
+    /*bgfx::setViewClear(0
                        , bits
-                       , 0xaa3030ff
+                       , 0x332255FF
                        , 1.0f
                        , 0
-                       );
+                       );*/
+
+    bgfx::setViewClear(0
+                    , BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH
+                    , 0x303030ff
+                    , 1.0f
+                    , 0
+    );
 
 
 }

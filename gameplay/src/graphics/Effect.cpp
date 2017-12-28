@@ -512,32 +512,32 @@ Uniform* Effect::getUniform(const char* name) const
 		return itr->second;
 	}
 
-    GLint uniformLocation;
-    GL_ASSERT( uniformLocation = glGetUniformLocation(_program, name) );
-    if (uniformLocation > -1)
-	{
-		// Check for array uniforms ("u_directionalLightColor[0]" -> "u_directionalLightColor")
-		char* parentname = new char[strlen(name)+1];
-		strcpy(parentname, name);
-		if (strtok(parentname, "[") != NULL) {
-			std::map<std::string, Uniform*>::const_iterator itr = _uniforms.find(parentname);
-			if (itr != _uniforms.end()) {
-				Uniform* puniform = itr->second;
-
-				Uniform* uniform = new Uniform();
-				uniform->_effect = const_cast<Effect*>(this);
-				uniform->_name = name;
-				uniform->_location = uniformLocation;
-				uniform->_index = 0;
-				uniform->_type = puniform->getType();
-				_uniforms[name] = uniform;
-
-				SAFE_DELETE_ARRAY(parentname);
-				return uniform;
-			}
-		}
-		SAFE_DELETE_ARRAY(parentname);
-    }
+    //@@GLint uniformLocation;
+    //@@GL_ASSERT( uniformLocation = glGetUniformLocation(_program, name) );
+    //@@if (uniformLocation > -1)
+    //@@{
+    //@@	// Check for array uniforms ("u_directionalLightColor[0]" -> "u_directionalLightColor")
+    //@@	char* parentname = new char[strlen(name)+1];
+    //@@	strcpy(parentname, name);
+    //@@	if (strtok(parentname, "[") != NULL) {
+    //@@		std::map<std::string, Uniform*>::const_iterator itr = _uniforms.find(parentname);
+    //@@		if (itr != _uniforms.end()) {
+    //@@			Uniform* puniform = itr->second;
+    //@@
+    //@@			Uniform* uniform = new Uniform();
+    //@@			uniform->_effect = const_cast<Effect*>(this);
+    //@@			uniform->_name = name;
+    //@@			uniform->_location = uniformLocation;
+    //@@			uniform->_index = 0;
+    //@@			uniform->_type = puniform->getType();
+    //@@			_uniforms[name] = uniform;
+    //@@
+    //@@			SAFE_DELETE_ARRAY(parentname);
+    //@@			return uniform;
+    //@@		}
+    //@@	}
+    //@@	SAFE_DELETE_ARRAY(parentname);
+    //@@}
 
 	// No uniform variable found - return NULL
 	return NULL;

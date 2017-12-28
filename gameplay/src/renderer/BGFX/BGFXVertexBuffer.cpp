@@ -66,7 +66,7 @@ void getBgfxAttributeType(const VertexFormat::Element& element, bgfx::AttribType
             normalized = false;
 
         case VertexFormat::COLOR:
-            type = bgfx::AttribType::Float;
+            type = bgfx::AttribType::Uint8;
             normalized = true;
 
         default:
@@ -118,6 +118,7 @@ void BGFXVertexBuffer::set(const void* vertexData, unsigned int vertexCount, uns
     if(_dynamic)
     {
         // dynamic vertex buffer
+        GP_ASSERT(0);
     }
     else
     {
