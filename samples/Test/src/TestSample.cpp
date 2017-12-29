@@ -65,7 +65,7 @@ void TestSample::initialize()
     Material * material = _model->setMaterial("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_FS.bin", "VERTEX_COLOR");
 
 
-    material->getParameter("u_diffuseColor")->setValue(Vector4::fromColor(0xffff00ff));
+    material->getParameter("u_diffuseColor")->setValue(Vector4::fromColor(0x80ffffff));
 }
 
 void TestSample::finalize()

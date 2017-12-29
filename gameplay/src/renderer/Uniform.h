@@ -1,0 +1,220 @@
+#ifndef UNIFORM_H
+#define UNIFORM_H
+
+/*#include "Ref.h"
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
+#include "Matrix.h"*/
+#include "Texture.h"
+
+namespace gameplay
+{
+
+class Vector2;
+class Vector3;
+class Vector4;
+class Matrix;
+class Effect;
+
+/**
+ * Represents a uniform variable within an effect.
+ */
+class Uniform
+{
+
+
+    friend class Effect;
+
+public:
+
+    /**
+     * Returns the name of this uniform.
+     *
+     * @return The name of the uniform.
+     */
+    const char* getName() const;
+
+    /**
+     * Returns the OpenGL uniform type.
+     *
+     * @return The OpenGL uniform type.
+     */
+    const GLenum getType() const;
+
+    /**
+     * Returns the effect for this uniform.
+     *
+     * @return The uniform's effect.
+     */
+    Effect* getEffect() const;
+
+
+
+
+
+
+
+    /**
+     * Sets a float uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param value The float value to set.
+     */
+    void setValue(Uniform* uniform, float value);
+
+    /**
+     * Sets a float array uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param values The array to set.
+     * @param count The number of elements in the array.
+     */
+    void setValue(Uniform* uniform, const float* values, unsigned int count = 1);
+
+    /**
+     * Sets an integer uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param value The value to set.
+     */
+    void setValue(Uniform* uniform, int value);
+
+    /**
+     * Sets an integer array uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param values The array to set.
+     * @param count The number of elements in the array.
+     */
+    void setValue(Uniform* uniform, const int* values, unsigned int count = 1);
+
+    /**
+     * Sets a matrix uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param value The value to set.
+     */
+    void setValue(Uniform* uniform, const Matrix& value);
+
+    /**
+     * Sets a matrix array uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param values The array to set.
+     * @param count The number of elements in the array.
+     */
+    void setValue(Uniform* uniform, const Matrix* values, unsigned int count = 1);
+
+    /**
+     * Sets a vector uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param value The value to set.
+     */
+    void setValue(Uniform* uniform, const Vector2& value);
+
+    /**
+     * Sets a vector array uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param values The array to set.
+     * @param count The number of elements in the array.
+     */
+    void setValue(Uniform* uniform, const Vector2* values, unsigned int count = 1);
+
+    /**
+     * Sets a vector uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param value The value to set.
+     */
+    virtual void setValue(Uniform* uniform, const Vector3& value);
+
+    /**
+     * Sets a vector array uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param values The array to set.
+     * @param count The number of elements in the array.
+     */
+    void setValue(Uniform* uniform, const Vector3* values, unsigned int count = 1);
+
+    /**
+     * Sets a vector uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param value The value to set.
+     */
+    virtual void setValue(Uniform* uniform, const Vector4& value);
+
+    /**
+     * Sets a vector array uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param values The array to set.
+     * @param count The number of elements in the array.
+     */
+    virtual void setValue(Uniform* uniform, const Vector4* values, unsigned int count = 1);
+
+    /**
+     * Sets a sampler uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param sampler The sampler to set.
+     */
+    void setValue(Uniform* uniform, const Texture::Sampler* sampler);
+
+    /**
+     * Sets a sampler array uniform value.
+     *
+     * @param uniform The uniform to set.
+     * @param values The sampler array to set.
+     * @param count The number of elements in the array.
+     *
+     * @script{ignore}
+     */
+    void setValue(Uniform* uniform, const Texture::Sampler** values, unsigned int count);
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Constructor.
+     */
+    Uniform();
+
+    /**
+     * Copy constructor.
+     */
+    Uniform(const Uniform& copy);
+
+    /**
+     * Destructor.
+     */
+    ~Uniform();
+
+    /**
+     * Hidden copy assignment operator.
+     */
+    Uniform& operator=(const Uniform&);
+
+private:
+
+    std::string _name;
+    GLint _location;
+    GLenum _type;
+    unsigned int _index;
+    Effect* _effect;
+};
+
+}
+
+#endif // UNIFORM_H

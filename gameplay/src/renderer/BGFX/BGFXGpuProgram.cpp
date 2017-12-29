@@ -84,18 +84,11 @@ void BGFXGpuProgram::getUniformsFromShader(bgfx::ShaderHandle shaderHandle)
                 GP_ERROR("BGFXGpuProgram::addUniformsFromShader: Uniform type unknown.");
         };
 
-        _uniformsInfo.push_back(uinfo);
-
-
-        bgfx::createUniform(info.name, info.type, info.num);
+        _uniformsInfo.push_back(uinfo);        
     }
 }
 
 
-/*void BGFXGpuProgram::setUniform(Uniform * uniform , const Matrix* values, unsigned int count)
-{
-    bgfx::setUniform(handle, values, count);
-}*/
 
 void BGFXGpuProgram::createShader(const char * binFile, bgfx::ShaderHandle& shader)
 {

@@ -8,6 +8,7 @@
 #include "Matrix.h"
 #include "Texture.h"
 #include "Effect.h"
+#include "Uniform.h"
 
 namespace gameplay
 {

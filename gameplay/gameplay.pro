@@ -173,6 +173,7 @@ HEADERS += \
     src/renderer/IndexBuffer.h \
     src/renderer/Renderer.h \
     src/renderer/GpuProgram.h \
+    src/renderer/Uniform.h
 
 
 SOURCES += \

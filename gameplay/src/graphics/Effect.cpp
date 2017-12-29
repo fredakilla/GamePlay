@@ -95,7 +95,7 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
         {
             UniformInfo info = _gpuProgram->getUniformsInfo()[i];
 
-            Uniform* uniform = new Uniform();
+            BGFXUniform* uniform = new BGFXUniform(info.name.c_str(), info.type, info.num);
             uniform->_effect = effect;
             uniform->_name = info.name;
             //uniform->_location = info.uniformLocation;
