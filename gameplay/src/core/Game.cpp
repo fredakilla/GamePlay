@@ -567,7 +567,7 @@ void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, 
 
     bgfx::setViewClear(0
                        , bits
-                       , _clearColor.toUint()
+                       , 0x303030ff
                        , 1.0f
                        , 0
                        );

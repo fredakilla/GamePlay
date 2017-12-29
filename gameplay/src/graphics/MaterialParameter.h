@@ -512,7 +512,8 @@ MaterialParameter::MethodValueBinding<ClassType, ParameterType>::MethodValueBind
 template <class ClassType, class ParameterType>
 void MaterialParameter::MethodValueBinding<ClassType, ParameterType>::setValue(Effect* effect)
 {
-    effect->setValue(_parameter->_uniform, (_instance->*_valueMethod)());
+    //@@effect->setValue(_parameter->_uniform, (_instance->*_valueMethod)());
+    _parameter->_uniform->setValue(_parameter->_uniform, (_instance->*_valueMethod)());
 }
 
 template <class ClassType, class ParameterType>
@@ -524,7 +525,8 @@ MaterialParameter::MethodArrayBinding<ClassType, ParameterType>::MethodArrayBind
 template <class ClassType, class ParameterType>
 void MaterialParameter::MethodArrayBinding<ClassType, ParameterType>::setValue(Effect* effect)
 {
-    effect->setValue(_parameter->_uniform, (_instance->*_valueMethod)(), (_instance->*_countMethod)());
+    //@@effect->setValue(_parameter->_uniform, (_instance->*_valueMethod)(), (_instance->*_countMethod)());
+    _parameter->_uniform->setValue(_parameter->_uniform, (_instance->*_valueMethod)(), (_instance->*_countMethod)());
 }
 
 }

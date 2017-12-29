@@ -471,34 +471,44 @@ void MaterialParameter::bind(Effect* effect)
     switch (_type)
     {
     case MaterialParameter::FLOAT:
-        effect->setValue(_uniform, _value.floatValue);
+        //@@->setValue(_uniform, _value.floatValue);
+        _uniform->setValue(_uniform, _value.floatValue);
         break;
     case MaterialParameter::FLOAT_ARRAY:
-        effect->setValue(_uniform, _value.floatPtrValue, _count);
+        //@@effect->setValue(_uniform, _value.floatPtrValue, _count);
+        _uniform->setValue(_uniform, _value.floatPtrValue, _count);
         break;
     case MaterialParameter::INT:
-        effect->setValue(_uniform, _value.intValue);
+        //@@effect->setValue(_uniform, _value.intValue);
+        _uniform->setValue(_uniform, _value.intValue);
         break;
     case MaterialParameter::INT_ARRAY:
-        effect->setValue(_uniform, _value.intPtrValue, _count);
+        //@@effect->setValue(_uniform, _value.intPtrValue, _count);
+        _uniform->setValue(_uniform, _value.intPtrValue, _count);
         break;
     case MaterialParameter::VECTOR2:
-        effect->setValue(_uniform, reinterpret_cast<Vector2*>(_value.floatPtrValue), _count);
+        //@@effect->setValue(_uniform, reinterpret_cast<Vector2*>(_value.floatPtrValue), _count);
+        _uniform->setValue(_uniform, reinterpret_cast<Vector2*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::VECTOR3:
-        effect->setValue(_uniform, reinterpret_cast<Vector3*>(_value.floatPtrValue), _count);
+        //@@effect->setValue(_uniform, reinterpret_cast<Vector3*>(_value.floatPtrValue), _count);
+        _uniform->setValue(_uniform, reinterpret_cast<Vector3*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::VECTOR4:
-        effect->setValue(_uniform, reinterpret_cast<Vector4*>(_value.floatPtrValue), _count);
+        //@@effect->setValue(_uniform, reinterpret_cast<Vector4*>(_value.floatPtrValue), _count);
+        _uniform->setValue(_uniform, reinterpret_cast<Vector4*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::MATRIX:
-        effect->setValue(_uniform, reinterpret_cast<Matrix*>(_value.floatPtrValue), _count);
+        //@@effect->setValue(_uniform, reinterpret_cast<Matrix*>(_value.floatPtrValue), _count);
+        _uniform->setValue(_uniform, reinterpret_cast<Matrix*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::SAMPLER:
-        effect->setValue(_uniform, _value.samplerValue);
+        //@@effect->setValue(_uniform, _value.samplerValue);
+        _uniform->setValue(_uniform, _value.samplerValue);
         break;
     case MaterialParameter::SAMPLER_ARRAY:
-        effect->setValue(_uniform, _value.samplerArrayValue, _count);
+        //@@effect->setValue(_uniform, _value.samplerArrayValue, _count);
+        _uniform->setValue(_uniform, _value.samplerArrayValue, _count);
         break;
     case MaterialParameter::METHOD:
         if (_value.method)
