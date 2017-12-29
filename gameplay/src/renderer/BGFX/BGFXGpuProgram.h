@@ -2,6 +2,7 @@
 #define BGFXGPUPROGRAM_H
 
 #include "GpuProgram.h"
+#include "Matrix.h"
 
 namespace gameplay
 {
@@ -9,6 +10,7 @@ namespace gameplay
 class BGFXGpuProgram : public GpuProgram
 {
 public:
+
     BGFXGpuProgram();
     ~BGFXGpuProgram();
     virtual void set(ShaderFiles shaderFiles) override;
@@ -17,9 +19,13 @@ public:
 
     const bgfx::ProgramHandle getProgram() const;
 
+
+    //void setUniform(Uniform *uniform, const Matrix* values, unsigned int count) override;
+
+
 private:
 
-    void addUniformsFromShader(bgfx::ShaderHandle shaderHandle);
+    void getUniformsFromShader(bgfx::ShaderHandle shaderHandle);
     void createShader(const char * binFile, bgfx::ShaderHandle& shader);
 
     void compilShaderFromSource(ShaderType type, const char *src, const char *define, bgfx::ShaderHandle &shader, const char *varyingDef);

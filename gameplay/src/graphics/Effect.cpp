@@ -85,6 +85,37 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
     Effect* effect = new Effect();
     effect->_gpuProgram = _gpuProgram;
 
+
+    // Query and store uniforms from the program.
+    unsigned int activeUniforms = _gpuProgram->getUniformsInfo().size();
+    if (activeUniforms > 0)
+    {
+        unsigned int samplerIndex = 0;
+        for (int i = 0; i < activeUniforms; ++i)
+        {
+            UniformInfo info = _gpuProgram->getUniformsInfo()[i];
+
+            Uniform* uniform = new Uniform();
+            uniform->_effect = effect;
+            uniform->_name = info.name;
+            //uniform->_location = info.uniformLocation;
+            uniform->_type = info.type;
+            if (info.type == UniformType::UT_SAMPLER)
+            {
+                uniform->_index = samplerIndex;
+                //samplerIndex += info.uniformSize;
+            }
+            else
+            {
+                uniform->_index = 0;
+            }
+
+            effect->_uniforms[info.name] = uniform;
+        }
+    }
+
+
+
     // Store this effect in the cache.
     effect->_id = uniqueId;
     __effectCache[uniqueId] = effect;

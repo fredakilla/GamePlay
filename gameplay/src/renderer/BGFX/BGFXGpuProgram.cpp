@@ -38,8 +38,8 @@ void BGFXGpuProgram::set(ShaderFiles shaderFiles)
     GP_ASSERT(bgfx::isValid(_program));
 
     // Query uniforms from shaders.
-    addUniformsFromShader(_vsh);
-    addUniformsFromShader(_fsh);
+    getUniformsFromShader(_vsh);
+    getUniformsFromShader(_fsh);
 
 
     // Set varyingDef filename based on vertex basename.
@@ -50,37 +50,52 @@ void BGFXGpuProgram::set(ShaderFiles shaderFiles)
     // compilShader(ST_VERTEX, shaderFiles.vertex.c_str(), shaderFiles.defines.c_str(), vsh, varyingDef.c_str());
 }
 
-void BGFXGpuProgram::addUniformsFromShader(bgfx::ShaderHandle shaderHandle)
+
+
+
+void BGFXGpuProgram::getUniformsFromShader(bgfx::ShaderHandle shaderHandle)
 {
-    bgfx::UniformHandle uniforms[16];
-    uint16_t activeUniforms = bgfx::getShaderUniforms(shaderHandle, &uniforms[0], 16);
+    bgfx::UniformHandle uniforms[32];
+    uint16_t activeUniforms = bgfx::getShaderUniforms(shaderHandle, &uniforms[0], 32);    
 
     for (int i = 0; i < activeUniforms; ++i)
     {
-        unsigned int samplerIndex = 0;
-
         bgfx::UniformInfo info;
-        bgfx::getUniformInfo(uniforms[0], info);
+        bgfx::getUniformInfo(uniforms[i], info);
 
-        /*Uniform* uniform = new Uniform();
-        uniform->_effect = this;
-        uniform->_name = info.name;
-        //uniform->_location = uniformLocation;
-        uniform->_type = info.type;
-        if (info.type == Uniform::UNIFORM_SAMPLER)
+        gameplay::UniformInfo uinfo;
+        uinfo.name = info.name;
+        uinfo.num = info.num;
+        switch(info.type)
         {
-            uniform->_index = samplerIndex;
-            //samplerIndex += uniformSize;
-        }
-        else
-        {
-            uniform->_index = 0;
-        }
+            case bgfx::UniformType::Int1: //!< Int, used for samplers only.
+                uinfo.type = UniformType::UT_SAMPLER;
+                break;
+            case bgfx::UniformType::Vec4: //!< 4 floats vector.
+                uinfo.type = UniformType::UT_VECTOR4;
+                break;
+            case bgfx::UniformType::Mat3: //!< 3x3 matrix.
+                uinfo.type = UniformType::UT_MATRIX3;
+                break;
+            case bgfx::UniformType::Mat4: //!< 4x4 matrix.
+                uinfo.type = UniformType::UT_MATRIX4;
+                break;
+            default:
+                GP_ERROR("BGFXGpuProgram::addUniformsFromShader: Uniform type unknown.");
+        };
 
-        _uniforms[info.name] = uniform;*/
+        _uniformsInfo.push_back(uinfo);
+
+
+        bgfx::createUniform(info.name, info.type, info.num);
     }
 }
 
+
+/*void BGFXGpuProgram::setUniform(Uniform * uniform , const Matrix* values, unsigned int count)
+{
+    bgfx::setUniform(handle, values, count);
+}*/
 
 void BGFXGpuProgram::createShader(const char * binFile, bgfx::ShaderHandle& shader)
 {
