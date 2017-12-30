@@ -11,6 +11,34 @@
 namespace gameplay
 {
 
+
+
+//------------------------------------------------------------------------------
+// Uniforms
+//------------------------------------------------------------------------------
+
+enum UniformType
+{
+    UT_SAMPLER,             /// Int, used for samplers only.
+    UT_VECTOR4,             /// 4 floats vector.
+    UT_MATRIX3,             /// 3x3 matrix.
+    UT_MATRIX4,             /// 4x4 matrix.
+};
+
+struct UniformInfo
+{
+    std::string name;       /// Uniform name.
+    UniformType type;       /// Uniform type.
+    unsigned short num;     /// Number of elements in array.
+};
+
+
+
+
+
+
+
+
 class Vector2;
 class Vector3;
 class Vector4;

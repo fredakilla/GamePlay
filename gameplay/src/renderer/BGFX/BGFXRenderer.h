@@ -23,6 +23,6 @@ protected:
 };
 
 
-}
+} // end namespace gameplay
 
 #endif // BGFX_RENDERER_H_

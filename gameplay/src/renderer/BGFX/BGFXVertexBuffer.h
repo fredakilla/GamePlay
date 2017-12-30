@@ -33,6 +33,6 @@ private:
     bgfx::VertexDecl _vertexDecl;
 };
 
-}
+} // end namespace gameplay
 
 #endif // BGFX_VERTEXBUFFER_H_

@@ -21,6 +21,6 @@ protected:
 };
 
 
-}
+} // end namespace gameplay
 
 #endif // BGFX_INDEXBUFFER_H_

@@ -4,6 +4,7 @@
 #include "Game.h"
 
 #include "BGFX/BGFXGpuProgram.h"
+#include "BGFX/BGFXUniform.h"
 
 #define OPENGL_ES_DEFINE  "OPENGL_ES"
 

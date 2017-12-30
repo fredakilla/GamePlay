@@ -2,7 +2,7 @@
 #include "MaterialParameter.h"
 #include "Node.h"
 
-#include "BGFX/BGFXGpuProgram.h"
+#include "BGFX/BGFXUniform.h"
 
 namespace gameplay
 {
