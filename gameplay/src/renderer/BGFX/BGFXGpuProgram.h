@@ -35,7 +35,7 @@ public:
                 bgfxUniformType = bgfx::UniformType::Mat4;
                 break;
             default:
-                GP_ERROR("BGFXGpuProgram::addUniformsFromShader: Uniform type unknown.");
+                GP_ERROR("BGFXGpuProgram: Uniform type unknown.");
         };
 
         _handle = bgfx::createUniform(name, bgfxUniformType, num);
