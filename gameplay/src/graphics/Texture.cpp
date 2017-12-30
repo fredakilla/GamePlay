@@ -320,7 +320,8 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
     if (generateMipmaps)
         texture->generateMipmaps();
 
-    texture->_textureHandle = new BGFXTextureHandle(texture);
+    unsigned int textureSize = width * height * bpp;
+    texture->_textureHandle = new BGFXTextureHandle(texture, data, textureSize);
 
 
     // Restore the texture id

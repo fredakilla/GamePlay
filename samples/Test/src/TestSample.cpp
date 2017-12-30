@@ -41,13 +41,13 @@ static Mesh* createTriangleMesh()
     // Create 3 vertices. Each vertex has position (x, y, z) and color (red, green, blue)
     float vertices[] =
     {
-        p1.x, p1.y, 0.0f,    1.0f, 0.0f, 0.0f, 1.0f,        0,1,
-        p2.x, p2.y, 0.0f,    0.0f, 1.0f, 0.0f, 1.0f,        1,1,
-        p3.x, p3.y, 0.0f,    0.0f, 0.0f, 1.0f, 1.0f,        1,0,
+        p1.x, p1.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+        p2.x, p2.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,1,
+        p3.x, p3.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
 
-        p4.x, p4.y, 0.0f,    0.0f, 0.0f, 1.0f, 1.0f,        1,0,
-        p5.x, p5.y, 0.0f,    0.0f, 0.0f, 1.0f, 1.0f,        0,0,
-        p6.x, p6.y, 0.0f,    0.0f, 0.0f, 1.0f, 1.0f,        0,1,
+        p4.x, p4.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+        p5.x, p5.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,0,
+        p6.x, p6.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
     };
     unsigned int vertexCount = 6;
     VertexFormat::Element elements[] =
@@ -97,7 +97,7 @@ void TestSample::initialize()
 
     // Load the texture from file.
     bool mipmap = true;
-    Texture::Sampler* sampler = material->getParameter("s_texColor")->setValue("res/png/color-wheel.png", mipmap);
+    Texture::Sampler* sampler = material->getParameter("s_texColor")->setValue("res/png/crate.png", mipmap);
     if (mipmap)
         sampler->setFilterMode(Texture::LINEAR_MIPMAP_LINEAR, Texture::LINEAR);
     else

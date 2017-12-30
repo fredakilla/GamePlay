@@ -8,7 +8,7 @@ namespace gameplay {
 class BGFXTextureHandle : public TextureHandle
 {
 public:
-    BGFXTextureHandle(Texture *texture);
+    BGFXTextureHandle(Texture *texture, const unsigned char* data, unsigned int size);
     ~BGFXTextureHandle();
 
     void bind(Uniform * uniform) override;
