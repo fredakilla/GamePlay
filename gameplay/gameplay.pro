@@ -174,7 +174,7 @@ HEADERS += \
     src/renderer/Renderer.h \
     src/renderer/GpuProgram.h \
     src/renderer/Uniform.h \
-    src/renderer/BGFX/BGFXUniform.h
+
 
 
 SOURCES += \
@@ -288,6 +288,7 @@ SOURCES += \
 
 
 
+
 #--------------------------------------------------------------------
 # OpenGL Renderer
 #--------------------------------------------------------------------
@@ -311,13 +312,15 @@ HEADERS += \
     src/renderer/BGFX/BGFXIndexBuffer.h \
     src/renderer/BGFX/BGFXVertexBuffer.h \
     src/renderer/BGFX/BGFXRenderer.h \
-    src/renderer/BGFX/BGFXGpuProgram.h
+    src/renderer/BGFX/BGFXGpuProgram.h \
+    src/renderer/BGFX/BGFXUniform.h
 
 SOURCES += \
     src/renderer/BGFX/BGFXIndexBuffer.cpp \
     src/renderer/BGFX/BGFXVertexBuffer.cpp \
     src/renderer/BGFX/BGFXRenderer.cpp \
-    src/renderer/BGFX/BGFXGpuProgram.cpp
+    src/renderer/BGFX/BGFXGpuProgram.cpp \
+    src/renderer/BGFX/BGFXUniform.cpp
 
 
 #--------------------------------------------------------------------
