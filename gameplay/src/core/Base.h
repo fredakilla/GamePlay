@@ -284,7 +284,7 @@ typedef GLuint VertexBufferHandle;
 /** Index buffer handle. */
 typedef GLuint IndexBufferHandle;
 /** Texture handle. */
-typedef GLuint TextureHandle;
+//@@typedef GLuint TextureHandle;
 /** Frame buffer handle. */
 typedef GLuint FrameBufferHandle;
 /** Render buffer handle. */

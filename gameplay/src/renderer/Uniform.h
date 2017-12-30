@@ -79,7 +79,7 @@ public:
 
 
 
-
+    const unsigned int getIndex() const;
 
 
 
@@ -191,7 +191,7 @@ public:
      * @param uniform The uniform to set.
      * @param sampler The sampler to set.
      */
-    void setValue(Uniform* uniform, const Texture::Sampler* sampler);
+    virtual void setValue(Uniform* uniform, const Texture::Sampler* sampler);
 
     /**
      * Sets a sampler array uniform value.

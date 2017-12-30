@@ -54,5 +54,29 @@ void BGFXUniform::setValue(Uniform* uniform, const Vector4& value)
     bgfx::setUniform(bgfxUniform->_handle, &value.x);
 }
 
+void BGFXUniform::setValue(Uniform* uniform, const Texture::Sampler* sampler)
+{
+    GP_ASSERT(uniform);
+    GP_ASSERT(uniform->getType() == UT_SAMPLER);
+    GP_ASSERT(sampler);
+
+    // Bind the sampler - this binds the texture and applies sampler state
+    const_cast<Texture::Sampler*>(sampler)->bind(uniform);
+
+
+
+    /*GP_ASSERT(uniform);
+    GP_ASSERT(uniform->_type == GL_SAMPLER_2D || uniform->_type == GL_SAMPLER_CUBE);
+    GP_ASSERT(sampler);
+    GP_ASSERT((sampler->getTexture()->getType() == Texture::TEXTURE_2D && uniform->_type == GL_SAMPLER_2D) ||
+        (sampler->getTexture()->getType() == Texture::TEXTURE_CUBE && uniform->_type == GL_SAMPLER_CUBE));
+
+    GL_ASSERT( glActiveTexture(GL_TEXTURE0 + uniform->_index) );
+
+    // Bind the sampler - this binds the texture and applies sampler state
+    const_cast<Texture::Sampler*>(sampler)->bind();
+
+    GL_ASSERT( glUniform1i(uniform->_location, uniform->_index) );*/
+}
 
 } // end namespace gameplay

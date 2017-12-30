@@ -174,6 +174,8 @@ HEADERS += \
     src/renderer/Renderer.h \
     src/renderer/GpuProgram.h \
     src/renderer/Uniform.h \
+    src/renderer/TextureHandle.h \
+    src/renderer/BGFX/BGFXTextureHandle.h
 
 
 
@@ -285,6 +287,7 @@ SOURCES += \
     src/ui/Theme.cpp \
     src/ui/ThemeStyle.cpp \
     src/ui/VerticalLayout.cpp \
+    src/renderer/BGFX/BGFXTextureHandle.cpp
 
 
 

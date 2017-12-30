@@ -3,6 +3,8 @@
 #include "Texture.h"
 #include "FileSystem.h"
 
+#include "BGFX/BGFXTextureHandle.h"
+
 // PVRTC (GL_IMG_texture_compression_pvrtc) : Imagination based gpus
 #ifndef GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG
 #define GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG 0x8C01
@@ -48,20 +50,21 @@ namespace gameplay
 {
 
 static std::vector<Texture*> __textureCache;
-static TextureHandle __currentTextureId = 0;
+//@@static TextureHandle __currentTextureId = 0;
 static Texture::Type __currentTextureType = Texture::TEXTURE_2D;
 
-Texture::Texture() : _handle(0), _format(UNKNOWN), _type((Texture::Type)0), _width(0), _height(0), _mipmapped(false), _cached(false), _compressed(false),
+Texture::Texture() : _textureHandle(nullptr), _format(UNKNOWN), _type((Texture::Type)0), _width(0), _height(0), _mipmapped(false), _cached(false), _compressed(false),
     _wrapS(Texture::REPEAT), _wrapT(Texture::REPEAT), _wrapR(Texture::REPEAT), _minFilter(Texture::NEAREST_MIPMAP_LINEAR), _magFilter(Texture::LINEAR)
 {
 }
 
 Texture::~Texture()
 {
-    if (_handle)
+    if (_textureHandle)
     {
-        GL_ASSERT( glDeleteTextures(1, &_handle) );
-        _handle = 0;
+        //@@GL_ASSERT( glDeleteTextures(1, &_handle) );
+        delete _textureHandle;
+        _textureHandle = 0;
     }
 
     // Remove ourself from the texture cache.
@@ -116,17 +119,17 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
                     texture = create(image, generateMipmaps);
                 SAFE_RELEASE(image);
             }
-            else if (tolower(ext[1]) == 'p' && tolower(ext[2]) == 'v' && tolower(ext[3]) == 'r')
-            {
-                // PowerVR Compressed Texture RGBA.
-                texture = createCompressedPVRTC(path);
-            }
-            else if (tolower(ext[1]) == 'd' && tolower(ext[2]) == 'd' && tolower(ext[3]) == 's')
-            {
-                // DDS file format (DXT/S3TC) compressed textures
-                texture = createCompressedDDS(path);
-            }
-            break;
+            //@@else if (tolower(ext[1]) == 'p' && tolower(ext[2]) == 'v' && tolower(ext[3]) == 'r')
+            //@@{
+            //@@    // PowerVR Compressed Texture RGBA.
+            //@@    texture = createCompressedPVRTC(path);
+            //@@}
+            //@@else if (tolower(ext[1]) == 'd' && tolower(ext[2]) == 'd' && tolower(ext[3]) == 's')
+            //@@{
+            //@@    // DDS file format (DXT/S3TC) compressed textures
+            //@@    texture = createCompressedDDS(path);
+            //@@}
+            //@@break;
         }
     }
 
@@ -241,6 +244,8 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
     GLenum texelType = getFormatTexel(format);
     GP_ASSERT( texelType != 0 );
 
+    //@@
+    /*
     // Create the texture.
     GLuint textureId;
     GL_ASSERT( glGenTextures(1, &textureId) );
@@ -252,54 +257,58 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
     if ( generateMipmaps && !std::addressof(glGenerateMipmap) )
         GL_ASSERT( glTexParameteri(target, GL_GENERATE_MIPMAP, GL_TRUE) );
 #endif
+    */
+    //@@
+
 
     // Load the texture
     size_t bpp = getFormatBPP(format);
-    if (type == Texture::TEXTURE_2D)
-    {
-        GLenum f = (format == Texture::DEPTH) ? GL_DEPTH_COMPONENT : internalFormat;
-        GL_ASSERT( glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, f, texelType, data) );
-    }
-    else
-    {
-        // Get texture size
-        unsigned int textureSize = width * height;
-        if (bpp == 0)
-        {
-            glDeleteTextures(1, &textureId);
-            GP_ERROR("Failed to determine texture size because format is UNKNOWN.");
-            return NULL;
-        }
-        textureSize *= bpp;
-        // Texture Cube
-        for (unsigned int i = 0; i < 6; i++)
-        {
-            const unsigned char* texturePtr = (data == NULL) ? NULL : &data[i * textureSize];
-            GL_ASSERT( glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, internalFormat, width, height, 0, internalFormat, texelType, texturePtr) );
-        }
-    }
+    //@@if (type == Texture::TEXTURE_2D)
+    //@@{
+    //@@    GLenum f = (format == Texture::DEPTH) ? GL_DEPTH_COMPONENT : internalFormat;
+    //@@    GL_ASSERT( glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, f, texelType, data) );
+    //@@}
+    //@@else
+    //@@{
+    //@@    // Get texture size
+    //@@    unsigned int textureSize = width * height;
+    //@@    if (bpp == 0)
+    //@@    {
+    //@@        glDeleteTextures(1, &textureId);
+    //@@        GP_ERROR("Failed to determine texture size because format is UNKNOWN.");
+    //@@        return NULL;
+    //@@    }
+    //@@    textureSize *= bpp;
+    //@@    // Texture Cube
+    //@@    for (unsigned int i = 0; i < 6; i++)
+    //@@    {
+    //@@        const unsigned char* texturePtr = (data == NULL) ? NULL : &data[i * textureSize];
+    //@@        GL_ASSERT( glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, internalFormat, width, height, 0, internalFormat, texelType, texturePtr) );
+    //@@    }
+    //@@}
 
     // Set initial minification filter based on whether or not mipmaping was enabled.
     Filter minFilter;
     if (format == Texture::DEPTH)
     {
     	minFilter = NEAREST;
-    	GL_ASSERT( glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST) );
+        /*@@GL_ASSERT( glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST) );
     	GL_ASSERT( glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST) );
     	GL_ASSERT( glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE) );
     	GL_ASSERT( glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE) );
 #if !defined(OPENGL_ES) || defined(GL_ES_VERSION_3_0) && GL_ES_VERSION_3_0
     	GL_ASSERT( glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_NONE) );
-#endif    	
+#endif
+    @@*/
     }
     else
     {
     	minFilter = generateMipmaps ? NEAREST_MIPMAP_LINEAR : LINEAR;
-    	GL_ASSERT( glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter) );
+        //@@GL_ASSERT( glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter) );
     }
 
     Texture* texture = new Texture();
-    texture->_handle = textureId;
+    //@@texture->_handle = textureId;    
     texture->_format = format;
     texture->_type = type;
     texture->_width = width;
@@ -311,36 +320,38 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
     if (generateMipmaps)
         texture->generateMipmaps();
 
+    texture->_textureHandle = new BGFXTextureHandle(texture);
+
 
     // Restore the texture id
-    GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
+    //@@GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
 
     return texture;
 }
 
-Texture* Texture::create(TextureHandle handle, int width, int height, Format format)
+Texture* Texture::create(TextureHandle * handle, int width, int height, Format format)
 {
     GP_ASSERT( handle );
 
     Texture* texture = new Texture();
-    if (glIsTexture(handle))
-    {
-        // There is no real way to query for texture type, but an error will be returned if a cube texture is bound to a 2D texture... so check for that
-        glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
-        if (glGetError() == GL_NO_ERROR)
-        {
-            texture->_type = TEXTURE_CUBE;
-        }
-        else
-        {
-            // For now, it's either or. But if 3D textures and others are added, it might be useful to simply test a bunch of bindings and seeing which one doesn't error out
-            texture->_type = TEXTURE_2D;
-        }
-
-        // Restore the texture id
-        GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
-    }
-    texture->_handle = handle;
+    //@@if (glIsTexture(handle))
+    //@@{
+    //@@    // There is no real way to query for texture type, but an error will be returned if a cube texture is bound to a 2D texture... so check for that
+    //@@    glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
+    //@@    if (glGetError() == GL_NO_ERROR)
+    //@@    {
+    //@@        texture->_type = TEXTURE_CUBE;
+    //@@    }
+    //@@    else
+    //@@    {
+    //@@        // For now, it's either or. But if 3D textures and others are added, it might be useful to simply test a bunch of bindings and seeing which one doesn't error out
+    //@@        texture->_type = TEXTURE_2D;
+    //@@    }
+    //@@
+    //@@    // Restore the texture id
+    //@@    GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
+    //@@}
+    texture->_textureHandle = handle;
     texture->_format = format;
     texture->_width = width;
     texture->_height = height;
@@ -408,6 +419,8 @@ static unsigned int computePVRTCDataSize(int width, int height, int bpp)
     return widthBlocks * heightBlocks * ((blockSize  * bpp) >> 3);
 }
 
+//@@
+#if 0
 Texture* Texture::createCompressedPVRTC(const char* path)
 {
     std::unique_ptr<Stream> stream(FileSystem::open(path));
@@ -471,7 +484,7 @@ Texture* Texture::createCompressedPVRTC(const char* path)
     GL_ASSERT( glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter) );
 
     Texture* texture = new Texture();
-    texture->_handle = textureId;
+    texture->_textureHandle = textureId;
     texture->_type = faceCount > 1 ? TEXTURE_CUBE : TEXTURE_2D;
     texture->_width = width;
     texture->_height = height;
@@ -504,6 +517,8 @@ Texture* Texture::createCompressedPVRTC(const char* path)
 
     return texture;
 }
+#endif
+//@@
 
 GLubyte* Texture::readCompressedPVRTC(const char* path, Stream* stream, GLsizei* width, GLsizei* height, GLenum* format, unsigned int* mipMapCount, unsigned int* faceCount, GLenum* faces)
 {
@@ -1114,7 +1129,7 @@ Texture* Texture::createCompressedDDS(const char* path)
 
     // Create gameplay texture.
     texture = new Texture();
-    texture->_handle = textureId;
+    //@@texture->_textureHandle = textureId;
     texture->_type = (Type)target;
     texture->_width = header.dwWidth;
     texture->_height = header.dwHeight;
@@ -1177,26 +1192,26 @@ unsigned int Texture::getHeight() const
     return _height;
 }
 
-TextureHandle Texture::getHandle() const
+TextureHandle *Texture::getHandle() const
 {
-    return _handle;
+    return _textureHandle;
 }
 
 void Texture::generateMipmaps()
 {
-    if (!_mipmapped)
-    {
-        GLenum target = (GLenum)_type;
-        GL_ASSERT( glBindTexture(target, _handle) );
-        GL_ASSERT( glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST) );
-        if( std::addressof(glGenerateMipmap) )
-            GL_ASSERT( glGenerateMipmap(target) );
-
-        _mipmapped = true;
-
-        // Restore the texture id
-        GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
-    }
+    //@@if (!_mipmapped)
+    //@@{
+    //@@    GLenum target = (GLenum)_type;
+    //@@    GL_ASSERT( glBindTexture(target, _handle) );
+    //@@    GL_ASSERT( glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST) );
+    //@@    if( std::addressof(glGenerateMipmap) )
+    //@@        GL_ASSERT( glGenerateMipmap(target) );
+    //@@
+    //@@    _mipmapped = true;
+    //@@
+    //@@    // Restore the texture id
+    //@@    GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
+    //@@}
 }
 
 bool Texture::isMipmapped() const
@@ -1254,10 +1269,14 @@ Texture* Texture::Sampler::getTexture() const
     return _texture;
 }
 
-void Texture::Sampler::bind()
+void Texture::Sampler::bind(Uniform * uniform)
 {
     GP_ASSERT( _texture );
 
+    _texture->_textureHandle->bind(uniform);
+
+    //@@
+#if 0
     GLenum target = (GLenum)_texture->_type;
     if (__currentTextureId != _texture->_handle)
     {
@@ -1298,6 +1317,8 @@ void Texture::Sampler::bind()
             GL_ASSERT( glTexParameteri(target, GL_TEXTURE_WRAP_R, (GLenum)_wrapR) );
     }
 #endif
+#endif
+    //@@
 }
 
 }

@@ -8,6 +8,8 @@ namespace gameplay
 {
 
 class Image;
+class TextureHandle;
+class Uniform;
 
 /**
  * Defines a standard texture.
@@ -146,7 +148,7 @@ public:
         /**
          * Binds the texture of this sampler to the renderer and applies the sampler state.
          */
-        void bind();
+        void bind(Uniform *uniform);
 
     private:
 
@@ -230,7 +232,7 @@ public:
      * @return The new texture.
      * @script{create}
      */
-    static Texture* create(TextureHandle handle, int width, int height, Format format = UNKNOWN);
+    static Texture* create(TextureHandle *handle, int width, int height, Format format = UNKNOWN);
 
     /**
      * Set texture data to replace current texture image.
@@ -298,7 +300,7 @@ public:
      *
      * @return The texture handle.
      */
-    TextureHandle getHandle() const;
+    TextureHandle * getHandle() const;
 
 private:
 
@@ -322,7 +324,7 @@ private:
      */
     Texture& operator=(const Texture&);
 
-    static Texture* createCompressedPVRTC(const char* path);
+    //static Texture* createCompressedPVRTC(const char* path);
 
     static Texture* createCompressedDDS(const char* path);
 
@@ -336,7 +338,7 @@ private:
     static size_t getFormatBPP(Format format);
 
     std::string _path;
-    TextureHandle _handle;
+    //@@TextureHandle _handle;
     Format _format;
     Type _type;
     unsigned int _width;
@@ -353,6 +355,9 @@ private:
     GLint _internalFormat;
     GLenum _texelType;
     size_t _bpp;
+
+private:
+    TextureHandle * _textureHandle;
 };
 
 }

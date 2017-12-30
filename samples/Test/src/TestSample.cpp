@@ -70,7 +70,7 @@ void TestSample::initialize()
 
     // Load the texture from file.
     bool mipmap = true;
-    Texture::Sampler* sampler = material->getParameter("u_diffuseTexture")->setValue("res/png/color-wheel.png", mipmap);
+    Texture::Sampler* sampler = material->getParameter("s_texColor")->setValue("res/png/color-wheel.png", mipmap);
     if (mipmap)
         sampler->setFilterMode(Texture::LINEAR_MIPMAP_LINEAR, Texture::LINEAR);
     else
