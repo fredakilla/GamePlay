@@ -65,7 +65,25 @@ void TestSample::initialize()
     Material * material = _model->setMaterial("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_FS.bin", "VERTEX_COLOR");
 
 
-    material->getParameter("u_diffuseColor")->setValue(Vector4::fromColor(0x80ffffff));
+
+    // create material parameter
+    material->getParameter("u_diffuseColor")->setValue(Vector4(1.0,1.0,1.0,1.0));
+
+    // create material animation
+    unsigned int keyCount = 3;
+    unsigned int keyTimes[] = {0, 1000, 2000};
+    float keyValues[] =
+    {
+        0.0f, 0.0f, 0.0f, 0.0,
+        1.0f, 0.0f, 0.0f, 0.0,
+        0.0f, 0.0f, 0.0f, 0.0
+    };
+    MaterialParameter * param = material->getParameter("u_diffuseColor");
+    Animation* sampleAnim = param->createAnimation("sample", MaterialParameter::ANIMATE_UNIFORM, keyCount, keyTimes, keyValues, Curve::LINEAR);
+    AnimationClip* animClip = sampleAnim->getClip();
+    animClip->setRepeatCount(AnimationClip::REPEAT_INDEFINITE);
+    animClip->play();
+
 }
 
 void TestSample::finalize()
