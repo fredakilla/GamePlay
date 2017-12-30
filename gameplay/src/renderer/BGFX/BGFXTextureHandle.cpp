@@ -7,7 +7,20 @@ namespace gameplay {
 
 bgfx::TextureFormat::Enum TEXTURE_BGFX_FORMAT_INFOS[] =
 {
-    bgfx::TextureFormat::Unknown,   // gameplay::Format::UNKNOWN
+
+    bgfx::TextureFormat::Unknown,   // 0 gameplay::Format::UNKNOWN = 0,
+    bgfx::TextureFormat::RGB8   ,   // 1 gameplay::Format::RGB,
+    /*bgfx::TextureFormat::RGB8,*/  // 1 gameplay::Format::RGB888 = RGB,
+    bgfx::TextureFormat::Unknown,   // 2 gameplay::Format::RGB565,
+    bgfx::TextureFormat::RGBA8,     // 3 gameplay::Format::RGBA,
+    /*bgfx::TextureFormat::RGBA8,*/ // 3 gameplay::Format::RGBA8888 = RGBA,
+    bgfx::TextureFormat::Unknown,   // 4 gameplay::Format::RGBA4444,
+    bgfx::TextureFormat::Unknown,   // 5 gameplay::Format::RGBA5551,
+    bgfx::TextureFormat::A8,        // 6 gameplay::Format::ALPHA,
+    bgfx::TextureFormat::D16,       // 7 gameplay::Format::DEPTH,
+
+
+    /*bgfx::TextureFormat::Unknown,   // gameplay::Format::UNKNOWN
     bgfx::TextureFormat::RGB8,      // gameplay::Format::RGB
     //bgfx::TextureFormat::RGBA8,     // gameplay::Format::RGBA
 
@@ -45,7 +58,7 @@ BGFXTextureHandle::BGFXTextureHandle(Texture* texture, const unsigned char *data
 
     bgfx::TextureFormat::Enum bgfxTextureFormat = TEXTURE_BGFX_FORMAT_INFOS[texture->getFormat()];
 
-
+    GP_ASSERT(bgfxTextureFormat != bgfx::TextureFormat::Unknown);
 
     const bgfx::Memory* mem = bgfx::copy(data, size);
 
