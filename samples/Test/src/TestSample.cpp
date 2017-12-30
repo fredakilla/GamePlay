@@ -18,17 +18,18 @@ static Mesh* createTriangleMesh()
     // Create 3 vertices. Each vertex has position (x, y, z) and color (red, green, blue)
     float vertices[] =
     {
-        p1.x, p1.y, 0.0f,    1.0f, 0.0f, 0.0f, 1.0f,///0xffff0000,
-        p2.x, p2.y, 0.0f,    0.0f, 1.0f, 0.0f, 1.0f,///0xff00ff00,
-        p3.x, p3.y, 0.0f,    0.0f, 0.0f, 1.0f, 1.0f,///0xff0000ff,
+        p1.x, p1.y, 0.0f,    1.0f, 0.0f, 0.0f, 1.0f,        0.0f, 0.0f,
+        p2.x, p2.y, 0.0f,    0.0f, 1.0f, 0.0f, 1.0f,        1.0f, 0.0f,
+        p3.x, p3.y, 0.0f,    0.0f, 0.0f, 1.0f, 1.0f,        0.0f, 1.0f,
     };
     unsigned int vertexCount = 3;
     VertexFormat::Element elements[] =
     {
         VertexFormat::Element(VertexFormat::POSITION, 3),
-        VertexFormat::Element(VertexFormat::COLOR, 4)
+        VertexFormat::Element(VertexFormat::COLOR, 4),
+        VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
     };
-    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
+    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), vertexCount, false);
     if (mesh == NULL)
     {
         GP_ERROR("Failed to create mesh.");
@@ -62,7 +63,19 @@ void TestSample::initialize()
     // Create a material from the built-in "colored-unlit" vertex and fragment shaders.
     // This sample doesn't use lighting so the unlit shader is used.
     // This sample uses vertex color so VERTEX_COLOR is defined. Look at the shader source files to see the supported defines.
-    Material * material = _model->setMaterial("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_FS.bin", "VERTEX_COLOR");
+    //Material * material = _model->setMaterial("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_FS.bin", "VERTEX_COLOR");
+    Material * material = _model->setMaterial("res/bgfxshaders/Textured_VS.bin", "res/bgfxshaders/Textured_FS.bin", "VERTEX_COLOR");
+
+
+
+    // Load the texture from file.
+    bool mipmap = true;
+    Texture::Sampler* sampler = material->getParameter("u_diffuseTexture")->setValue("res/png/color-wheel.png", mipmap);
+    if (mipmap)
+        sampler->setFilterMode(Texture::LINEAR_MIPMAP_LINEAR, Texture::LINEAR);
+    else
+        sampler->setFilterMode(Texture::LINEAR, Texture::LINEAR);
+    sampler->setWrapMode(Texture::CLAMP, Texture::CLAMP);
 
 
 
@@ -83,7 +96,6 @@ void TestSample::initialize()
     AnimationClip* animClip = sampleAnim->getClip();
     animClip->setRepeatCount(AnimationClip::REPEAT_INDEFINITE);
     animClip->play();
-
 }
 
 void TestSample::finalize()
