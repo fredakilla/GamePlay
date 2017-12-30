@@ -10,19 +10,46 @@ TestSample game;
 static Mesh* createTriangleMesh()
 {
     // Calculate the vertices of the equilateral triangle.
-    float a = 0.5f;     // length of the side
+    /*float a = 0.5f;     // length of the side
     Vector2 p1(0.0f,       a / sqrtf(3.0f));
     Vector2 p2(-a / 2.0f, -a / (2.0f * sqrtf(3.0f)));
-    Vector2 p3( a / 2.0f, -a / (2.0f * sqrtf(3.0f)));
+    Vector2 p3( a / 2.0f, -a / (2.0f * sqrtf(3.0f)));*/
+
+
+    /*
+     *
+     *  p1 p6   *-----*  p2        0,1 *-----*  1,1
+     *          | \   |                | \   |
+     *          |  \  |                |  \  |
+     *          |   \ |                |   \ |
+     *          |    \|                |    \|
+     *      p5  *-----*  p3 p4     0,0 *-----*  1,0
+     *
+     * */
+
+
+
+    Vector2 p1(-1, 1);
+    Vector2 p2( 1, 1);
+    Vector2 p3( 1,-1);
+
+    Vector2 p4( 1,-1);
+    Vector2 p5(-1,-1);
+    Vector2 p6(-1, 1);
+
 
     // Create 3 vertices. Each vertex has position (x, y, z) and color (red, green, blue)
     float vertices[] =
     {
-        p1.x, p1.y, 0.0f,    1.0f, 0.0f, 0.0f, 1.0f,        0.0f, 0.0f,
-        p2.x, p2.y, 0.0f,    0.0f, 1.0f, 0.0f, 1.0f,        1.0f, 0.0f,
-        p3.x, p3.y, 0.0f,    0.0f, 0.0f, 1.0f, 1.0f,        0.0f, 1.0f,
+        p1.x, p1.y, 0.0f,    1.0f, 0.0f, 0.0f, 1.0f,        0,1,
+        p2.x, p2.y, 0.0f,    0.0f, 1.0f, 0.0f, 1.0f,        1,1,
+        p3.x, p3.y, 0.0f,    0.0f, 0.0f, 1.0f, 1.0f,        1,0,
+
+        p4.x, p4.y, 0.0f,    0.0f, 0.0f, 1.0f, 1.0f,        1,0,
+        p5.x, p5.y, 0.0f,    0.0f, 0.0f, 1.0f, 1.0f,        0,0,
+        p6.x, p6.y, 0.0f,    0.0f, 0.0f, 1.0f, 1.0f,        0,1,
     };
-    unsigned int vertexCount = 3;
+    unsigned int vertexCount = 6;
     VertexFormat::Element elements[] =
     {
         VertexFormat::Element(VertexFormat::POSITION, 3),
