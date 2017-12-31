@@ -379,6 +379,8 @@ unsigned int Model::draw(bool wireframe)
                     pass->bind();
 
                     //@@GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->_indexBuffer->getHandle()) );
+
+                    _mesh->_vertexBuffer->bind();
                     part->_indexBuffer->bind();
 
                     if (!wireframe || !drawWireframe(part))

@@ -45,11 +45,11 @@ static Mesh* createTriangleMesh()
         p2.x, p2.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,1,
         p3.x, p3.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
 
-        p4.x, p4.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+        //p4.x, p4.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
         p5.x, p5.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,0,
-        p6.x, p6.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+        //p6.x, p6.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
     };
-    unsigned int vertexCount = 6;
+    unsigned int vertexCount = 4;
     VertexFormat::Element elements[] =
     {
         VertexFormat::Element(VertexFormat::POSITION, 3),
@@ -64,6 +64,20 @@ static Mesh* createTriangleMesh()
     }
     mesh->setPrimitiveType(Mesh::TRIANGLES);
     mesh->setVertexData(vertices, 0, vertexCount);
+
+
+
+
+    int indices[] =
+    {
+        0,1,2,
+        2,3,0
+    };
+
+    MeshPart * part = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, 6, false);
+    part->setIndexData(indices, 0, 6);
+
+
     return mesh;
 }
 

@@ -10,14 +10,21 @@ class BGFXIndexBuffer : public IndexBuffer
 public:
     BGFXIndexBuffer(const unsigned int indexFormat, unsigned int indexCount, bool dynamic);
     ~BGFXIndexBuffer();
-    GLuint getHandle() { return _ibh; }
+    //GLuint getHandle() { return _ibh; }
     void bind() override;
 
 protected:
 
     virtual void set(const void* vertexData, unsigned int vertexCount, unsigned int vertexStart) override;
 
-    GLuint _ibh;
+
+    union
+    {
+        bgfx::IndexBufferHandle        _sibh;
+        bgfx::DynamicIndexBufferHandle _dibh;
+    };
+
+
 };
 
 

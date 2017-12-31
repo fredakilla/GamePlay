@@ -18,7 +18,7 @@ protected:
     unsigned int _indexFormat;
     unsigned int _indexCount;
     bool _dynamic;
-
+    unsigned int _indexSize;
 };
 
 }

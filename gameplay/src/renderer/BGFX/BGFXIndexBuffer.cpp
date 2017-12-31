@@ -9,37 +9,60 @@ BGFXIndexBuffer::BGFXIndexBuffer(const unsigned int indexFormat, unsigned int in
     _indexCount = indexCount;
     _dynamic = dynamic;
 
-    GL_ASSERT( glGenBuffers(1, &_ibh) );
-    GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibh) );
+    _sibh = BGFX_INVALID_HANDLE;
 
+    //GL_ASSERT( glGenBuffers(1, &_ibh) );
+    //GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibh) );
+    //
     unsigned int indexSize = 0;
     switch (indexFormat)
     {
     case Mesh::INDEX8:
-        indexSize = 1;
+        _indexSize = 1;
         break;
     case Mesh::INDEX16:
-        indexSize = 2;
+        _indexSize = 2;
         break;
     case Mesh::INDEX32:
-        indexSize = 4;
+        _indexSize = 4;
         break;
     default:
         GP_ERROR("Unsupported index format (%d).", indexFormat);
-        glDeleteBuffers(1, &_ibh);
+        //glDeleteBuffers(1, &_ibh);
     }
-
-    GL_ASSERT( glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize * indexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
+    //
+    //GL_ASSERT( glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize * indexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
 }
 
 BGFXIndexBuffer::~BGFXIndexBuffer()
 {
-    glDeleteBuffers(1, &_ibh);
+    if(bgfx::isValid(_sibh))
+        bgfx::destroy(_sibh);
 }
 
 void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsigned int indexStart)
 {
-    GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibh) );
+    uint32_t size = _indexSize * indexCount;
+    const bgfx::Memory* mem = bgfx::copy(indexData, size);
+    uint16_t flags = BGFX_BUFFER_NONE;
+
+    if(_indexFormat == Mesh::INDEX32)
+        flags |= BGFX_BUFFER_INDEX32;
+
+    if(_dynamic)
+    {
+        _dibh = bgfx::createDynamicIndexBuffer(mem, flags);
+        GP_ASSERT(bgfx::isValid(_dibh));
+    }
+    else
+    {
+        _sibh = bgfx::createIndexBuffer(mem, flags);
+        GP_ASSERT(bgfx::isValid(_dibh));
+    }
+
+
+
+   /* GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibh) );
 
         unsigned int indexSize = 0;
         switch (_indexFormat)
@@ -70,12 +93,19 @@ void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsign
             }
 
             GL_ASSERT( glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, indexStart * indexSize, indexCount * indexSize, indexData) );
-        }
+        }*/
 }
 
 void BGFXIndexBuffer::bind()
 {
-
+    if(_dynamic)
+    {
+        bgfx::setIndexBuffer(_dibh);
+    }
+    else
+    {
+        bgfx::setIndexBuffer(_sibh);
+    }
 }
 
 

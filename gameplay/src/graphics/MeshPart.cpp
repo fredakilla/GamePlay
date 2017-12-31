@@ -153,7 +153,7 @@ bool MeshPart::isDynamic() const
 
 void MeshPart::draw()
 {
-    GL_ASSERT( glDrawElements(getPrimitiveType(), getIndexCount(), getIndexFormat(), 0) );
+    //@@GL_ASSERT( glDrawElements(getPrimitiveType(), getIndexCount(), getIndexFormat(), 0) );
 }
 
 }
