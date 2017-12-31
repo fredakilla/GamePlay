@@ -121,7 +121,17 @@ void BGFXVertexBuffer::set(const void* vertexData, unsigned int vertexCount, uns
     if(_dynamic)
     {
         // dynamic vertex buffer
-        GP_ASSERT(0);
+
+        if(!bgfx::isValid(_dvbh))
+        {
+            uint32_t size = _vertexDecl.getSize(vertexCount);
+            const bgfx::Memory* mem = bgfx::copy(vertexData, size);
+
+            uint16_t flags = BGFX_BUFFER_NONE;
+            _dvbh = bgfx::createDynamicVertexBuffer(mem, _vertexDecl, flags);
+            GP_ASSERT(bgfx::isValid(_dvbh));
+
+        }
     }
     else
     {
@@ -144,6 +154,8 @@ void BGFXVertexBuffer::bind()
 {
     if(_dynamic)
     {
+        bgfx::setVertexBuffer(0,_dvbh);
+
         /*bgfx::setVertexBuffer(0,dp.geometry->vb->dvbh);
         if (dp.geometry->indexed)
             bgfx::setIndexBuffer(dp.geometry->ib->dibh);*/

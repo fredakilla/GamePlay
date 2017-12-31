@@ -1,6 +1,7 @@
 #include "Base.h"
 #include "MeshBatch.h"
 #include "Material.h"
+#include "Model.h"
 
 namespace gameplay
 {
@@ -9,11 +10,18 @@ MeshBatch::MeshBatch(const VertexFormat& vertexFormat, Mesh::PrimitiveType primi
     : _vertexFormat(vertexFormat), _primitiveType(primitiveType), _material(material), _indexed(indexed), _capacity(0), _growSize(growSize),
     _vertexCapacity(0), _indexCapacity(0), _vertexCount(0), _indexCount(0), _vertices(NULL), _verticesPtr(NULL), _indices(NULL), _indicesPtr(NULL), _started(false)
 {
+    _model = Model::create(Mesh::createMesh(vertexFormat, initialCapacity, true));
+    _model->getMesh()->setPrimitiveType(primitiveType);
+    _model->getMesh()->release();
+    _model->setMaterial(material);
+
     resize(initialCapacity);
 }
 
 MeshBatch::~MeshBatch()
 {
+    SAFE_RELEASE(_model);
+
     SAFE_RELEASE(_material);
     SAFE_DELETE_ARRAY(_vertices);
     SAFE_DELETE_ARRAY(_indices);
@@ -238,6 +246,8 @@ bool MeshBatch::isStarted() const
 
 void MeshBatch::finish()
 {
+    _model->getMesh()->setVertexData(reinterpret_cast<const float*>(_vertices), 0, _vertexCount);
+
     _started = false;
 }
 
@@ -248,7 +258,21 @@ void MeshBatch::draw()
 
     // Not using VBOs, so unbind the element array buffer.
     // ARRAY_BUFFER will be unbound automatically during pass->bind().
-    GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0 ) );
+    //@@GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0 ) );
+
+
+
+    if (_started && _vertexCount != _model->getMesh()->getVertexCount())
+        _model->getMesh()->setVertexData(reinterpret_cast<const float*>(_vertices), 0, _vertexCount);
+
+    if (!_indexed)
+    {
+        _model->draw();
+        return;
+    }
+
+
+
 
     GP_ASSERT(_material);
     if (_indexed)

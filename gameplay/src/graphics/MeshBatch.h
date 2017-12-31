@@ -180,6 +180,8 @@ private:
     unsigned short* _indicesPtr;
     bool _started;
 
+
+    Model * _model;
 };
 
 }

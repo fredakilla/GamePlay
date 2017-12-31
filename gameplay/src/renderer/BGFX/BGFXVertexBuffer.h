@@ -27,7 +27,7 @@ private:
     union
     {
         bgfx::VertexBufferHandle        _svbh;
-        bgfx::DynamicIndexBufferHandle  _dvbh;
+        bgfx::DynamicVertexBufferHandle _dvbh;
     };
 
     bgfx::VertexDecl _vertexDecl;

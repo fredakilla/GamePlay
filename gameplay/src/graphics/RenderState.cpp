@@ -536,6 +536,9 @@ void RenderState::StateBlock::bindNoRestore()
 {
     GP_ASSERT(_defaultState);
 
+    //@@
+    return;
+
     // Update any state that differs from _defaultState and flip _defaultState bits
     if ((_bits & RS_BLEND) && (_blendEnabled != _defaultState->_blendEnabled))
     {
