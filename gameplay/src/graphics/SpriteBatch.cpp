@@ -16,8 +16,8 @@
     vtx.r = vr; vtx.g = vg; vtx.b = vb; vtx.a = va
 
 // Default sprite shaders
-#define SPRITE_VSH "res/shaders/sprite.vert"
-#define SPRITE_FSH "res/shaders/sprite.frag"
+#define SPRITE_VSH "res/bgfxshaders/Sprite_VS.bin"
+#define SPRITE_FSH "res/bgfxshaders/Sprite_FS.bin"
 
 namespace gameplay
 {
@@ -86,7 +86,7 @@ SpriteBatch* SpriteBatch::create(Texture* texture,  Effect* effect, unsigned int
     for (unsigned int i = 0, count = effect->getUniformCount(); i < count; ++i)
     {
         Uniform* uniform = effect->getUniform(i);
-        if (uniform && uniform->getType() == GL_SAMPLER_2D)
+        if (uniform && uniform->getType() == UT_SAMPLER)
         {
             samplerUniform = uniform;
             break;
