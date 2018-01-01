@@ -66,14 +66,14 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
 
     // Set render states.
     bgfx::setState(0
-                   //| BGFX_STATE_DEFAULT
+                   | BGFX_STATE_DEFAULT
 
-                   | BGFX_STATE_RGB_WRITE
+                   /*| BGFX_STATE_RGB_WRITE
                    | BGFX_STATE_ALPHA_WRITE
                    | BGFX_STATE_DEPTH_TEST_LESS
                    | BGFX_STATE_DEPTH_WRITE
                    //| BGFX_STATE_CULL_CW
-                   | BGFX_STATE_MSAA
+                   | BGFX_STATE_MSAA*/
 
 
                    //| BGFX_STATE_PT_TRISTRIP

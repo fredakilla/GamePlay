@@ -18,6 +18,8 @@ static Mesh* createTriangleMesh()
 
     /*
      *
+     *  Default culling is clock wize order, so draw in counter clockwize.
+     *
      *  p1 p6   *-----*  p2        0,1 *-----*  1,1
      *          | \   |                | \   |
      *          |  \  |                |  \  |
@@ -70,8 +72,9 @@ static Mesh* createTriangleMesh()
 
     short indices[] =
     {
-        0,1,2,
-        2,3,0
+        0,3,2,
+        0,2,1
+
     };
 
     MeshPart * part = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, 6, false);
@@ -168,7 +171,7 @@ void TestSample::initialize()
 
     // Load the texture from file.
     bool mipmap = true;
-    Texture::Sampler* sampler = material->getParameter("s_texColor")->setValue("res/png/crate.png", mipmap);
+    Texture::Sampler* sampler = material->getParameter("s_texColor")->setValue("res/png/duck.png", mipmap);
     if (mipmap)
         sampler->setFilterMode(Texture::LINEAR_MIPMAP_LINEAR, Texture::LINEAR);
     else
