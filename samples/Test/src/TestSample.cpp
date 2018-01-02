@@ -3,34 +3,25 @@
 // Declare our game instance
 TestSample game;
 
-#if 1
-/**
- * Creates a triangle mesh with vertex colors.
- */
-static Mesh* createTriangleMesh()
+
+/*
+ *
+ *  Default culling is clock wize order, so draw in counter clockwize.
+ *
+ *  p1 p6   *-----*  p2        0,1 *-----*  1,1
+ *          | \   |                | \   |
+ *          |  \  |                |  \  |
+ *          |   \ |                |   \ |
+ *          |    \|                |    \|
+ *      p5  *-----*  p3 p4     0,0 *-----*  1,0
+ *
+ * */
+
+//-------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------
+
+static Mesh* createStaticMesh()
 {
-    // Calculate the vertices of the equilateral triangle.
-    /*float a = 0.5f;     // length of the side
-    Vector2 p1(0.0f,       a / sqrtf(3.0f));
-    Vector2 p2(-a / 2.0f, -a / (2.0f * sqrtf(3.0f)));
-    Vector2 p3( a / 2.0f, -a / (2.0f * sqrtf(3.0f)));*/
-
-
-    /*
-     *
-     *  Default culling is clock wize order, so draw in counter clockwize.
-     *
-     *  p1 p6   *-----*  p2        0,1 *-----*  1,1
-     *          | \   |                | \   |
-     *          |  \  |                |  \  |
-     *          |   \ |                |   \ |
-     *          |    \|                |    \|
-     *      p5  *-----*  p3 p4     0,0 *-----*  1,0
-     *
-     * */
-
-
-
     Vector2 p1(-1, 1);
     Vector2 p2( 1, 1);
     Vector2 p3( 1,-1);
@@ -39,17 +30,51 @@ static Mesh* createTriangleMesh()
     Vector2 p5(-1,-1);
     Vector2 p6(-1, 1);
 
-
-    // Create 3 vertices. Each vertex has position (x, y, z) and color (red, green, blue)
     float vertices[] =
     {
         p1.x, p1.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
         p2.x, p2.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,1,
         p3.x, p3.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
 
-        //p4.x, p4.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+        p4.x, p4.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
         p5.x, p5.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,0,
-        //p6.x, p6.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+        p6.x, p6.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+    };
+    unsigned int vertexCount = 6;
+    VertexFormat::Element elements[] =
+    {
+        VertexFormat::Element(VertexFormat::POSITION, 3),
+        VertexFormat::Element(VertexFormat::COLOR, 4),
+        VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
+    };
+    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), vertexCount, false);
+    if (mesh == NULL)
+    {
+        GP_ERROR("Failed to create mesh.");
+        return NULL;
+    }
+    mesh->setPrimitiveType(Mesh::TRIANGLES);
+    mesh->setVertexData(vertices, 0, vertexCount);
+
+    return mesh;
+}
+
+//-------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------
+
+static Mesh* createStaticIndexedMesh()
+{
+    Vector2 p1(-1, 1);
+    Vector2 p2( 1, 1);
+    Vector2 p3( 1,-1);
+    Vector2 p5(-1,-1);
+
+    float vertices[] =
+    {
+        p1.x, p1.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+        p2.x, p2.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,1,
+        p3.x, p3.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+        p5.x, p5.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,0,
     };
     unsigned int vertexCount = 4;
     VertexFormat::Element elements[] =
@@ -68,79 +93,125 @@ static Mesh* createTriangleMesh()
     mesh->setVertexData(vertices, 0, vertexCount);
 
 
-
+    // indices
 
     short indices[] =
     {
         0,3,2,
         0,2,1
-
     };
 
     MeshPart * part = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, 6, false);
     part->setIndexData(indices, 0, 6);
 
-
     return mesh;
 }
-#endif
 
-/*
-static Mesh* createTriangleMesh(float size = 1.0f)
+//-------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------
+
+
+static Mesh* createDynamicMesh()
 {
-    float a = size * 0.5f;
-    float vertices[] =
+    Vector2 p1(-1, 1);
+    Vector2 p2( 1, 1);
+    Vector2 p3( 1,-1);
+
+    Vector2 p4( 1,-1);
+    Vector2 p5(-1,-1);
+    Vector2 p6(-1, 1);
+
+    /*float vertices[] =
     {
-        -a, -a,  a,    0.0,  0.0,  1.0,   0.0, 0.0,
-         a, -a,  a,    0.0,  0.0,  1.0,   1.0, 0.0,
-        -a,  a,  a,    0.0,  0.0,  1.0,   0.0, 1.0,
-         a,  a,  a,    0.0,  0.0,  1.0,   1.0, 1.0,
-        -a,  a,  a,    0.0,  1.0,  0.0,   0.0, 0.0,
-         a,  a,  a,    0.0,  1.0,  0.0,   1.0, 0.0,
-        -a,  a, -a,    0.0,  1.0,  0.0,   0.0, 1.0,
-         a,  a, -a,    0.0,  1.0,  0.0,   1.0, 1.0,
-        -a,  a, -a,    0.0,  0.0, -1.0,   0.0, 0.0,
-         a,  a, -a,    0.0,  0.0, -1.0,   1.0, 0.0,
-        -a, -a, -a,    0.0,  0.0, -1.0,   0.0, 1.0,
-         a, -a, -a,    0.0,  0.0, -1.0,   1.0, 1.0,
-        -a, -a, -a,    0.0, -1.0,  0.0,   0.0, 0.0,
-         a, -a, -a,    0.0, -1.0,  0.0,   1.0, 0.0,
-        -a, -a,  a,    0.0, -1.0,  0.0,   0.0, 1.0,
-         a, -a,  a,    0.0, -1.0,  0.0,   1.0, 1.0,
-         a, -a,  a,    1.0,  0.0,  0.0,   0.0, 0.0,
-         a, -a, -a,    1.0,  0.0,  0.0,   1.0, 0.0,
-         a,  a,  a,    1.0,  0.0,  0.0,   0.0, 1.0,
-         a,  a, -a,    1.0,  0.0,  0.0,   1.0, 1.0,
-        -a, -a, -a,   -1.0,  0.0,  0.0,   0.0, 0.0,
-        -a, -a,  a,   -1.0,  0.0,  0.0,   1.0, 0.0,
-        -a,  a, -a,   -1.0,  0.0,  0.0,   0.0, 1.0,
-        -a,  a,  a,   -1.0,  0.0,  0.0,   1.0, 1.0
-    };
-    short indices[] =
-    {
-        0, 1, 2, 2, 1, 3, 4, 5, 6, 6, 5, 7, 8, 9, 10, 10, 9, 11, 12, 13, 14, 14, 13, 15, 16, 17, 18, 18, 17, 19, 20, 21, 22, 22, 21, 23
-    };
-    unsigned int vertexCount = 24;
-    unsigned int indexCount = 36;
+        p1.x, p1.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+        p2.x, p2.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,1,
+        p3.x, p3.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+
+        p4.x, p4.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+        p5.x, p5.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,0,
+        p6.x, p6.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+    };*/
+    unsigned int vertexCount = 6;
     VertexFormat::Element elements[] =
     {
         VertexFormat::Element(VertexFormat::POSITION, 3),
         VertexFormat::Element(VertexFormat::COLOR, 4),
         VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
     };
-    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), vertexCount, false);
+    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), vertexCount, true);
     if (mesh == NULL)
     {
         GP_ERROR("Failed to create mesh.");
         return NULL;
     }
-    mesh->setVertexData(vertices, 0, vertexCount);
-    MeshPart* meshPart = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, false);
-    meshPart->setIndexData(indices, 0, indexCount);
+    mesh->setPrimitiveType(Mesh::TRIANGLES);
+    //mesh->setVertexData(vertices, 0, vertexCount);
+
     return mesh;
 }
-*/
 
+//-------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------
+
+
+static Mesh* createDynamicIndexedMesh()
+{
+    Vector2 p1(-1, 1);
+    Vector2 p2( 1, 1);
+    Vector2 p3( 1,-1);
+    Vector2 p5(-1,-1);
+
+    /*float vertices[] =
+    {
+        p1.x, p1.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+        p2.x, p2.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,1,
+        p3.x, p3.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+        p5.x, p5.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,0,
+    };*/
+    unsigned int vertexCount = 4;
+    VertexFormat::Element elements[] =
+    {
+        VertexFormat::Element(VertexFormat::POSITION, 3),
+        VertexFormat::Element(VertexFormat::COLOR, 4),
+        VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
+    };
+    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), vertexCount, true);
+    if (mesh == NULL)
+    {
+        GP_ERROR("Failed to create mesh.");
+        return NULL;
+    }
+    mesh->setPrimitiveType(Mesh::TRIANGLES);
+    //mesh->setVertexData(vertices, 0, vertexCount);
+
+
+    // indices
+
+    short indices[] =
+    {
+        0,3,2,
+        0,2,1
+    };
+
+    MeshPart * part = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, 6, true);
+    //part->setIndexData(indices, 0, 6);
+
+    return mesh;
+}
+
+
+
+
+
+
+
+
+
+
+//-------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------
+
+Mesh * _mesh;
 
 TestSample::TestSample()
     : _model(NULL), _spinDirection(-1.0f)
@@ -155,7 +226,13 @@ void TestSample::initialize()
     Matrix::createOrthographic(width, height, -1.0f, 1.0f, &_worldViewProjectionMatrix);
 
     // Create the triangle mesh.
-    Mesh* mesh = createTriangleMesh();
+    //Mesh* mesh = createStaticMesh();
+    //Mesh* mesh = createStaticIndexedMesh();
+    //Mesh * mesh = createDynamicMesh();
+    Mesh * mesh = createDynamicIndexedMesh();
+
+    _mesh = mesh;
+
 
     // Create a model for the triangle mesh. A model is an instance of a Mesh that can be drawn with a specified material.
     _model = Model::create(mesh);
@@ -168,10 +245,9 @@ void TestSample::initialize()
     Material * material = _model->setMaterial("res/bgfxshaders/Textured_VS.bin", "res/bgfxshaders/Textured_FS.bin", "VERTEX_COLOR");
 
 
-
     // Load the texture from file.
     bool mipmap = true;
-    Texture::Sampler* sampler = material->getParameter("s_texColor")->setValue("res/png/duck.png", mipmap);
+    Texture::Sampler* sampler = material->getParameter("s_texColor")->setValue("res/png/brick.png", mipmap);
     if (mipmap)
         sampler->setFilterMode(Texture::LINEAR_MIPMAP_LINEAR, Texture::LINEAR);
     else
@@ -205,10 +281,79 @@ void TestSample::finalize()
     SAFE_RELEASE(_model);
 }
 
+float tt = 0.0f;
+
 void TestSample::update(float elapsedTime)
 {
     // Update the rotation of the triangle. The speed is 180 degrees per second.
     _worldViewProjectionMatrix.rotateZ( _spinDirection * MATH_PI * elapsedTime * 0.001f);
+
+
+    tt += elapsedTime * 0.001f;
+
+    float dx = sin(tt) * 0.1;
+    float dy = cos(tt) * 0.1;
+
+
+// for dynamic mesh
+#if 0
+    Vector2 p1(-1 + dx, 1 + dy);
+    Vector2 p2( 1 - dx, 1 + dy);
+    Vector2 p3( 1 + dx,-1 - dy);
+
+    Vector2 p4( 1 - dx,-1 + dy);
+    Vector2 p5(-1 - dx,-1 - dy);
+    Vector2 p6(-1 - dx, 1 + dy);
+
+    float vertices[] =
+    {
+        p1.x, p1.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+        p2.x, p2.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,1,
+        p3.x, p3.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+
+        p4.x, p4.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+        p5.x, p5.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,0,
+        p6.x, p6.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+    };
+
+    _mesh->setVertexData(vertices, 0, 6);
+#endif
+
+// for dynamic index mesh
+#if 1
+    Vector2 p1(-1 + dx, 1 + dy);
+    Vector2 p2( 1 - dx, 1 + dy);
+    Vector2 p3( 1 + dx,-1 - dy);
+    Vector2 p5(-1 - dx,-1 - dy);
+
+    float vertices[] =
+    {
+        p1.x, p1.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+        p2.x, p2.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,1,
+        p3.x, p3.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+        p5.x, p5.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,0,
+    };
+
+    _mesh->setVertexData(vertices, 0, 4);
+
+
+    short indices[] =
+    {
+        0,3,2,
+        0,2,1
+    };
+
+
+
+
+    _mesh->getPart(0)->setIndexData(indices, 0, 6);
+
+#endif
+
+
+
+
+
 }
 
 void TestSample::render(float elapsedTime)

@@ -118,34 +118,43 @@ void BGFXVertexBuffer::set(const void* vertexData, unsigned int vertexCount, uns
         GL_ASSERT( glBufferSubData(GL_ARRAY_BUFFER, vertexStart * _vertexFormat->getVertexSize(), vertexCount * _vertexFormat->getVertexSize(), vertexData) );
     }*/
 
+
+    uint32_t size = _vertexDecl.getSize(vertexCount);
+    const bgfx::Memory* mem = bgfx::copy(vertexData, size);
+
+
     if(_dynamic)
     {
         // dynamic vertex buffer
 
         if(!bgfx::isValid(_dvbh))
         {
-            uint32_t size = _vertexDecl.getSize(vertexCount);
-            const bgfx::Memory* mem = bgfx::copy(vertexData, size);
-
             uint16_t flags = BGFX_BUFFER_NONE;
-            _dvbh = bgfx::createDynamicVertexBuffer(mem, _vertexDecl, flags);
-            GP_ASSERT(bgfx::isValid(_dvbh));
-
+            _dvbh = bgfx::createDynamicVertexBuffer(vertexCount, _vertexDecl, flags);
         }
+
+        GP_ASSERT(bgfx::isValid(_dvbh));
+
+        bgfx::updateDynamicVertexBuffer(_dvbh, vertexStart, mem);
+
     }
     else
     {
         if(!bgfx::isValid(_svbh))
         {
 
-            uint32_t size = _vertexDecl.getSize(vertexCount);
-            //const bgfx::Memory* mem = bgfx::alloc(size);
-            const bgfx::Memory* mem = bgfx::copy(vertexData, size);
-            //const bgfx::Memory* mem = bgfx::makeRef(membuff, _vertexDecl.getSize(vertexCount));
+            /// uint32_t size = _vertexDecl.getSize(vertexCount);
+            /// //const bgfx::Memory* mem = bgfx::alloc(size);
+            /// const bgfx::Memory* mem = bgfx::copy(vertexData, size);
+            /// //const bgfx::Memory* mem = bgfx::makeRef(membuff, _vertexDecl.getSize(vertexCount));
 
             uint16_t flags = BGFX_BUFFER_NONE;
             _svbh = bgfx::createVertexBuffer(mem, _vertexDecl, flags);
             GP_ASSERT(bgfx::isValid(_svbh));
+        }
+        else
+        {
+            GP_WARN("BGFXVertexBuffer::set() - static vertex buffer already set.");
         }
     }
 }
@@ -154,7 +163,10 @@ void BGFXVertexBuffer::bind()
 {
     if(_dynamic)
     {
-        bgfx::setVertexBuffer(0,_dvbh);
+        if(bgfx::isValid(_dvbh))
+            bgfx::setVertexBuffer(0,_dvbh);
+        else
+            GP_WARN("BGFXVertexBuffer::bind() - dynamic vertex buffer no set.");
 
         /*bgfx::setVertexBuffer(0,dp.geometry->vb->dvbh);
         if (dp.geometry->indexed)
@@ -162,7 +174,10 @@ void BGFXVertexBuffer::bind()
     }
     else
     {
-        bgfx::setVertexBuffer(0,_svbh);
+        if(bgfx::isValid(_svbh))
+            bgfx::setVertexBuffer(0,_svbh);
+        else
+            GP_WARN("BGFXVertexBuffer::bind() - static vertex buffer no set.");
         /*if (dp.geometry->indexed)
             bgfx::setIndexBuffer(dp.geometry->ib->sibh);*/
     }

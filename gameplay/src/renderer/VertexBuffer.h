@@ -15,6 +15,8 @@ public:
     virtual GLuint getHandle() {}
     virtual void bind() = 0;
 
+    bool isDynamic() { return _dynamic; }
+
 protected:
     VertexFormat * _vertexFormat;
     unsigned int _vertexCount;

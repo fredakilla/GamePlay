@@ -330,6 +330,7 @@ unsigned int Model::draw(bool wireframe)
 {
     GP_ASSERT(_mesh);
 
+
     unsigned int partCount = _mesh->getPartCount();
     if (partCount == 0)
     {

@@ -51,13 +51,26 @@ void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsign
 
     if(_dynamic)
     {
-        _dibh = bgfx::createDynamicIndexBuffer(mem, flags);
+        if(!bgfx::isValid(_dibh))
+        {
+            _dibh = bgfx::createDynamicIndexBuffer(indexCount, flags);
+        }
+
         GP_ASSERT(bgfx::isValid(_dibh));
+
+        bgfx::updateDynamicIndexBuffer(_dibh, indexStart, mem);
     }
     else
     {
-        _sibh = bgfx::createIndexBuffer(mem, flags);
-        GP_ASSERT(bgfx::isValid(_dibh));
+        if(!bgfx::isValid(_sibh))
+        {
+            _sibh = bgfx::createIndexBuffer(mem, flags);
+            GP_ASSERT(bgfx::isValid(_dibh));
+        }
+        else
+        {
+            GP_WARN("BGFXIndexBuffer::set() - static index buffer already set.");
+        }
     }
 
 
@@ -100,11 +113,19 @@ void BGFXIndexBuffer::bind()
 {
     if(_dynamic)
     {
-        bgfx::setIndexBuffer(_dibh);
+        if(bgfx::isValid(_dibh))
+            bgfx::setIndexBuffer(_dibh);
+        else
+            GP_WARN("BGFXIndexBuffer::bind() - dynamic index buffer no set.");
+
     }
     else
     {
-        bgfx::setIndexBuffer(_sibh);
+        if(bgfx::isValid(_sibh))
+            bgfx::setIndexBuffer(_sibh);
+        else
+            GP_WARN("BGFXIndexBuffer::bind() - static index buffer no set.");
+
     }
 }
 

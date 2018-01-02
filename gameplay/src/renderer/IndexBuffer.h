@@ -14,6 +14,9 @@ public:
     virtual GLuint getHandle() {}
     virtual void bind() = 0;
 
+    bool isDynamic() { return _dynamic; }
+
+
 protected:
     unsigned int _indexFormat;
     unsigned int _indexCount;
