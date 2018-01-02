@@ -532,9 +532,106 @@ void RenderState::StateBlock::bind()
     bindNoRestore();
 }
 
+
+
+
+
+uint64_t TAB_BLEND[] = {
+    BGFX_STATE_BLEND_ZERO,              // BLEND_ZERO = GL_ZERO,
+    BGFX_STATE_BLEND_ONE,               // BLEND_ONE = GL_ONE,
+    BGFX_STATE_BLEND_SRC_COLOR,         // BLEND_SRC_COLOR = GL_SRC_COLOR,
+    BGFX_STATE_BLEND_INV_SRC_COLOR,     // BLEND_ONE_MINUS_SRC_COLOR = GL_ONE_MINUS_SRC_COLOR,
+    BGFX_STATE_BLEND_DST_COLOR,         // BLEND_DST_COLOR = GL_DST_COLOR,
+    BGFX_STATE_BLEND_INV_DST_COLOR,     // BLEND_ONE_MINUS_DST_COLOR = GL_ONE_MINUS_DST_COLOR,
+    BGFX_STATE_BLEND_SRC_ALPHA,         // BLEND_SRC_ALPHA = GL_SRC_ALPHA,
+    BGFX_STATE_BLEND_INV_SRC_ALPHA,     // BLEND_ONE_MINUS_SRC_ALPHA = GL_ONE_MINUS_SRC_ALPHA,
+    BGFX_STATE_BLEND_DST_ALPHA,         // BLEND_DST_ALPHA = GL_DST_ALPHA,
+    BGFX_STATE_BLEND_INV_DST_ALPHA,     // BLEND_ONE_MINUS_DST_ALPHA = GL_ONE_MINUS_DST_ALPHA,
+    BGFX_STATE_BLEND_FACTOR,            // BLEND_CONSTANT_ALPHA = GL_CONSTANT_ALPHA,
+    BGFX_STATE_BLEND_INV_FACTOR,        // BLEND_ONE_MINUS_CONSTANT_ALPHA = GL_ONE_MINUS_CONSTANT_ALPHA,
+    BGFX_STATE_BLEND_SRC_ALPHA_SAT      // BLEND_SRC_ALPHA_SATURATE = GL_SRC_ALPHA_SATURATE
+};
+
+
+uint64_t TAB_DEPTH_FUNC[] = {
+    BGFX_STATE_DEPTH_TEST_NEVER,        // DEPTH_NEVER = GL_NEVER,
+    BGFX_STATE_DEPTH_TEST_LESS,         // DEPTH_LESS = GL_LESS,
+    BGFX_STATE_DEPTH_TEST_EQUAL,        // DEPTH_EQUAL = GL_EQUAL,
+    BGFX_STATE_DEPTH_TEST_LEQUAL,       // DEPTH_LEQUAL = GL_LEQUAL,
+    BGFX_STATE_DEPTH_TEST_GREATER,      // DEPTH_GREATER = GL_GREATER,
+    BGFX_STATE_DEPTH_TEST_NOTEQUAL,     // DEPTH_NOTEQUAL = GL_NOTEQUAL,
+    BGFX_STATE_DEPTH_TEST_GEQUAL,       // DEPTH_GEQUAL = GL_GEQUAL,
+    BGFX_STATE_DEPTH_TEST_ALWAYS        // DEPTH_ALWAYS = GL_ALWAYS
+};
+
+
+
+
 void RenderState::StateBlock::bindNoRestore()
 {
     GP_ASSERT(_defaultState);
+
+    uint64_t bgfxBits = 0L;
+
+    /*
+     * | BGFX_STATE_RGB_WRITE       \
+            | BGFX_STATE_ALPHA_WRITE     \
+            | BGFX_STATE_DEPTH_TEST_LESS \
+            | BGFX_STATE_DEPTH_WRITE     \
+            | BGFX_STATE_CULL_CW         \
+            | BGFX_STATE_MSAA            \
+            */
+
+
+    bgfxBits |= BGFX_STATE_RGB_WRITE;
+    bgfxBits |= BGFX_STATE_ALPHA_WRITE;
+
+    if (_depthWriteEnabled)
+    {
+        bgfxBits |= BGFX_STATE_DEPTH_WRITE;
+    }
+
+    if(_depthTestEnabled)
+    {
+        bgfxBits |= TAB_DEPTH_FUNC[_depthFunction];
+    }
+
+    if(_blendEnabled)
+    {
+        bgfxBits |= BGFX_STATE_BLEND_FUNC(TAB_BLEND[_blendSrc], TAB_BLEND[_blendDst]);
+    }
+
+
+    switch(_primitiveType)
+    {
+    default:
+    case Mesh::PrimitiveType::TRIANGLES:
+        break;
+    case Mesh::PrimitiveType::TRIANGLE_STRIP:
+        bgfxBits |= BGFX_STATE_PT_TRISTRIP;
+        break;
+    case Mesh::PrimitiveType::LINES:
+        bgfxBits |= BGFX_STATE_PT_LINES;
+        break;
+    case Mesh::PrimitiveType::LINE_STRIP:
+        bgfxBits |= BGFX_STATE_PT_LINESTRIP;
+        break;
+    case Mesh::PrimitiveType::POINTS:
+        bgfxBits |= BGFX_STATE_PT_POINTS;
+        break;
+    }
+
+
+
+    bgfxBits |= BGFX_STATE_MSAA;
+
+
+    bgfx::setState(bgfxBits);
+
+
+
+
+
 
     //@@
     return;
@@ -1042,6 +1139,11 @@ void RenderState::StateBlock::setState(const char* name, const char* value)
     {
         GP_ERROR("Unsupported render state string '%s'.", name);
     }
+}
+
+void RenderState::StateBlock::setPrimitiveType(Mesh::PrimitiveType primitiveType)
+{
+    _primitiveType = primitiveType;
 }
 
 void RenderState::StateBlock::setBlend(bool enabled)

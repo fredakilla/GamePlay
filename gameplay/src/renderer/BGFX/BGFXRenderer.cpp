@@ -59,7 +59,7 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
 
 
     // Set view 0 default viewport.
-    bgfx::setViewRect(0, 0, 0, uint16_t(1280), uint16_t(720) );
+    //bgfx::setViewRect(0, 0, 0, uint16_t(1280), uint16_t(720) );
 
 
     /*Transform t;
@@ -72,7 +72,7 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
 
 
     // Set render states.
-    bgfx::setState(0
+    /*bgfx::setState(0
                    //| BGFX_STATE_DEFAULT
 
                    | BGFX_STATE_RGB_WRITE
@@ -85,7 +85,7 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
 
                    | BGFX_STATE_PT_TRISTRIP
                    | BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA)
-                   );
+                   );*/
 
 
     bgfx::submit(0, bgfxGpuProgram->getProgram());

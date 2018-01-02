@@ -178,7 +178,7 @@ bool Game::startup()
     _scriptController->initialize();
 
     // Load any gamepads, ui or physical.
-    //@@loadGamepads();
+    loadGamepads();
 
     // Set script handler
     if (_properties)
@@ -571,6 +571,13 @@ void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, 
                        , 1.0f
                        , 0
                        );
+
+    bgfx::setViewClear(0
+                , BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH
+                , 0x111111ff
+                , 1.0f
+                , 0
+    );
 
     /*bgfx::setViewClear(0
                     , BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH

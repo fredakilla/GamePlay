@@ -162,6 +162,9 @@ void Model::setMaterial(Material* material, int partIndex)
     //@@        setMaterialNodeBinding(material);
     //@@    }
     //@@}
+
+
+    material->getStateBlock()->setPrimitiveType(getMesh()->getPrimitiveType());
 }
 
 Material* Model::setMaterial(const char* vshPath, const char* fshPath, const char* defines, int partIndex)

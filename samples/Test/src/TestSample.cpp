@@ -72,16 +72,16 @@ static Mesh* createStaticIndexedMesh()
 
     float vertices[] =
     {
-        p1.x, p1.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
-        p2.x, p2.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,1,
-        p3.x, p3.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
-        p5.x, p5.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,0,
+        p1.x, p1.y, 0.0f,    1.0f, 1.0f, 1.0f,       0,1,
+        p2.x, p2.y, 0.0f,    1.0f, 1.0f, 1.0f,       1,1,
+        p3.x, p3.y, 0.0f,    1.0f, 1.0f, 1.0f,       1,0,
+        p5.x, p5.y, 0.0f,    1.0f, 1.0f, 1.0f,       0,0,
     };
     unsigned int vertexCount = 4;
     VertexFormat::Element elements[] =
     {
         VertexFormat::Element(VertexFormat::POSITION, 3),
-        VertexFormat::Element(VertexFormat::COLOR, 4),
+        VertexFormat::Element(VertexFormat::NORMAL, 3),
         VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), vertexCount, false);
@@ -251,7 +251,7 @@ void TestSample::initialize()
 
     // Load the texture from file.
     bool mipmap = true;
-    Texture::Sampler* sampler = material->getParameter("s_texColor")->setValue("res/png/brick.png", mipmap);
+    Texture::Sampler* sampler = material->getParameter("u_diffuseTexture")->setValue("res/png/brick.png", mipmap);
     if (mipmap)
         sampler->setFilterMode(Texture::LINEAR_MIPMAP_LINEAR, Texture::LINEAR);
     else
