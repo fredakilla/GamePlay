@@ -64,7 +64,6 @@ void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsign
         }
 
         GP_ASSERT(bgfx::isValid(_dibh));
-
         bgfx::updateDynamicIndexBuffer(_dibh, indexStart, mem);
     }
     else

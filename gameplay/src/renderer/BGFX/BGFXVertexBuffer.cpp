@@ -130,8 +130,6 @@ void BGFXVertexBuffer::set(const void* vertexData, unsigned int vertexCount, uns
 
     if(_dynamic)
     {
-        // dynamic vertex buffer
-
         if(!bgfx::isValid(_dvbh))
         {
             uint16_t flags = BGFX_BUFFER_ALLOW_RESIZE;
@@ -139,20 +137,12 @@ void BGFXVertexBuffer::set(const void* vertexData, unsigned int vertexCount, uns
         }
 
         GP_ASSERT(bgfx::isValid(_dvbh));
-
         bgfx::updateDynamicVertexBuffer(_dvbh, vertexStart, mem);
-
     }
     else
     {
         if(!bgfx::isValid(_svbh))
         {
-
-            /// uint32_t size = _vertexDecl.getSize(vertexCount);
-            /// //const bgfx::Memory* mem = bgfx::alloc(size);
-            /// const bgfx::Memory* mem = bgfx::copy(vertexData, size);
-            /// //const bgfx::Memory* mem = bgfx::makeRef(membuff, _vertexDecl.getSize(vertexCount));
-
             uint16_t flags = BGFX_BUFFER_NONE;
             _svbh = bgfx::createVertexBuffer(mem, _vertexDecl, flags);
             GP_ASSERT(bgfx::isValid(_svbh));
@@ -172,10 +162,6 @@ void BGFXVertexBuffer::bind()
             bgfx::setVertexBuffer(0,_dvbh);
         else
             GP_WARN("BGFXVertexBuffer::bind() - dynamic vertex buffer no set.");
-
-        /*bgfx::setVertexBuffer(0,dp.geometry->vb->dvbh);
-        if (dp.geometry->indexed)
-            bgfx::setIndexBuffer(dp.geometry->ib->dibh);*/
     }
     else
     {
@@ -183,8 +169,6 @@ void BGFXVertexBuffer::bind()
             bgfx::setVertexBuffer(0,_svbh);
         else
             GP_WARN("BGFXVertexBuffer::bind() - static vertex buffer no set.");
-        /*if (dp.geometry->indexed)
-            bgfx::setIndexBuffer(dp.geometry->ib->sibh);*/
     }
 }
 
