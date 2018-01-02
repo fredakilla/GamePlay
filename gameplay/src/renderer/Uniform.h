@@ -123,7 +123,7 @@ public:
      * @param uniform The uniform to set.
      * @param value The value to set.
      */
-    void setValue(Uniform* uniform, const Matrix& value);
+    virtual void setValue(Uniform* uniform, const Matrix& value);
 
     /**
      * Sets a matrix array uniform value.
@@ -132,7 +132,7 @@ public:
      * @param values The array to set.
      * @param count The number of elements in the array.
      */
-    void setValue(Uniform* uniform, const Matrix* values, unsigned int count = 1);
+    virtual void setValue(Uniform* uniform, const Matrix* values, unsigned int count = 1);
 
     /**
      * Sets a vector uniform value.

@@ -505,7 +505,7 @@ void MaterialParameter::bind(Effect* effect)
         break;
     case MaterialParameter::MATRIX:
         //@@effect->setValue(_uniform, reinterpret_cast<Matrix*>(_value.floatPtrValue), _count);
-        _uniform->setValue(_uniform, reinterpret_cast<Matrix*>(_value.floatPtrValue), _count);
+        bgfxUniform->setValue(_uniform, reinterpret_cast<Matrix*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::SAMPLER:
         //@@effect->setValue(_uniform, _value.samplerValue);

@@ -19,15 +19,15 @@ static Mesh* createTriangleMesh()
     // Create 3 vertices. Each vertex has position (x, y, z) and color (red, green, blue)
     float vertices[] =
     {
-        p1.x, p1.y, 0.0f,     1.0f, 0.0f, 0.0f,
-        p2.x, p2.y, 0.0f,     0.0f, 1.0f, 0.0f,
-        p3.x, p3.y, 0.0f,     0.0f, 0.0f, 1.0f,
+        p1.x, p1.y, 0.0f,     1.0f, 0.0f, 0.0f, 1.0f,
+        p2.x, p2.y, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f,
+        p3.x, p3.y, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f,
     };
     unsigned int vertexCount = 3;
     VertexFormat::Element elements[] =
     {
         VertexFormat::Element(VertexFormat::POSITION, 3),
-        VertexFormat::Element(VertexFormat::COLOR, 3)
+        VertexFormat::Element(VertexFormat::COLOR, 4)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
     if (mesh == NULL)
@@ -87,6 +87,7 @@ void TriangleSample::render(float elapsedTime)
     // Clear the color and depth buffers
     clear(CLEAR_COLOR_DEPTH, Vector4::zero(), 1.0f, 0);
     
+
     // Bind the view projection matrix to the model's parameter. This will transform the vertices when the model is drawn.
     _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
     _model->draw();

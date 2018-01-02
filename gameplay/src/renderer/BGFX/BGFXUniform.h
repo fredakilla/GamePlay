@@ -22,6 +22,8 @@ public:
     void setValue(Uniform* uniform, const Vector4* values, unsigned int count = 1) override;
     void setValue(Uniform* uniform, const Vector4& value) override;
     void setValue(Uniform* uniform, const Texture::Sampler* sampler) override;
+    void setValue(Uniform* uniform, const Matrix* values, unsigned int count = 1) override;
+    void setValue(Uniform* uniform, const Matrix& value) override;
 
     bgfx::UniformHandle getHandle() { return _handle; }
 

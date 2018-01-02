@@ -22,13 +22,14 @@ TestSample game;
 
 static Mesh* createStaticMesh()
 {
-    Vector2 p1(-1, 1);
-    Vector2 p2( 1, 1);
-    Vector2 p3( 1,-1);
+    float u = 0.25f;
 
-    Vector2 p4( 1,-1);
-    Vector2 p5(-1,-1);
-    Vector2 p6(-1, 1);
+    Vector2 p1(-u, u);
+    Vector2 p2( u, u);
+    Vector2 p3( u,-u);
+    Vector2 p4( u,-u);
+    Vector2 p5(-u,-u);
+    Vector2 p6(-u, u);
 
     float vertices[] =
     {
@@ -156,10 +157,12 @@ static Mesh* createDynamicMesh()
 
 static Mesh* createDynamicIndexedMesh()
 {
-    Vector2 p1(-1, 1);
-    Vector2 p2( 1, 1);
-    Vector2 p3( 1,-1);
-    Vector2 p5(-1,-1);
+    float u = 0.25f;
+
+    Vector2 p1(-u, u);
+    Vector2 p2( u, u);
+    Vector2 p3( u,-u);
+    Vector2 p5(-u,-u);
 
     /*float vertices[] =
     {
@@ -227,10 +230,10 @@ void TestSample::initialize()
     Matrix::createOrthographic(width, height, -1.0f, 1.0f, &_worldViewProjectionMatrix);
 
     // Create the triangle mesh.
-    Mesh* mesh = createStaticMesh();
+    //Mesh* mesh = createStaticMesh();
     //Mesh* mesh = createStaticIndexedMesh();
     //Mesh * mesh = createDynamicMesh();
-    //Mesh * mesh = createDynamicIndexedMesh();
+    Mesh * mesh = createDynamicIndexedMesh();
 
     _mesh = mesh;
 
@@ -345,6 +348,7 @@ void TestSample::initialize()
     _scene->addNode(n);
 
 
+    //material->setParameterAutoBinding("u_worldViewProjectionMatrix", "WORLD_VIEW_PROJECTION_MATRIX");
 }
 
 void TestSample::finalize()
@@ -392,11 +396,14 @@ void TestSample::update(float elapsedTime)
 #endif
 
 // for dynamic index mesh
-#if 0
-    Vector2 p1(-1 + dx, 1 + dy);
-    Vector2 p2( 1 - dx, 1 + dy);
-    Vector2 p3( 1 + dx,-1 - dy);
-    Vector2 p5(-1 - dx,-1 - dy);
+#if 1
+
+    float u = 0.25f;
+
+    Vector2 p1(-u + dx, u + dy);
+    Vector2 p2( u - dx, u + dy);
+    Vector2 p3( u + dx,-u - dy);
+    Vector2 p5(-u + dx,-u - dy);
 
     float vertices[] =
     {
@@ -515,12 +522,14 @@ void TestSample::render(float elapsedTime)
 
 #endif
 
+    _meshBatch->draw();
+
 #endif
 
 
 
 
-    _meshBatch->draw();
+
 }
 
 void TestSample::keyEvent(Keyboard::KeyEvent evt, int key)

@@ -54,6 +54,23 @@ void BGFXUniform::setValue(Uniform* uniform, const Vector4& value)
     bgfx::setUniform(bgfxUniform->_handle, &value.x);
 }
 
+
+void BGFXUniform::setValue(Uniform* uniform, const Matrix* values, unsigned int count)
+{
+    BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
+    GP_ASSERT(bgfxUniform && bgfx::isValid(bgfxUniform->_handle));
+    bgfx::setUniform(bgfxUniform->_handle, &values[0].m, count);
+}
+
+void BGFXUniform::setValue(Uniform* uniform, const Matrix& value)
+{
+    BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
+    GP_ASSERT(bgfxUniform && bgfx::isValid(bgfxUniform->_handle));
+    bgfx::setUniform(bgfxUniform->_handle, &value.m);
+}
+
+
+
 void BGFXUniform::setValue(Uniform* uniform, const Texture::Sampler* sampler)
 {
     GP_ASSERT(uniform);
@@ -78,5 +95,7 @@ void BGFXUniform::setValue(Uniform* uniform, const Texture::Sampler* sampler)
 
     GL_ASSERT( glUniform1i(uniform->_location, uniform->_index) );*/
 }
+
+
 
 } // end namespace gameplay
