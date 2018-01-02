@@ -2,6 +2,7 @@
 #include "MeshBatch.h"
 #include "Material.h"
 #include "Model.h"
+#include "MeshPart.h"
 
 namespace gameplay
 {
@@ -14,6 +15,13 @@ MeshBatch::MeshBatch(const VertexFormat& vertexFormat, Mesh::PrimitiveType primi
     _model->getMesh()->setPrimitiveType(primitiveType);
     _model->getMesh()->release();
     _model->setMaterial(material);
+
+    if(indexed)
+    {
+        _model->getMesh()->addPart(primitiveType, Mesh::INDEX16, _indexCount, true);
+        _model->setMaterial(material, 0);
+    }
+
 
     resize(initialCapacity);
 }
@@ -247,6 +255,8 @@ bool MeshBatch::isStarted() const
 void MeshBatch::finish()
 {
     _model->getMesh()->setVertexData(reinterpret_cast<const float*>(_vertices), 0, _vertexCount);
+    if(_indexed)
+        _model->getMesh()->getPart(0)->setIndexData(reinterpret_cast<const float*>(_indices), 0, _indexCount);
 
     _started = false;
 }
@@ -265,7 +275,11 @@ void MeshBatch::draw()
     if (_started && _vertexCount != _model->getMesh()->getVertexCount())
         _model->getMesh()->setVertexData(reinterpret_cast<const float*>(_vertices), 0, _vertexCount);
 
-    if (!_indexed)
+    //if (_indexed)
+    //if (_started && _indexCount != _model->getMesh()->getPart(0)->getIndexCount())
+    //    _model->getMesh()->getPart(0)->setIndexData(reinterpret_cast<const unsigned short*>(_indices), 0, _indexCount);
+
+    //if (!_indexed)
     {
         _model->draw();
         return;

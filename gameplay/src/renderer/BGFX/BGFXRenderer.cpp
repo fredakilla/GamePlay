@@ -42,14 +42,21 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
 
 
     float at[3]  = { 0.0f, 0.0f,   0.0f };
-    float eye[3] = { 0.0f, 0.0f, -5.0f };
+    float eye[3] = { 0.0f, 0.0f, -1000.0f };
 
     float view[16];
     bx::mtxLookAt(view, eye, at);
 
-    float proj[16];
-    bx::mtxProj(proj, 60.0f, float(1280)/float(720), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
-    bgfx::setViewTransform(0, view, proj);
+    /*float proj[16];
+    bx::mtxProj(proj, 60.0f, float(1280)/float(720), 0.1f, 10000.0f, bgfx::getCaps()->homogeneousDepth);
+    bgfx::setViewTransform(0, view, proj);*/
+
+    float ortho[16];
+    bx::mtxOrtho(ortho, 0.0f, 1280.0f, 720.0f, 0.0f, 0.0f, 1000.0f, 0.0, bgfx::getCaps()->homogeneousDepth);
+    bgfx::setViewTransform(0, NULL, ortho);
+
+
+
 
     // Set view 0 default viewport.
     bgfx::setViewRect(0, 0, 0, uint16_t(1280), uint16_t(720) );

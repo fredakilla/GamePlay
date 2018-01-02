@@ -118,6 +118,11 @@ void BGFXVertexBuffer::set(const void* vertexData, unsigned int vertexCount, uns
         GL_ASSERT( glBufferSubData(GL_ARRAY_BUFFER, vertexStart * _vertexFormat->getVertexSize(), vertexCount * _vertexFormat->getVertexSize(), vertexData) );
     }*/
 
+    if(vertexCount == 0)
+    {
+        GP_WARN("BGFXVertexBuffer::set() - vertexCount is null.");
+        return;
+    }
 
     uint32_t size = _vertexDecl.getSize(vertexCount);
     const bgfx::Memory* mem = bgfx::copy(vertexData, size);
@@ -129,7 +134,7 @@ void BGFXVertexBuffer::set(const void* vertexData, unsigned int vertexCount, uns
 
         if(!bgfx::isValid(_dvbh))
         {
-            uint16_t flags = BGFX_BUFFER_NONE;
+            uint16_t flags = BGFX_BUFFER_ALLOW_RESIZE;
             _dvbh = bgfx::createDynamicVertexBuffer(vertexCount, _vertexDecl, flags);
         }
 

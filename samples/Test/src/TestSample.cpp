@@ -212,6 +212,7 @@ static Mesh* createDynamicIndexedMesh()
 //-------------------------------------------------------------------------------------------
 
 Mesh * _mesh;
+MeshBatch * _meshBatch;
 
 TestSample::TestSample()
     : _model(NULL), _spinDirection(-1.0f)
@@ -273,6 +274,47 @@ void TestSample::initialize()
     AnimationClip* animClip = sampleAnim->getClip();
     animClip->setRepeatCount(AnimationClip::REPEAT_INDEFINITE);
     animClip->play();
+
+
+
+    // MeshBatch
+
+    VertexFormat::Element elements[] =
+    {
+        VertexFormat::Element(VertexFormat::POSITION, 3),
+        VertexFormat::Element(VertexFormat::COLOR, 4),
+        VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
+    };
+    _meshBatch = MeshBatch::create(VertexFormat(elements, 3), Mesh::PrimitiveType::TRIANGLES, material, true);
+
+
+
+
+    /*Vector2 p1(-1, 1);
+    Vector2 p2( 1, 1);
+    Vector2 p3( 1,-1);
+
+    Vector2 p4( 1,-1);
+    Vector2 p5(-1,-1);
+    Vector2 p6(-1, 1);
+
+    float vertices[] =
+    {
+        p1.x, p1.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+        p2.x, p2.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,1,
+        p3.x, p3.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+
+        p4.x, p4.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+        p5.x, p5.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,0,
+        p6.x, p6.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+    };
+    unsigned int vertexCount = 6;
+
+
+    _meshBatch->start();
+    _meshBatch->add(vertices, vertexCount);
+    _meshBatch->finish();*/
+
 }
 
 void TestSample::finalize()
@@ -320,7 +362,7 @@ void TestSample::update(float elapsedTime)
 #endif
 
 // for dynamic index mesh
-#if 1
+#if 0
     Vector2 p1(-1 + dx, 1 + dy);
     Vector2 p2( 1 - dx, 1 + dy);
     Vector2 p3( 1 + dx,-1 - dy);
@@ -360,7 +402,80 @@ void TestSample::render(float elapsedTime)
 
     // Bind the view projection matrix to the model's parameter. This will transform the vertices when the model is drawn.
     _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
-    _model->draw();
+    //_model->draw();
+
+
+
+
+
+
+#if 1
+ // non index meshbatch
+#if 0
+
+    Vector2 p1(-1, 1);
+    Vector2 p2( 1, 1);
+    Vector2 p3( 1,-1);
+
+    Vector2 p4( 1,-1);
+    Vector2 p5(-1,-1);
+    Vector2 p6(-1, 1);
+
+    float vertices[] =
+    {
+        p1.x, p1.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+        p2.x, p2.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,1,
+        p3.x, p3.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+
+        p4.x, p4.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+        p5.x, p5.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,0,
+        p6.x, p6.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+    };
+    unsigned int vertexCount = 6;
+
+
+    _meshBatch->start();
+    _meshBatch->add(vertices, vertexCount);
+    _meshBatch->finish();
+
+#else
+
+
+    Vector2 p1(-1, 1);
+    Vector2 p2( 1, 1);
+    Vector2 p3( 1,-1);
+    Vector2 p5(-1,-1);
+
+    float vertices[] =
+    {
+        p1.x, p1.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,1,
+        p2.x, p2.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,1,
+        p3.x, p3.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        1,0,
+        p5.x, p5.y, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f,        0,0,
+    };
+    unsigned int vertexCount = 4;
+
+    unsigned short indices[] =
+    {
+        0,3,2,
+        0,2,1
+    };
+
+    unsigned int indexCount = 6;
+
+
+    _meshBatch->start();
+    _meshBatch->add(vertices, vertexCount, indices, indexCount);
+    _meshBatch->finish();
+
+#endif
+
+#endif
+
+
+
+
+    _meshBatch->draw();
 }
 
 void TestSample::keyEvent(Keyboard::KeyEvent evt, int key)

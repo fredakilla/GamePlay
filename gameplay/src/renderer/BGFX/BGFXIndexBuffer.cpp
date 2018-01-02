@@ -42,6 +42,12 @@ BGFXIndexBuffer::~BGFXIndexBuffer()
 
 void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsigned int indexStart)
 {
+    if(indexCount == 0)
+    {
+        GP_WARN("BGFXIndexBuffer::set() - indexCount is null.");
+        return;
+    }
+
     uint32_t size = _indexSize * indexCount;
     const bgfx::Memory* mem = bgfx::copy(indexData, size);
     uint16_t flags = BGFX_BUFFER_NONE;
@@ -53,6 +59,7 @@ void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsign
     {
         if(!bgfx::isValid(_dibh))
         {
+            flags |= BGFX_BUFFER_ALLOW_RESIZE;
             _dibh = bgfx::createDynamicIndexBuffer(indexCount, flags);
         }
 
@@ -72,6 +79,8 @@ void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsign
             GP_WARN("BGFXIndexBuffer::set() - static index buffer already set.");
         }
     }
+
+
 
 
 

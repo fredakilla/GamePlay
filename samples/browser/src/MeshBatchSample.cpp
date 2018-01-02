@@ -18,7 +18,7 @@ static MeshBatch* createMeshBatch(Mesh::PrimitiveType primitiveType)
     VertexFormat::Element elements[] =
     {
         VertexFormat::Element(VertexFormat::POSITION, 3),
-        VertexFormat::Element(VertexFormat::COLOR, 3)
+        VertexFormat::Element(VertexFormat::COLOR, 4)
     };
     unsigned int elementCount = sizeof(elements) / sizeof(VertexFormat::Element);
     MeshBatch* meshBatch = MeshBatch::create(VertexFormat(elements, elementCount), primitiveType, material, false);
@@ -26,9 +26,9 @@ static MeshBatch* createMeshBatch(Mesh::PrimitiveType primitiveType)
     return meshBatch;
 }
 
-static Vector3 randomColor()
+static Vector4 randomColor()
 {
-    return Vector3(MATH_RANDOM_0_1(), MATH_RANDOM_0_1(), MATH_RANDOM_0_1());
+    return Vector4(MATH_RANDOM_0_1(), MATH_RANDOM_0_1(), MATH_RANDOM_0_1(), MATH_RANDOM_0_1());
 }
 
 MeshBatchSample::MeshBatchSample()

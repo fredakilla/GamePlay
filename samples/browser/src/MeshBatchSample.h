@@ -34,11 +34,11 @@ private:
     struct Vertex
     {
         Vector3 position;
-        Vector3 color;
+        Vector4 color;
 
         Vertex() { }
 
-        Vertex(const Vector3& position, const Vector3& color) : position(position), color(color) { }
+        Vertex(const Vector3& position, const Vector4& color) : position(position), color(color) { }
     };
 
     Font* _font;
