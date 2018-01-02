@@ -51,10 +51,12 @@ protected:
 
 private:
 
+    bool drawScene(Node* node);
 
     Model* _model;
     float _spinDirection;
     Matrix _worldViewProjectionMatrix;
+    Scene* _scene;
 
 };
 

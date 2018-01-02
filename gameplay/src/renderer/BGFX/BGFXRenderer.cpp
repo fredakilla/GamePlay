@@ -42,18 +42,18 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
 
 
     float at[3]  = { 0.0f, 0.0f,   0.0f };
-    float eye[3] = { 0.0f, 0.0f, -1000.0f };
+    float eye[3] = { 0.0f, 0.0f, -5.0f };
 
     float view[16];
     bx::mtxLookAt(view, eye, at);
 
-    /*float proj[16];
+    float proj[16];
     bx::mtxProj(proj, 60.0f, float(1280)/float(720), 0.1f, 10000.0f, bgfx::getCaps()->homogeneousDepth);
-    bgfx::setViewTransform(0, view, proj);*/
+    bgfx::setViewTransform(0, view, proj);
 
-    float ortho[16];
+    /*float ortho[16];
     bx::mtxOrtho(ortho, 0.0f, 1280.0f, 720.0f, 0.0f, 0.0f, 1000.0f, 0.0, bgfx::getCaps()->homogeneousDepth);
-    bgfx::setViewTransform(0, NULL, ortho);
+    bgfx::setViewTransform(0, NULL, ortho);*/
 
 
 
@@ -83,8 +83,8 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
                    | BGFX_STATE_MSAA
 
 
-                   | BGFX_STATE_PT_TRISTRIP
-                   | BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA)
+                   //| BGFX_STATE_PT_TRISTRIP
+                   //| BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA)
                    );
 
 

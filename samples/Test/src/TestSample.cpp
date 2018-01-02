@@ -227,10 +227,10 @@ void TestSample::initialize()
     Matrix::createOrthographic(width, height, -1.0f, 1.0f, &_worldViewProjectionMatrix);
 
     // Create the triangle mesh.
-    //Mesh* mesh = createStaticMesh();
+    Mesh* mesh = createStaticMesh();
     //Mesh* mesh = createStaticIndexedMesh();
     //Mesh * mesh = createDynamicMesh();
-    Mesh * mesh = createDynamicIndexedMesh();
+    //Mesh * mesh = createDynamicIndexedMesh();
 
     _mesh = mesh;
 
@@ -315,6 +315,36 @@ void TestSample::initialize()
     _meshBatch->add(vertices, vertexCount);
     _meshBatch->finish();*/
 
+
+
+
+
+
+
+    // Create a new empty scene.
+    _scene = Scene::create();
+
+    // Create the camera.
+    Camera* camera = Camera::createPerspective(45.0f, getAspectRatio(), 1.0f, 100.0f);
+    Node* cameraNode = _scene->addNode("camera");
+
+    // Attach the camera to a node. This determines the position of the camera.
+    cameraNode->setCamera(camera);
+
+    // Make this the active camera of the scene.
+    _scene->setActiveCamera(camera);
+    SAFE_RELEASE(camera);
+
+    // Move the camera to look at the origin.
+    //cameraNode->translate(0, 1, 5);
+    //cameraNode->rotateX(MATH_DEG_TO_RAD(-11.25f));
+
+
+    Node * n = Node::create("mymodel");
+    n->setDrawable(_model);
+    _scene->addNode(n);
+
+
 }
 
 void TestSample::finalize()
@@ -395,10 +425,25 @@ void TestSample::update(float elapsedTime)
 
 }
 
+
+
+bool TestSample::drawScene(Node* node)
+{
+    Drawable* drawable = node->getDrawable();
+    if (drawable)
+        drawable->draw();
+    return true;
+}
+
 void TestSample::render(float elapsedTime)
 {
     // Clear the color and depth buffers
     clear(CLEAR_COLOR_DEPTH, Vector4::zero(), 1.0f, 0);
+
+
+    // Visit all the nodes in the scene, drawing the models.
+    _scene->visit(this, &TestSample::drawScene);
+
 
     // Bind the view projection matrix to the model's parameter. This will transform the vertices when the model is drawn.
     _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
@@ -409,7 +454,7 @@ void TestSample::render(float elapsedTime)
 
 
 
-#if 1
+#if 0
  // non index meshbatch
 #if 0
 
