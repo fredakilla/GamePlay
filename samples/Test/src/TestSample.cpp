@@ -343,9 +343,6 @@ void TestSample::update(float elapsedTime)
         0,2,1
     };
 
-
-
-
     _mesh->getPart(0)->setIndexData(indices, 0, 6);
 
 #endif
