@@ -65,7 +65,7 @@ void SpriteSample::initialize()
 
 
     // Custom Effect in sprite
-    Effect* waterEffect = Effect::createFromFile("res/shaders/sprite.vert", "res/common/sprites/water2d.frag");
+    Effect* waterEffect = Effect::createFromFile("res/bgfxshaders/Sprite_VS.bin", "res/bgfxshaders/Sprite_FS.bin");
     Sprite* waterSprite = Sprite::create("res/common/sprites/water2d.png", getWidth() * 5, getHeight() / 3, waterEffect);
     SAFE_RELEASE(waterEffect);
     waterSprite->setAnchor(Vector2::zero());

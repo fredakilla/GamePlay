@@ -83,7 +83,8 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
                    | BGFX_STATE_MSAA
 
 
-                   //| BGFX_STATE_PT_TRISTRIP
+                   | BGFX_STATE_PT_TRISTRIP
+                   | BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA)
                    );
 
 
