@@ -730,6 +730,14 @@ Platform* Platform::create(Game* game)
     bgfx::reset(__width, __height, BGFX_RESET_NONE);
     //bgfx::setDebug(BGFX_DEBUG_STATS);
 
+    bgfx::setViewClear(0
+                    , BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH
+                    , 0x111111ff
+                    , 1.0f
+                    , 0
+        );
+
+
     BGFXRenderer::initInstance();
     Renderer::getInstance().queryCaps();
 
@@ -1362,7 +1370,7 @@ int Platform::enterMessagePump()
             if (_game->getState() == Game::UNINITIALIZED)
                 break;
 
-            bgfx::touch(0);
+            //bgfx::touch(0);
             _game->frame();
         }
 

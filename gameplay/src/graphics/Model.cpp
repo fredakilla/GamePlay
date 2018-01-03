@@ -140,28 +140,31 @@ void Model::setMaterial(Material* material, int partIndex)
         SAFE_RELEASE(oldMaterial);
     }
 
-    //@@if (material)
-    //@@{
-    //@@    // Hookup vertex attribute bindings for all passes in the new material.
-    //@@    for (unsigned int i = 0, tCount = material->getTechniqueCount(); i < tCount; ++i)
-    //@@    {
-    //@@        Technique* t = material->getTechniqueByIndex(i);
-    //@@        GP_ASSERT(t);
-    //@@        for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
-    //@@        {
-    //@@            Pass* p = t->getPassByIndex(j);
-    //@@            GP_ASSERT(p);
-    //@@            VertexAttributeBinding* b = VertexAttributeBinding::create(_mesh, p->getEffect());
-    //@@            p->setVertexAttributeBinding(b);
-    //@@            SAFE_RELEASE(b);
-    //@@        }
-    //@@    }
-    //@@    // Apply node binding for the new material.
-    //@@    if (_node)
-    //@@    {
-    //@@        setMaterialNodeBinding(material);
-    //@@    }
-    //@@}
+    if (material)
+    {
+        //@@    // Hookup vertex attribute bindings for all passes in the new material.
+        //@@    for (unsigned int i = 0, tCount = material->getTechniqueCount(); i < tCount; ++i)
+        //@@    {
+        //@@        Technique* t = material->getTechniqueByIndex(i);
+        //@@        GP_ASSERT(t);
+        //@@        for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
+        //@@        {
+        //@@            Pass* p = t->getPassByIndex(j);
+        //@@            GP_ASSERT(p);
+        //@@            VertexAttributeBinding* b = VertexAttributeBinding::create(_mesh, p->getEffect());
+        //@@            p->setVertexAttributeBinding(b);
+        //@@            SAFE_RELEASE(b);
+        //@@        }
+        //@@    }
+
+        // Apply node binding for the new material.
+        if (_node)
+        {
+            setMaterialNodeBinding(material);
+        }
+    }
+
+
 
 
     material->getStateBlock()->setPrimitiveType(getMesh()->getPrimitiveType());
