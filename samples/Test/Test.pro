@@ -48,7 +48,7 @@ unix:!macx:PRE_TARGETDEPS += $${DESTDIR}/libgameplay.a
 CONFIG(debug,debug|release) {
     message(debug)
     linux:PRE_TARGETDEPS += $${DESTDIR}/libgameplay.a
-    linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libshadercDebug.a
+    #linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libshadercDebug.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbgfxDebug.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbxDebug.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbimgDebug.a
@@ -108,15 +108,15 @@ linux: QMAKE_POST_LINK += $$quote(cp -rf $$PWD/../../gameplay/res/logo_powered_w
 
 CONFIG(debug,debug|release) {
     message(debug)
-    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercDebug
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercDebug
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbgfxDebug
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbimgDebug
 
 
-    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercDebug
-    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lfcppDebug
-    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglsl-optimizerDebug
-    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglslangDebug
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercDebug
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lfcppDebug
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglsl-optimizerDebug
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglslangDebug
 
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbxDebug
 

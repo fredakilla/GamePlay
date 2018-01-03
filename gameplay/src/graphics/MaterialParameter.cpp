@@ -493,7 +493,7 @@ void MaterialParameter::bind(Effect* effect)
         break;
     case MaterialParameter::VECTOR2:
         //@@effect->setValue(_uniform, reinterpret_cast<Vector2*>(_value.floatPtrValue), _count);
-        _uniform->setValue(_uniform, reinterpret_cast<Vector2*>(_value.floatPtrValue), _count);
+        bgfxUniform->setValue(_uniform, reinterpret_cast<Vector4*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::VECTOR3:
         //@@effect->setValue(_uniform, reinterpret_cast<Vector3*>(_value.floatPtrValue), _count);
