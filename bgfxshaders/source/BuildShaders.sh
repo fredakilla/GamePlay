@@ -25,3 +25,9 @@ echo "compiling Textured"
 echo "compiling Font"
 ./shadercDebug -f  Font.vs -o  $OUTPWD/Font_VS.bin --varyingdef Font.io --type v --platform $PLATFORM
 ./shadercDebug -f  Font.fs -o  $OUTPWD/Font_FS.bin --varyingdef Font.io --type f --platform $PLATFORM
+
+
+
+echo "compiling Textured"
+./shadercDebug -f  Textured.vs -o  $OUTPWD/Textured_TEXTURE_REPEAT_VS.bin --varyingdef Textured.io --type v --platform $PLATFORM --define TEXTURE_REPEAT
+./shadercDebug -f  Textured.fs -o  $OUTPWD/Textured_DISCARD_ALPHA_FS.bin --varyingdef Textured.io --type f --platform $PLATFORM --define TEXTURE_DISCARD_ALPHA
