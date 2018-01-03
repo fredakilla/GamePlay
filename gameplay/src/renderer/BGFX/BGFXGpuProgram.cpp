@@ -1,7 +1,7 @@
 #include "BGFXGpuProgram.h"
 #include "FileSystem.h"
 
-#include <shaderc.h>
+//#include <shaderc.h>
 
 namespace gameplay {
 
@@ -110,6 +110,9 @@ void BGFXGpuProgram::createShader(const char * binFile, bgfx::ShaderHandle& shad
     GP_ASSERT(bgfx::isValid(shader));
 }
 
+
+#if 0
+// using shaderc as lib
 void BGFXGpuProgram::compilShaderFromSource(ShaderType type, const char *src, const char *define, bgfx::ShaderHandle& shader, const char * varyingDef)
 {
     std::string fullname(src);
@@ -190,6 +193,8 @@ void BGFXGpuProgram::compilShaderFromSource(ShaderType type, const char *src, co
     shader = bgfx::createShader(mem);
     GP_ASSERT(bgfx::isValid(shader));
 }
+#endif
+
 
 void BGFXGpuProgram::bind()
 {

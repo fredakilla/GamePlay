@@ -31,7 +31,8 @@ private:
     void getUniformsFromShader(bgfx::ShaderHandle shaderHandle);
     void createShader(const char * binFile, bgfx::ShaderHandle& shader);
 
-    void compilShaderFromSource(ShaderType type, const char *src, const char *define, bgfx::ShaderHandle &shader, const char *varyingDef);
+    // using shaderc as lib
+    //void compilShaderFromSource(ShaderType type, const char *src, const char *define, bgfx::ShaderHandle &shader, const char *varyingDef);
 
     bgfx::ShaderHandle _vsh;
     bgfx::ShaderHandle _fsh;

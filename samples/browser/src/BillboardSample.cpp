@@ -284,13 +284,13 @@ void BillboardSample::loadGround()
 	node->setDrawable(_ground);
     _scene->addNode(node);
 	node->rotateX(MATH_DEG_TO_RAD(90));
-    Effect* effect = Effect::createFromFile("res/bgfxshaders/Textured_VS.bin", "res/bgfxshaders/Textured_FS.bin", "TEXTURE_REPEAT");
-	Material* material = Material::create(effect); 
+    Effect* effect = Effect::createFromFile("res/bgfxshaders/Textured_TEXTURE_REPEAT_VS.bin", "res/bgfxshaders/Textured_FS.bin", "TEXTURE_REPEAT");
+    Material* material = Material::create(effect);
 	material->getStateBlock()->setDepthTest(true);
 	material->getStateBlock()->setBlend(false);
 	Texture::Sampler* sampler = material->getParameter("u_diffuseTexture")->setValue("res/png/dirt.png", true);
 	sampler->setFilterMode(Texture::LINEAR_MIPMAP_LINEAR, Texture::LINEAR);
-	material->getParameter("u_textureRepeat")->setValue(Vector2(GROUND_REPEAT_TEXTURE, GROUND_REPEAT_TEXTURE));
+    material->getParameter("u_textureRepeat")->setValue(Vector2(GROUND_REPEAT_TEXTURE, GROUND_REPEAT_TEXTURE));
 	material->setParameterAutoBinding("u_worldViewProjectionMatrix", RenderState::WORLD_VIEW_PROJECTION_MATRIX);
 	_ground->setMaterial(material);
 	SAFE_RELEASE(material);
@@ -303,11 +303,11 @@ void BillboardSample::loadBillboards()
 	Mesh* mesh = Mesh::createQuad(-(BILLBOARD_WIDTH / 2.0f), -(BILLBOARD_HEIGHT / 2.0f), BILLBOARD_WIDTH, BILLBOARD_HEIGHT);
 	mesh->setBoundingSphere(BoundingSphere(Vector3::zero(), BILLBOARD_HEIGHT));
 
-    Effect* effect = Effect::createFromFile("res/bgfxshaders/Textured_VS.bin", "res/bgfxshaders/Textured_FS.bin", "TEXTURE_DISCARD_ALPHA");
+    Effect* effect = Effect::createFromFile("res/bgfxshaders/Textured_VS.bin", "res/bgfxshaders/Textured_DISCARD_ALPHA_FS.bin", "TEXTURE_DISCARD_ALPHA");
 
 	// Create the model and node and bind the material
-    for ( unsigned int i = 0; i < BILLBOARD_COUNT; i++ ) 
-    {   
+    for ( unsigned int i = 0; i < BILLBOARD_COUNT; i++ )
+    {
 		Node* node = Node::create();
 		Model* model = Model::create(mesh);
 		node->setDrawable(model);

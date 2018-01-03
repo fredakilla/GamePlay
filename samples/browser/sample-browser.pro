@@ -50,7 +50,7 @@ INCLUDEPATH += $${BGFX}/tools/shaderc                      # include shaderc as 
 CONFIG(debug,debug|release) {
     message(debug)
     linux:PRE_TARGETDEPS += $${DESTDIR}/libgameplay.a
-    linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libshadercDebug.a
+    #linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libshadercDebug.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbgfxDebug.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbxDebug.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbimgDebug.a
@@ -61,7 +61,7 @@ CONFIG(debug,debug|release) {
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbgfxRelease.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbxRelease.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbimgRelease.a
-    linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libshadercRelease.a
+    #linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libshadercRelease.a
 }
 
 #-------------------------------------------------
@@ -159,25 +159,36 @@ linux: QMAKE_POST_LINK += $$quote(cp -rf $$PWD/../../gameplay/res/logo_powered_w
 
 CONFIG(debug,debug|release) {
     message(debug)
-    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercDebug
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercDebug
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbgfxDebug
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbimgDebug
 
-
-    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercDebug
-    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lfcppDebug
-    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglsl-optimizerDebug
-    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglslangDebug
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercDebug
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lfcppDebug
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglsl-optimizerDebug
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglslangDebug
 
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbxDebug
 
 } else {
     message(release)
 
+
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercRelease
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbgfxRelease
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbimgRelease
+
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercRelease
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lfcppRelease
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglsl-optimizerRelease
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglslangRelease
+
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbxRelease
-    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercRelease
+
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbgfxRelease
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbimgRelease
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbxRelease
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercRelease
 }
 
 

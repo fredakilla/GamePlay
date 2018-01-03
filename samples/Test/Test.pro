@@ -59,7 +59,7 @@ CONFIG(debug,debug|release) {
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbgfxRelease.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbxRelease.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbimgRelease.a
-    linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libshadercRelease.a
+    #linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libshadercRelease.a
 }
 
 
@@ -126,7 +126,7 @@ CONFIG(debug,debug|release) {
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbgfxRelease
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbimgRelease
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbxRelease
-    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercRelease
+    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercRelease
 }
 
 

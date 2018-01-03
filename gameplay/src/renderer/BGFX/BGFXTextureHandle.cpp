@@ -68,7 +68,7 @@ BGFXTextureHandle::BGFXTextureHandle(Texture* texture, const unsigned char *data
                                      , texture->isMipmapped()
                                      , 1
                                      , bgfxTextureFormat //texture->_format
-            , BGFX_TEXTURE_U_CLAMP | BGFX_TEXTURE_V_CLAMP
+            , 0//BGFX_TEXTURE_U_CLAMP | BGFX_TEXTURE_V_CLAMP
             , mem
             );
 }
