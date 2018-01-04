@@ -90,26 +90,7 @@ static std::string __resourcePath("./");
 static std::string __assetPath("");
 static std::map<std::string, std::string> __aliases;
 
-/**
- * Gets the fully resolved path.
- * If the path is relative then it will be prefixed with the resource path.
- * Aliases will be converted to a relative path.
- * 
- * @param path The path to resolve.
- * @param fullPath The full resolved path. (out param)
- */
-static void getFullPath(const char* path, std::string& fullPath)
-{
-    if (FileSystem::isAbsolutePath(path))
-    {
-        fullPath.assign(path);
-    }
-    else
-    {
-        fullPath.assign(__resourcePath);
-        fullPath += FileSystem::resolvePath(path);
-    }
-}
+
 
 /**
  * 
@@ -246,6 +227,19 @@ const char* FileSystem::resolvePath(const char* path)
     }
 
     return path;
+}
+
+void FileSystem::getFullPath(const char* path, std::string& fullPath)
+{
+    if (FileSystem::isAbsolutePath(path))
+    {
+        fullPath.assign(path);
+    }
+    else
+    {
+        fullPath.assign(__resourcePath);
+        fullPath += FileSystem::resolvePath(path);
+    }
 }
 
 bool FileSystem::listFiles(const char* dirPath, std::vector<std::string>& files)

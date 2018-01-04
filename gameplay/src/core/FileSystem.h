@@ -43,6 +43,17 @@ public:
      */
     ~FileSystem();
 
+
+    /**
+     * Gets the fully resolved path.
+     * If the path is relative then it will be prefixed with the resource path.
+     * Aliases will be converted to a relative path.
+     *
+     * @param path The path to resolve.
+     * @param fullPath The full resolved path. (out param)
+     */
+    static void getFullPath(const char* path, std::string& fullPath);
+
     /**
      * Sets the path to the root of the resources folder for the game.
      *
