@@ -18,59 +18,20 @@ static void readStream(png_structp png, png_bytep data, png_size_t length)
     }
 }
 
-
-
-
-
-
 Image* Image::create(const char* path)
 {
     GP_ASSERT(path);
 
-
-
     int width, height, channels;
 
-
-    // from file version
-
-    //std::string fullPath;
-    //FileSystem::getFullPath(path, fullPath);
+    // resolve file path (path may be an alias)
     const char * filePath = FileSystem::resolvePath(path);
 
-    /*unsigned char * ht_map = SOIL_load_image(
-                filePath,
-                &width, &height, &channels,
-                SOIL_LOAD_AUTO
-                );*/
-
+    // load image vertically flipped
     stbi_set_flip_vertically_on_load(1);
-    unsigned char* ht_map = stbi_load(filePath, &width, &height, &channels, 0);
 
-
-
-    /*
-
-      / from memory version
-
-    std::unique_ptr<Stream> stream(FileSystem::open(path));
-    if (stream.get() == NULL || !stream->canRead())
-    {
-        GP_ERROR("Failed to open image file '%s'.", path);
-        return NULL;
-    }
-
-    unsigned int dataSize = stream->length();
-    unsigned char * data = new unsigned char[dataSize];
-    stream->read(data, 1, dataSize);
-
-    unsigned char * ht_map = SOIL_load_image_from_memory(data, dataSize, &width, &height, &channels, SOIL_LOAD_AUTO);
-
-    delete[] data;
-
-    */
-
-
+    // load image using stb_image
+    unsigned char* imageData = stbi_load(filePath, &width, &height, &channels, 0);
 
     Format format;
     switch (channels)
@@ -89,8 +50,6 @@ Image* Image::create(const char* path)
     }
 
 
-
-
     // flip image vertically
     /*unsigned char flipPixels[width * height * channels];
     for (int i = 0; i < width; ++i) {
@@ -101,21 +60,13 @@ Image* Image::create(const char* path)
         }
     }*/
 
+    // create image from data
+    Image* img = Image::create(width, height, format, imageData);
 
-
-
-
-
-
-
-    Image* img = Image::create(width, height, format, ht_map);
-
-    stbi_image_free(ht_map);
+    // free stb_image data
+    stbi_image_free(imageData);
 
     return img;
-
-
-
 
 
 #if 0
