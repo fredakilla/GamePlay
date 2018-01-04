@@ -41,11 +41,13 @@ public:
      */
     enum PrimitiveType
     {
-        TRIANGLES = GL_TRIANGLES,
-        TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
-        LINES = GL_LINES,
-        LINE_STRIP = GL_LINE_STRIP,
-        POINTS = GL_POINTS
+        TRIANGLES,          //@@= GL_TRIANGLES,
+        TRIANGLE_STRIP,     //@@= GL_TRIANGLE_STRIP,
+        LINES,              //@@= GL_LINES,
+        LINE_STRIP,         //@@= GL_LINE_STRIP,
+        POINTS,             //@@= GL_POINTS
+
+        PrimitiveTypeUnknow,
     };
 
     /**

@@ -502,7 +502,7 @@ RenderState::StateBlock::StateBlock()
       _cullFaceSide(CULL_FACE_SIDE_BACK), _frontFace(FRONT_FACE_CCW), _stencilTestEnabled(false), _stencilWrite(RS_ALL_ONES),
 	  _stencilFunction(RenderState::STENCIL_ALWAYS), _stencilFunctionRef(0), _stencilFunctionMask(RS_ALL_ONES),
 	  _stencilOpSfail(RenderState::STENCIL_OP_KEEP), _stencilOpDpfail(RenderState::STENCIL_OP_KEEP), _stencilOpDppass(RenderState::STENCIL_OP_KEEP),
-      _bits(0L)
+      _primitiveType(Mesh::PrimitiveType::PrimitiveTypeUnknow), _bits(0L)
 {
 }
 
@@ -604,8 +604,8 @@ void RenderState::StateBlock::bindNoRestore()
 
     switch(_primitiveType)
     {
-    default:
     case Mesh::PrimitiveType::TRIANGLES:
+        // default primitive type for bgfx,
         break;
     case Mesh::PrimitiveType::TRIANGLE_STRIP:
         bgfxBits |= BGFX_STATE_PT_TRISTRIP;
@@ -619,6 +619,8 @@ void RenderState::StateBlock::bindNoRestore()
     case Mesh::PrimitiveType::POINTS:
         bgfxBits |= BGFX_STATE_PT_POINTS;
         break;
+    default:
+        GP_ERROR("Primitive type undefined");
     }
 
 
