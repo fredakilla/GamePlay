@@ -122,6 +122,7 @@ INCLUDEPATH += $$PWD/../../external-deps/include
 linux: DEFINES += __linux__
 linux: QMAKE_CXXFLAGS += -std=c++11 -lstdc++ -pthread -w
 linux: INCLUDEPATH += /usr/include/fbxsdk
+linux: INCLUDEPATH += /usr/include/freetype2
 linux: INCLUDEPATH += /usr/include
 linux: LIBS += -L$$PWD/../../external-deps/lib/linux/x86_64/ -lgameplay-deps -lfreetype
 linux: LIBS += -L/usr/lib/gcc4/x64/release -lfbxsdk
