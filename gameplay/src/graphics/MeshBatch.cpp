@@ -286,7 +286,7 @@ void MeshBatch::draw()
     }
 
 
-
+/*
 
     GP_ASSERT(_material);
     if (_indexed)
@@ -313,6 +313,8 @@ void MeshBatch::draw()
 
         pass->unbind();
     }
+
+    */
 }
     
 

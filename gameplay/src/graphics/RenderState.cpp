@@ -401,7 +401,7 @@ const Vector3& RenderState::autoBindingGetAmbientColor() const
     return scene ? scene->getAmbientColor() : Vector3::zero();
 }
 
-void RenderState::bind(Pass* pass)
+void RenderState::bind(Pass* pass, Mesh::PrimitiveType primitiveType)
 {
     GP_ASSERT(pass);
 
@@ -438,7 +438,7 @@ void RenderState::bind(Pass* pass)
     }
 
     // Apply bgfx render state
-    StateBlock::apply();
+    StateBlock::apply(primitiveType);
 }
 
 RenderState* RenderState::getTopmost(RenderState* below)
@@ -505,7 +505,7 @@ RenderState::StateBlock::StateBlock()
       _cullFaceSide(CULL_FACE_SIDE_BACK), _frontFace(FRONT_FACE_CCW), _stencilTestEnabled(false), _stencilWrite(RS_ALL_ONES),
 	  _stencilFunction(RenderState::STENCIL_ALWAYS), _stencilFunctionRef(0), _stencilFunctionMask(RS_ALL_ONES),
 	  _stencilOpSfail(RenderState::STENCIL_OP_KEEP), _stencilOpDpfail(RenderState::STENCIL_OP_KEEP), _stencilOpDppass(RenderState::STENCIL_OP_KEEP),
-      _primitiveType(Mesh::PrimitiveType::PrimitiveTypeUnknow), _bits(0L)
+      _bits(0L)
 {
 }
 
@@ -660,7 +660,7 @@ void RenderState::StateBlock::bindNoRestore()
     _defaultState->_bits |= _bits;
 }
 
-void RenderState::StateBlock::apply()
+void RenderState::StateBlock::apply(Mesh::PrimitiveType primitiveType)
 {
     GP_ASSERT(_defaultState);
 
@@ -697,7 +697,7 @@ void RenderState::StateBlock::apply()
     }
 
 
-    /*switch(_defaultState->_primitiveType)
+    switch(primitiveType)
     {
     case Mesh::PrimitiveType::TRIANGLES:
         // default primitive type for bgfx,
@@ -716,7 +716,7 @@ void RenderState::StateBlock::apply()
         break;
     default:
         GP_ERROR("Primitive type undefined");
-    }*/
+    }
 
 
     bgfxBits |= BGFX_STATE_MSAA;
@@ -1147,11 +1147,6 @@ void RenderState::StateBlock::setState(const char* name, const char* value)
     {
         GP_ERROR("Unsupported render state string '%s'.", name);
     }
-}
-
-void RenderState::StateBlock::setPrimitiveType(Mesh::PrimitiveType primitiveType)
-{
-    _primitiveType = primitiveType;
 }
 
 void RenderState::StateBlock::setBlend(bool enabled)

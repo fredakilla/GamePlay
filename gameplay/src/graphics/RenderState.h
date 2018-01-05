@@ -288,10 +288,7 @@ public:
          * This method handles both setting and restoring of render states to ensure that
          * only the state explicitly defined by this StateBlock is applied to the renderer.
          */
-        void bind();
-
-
-        void setPrimitiveType(Mesh::PrimitiveType primitiveType);
+        void bind();        
 
         /**
          * Toggles blending.
@@ -440,7 +437,7 @@ public:
 
         void bindNoRestore();
 
-        static void apply();
+        static void apply(Mesh::PrimitiveType primitiveType);
         static void restore(long stateOverrideBits);
 
         static void enableDepthWrite();
@@ -464,8 +461,7 @@ public:
 		unsigned int _stencilFunctionMask;
 		StencilOperation _stencilOpSfail;
 		StencilOperation _stencilOpDpfail;
-		StencilOperation _stencilOpDppass;
-        Mesh::PrimitiveType _primitiveType;
+        StencilOperation _stencilOpDppass;
         long _bits;
 
         static StateBlock* _defaultState;
@@ -611,7 +607,7 @@ protected:
      * Binds the render state for this RenderState and any of its parents, top-down, 
      * for the given pass.
      */
-    void bind(Pass* pass);
+    void bind(Pass* pass, Mesh::PrimitiveType primitiveType);
 
     /**
      * Returns the topmost RenderState in the hierarchy below the given RenderState.

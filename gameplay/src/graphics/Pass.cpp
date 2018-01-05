@@ -65,7 +65,7 @@ Effect* Pass::getEffect() const
 //@@    return _vaBinding;
 //@@}
 
-void Pass::bind()
+void Pass::bind(Mesh::PrimitiveType primitiveType)
 {
     GP_ASSERT(_effect);
 
@@ -73,7 +73,7 @@ void Pass::bind()
     _effect->bind();
 
     // Bind our render state
-    RenderState::bind(this);
+    RenderState::bind(this, primitiveType);
 
     // If we have a vertex attribute binding, bind it
     //@@if (_vaBinding)

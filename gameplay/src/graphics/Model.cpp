@@ -163,11 +163,6 @@ void Model::setMaterial(Material* material, int partIndex)
             setMaterialNodeBinding(material);
         }
     }
-
-
-
-
-    material->getStateBlock()->setPrimitiveType(getMesh()->getPrimitiveType());
 }
 
 Material* Model::setMaterial(const char* vshPath, const char* fshPath, const char* defines, int partIndex)
@@ -349,7 +344,7 @@ unsigned int Model::draw(bool wireframe)
             {
                 Pass* pass = technique->getPassByIndex(i);
                 GP_ASSERT(pass);
-                pass->bind();
+                pass->bind(_mesh->getPrimitiveType());
 
                 //@@GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0) );
                 _mesh->_vertexBuffer->bind();
@@ -384,7 +379,7 @@ unsigned int Model::draw(bool wireframe)
                 {
                     Pass* pass = technique->getPassByIndex(j);
                     GP_ASSERT(pass);
-                    pass->bind();
+                    pass->bind(part->getPrimitiveType());
 
                     //@@GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->_indexBuffer->getHandle()) );
 

@@ -58,7 +58,7 @@ public:
      * This method should be called before executing any drawing code that should
      * use this pass. When drawing code is complete, the unbind() method should be called.
      */
-    void bind();
+    void bind(Mesh::PrimitiveType primitiveType);
 
     /**
      * Unbinds the render state for this pass.
