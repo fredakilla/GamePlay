@@ -21,6 +21,8 @@ static Game* __gameInstance = NULL;
 double Game::_pausedTimeLast = 0.0;
 double Game::_pausedTimeTotal = 0.0;
 
+int Game::__curentViewId = 0;
+
 /**
 * @script{ignore}
 */
@@ -476,14 +478,14 @@ void Game::updateOnce()
         _scriptTarget->fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(GameScriptTarget, update), elapsedTime);
 }
 
-void Game::setViewport(const Rectangle& viewport)
+void Game::setViewport(const Rectangle& viewport, int viewId)
 {
     _viewport = viewport;
     //@@glViewport((GLuint)viewport.x, (GLuint)viewport.y, (GLuint)viewport.width, (GLuint)viewport.height);
-    bgfx::setViewRect(0, viewport.x, viewport.y, viewport.width, viewport.height);
+    bgfx::setViewRect(viewId, viewport.x, viewport.y, viewport.width, viewport.height);
 }
 
-void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, int clearStencil)
+void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, int clearStencil, int viewId)
 {
     //@@GLbitfield bits = 0;
     //@@if (flags & CLEAR_COLOR)
@@ -586,14 +588,19 @@ void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, 
                     , 0
     );*/
 
+    Game::__curentViewId = viewId;
 
-    bgfx::touch(0);
+    bgfx::setViewClear(viewId
+                        , BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH
+                        , 0x303030ff
+                        , 1.0f
+                        , 0);
 
 }
 
-void Game::clear(ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil)
+void Game::clear(ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil, int viewId)
 {
-    clear(flags, Vector4(red, green, blue, alpha), clearDepth, clearStencil);
+    clear(flags, Vector4(red, green, blue, alpha), clearDepth, clearStencil, viewId);
 }
 
 AudioListener* Game::getAudioListener()

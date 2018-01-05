@@ -84,8 +84,11 @@ void TriangleSample::update(float elapsedTime)
 
 void TriangleSample::render(float elapsedTime)
 {
+    Game * game = Game::getInstance();
+    game->setViewport(Rectangle(game->getWidth(), game->getHeight()), 0);
+
     // Clear the color and depth buffers
-    clear(CLEAR_COLOR_DEPTH, Vector4::zero(), 1.0f, 0);
+    clear(CLEAR_COLOR_DEPTH, Vector4::zero(), 1.0f, 0, 0);
     
 
     // Bind the view projection matrix to the model's parameter. This will transform the vertices when the model is drawn.

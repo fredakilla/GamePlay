@@ -102,14 +102,14 @@ float Sample::getAspectRatio() const
     return Game::getInstance()->getAspectRatio();
 }
 
-void Sample::clear(Game::ClearFlags flags, const Vector4& clearColor, float clearDepth, int clearStencil)
+void Sample::clear(Game::ClearFlags flags, const Vector4& clearColor, float clearDepth, int clearStencil, int viewId)
 {
-    Game::getInstance()->clear(flags, clearColor, clearDepth, clearStencil);
+    Game::getInstance()->clear(flags, clearColor, clearDepth, clearStencil, viewId);
 }
 
-void Sample::clear(Game::ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil)
+void Sample::clear(Game::ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil, int viewId)
 {
-    Game::getInstance()->clear(flags, red, green, blue, alpha, clearDepth, clearStencil);
+    Game::getInstance()->clear(flags, red, green, blue, alpha, clearDepth, clearStencil, viewId);
 }
 
 AudioController* Sample::getAudioController() const

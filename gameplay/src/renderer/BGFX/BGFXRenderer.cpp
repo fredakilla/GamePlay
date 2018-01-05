@@ -2,6 +2,7 @@
 
 #include <bx/math.h>
 #include "Transform.h"
+#include "Game.h"
 
 namespace gameplay {
 
@@ -88,7 +89,7 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
                    );*/
 
 
-    bgfx::submit(0, bgfxGpuProgram->getProgram());
+    bgfx::submit(Game::__curentViewId, bgfxGpuProgram->getProgram());
 }
 
 }

@@ -204,7 +204,7 @@ public:
      *
      * viewport The custom viewport to be set on the game.
      */
-    void setViewport(const Rectangle& viewport);
+    void setViewport(const Rectangle& viewport, int viewId = 0);
 
     /**
      * Clears the specified resource buffers to the specified clear values. 
@@ -214,7 +214,7 @@ public:
      * @param clearDepth The depth value to clear to when the flags includes the color buffer.
      * @param clearStencil The stencil value to clear to when the flags includes the color buffer.
      */
-    void clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, int clearStencil);
+    void clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, int clearStencil, int viewId = 0);
 
     /**
      * Clears the specified resource buffers to the specified clear values. 
@@ -227,7 +227,7 @@ public:
      * @param clearDepth The depth value to clear to when the flags includes the color buffer.
      * @param clearStencil The stencil value to clear to when the flags includes the color buffer.
      */
-    void clear(ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil);
+    void clear(ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil, int viewId = 0);
 
     /**
      * Gets the audio controller for managing control of audio
@@ -770,6 +770,10 @@ private:
     // Note: Do not add STL object member variables on the stack; this will cause false memory leaks to be reported.
 
     friend class ScreenDisplayer;
+
+
+public:
+    static int __curentViewId;
 };
 
 }
