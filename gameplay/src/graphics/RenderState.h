@@ -440,6 +440,7 @@ public:
 
         void bindNoRestore();
 
+        static void apply();
         static void restore(long stateOverrideBits);
 
         static void enableDepthWrite();
