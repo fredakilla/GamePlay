@@ -60,7 +60,7 @@ BGFXTextureHandle::BGFXTextureHandle(Texture* texture, const unsigned char *data
 
     GP_ASSERT(bgfxTextureFormat != bgfx::TextureFormat::Unknown);
 
-    const bgfx::Memory* mem = bgfx::copy(data, size);
+
 
 
     _handle = bgfx::createTexture2D( texture->getWidth()
@@ -69,8 +69,26 @@ BGFXTextureHandle::BGFXTextureHandle(Texture* texture, const unsigned char *data
                                      , 1
                                      , bgfxTextureFormat //texture->_format
             , 0//BGFX_TEXTURE_U_CLAMP | BGFX_TEXTURE_V_CLAMP
-            , mem
+            //, mem
             );
+
+    GP_ASSERT(bgfx::isValid(_handle));
+
+    if(data)
+    {
+        const bgfx::Memory* mem = bgfx::copy(data, size);
+
+        bgfx::updateTexture2D(_handle
+                              , 0
+                              , 0
+                              , 0               // X offset in texture.
+                              , 0               // Y offset in texture.
+                              , texture->getWidth()      // Width of texture block.
+                              , texture->getHeight()     // Height of texture block.
+                              , mem             // Texture update data.
+                              , UINT16_MAX
+                              );
+    }
 }
 
 BGFXTextureHandle::~BGFXTextureHandle()
