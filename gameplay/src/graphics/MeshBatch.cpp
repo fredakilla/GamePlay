@@ -7,6 +7,96 @@
 namespace gameplay
 {
 
+
+
+void agetBgfxAttribute(const VertexFormat::Element& element, bgfx::Attrib::Enum& attrib)
+{
+    switch(element.usage)
+    {
+        case VertexFormat::POSITION:        attrib = bgfx::Attrib::Position;    break;
+        case VertexFormat::NORMAL:          attrib = bgfx::Attrib::Normal;      break;
+        case VertexFormat::COLOR:           attrib = bgfx::Attrib::Color0;      break;
+        case VertexFormat::TANGENT:         attrib = bgfx::Attrib::Tangent;     break;
+        case VertexFormat::BINORMAL:        attrib = bgfx::Attrib::Bitangent;   break;
+        case VertexFormat::BLENDWEIGHTS:    attrib = bgfx::Attrib::Weight;      break;
+        case VertexFormat::BLENDINDICES:    attrib = bgfx::Attrib::Indices;     break;
+        case VertexFormat::TEXCOORD0:       attrib = bgfx::Attrib::TexCoord0;   break;
+        case VertexFormat::TEXCOORD1:       attrib = bgfx::Attrib::TexCoord1;   break;
+        case VertexFormat::TEXCOORD2:       attrib = bgfx::Attrib::TexCoord2;   break;
+        case VertexFormat::TEXCOORD3:       attrib = bgfx::Attrib::TexCoord3;   break;
+        case VertexFormat::TEXCOORD4:       attrib = bgfx::Attrib::TexCoord4;   break;
+        case VertexFormat::TEXCOORD5:       attrib = bgfx::Attrib::TexCoord5;   break;
+        case VertexFormat::TEXCOORD6:       attrib = bgfx::Attrib::TexCoord6;   break;
+        case VertexFormat::TEXCOORD7:       attrib = bgfx::Attrib::TexCoord7;   break;
+        default:                            attrib = bgfx::Attrib::Count;
+    }
+}
+
+void agetBgfxAttributeType(const VertexFormat::Element& element, bgfx::AttribType::Enum &type, bool& normalized)
+{
+    switch(element.usage)
+    {
+        case VertexFormat::POSITION:
+        case VertexFormat::NORMAL:
+        case VertexFormat::TANGENT:
+        case VertexFormat::BINORMAL:
+        case VertexFormat::BLENDWEIGHTS:
+        case VertexFormat::BLENDINDICES:
+        case VertexFormat::TEXCOORD0:
+        case VertexFormat::TEXCOORD1:
+        case VertexFormat::TEXCOORD2:
+        case VertexFormat::TEXCOORD3:
+        case VertexFormat::TEXCOORD4:
+        case VertexFormat::TEXCOORD5:
+        case VertexFormat::TEXCOORD6:
+        case VertexFormat::TEXCOORD7:
+            type = bgfx::AttribType::Float;
+            normalized = false;
+        break;
+
+        case VertexFormat::COLOR:
+            type = bgfx::AttribType::Float;
+            normalized = true;
+        break;
+
+        default:
+            type = bgfx::AttribType::Float;
+            normalized = false;
+        break;
+    }
+}
+
+void MeshBatch::createVertexDecl(const VertexFormat &vertexFormat)
+{
+    _vertexDecl.begin();
+
+    for(size_t i=0; i<vertexFormat.getElementCount(); ++i)
+    {
+        const VertexFormat::Element element = vertexFormat.getElement(i);
+
+        bgfx::Attrib::Enum attrib;
+        bgfx::AttribType::Enum type;
+        bool normalized;
+
+        agetBgfxAttribute(element, attrib);
+        agetBgfxAttributeType(element, type, normalized);
+        uint8_t num = element.size;
+
+        _vertexDecl.add(attrib,num,type,normalized,false);
+    }
+
+    _vertexDecl.end();
+}
+
+
+
+
+
+
+
+
+
+
 MeshBatch::MeshBatch(const VertexFormat& vertexFormat, Mesh::PrimitiveType primitiveType, Material* material, bool indexed, unsigned int initialCapacity, unsigned int growSize)
     : _vertexFormat(vertexFormat), _primitiveType(primitiveType), _material(material), _indexed(indexed), _capacity(0), _growSize(growSize),
     _vertexCapacity(0), _indexCapacity(0), _vertexCount(0), _indexCount(0), _vertices(NULL), _verticesPtr(NULL), _indices(NULL), _indicesPtr(NULL), _started(false)
@@ -22,6 +112,8 @@ MeshBatch::MeshBatch(const VertexFormat& vertexFormat, Mesh::PrimitiveType primi
         _model->setMaterial(material, 0);
     }
 
+
+    createVertexDecl(vertexFormat);
 
     resize(initialCapacity);
 }
@@ -269,6 +361,51 @@ void MeshBatch::draw()
     // Not using VBOs, so unbind the element array buffer.
     // ARRAY_BUFFER will be unbound automatically during pass->bind().
     //@@GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0 ) );
+
+
+
+
+    // using transiant buffers
+
+    bgfx::TransientVertexBuffer tvb;
+    bgfx::allocTransientVertexBuffer(&tvb, _vertexCount, _vertexDecl);
+    memcpy(tvb.data, &_vertices[0], _vertexDecl.getSize(_vertexCount));
+    bgfx::setVertexBuffer(0, &tvb);
+
+    if(_indexed)
+    {
+        bgfx::TransientIndexBuffer tib;
+        bgfx::allocTransientIndexBuffer(&tib, _indexCount);
+        memcpy(tib.data, &_indices[0], sizeof(short) *_indexCount );
+        bgfx::setIndexBuffer(&tib);
+    }
+
+    // Bind the material.
+    Technique* technique = _material->getTechnique();
+    GP_ASSERT(technique);
+    unsigned int passCount = technique->getPassCount();
+    for (unsigned int i = 0; i < passCount; ++i)
+    {
+        Pass* pass = technique->getPassByIndex(i);
+        GP_ASSERT(pass);
+        pass->bind(_primitiveType);
+
+        /*if (_indexed)
+        {
+            //GL_ASSERT( glDrawElements(_primitiveType, _indexCount, GL_UNSIGNED_SHORT, (GLvoid*)_indices) );
+        }
+        else
+        {
+            //GL_ASSERT( glDrawArrays(_primitiveType, 0, _vertexCount) );
+        }*/
+
+        pass->unbind();
+    }
+
+
+
+    return;
+
 
 
 
