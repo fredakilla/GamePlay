@@ -282,14 +282,14 @@ void MeshBatch::draw()
     bgfx::TransientVertexBuffer tvb;
     bgfx::allocTransientVertexBuffer(&tvb, _vertexCount, _vertexDecl);
     memcpy(tvb.data, &_vertices[0], _vertexDecl.getSize(_vertexCount));
-    bgfx::setVertexBuffer(0, &tvb);
+    bgfx::setVertexBuffer(0, &tvb, 0, _vertexCount);
 
     if(_indexed)
     {
         bgfx::TransientIndexBuffer tib;
         bgfx::allocTransientIndexBuffer(&tib, _indexCount);
         memcpy(tib.data, &_indices[0], sizeof(unsigned short)*_indexCount);
-        bgfx::setIndexBuffer(&tib);
+        bgfx::setIndexBuffer(&tib, 0, _indexCount);
     }
 
     // Bind the material.
