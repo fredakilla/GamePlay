@@ -46,6 +46,8 @@ TriangleSample::TriangleSample()
     
 }
 
+
+
 void TriangleSample::initialize()
 {
     // Create the font for drawing the framerate.
@@ -67,6 +69,50 @@ void TriangleSample::initialize()
     // This sample doesn't use lighting so the unlit shader is used.
     // This sample uses vertex color so VERTEX_COLOR is defined. Look at the shader source files to see the supported defines.
     _model->setMaterial("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
+
+
+
+
+
+
+
+
+
+    _frameBuffer = FrameBuffer::create("refractBuffer", 128, 128);
+
+    Material* material = Material::create("res/bgfxshaders/PostProcess_VS.bin", "res/bgfxshaders/Textured_FS.bin");
+    //Texture::Sampler * sampler = Texture::Sampler::create("res/png/brick.png");
+    Texture::Sampler * sampler = Texture::Sampler::create(_frameBuffer->getRenderTarget(0)->getTexture());
+    material->getParameter("u_diffuseTexture")->setValue(sampler);
+
+    Mesh* meshQuad = Mesh::createQuad(0,0,0.5,0.5);
+    _quadModel = Model::create(meshQuad);
+    _quadModel->setMaterial(material);
+    SAFE_RELEASE(mesh);
+
+
+
+
+
+    Game * game = Game::getInstance();
+
+    View defaultView;
+    defaultView.id = 0;
+    defaultView.clearColor = 0x111111ff;
+    defaultView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
+    defaultView.depth = 1.0f;
+    defaultView.rectangle = Rectangle(game->getWidth(), game->getHeight());
+    game->addView(defaultView);
+
+
+    View secondView;
+    secondView.id = 1;
+    secondView.clearColor = 0x222255ff;
+    secondView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
+    secondView.depth = 1.0f;
+    secondView.rectangle = Rectangle(0,0,128,128);
+    game->addView(secondView);
+
 }
 
 void TriangleSample::finalize()
@@ -84,16 +130,41 @@ void TriangleSample::update(float elapsedTime)
 
 void TriangleSample::render(float elapsedTime)
 {
-    Game * game = Game::getInstance();
-    game->setViewport(Rectangle(game->getWidth(), game->getHeight()), 0);
+    Rectangle defaultViewport = Game::getInstance()->getViewport();
 
-    // Clear the color and depth buffers
-    clear(CLEAR_COLOR_DEPTH, Vector4::zero(), 1.0f, 0, 0);
-    
 
-    // Bind the view projection matrix to the model's parameter. This will transform the vertices when the model is drawn.
+    Game::getInstance()->bindView(1);
+    //Game::getInstance()->setViewport(Rectangle(128, 128), 1);
+    //clear(CLEAR_COLOR_DEPTH, Vector4::zero(), 1.0f, 0, 1);
+    _frameBuffer->bind();
     _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
     _model->draw();
+
+    Game::getInstance()->bindView(0);
+    //Game::getInstance()->setViewport(defaultViewport, 0);
+    //clear(CLEAR_COLOR_DEPTH, Vector4(1,0,1,1), 1.0f, 0, 0);
+    _quadModel->draw();
+
+
+#if 0
+    // draw on view 1
+
+
+
+    Game::getInstance()->setViewport(Rectangle(128, 128), 1);
+    clear(CLEAR_COLOR_DEPTH, Vector4::zero(), 1.0f, 0, 1);
+    _frameBuffer->bind();
+    _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
+    _model->draw();
+
+
+    // draw on view 0
+
+    Game::getInstance()->setViewport(defaultViewport, 0);
+    clear(CLEAR_COLOR_DEPTH, Vector4(1,0,1,1), 1.0f, 0, 0);
+    _quadModel->draw();
+
+#endif
 
     drawFrameRate(_font, Vector4(0, 0.5f, 1, 1), 5, 1, getFrameRate());
 }

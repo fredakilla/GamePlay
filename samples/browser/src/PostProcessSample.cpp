@@ -18,7 +18,7 @@ PostProcessSample::Compositor* PostProcessSample::Compositor::create(FrameBuffer
 
     Material* material = Material::create(materialPath);
     Texture::Sampler* sampler = Texture::Sampler::create(srcBuffer->getRenderTarget()->getTexture());
-    material->getParameter("u_texture")->setValue(sampler);
+    material->getParameter("u_diffuseTexture")->setValue(sampler);
     SAFE_RELEASE(sampler);
     if (_quadModel == NULL)
     {
@@ -97,9 +97,12 @@ void PostProcessSample::initialize()
 
     // Create one frame buffer for the full screen compositerss.
     _frameBuffer = FrameBuffer::create("PostProcessSample", FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
-    DepthStencilTarget* dst = DepthStencilTarget::create("PostProcessSample", DepthStencilTarget::DEPTH_STENCIL, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
-    _frameBuffer->setDepthStencilTarget(dst);
-    SAFE_RELEASE(dst);
+    //DepthStencilTarget* dst = DepthStencilTarget::create("PostProcessSample", DepthStencilTarget::DEPTH_STENCIL, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
+    //_frameBuffer->setDepthStencilTarget(dst);
+    //SAFE_RELEASE(dst);
+
+    RenderTarget * dst = RenderTarget::create("PostProcessSample", FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
+    _frameBuffer->setRenderTarget(dst, 1);
 
     // Create our compositors that all output to the default framebuffer.
     Compositor* compositor = NULL;
@@ -168,14 +171,21 @@ void PostProcessSample::render(float elapsedTime)
 {
     Rectangle defaultViewport = Game::getInstance()->getViewport();
     
+    int VIEW_0 = 0;
+    int VIEW_1 = 1;
+
     // Draw into the framebuffer
-    Game::getInstance()->setViewport(Rectangle(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT));
+    Game::getInstance()->setViewport(Rectangle(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT), VIEW_1);
+    clear(CLEAR_COLOR_DEPTH, Vector4::zero(), 1.0f, 0, VIEW_1);
     FrameBuffer* previousFrameBuffer = _frameBuffer->bind();
-    clear(CLEAR_COLOR_DEPTH, Vector4::zero(), 1.0f, 0);
     _scene->visit(this, &PostProcessSample::drawScene);
 
     // Bind the current compositor
-    Game::getInstance()->setViewport(defaultViewport);
+
+    Game::getInstance()->setViewport(defaultViewport, VIEW_0);
+    clear(CLEAR_COLOR_DEPTH, Vector4::zero(), 1.0f, 0, VIEW_0);
+
+    //Game::getInstance()->setViewport(defaultViewport, 0);
     Compositor* compositor = _compositors[_compositorIndex];
 
     FrameBuffer* compositorDstFrameBuffer = compositor->getDstFrameBuffer();
@@ -186,24 +196,26 @@ void PostProcessSample::render(float elapsedTime)
     }
     else
     {
-        prevToCompositeFrameBuffer = previousFrameBuffer->bind();
+        //prevToCompositeFrameBuffer = previousFrameBuffer->bind();
     }
 
-    Game::getInstance()->clear(CLEAR_COLOR, Vector4(0, 0, 0, 1), 1.0f, 0);
+    //Game::getInstance()->clear(CLEAR_COLOR, Vector4(0, 0, 0, 1), 1.0f, 0, 0);
     compositor->blit(defaultViewport);
+
+
     drawFrameRate(_font, Vector4(0, 0.5f, 1, 1), 5, 1, getFrameRate());
     drawTechniqueId(compositor->getTechniqueId());
 
-    previousFrameBuffer->bind();
+    //previousFrameBuffer->bind();
 
     // Draw the pass through compositor at index 0 at quarter of the size and bottom right. dont clear the dest just draw last on top
-    float quarterWidth = getWidth() / 4;
+    /*float quarterWidth = getWidth() / 4;
     float quarterHeight = getHeight() / 4;
     Rectangle offsetViewport = Rectangle(getWidth() - quarterWidth, 0, quarterWidth, quarterHeight);
     Game::getInstance()->setViewport(offsetViewport);
     compositor = _compositors[0];
     compositor->blit(offsetViewport);
-    Game::getInstance()->setViewport(defaultViewport);
+    Game::getInstance()->setViewport(defaultViewport, 0);*/
 
 }
 
