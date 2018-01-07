@@ -379,7 +379,7 @@ unsigned int Model::draw(bool wireframe)
                 {
                     Pass* pass = technique->getPassByIndex(j);
                     GP_ASSERT(pass);
-                    pass->bind(part->getPrimitiveType());
+                    pass->bind(_mesh->getPrimitiveType()); // part->getPrimitiveType());
 
                     //@@GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->_indexBuffer->getHandle()) );
 
