@@ -893,5 +893,32 @@ void Game::ShutdownListener::timeEvent(long timeDiff, void* cookie)
 	Game::getInstance()->shutdown();
 }
 
+
+void Game::addView(View view)
+{
+    //bgfx::setViewClear(view.id, 0xaaffffff, view.depth, view.stencil);
+
+    bgfx::setViewClear(view.id
+                        , view.clearFlags
+                        , view.clearColor
+                        , view.depth
+                        , view.stencil);
+
+    bgfx::setViewRect(view.id, view.rectangle.x, view.rectangle.y, view.rectangle.width, view.rectangle.height);
+
+    _views.push_back(view);
+}
+
+void Game::bindView(unsigned short viewIndex)
+{
+    GP_ASSERT((viewIndex >= 0) && (viewIndex < _views.size()));
+    GP_ASSERT(!_views[viewIndex].rectangle.isEmpty());
+
+    View * view = &_views[viewIndex];
+    bgfx::setViewRect(viewIndex, view->rectangle.x, view->rectangle.y, view->rectangle.width, view->rectangle.height);
+
+    __curentViewId = viewIndex;
+}
+
 }
 

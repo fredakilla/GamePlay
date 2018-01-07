@@ -20,6 +20,38 @@ namespace gameplay
 
 class ScriptController;
 
+
+
+struct View
+{
+    uint16_t        id;
+    Rectangle       rectangle;
+    uint32_t        clearColor;
+    uint16_t        clearFlags;
+    float           depth;
+    uint8_t         stencil;
+    const char *    name;
+
+    View() :
+        id(0)
+      , rectangle(Rectangle())
+      , clearColor(0xff0000ff)
+      , clearFlags(BGFX_CLEAR_NONE)
+      , depth(1.0f)
+      , stencil(0)
+      , name(0)
+    {
+    }
+};
+
+
+
+
+
+
+
+
+
 /**
  * Defines the base class your game will extend for game initialization, logic and platform delegates.
  *
@@ -770,6 +802,18 @@ private:
     // Note: Do not add STL object member variables on the stack; this will cause false memory leaks to be reported.
 
     friend class ScreenDisplayer;
+
+
+
+
+public:
+    void addView(View view);
+    void bindView(unsigned short viewIndex);
+
+    std::vector<View> _views;
+    //View * __curentView;
+
+
 
 
 public:
