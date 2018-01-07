@@ -288,7 +288,7 @@ void MeshBatch::draw()
     {
         bgfx::TransientIndexBuffer tib;
         bgfx::allocTransientIndexBuffer(&tib, _indexCount);
-        memcpy(tib.data, &_indices[0], sizeof(short) *_indexCount );
+        memcpy(tib.data, &_indices[0], sizeof(unsigned short)*_indexCount);
         bgfx::setIndexBuffer(&tib);
     }
 
