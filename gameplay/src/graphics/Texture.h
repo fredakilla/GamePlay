@@ -8,7 +8,7 @@ namespace gameplay
 {
 
 class Image;
-class TextureHandle;
+class GpuTexture;
 class Uniform;
 
 /**
@@ -233,7 +233,7 @@ public:
      * @return The new texture.
      * @script{create}
      */
-    static Texture* create(TextureHandle *handle, int width, int height, Format format = UNKNOWN);
+    static Texture* create(GpuTexture *handle, int width, int height, Format format = UNKNOWN);
 
     /**
      * Set texture data to replace current texture image.
@@ -301,7 +301,7 @@ public:
      *
      * @return The texture handle.
      */
-    TextureHandle * getHandle() const;
+    GpuTexture * getHandle() const;
 
 private:
 
@@ -339,7 +339,7 @@ private:
     static size_t getFormatBPP(Format format);
 
     std::string _path;
-    //@@TextureHandle _handle;
+    GpuTexture * _gpuTtexture;
     Format _format;
     Type _type;
     unsigned int _width;
@@ -356,9 +356,6 @@ private:
     GLint _internalFormat;
     GLenum _texelType;
     size_t _bpp;
-
-private:
-    TextureHandle * _textureHandle;
 };
 
 }

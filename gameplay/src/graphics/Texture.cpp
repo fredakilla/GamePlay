@@ -3,7 +3,7 @@
 #include "Texture.h"
 #include "FileSystem.h"
 
-#include "BGFX/BGFXTextureHandle.h"
+#include "BGFX/BGFXTexture.h"
 
 // PVRTC (GL_IMG_texture_compression_pvrtc) : Imagination based gpus
 #ifndef GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG
@@ -53,18 +53,18 @@ static std::vector<Texture*> __textureCache;
 //@@static TextureHandle __currentTextureId = 0;
 static Texture::Type __currentTextureType = Texture::TEXTURE_2D;
 
-Texture::Texture() : _textureHandle(nullptr), _format(UNKNOWN), _type((Texture::Type)0), _width(0), _height(0), _mipmapped(false), _cached(false), _compressed(false),
+Texture::Texture() : _gpuTtexture(nullptr), _format(UNKNOWN), _type((Texture::Type)0), _width(0), _height(0), _mipmapped(false), _cached(false), _compressed(false),
     _wrapS(Texture::REPEAT), _wrapT(Texture::REPEAT), _wrapR(Texture::REPEAT), _minFilter(Texture::NEAREST_MIPMAP_LINEAR), _magFilter(Texture::LINEAR)
 {
 }
 
 Texture::~Texture()
 {
-    if (_textureHandle)
+    if (_gpuTtexture)
     {
         //@@GL_ASSERT( glDeleteTextures(1, &_handle) );
-        delete _textureHandle;
-        _textureHandle = 0;
+        delete _gpuTtexture;
+        _gpuTtexture = 0;
     }
 
     // Remove ourself from the texture cache.
@@ -321,7 +321,7 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
         texture->generateMipmaps();
 
     unsigned int textureSize = width * height * bpp;
-    texture->_textureHandle = new BGFXTextureHandle(texture, data, textureSize, type);
+    texture->_gpuTtexture = new BGFXTexture(texture, data, textureSize, type);
 
 
     // Restore the texture id
@@ -330,7 +330,7 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
     return texture;
 }
 
-Texture* Texture::create(TextureHandle * handle, int width, int height, Format format)
+Texture* Texture::create(GpuTexture * handle, int width, int height, Format format)
 {
     GP_ASSERT( handle );
 
@@ -352,7 +352,7 @@ Texture* Texture::create(TextureHandle * handle, int width, int height, Format f
     //@@    // Restore the texture id
     //@@    GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
     //@@}
-    texture->_textureHandle = handle;
+    texture->_gpuTtexture = handle;
     texture->_format = format;
     texture->_width = width;
     texture->_height = height;
@@ -1193,9 +1193,9 @@ unsigned int Texture::getHeight() const
     return _height;
 }
 
-TextureHandle *Texture::getHandle() const
+GpuTexture *Texture::getHandle() const
 {
-    return _textureHandle;
+    return _gpuTtexture;
 }
 
 void Texture::generateMipmaps()
@@ -1274,7 +1274,7 @@ void Texture::Sampler::bind(Uniform * uniform)
 {
     GP_ASSERT( _texture );
 
-    _texture->_textureHandle->bind(uniform);
+    _texture->_gpuTtexture->bind(uniform);
 
     //@@
 #if 0

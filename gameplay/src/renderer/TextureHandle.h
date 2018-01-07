@@ -9,11 +9,11 @@ namespace gameplay
 class Texture;
 class Uniform;
 
-class TextureHandle
+class GpuTexture
 {
 public:
     //TextureHandle();
-    virtual ~TextureHandle() {}
+    virtual ~GpuTexture() {}
 
     virtual void bind(Uniform * uniform) = 0;
 };

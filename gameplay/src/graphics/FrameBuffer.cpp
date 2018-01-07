@@ -2,7 +2,7 @@
 #include "FrameBuffer.h"
 #include "Game.h"
 #include "Renderer.h"
-#include "BGFX/BGFXTextureHandle.h"
+#include "BGFX/BGFXTexture.h"
 
 #define FRAMEBUFFER_ID_DEFAULT "org.gameplay3d.framebuffer.default"
 
@@ -99,7 +99,7 @@ FrameBuffer* FrameBuffer::create(const char* id, unsigned int width, unsigned in
     FrameBuffer* frameBuffer = new FrameBuffer(id, width, height, handle);
 
     // create bgfx frame buffer binded with render target
-    BGFXTextureHandle * tex = static_cast<BGFXTextureHandle *>(renderTarget->getTexture()->getHandle());
+    BGFXTexture * tex = static_cast<BGFXTexture *>(renderTarget->getTexture()->getHandle());
     bgfx::TextureHandle fbtextures[] =
     {
         tex->getHandle()

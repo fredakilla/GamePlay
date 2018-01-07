@@ -1,4 +1,4 @@
-#include "BGFXTextureHandle.h"
+#include "BGFXTexture.h"
 #include "Texture.h"
 #include "BGFXUniform.h"
 
@@ -50,7 +50,7 @@ enum Format
 };*/
 
 
-BGFXTextureHandle::BGFXTextureHandle(Texture* texture, const unsigned char *data, unsigned int size, Texture::Type type)
+BGFXTexture::BGFXTexture(Texture* texture, const unsigned char *data, unsigned int size, Texture::Type type)
 {
     GP_ASSERT(texture);
 
@@ -110,13 +110,13 @@ BGFXTextureHandle::BGFXTextureHandle(Texture* texture, const unsigned char *data
     }
 }
 
-BGFXTextureHandle::~BGFXTextureHandle()
+BGFXTexture::~BGFXTexture()
 {
     if(bgfx::isValid(_handle))
         bgfx::destroy(_handle);
 }
 
-void BGFXTextureHandle::bind(Uniform * uniform)
+void BGFXTexture::bind(Uniform * uniform)
 {
 
     BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);

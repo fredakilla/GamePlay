@@ -6,11 +6,11 @@
 
 namespace gameplay {
 
-class BGFXTextureHandle : public TextureHandle
+class BGFXTexture : public GpuTexture
 {
 public:
-    BGFXTextureHandle(Texture *texture, const unsigned char* data, unsigned int size, Texture::Type type);
-    ~BGFXTextureHandle();
+    BGFXTexture(Texture *texture, const unsigned char* data, unsigned int size, Texture::Type type);
+    ~BGFXTexture();
 
     void bind(Uniform * uniform) override;
 
