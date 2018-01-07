@@ -183,7 +183,6 @@ private:
 
     Model * _model;
     bgfx::VertexDecl _vertexDecl;
-    void createVertexDecl(const VertexFormat &vertexFormat);
 };
 
 }

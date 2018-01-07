@@ -13,6 +13,8 @@ public:
     //GLuint getHandle() override { return _vbh; }
     void bind() override;
 
+    static void createVertexDecl(const VertexFormat &vertexFormat, bgfx::VertexDecl &vertexDecl);
+
 protected:
 
 
@@ -22,7 +24,7 @@ protected:
 
 private:
 
-    void _createVertexDecl(const VertexFormat &vertexFormat);
+
 
     union
     {

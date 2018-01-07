@@ -9,7 +9,7 @@ BGFXVertexBuffer::BGFXVertexBuffer(const VertexFormat &vertexFormat, unsigned in
     _vertexCount = vertexCount;
     _dynamic = dynamic;
 
-    _createVertexDecl(vertexFormat);
+    createVertexDecl(vertexFormat, _vertexDecl);
 
     _svbh = BGFX_INVALID_HANDLE;
 }
@@ -78,9 +78,9 @@ void getBgfxAttributeType(const VertexFormat::Element& element, bgfx::AttribType
     }
 }
 
-void BGFXVertexBuffer::_createVertexDecl(const VertexFormat &vertexFormat)
+void BGFXVertexBuffer::createVertexDecl(const VertexFormat &vertexFormat, bgfx::VertexDecl& vertexDecl)
 {
-    _vertexDecl.begin();
+    vertexDecl.begin();
 
     for(size_t i=0; i<vertexFormat.getElementCount(); ++i)
     {
@@ -94,10 +94,10 @@ void BGFXVertexBuffer::_createVertexDecl(const VertexFormat &vertexFormat)
         getBgfxAttributeType(element, type, normalized);
         uint8_t num = element.size;
 
-        _vertexDecl.add(attrib,num,type,normalized,false);
+        vertexDecl.add(attrib,num,type,normalized,false);
     }
 
-    _vertexDecl.end();
+    vertexDecl.end();
 }
 
 void BGFXVertexBuffer::set(const void* vertexData, unsigned int vertexCount, unsigned int vertexStart)

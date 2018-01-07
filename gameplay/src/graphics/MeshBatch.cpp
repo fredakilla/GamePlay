@@ -4,98 +4,10 @@
 #include "Model.h"
 #include "MeshPart.h"
 
+#include "BGFX/BGFXVertexBuffer.h"
+
 namespace gameplay
 {
-
-
-
-void agetBgfxAttribute(const VertexFormat::Element& element, bgfx::Attrib::Enum& attrib)
-{
-    switch(element.usage)
-    {
-        case VertexFormat::POSITION:        attrib = bgfx::Attrib::Position;    break;
-        case VertexFormat::NORMAL:          attrib = bgfx::Attrib::Normal;      break;
-        case VertexFormat::COLOR:           attrib = bgfx::Attrib::Color0;      break;
-        case VertexFormat::TANGENT:         attrib = bgfx::Attrib::Tangent;     break;
-        case VertexFormat::BINORMAL:        attrib = bgfx::Attrib::Bitangent;   break;
-        case VertexFormat::BLENDWEIGHTS:    attrib = bgfx::Attrib::Weight;      break;
-        case VertexFormat::BLENDINDICES:    attrib = bgfx::Attrib::Indices;     break;
-        case VertexFormat::TEXCOORD0:       attrib = bgfx::Attrib::TexCoord0;   break;
-        case VertexFormat::TEXCOORD1:       attrib = bgfx::Attrib::TexCoord1;   break;
-        case VertexFormat::TEXCOORD2:       attrib = bgfx::Attrib::TexCoord2;   break;
-        case VertexFormat::TEXCOORD3:       attrib = bgfx::Attrib::TexCoord3;   break;
-        case VertexFormat::TEXCOORD4:       attrib = bgfx::Attrib::TexCoord4;   break;
-        case VertexFormat::TEXCOORD5:       attrib = bgfx::Attrib::TexCoord5;   break;
-        case VertexFormat::TEXCOORD6:       attrib = bgfx::Attrib::TexCoord6;   break;
-        case VertexFormat::TEXCOORD7:       attrib = bgfx::Attrib::TexCoord7;   break;
-        default:                            attrib = bgfx::Attrib::Count;
-    }
-}
-
-void agetBgfxAttributeType(const VertexFormat::Element& element, bgfx::AttribType::Enum &type, bool& normalized)
-{
-    switch(element.usage)
-    {
-        case VertexFormat::POSITION:
-        case VertexFormat::NORMAL:
-        case VertexFormat::TANGENT:
-        case VertexFormat::BINORMAL:
-        case VertexFormat::BLENDWEIGHTS:
-        case VertexFormat::BLENDINDICES:
-        case VertexFormat::TEXCOORD0:
-        case VertexFormat::TEXCOORD1:
-        case VertexFormat::TEXCOORD2:
-        case VertexFormat::TEXCOORD3:
-        case VertexFormat::TEXCOORD4:
-        case VertexFormat::TEXCOORD5:
-        case VertexFormat::TEXCOORD6:
-        case VertexFormat::TEXCOORD7:
-            type = bgfx::AttribType::Float;
-            normalized = false;
-        break;
-
-        case VertexFormat::COLOR:
-            type = bgfx::AttribType::Float;
-            normalized = true;
-        break;
-
-        default:
-            type = bgfx::AttribType::Float;
-            normalized = false;
-        break;
-    }
-}
-
-void MeshBatch::createVertexDecl(const VertexFormat &vertexFormat)
-{
-    _vertexDecl.begin();
-
-    for(size_t i=0; i<vertexFormat.getElementCount(); ++i)
-    {
-        const VertexFormat::Element element = vertexFormat.getElement(i);
-
-        bgfx::Attrib::Enum attrib;
-        bgfx::AttribType::Enum type;
-        bool normalized;
-
-        agetBgfxAttribute(element, attrib);
-        agetBgfxAttributeType(element, type, normalized);
-        uint8_t num = element.size;
-
-        _vertexDecl.add(attrib,num,type,normalized,false);
-    }
-
-    _vertexDecl.end();
-}
-
-
-
-
-
-
-
-
-
 
 MeshBatch::MeshBatch(const VertexFormat& vertexFormat, Mesh::PrimitiveType primitiveType, Material* material, bool indexed, unsigned int initialCapacity, unsigned int growSize)
     : _vertexFormat(vertexFormat), _primitiveType(primitiveType), _material(material), _indexed(indexed), _capacity(0), _growSize(growSize),
@@ -113,7 +25,7 @@ MeshBatch::MeshBatch(const VertexFormat& vertexFormat, Mesh::PrimitiveType primi
     }
 
 
-    createVertexDecl(vertexFormat);
+    BGFXVertexBuffer::createVertexDecl(vertexFormat, _vertexDecl);
 
     resize(initialCapacity);
 }
