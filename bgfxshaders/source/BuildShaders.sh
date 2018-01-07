@@ -17,6 +17,7 @@ echo "compiling Sprite"
 echo "compiling Colored"
 ./shadercDebug -f  Colored.vs -o  $OUTPWD/Colored_VS.bin --varyingdef Colored.io --type v --platform $PLATFORM
 ./shadercDebug -f  Colored.fs -o  $OUTPWD/Colored_FS.bin --varyingdef Colored.io --type f --platform $PLATFORM
+./shadercDebug -f  Colored.fs -o  $OUTPWD/Colored_VERTEX_COLOR_FS.bin --varyingdef Colored.io --type f --platform $PLATFORM --define VERTEX_COLOR
 
 echo "compiling Textured"
 ./shadercDebug -f  Textured.vs -o  $OUTPWD/Textured_VS.bin --varyingdef Textured.io --type v --platform $PLATFORM
@@ -31,3 +32,8 @@ echo "compiling Font"
 echo "compiling Textured"
 ./shadercDebug -f  Textured.vs -o  $OUTPWD/Textured_TEXTURE_REPEAT_VS.bin --varyingdef Textured.io --type v --platform $PLATFORM --define TEXTURE_REPEAT
 ./shadercDebug -f  Textured.fs -o  $OUTPWD/Textured_DISCARD_ALPHA_FS.bin --varyingdef Textured.io --type f --platform $PLATFORM --define TEXTURE_DISCARD_ALPHA
+
+
+echo "compiling PostProcess"
+./shadercDebug -f  PostProcess.vs -o  $OUTPWD/PostProcess_VS.bin --varyingdef PostProcess.io --type v --platform $PLATFORM
+./shadercDebug -f  PostProcess.fs -o  $OUTPWD/PostProcess_FS.bin --varyingdef PostProcess.io --type f --platform $PLATFORM
