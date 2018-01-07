@@ -26,7 +26,7 @@ RenderTarget::~RenderTarget()
 RenderTarget* RenderTarget::create(const char* id, unsigned int width, unsigned int height, Texture::Format format)
 {
     // Create a new texture with the given width.
-    Texture* texture = Texture::create(format, width, height, NULL, false);
+    Texture* texture = Texture::create(format, width, height, NULL, false, Texture::Type::TEXTURE_RT);
     if (texture == NULL)
     {
         GP_ERROR("Failed to create texture for render target.");

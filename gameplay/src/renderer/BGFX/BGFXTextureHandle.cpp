@@ -50,7 +50,7 @@ enum Format
 };*/
 
 
-BGFXTextureHandle::BGFXTextureHandle(Texture* texture, const unsigned char *data, unsigned int size)
+BGFXTextureHandle::BGFXTextureHandle(Texture* texture, const unsigned char *data, unsigned int size, Texture::Type type)
 {
     GP_ASSERT(texture);
 
@@ -62,8 +62,10 @@ BGFXTextureHandle::BGFXTextureHandle(Texture* texture, const unsigned char *data
 
 
 
+    if(type == Texture::Type::TEXTURE_2D)
+    {
 
-    _handle = bgfx::createTexture2D( texture->getWidth()
+        _handle = bgfx::createTexture2D( texture->getWidth()
                                      , texture->getHeight()
                                      , texture->isMipmapped()
                                      , 1
@@ -71,6 +73,23 @@ BGFXTextureHandle::BGFXTextureHandle(Texture* texture, const unsigned char *data
             , 0//BGFX_TEXTURE_U_CLAMP | BGFX_TEXTURE_V_CLAMP
             //, mem
             );
+
+    }
+    else if(type == Texture::Type::TEXTURE_RT)
+    {
+        _handle = bgfx::createTexture2D(
+              texture->getWidth()
+            , texture->getHeight()
+            , false
+            , 1
+            , bgfx::TextureFormat::BGRA8
+            , BGFX_TEXTURE_RT
+            );
+    }
+    else
+    {
+        GP_ERROR("Not defined");
+    }
 
     GP_ASSERT(bgfx::isValid(_handle));
 

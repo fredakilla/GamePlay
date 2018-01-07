@@ -234,7 +234,7 @@ size_t Texture::getFormatBPP(Format format)
 
 Texture* Texture::create(Format format, unsigned int width, unsigned int height, const unsigned char* data, bool generateMipmaps, Texture::Type type)
 {
-    GP_ASSERT( type == Texture::TEXTURE_2D || type == Texture::TEXTURE_CUBE );
+    //@@GP_ASSERT( type == Texture::TEXTURE_2D || type == Texture::TEXTURE_CUBE );
 
     GLenum target = (GLenum)type;
 
@@ -321,7 +321,7 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
         texture->generateMipmaps();
 
     unsigned int textureSize = width * height * bpp;
-    texture->_textureHandle = new BGFXTextureHandle(texture, data, textureSize);
+    texture->_textureHandle = new BGFXTextureHandle(texture, data, textureSize, type);
 
 
     // Restore the texture id
@@ -1241,7 +1241,7 @@ Texture::Sampler::~Sampler()
 Texture::Sampler* Texture::Sampler::create(Texture* texture)
 {
     GP_ASSERT( texture );
-    GP_ASSERT( texture->_type == Texture::TEXTURE_2D || texture->_type == Texture::TEXTURE_CUBE );
+    GP_ASSERT( texture->_type == Texture::TEXTURE_2D || texture->_type == Texture::TEXTURE_CUBE || texture->_type == Texture::TEXTURE_RT);
     texture->addRef();
     return new Sampler(texture);
 }

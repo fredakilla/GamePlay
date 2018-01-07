@@ -227,6 +227,11 @@ private:
     static std::vector<FrameBuffer*> _frameBuffers;
     static FrameBuffer* _defaultFrameBuffer;
     static FrameBuffer* _currentFrameBuffer;
+
+
+
+private:
+    bgfx::FrameBufferHandle _fbo;
 };
 
 }

@@ -2,6 +2,7 @@
 #include "FrameBuffer.h"
 #include "Game.h"
 #include "Renderer.h"
+#include "BGFX/BGFXTextureHandle.h"
 
 #define FRAMEBUFFER_ID_DEFAULT "org.gameplay3d.framebuffer.default"
 
@@ -94,8 +95,17 @@ FrameBuffer* FrameBuffer::create(const char* id, unsigned int width, unsigned in
 
     // Create the frame buffer
     GLuint handle = 0;
-    GL_ASSERT( glGenFramebuffers(1, &handle) );
+    //@@GL_ASSERT( glGenFramebuffers(1, &handle) );
     FrameBuffer* frameBuffer = new FrameBuffer(id, width, height, handle);
+
+    // create bgfx frame buffer binded with render target
+    BGFXTextureHandle * tex = static_cast<BGFXTextureHandle *>(renderTarget->getTexture()->getHandle());
+    bgfx::TextureHandle fbtextures[] =
+    {
+        tex->getHandle()
+    };
+    frameBuffer->_fbo = bgfx::createFrameBuffer(1, fbtextures, true);
+
     
     // Create the render target array for the new frame buffer
     frameBuffer->_renderTargets = new RenderTarget*[_maxRenderTargets];
@@ -157,7 +167,7 @@ unsigned int FrameBuffer::getMaxRenderTargets()
 
 void FrameBuffer::setRenderTarget(RenderTarget* target, unsigned int index)
 {
-    GP_ASSERT(!target || (target->getTexture() && target->getTexture()->getType() == Texture::TEXTURE_2D));
+    GP_ASSERT(!target || (target->getTexture() && target->getTexture()->getType() == Texture::TEXTURE_RT));
 
     // No change
     if (_renderTargets[index] == target)
@@ -195,6 +205,7 @@ void FrameBuffer::setRenderTarget(RenderTarget* target, unsigned int index, GLen
         // This FrameBuffer now references the RenderTarget.
         target->addRef();
 
+#if 0 //@@
         // Now set this target as the color attachment corresponding to index.
         GL_ASSERT( glBindFramebuffer(GL_FRAMEBUFFER, _handle) );
         GLenum attachment;
@@ -223,6 +234,9 @@ void FrameBuffer::setRenderTarget(RenderTarget* target, unsigned int index, GLen
 
         // Restore the FBO binding
         GL_ASSERT( glBindFramebuffer(GL_FRAMEBUFFER, _currentFrameBuffer->_handle) );
+
+
+#endif 0 //@@
     }
 }
 
@@ -294,7 +308,9 @@ bool FrameBuffer::isDefault() const
 
 FrameBuffer* FrameBuffer::bind(GLenum type)
 {
-    GL_ASSERT( glBindFramebuffer(type, _handle) );
+    bgfx::setViewFrameBuffer(Game::__curentViewId, _fbo);
+    //@@GL_ASSERT( glBindFramebuffer(type, _handle) );
+
     FrameBuffer* previousFrameBuffer = _currentFrameBuffer;
     _currentFrameBuffer = this;
     return previousFrameBuffer;
