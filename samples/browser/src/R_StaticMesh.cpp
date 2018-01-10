@@ -186,7 +186,7 @@ void R_StaticMesh::initialize()
     // Create a perspective projection matrix.
     float ratio = getWidth() / (float)getHeight();
     Matrix::createPerspective(45.0f, ratio, 1.0f, 1000.0f, &_worldViewProjectionMatrix);
-    _worldViewProjectionMatrix.translate(Vector3(0,0,-15.0f));
+    _worldViewProjectionMatrix.translate(Vector3(0,0,-280.0f));
 
     // Create a material from the built-in "colored-unlit" vertex and fragment shaders.
     _material = Material::create("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
@@ -251,10 +251,14 @@ void R_StaticMesh::finalize()
     SAFE_RELEASE(_form);
 }
 
+float rotValue = 0.0f;
+
 void R_StaticMesh::update(float elapsedTime)
 {
     // Update the rotation of the triangle. The speed is 180 degrees per second.
-    _worldViewProjectionMatrix.rotate(Vector3(1,2,3), _spinDirection * MATH_PI * elapsedTime * 0.001f);
+    //_worldViewProjectionMatrix.rotate(Vector3(1,2,3), _spinDirection * MATH_PI * elapsedTime * 0.001f);
+
+    rotValue += _spinDirection * MATH_PI * elapsedTime * 0.001f;
 }
 
 void R_StaticMesh::render(float elapsedTime)
@@ -263,11 +267,33 @@ void R_StaticMesh::render(float elapsedTime)
 
     if(_model)
     {
-        _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
-        _model->draw();
+        int maxDim = 40;
+
+        const float step = 3.0f;
+        float pos[3];
+        pos[0] = -step*maxDim / 2.0f;
+        pos[1] = -step*maxDim / 2.0f;
+        pos[2] = -15.0;
+
+        for(int x=0; x<maxDim; x++)
+            for(int y=0; y<maxDim; y++)
+                for(int z=0; z<maxDim; z++)
+                {
+                    Matrix mvp = _worldViewProjectionMatrix;
+
+                    mvp.translate(Vector3(  pos[0] + float(x)*step,
+                                            pos[1] + float(y)*step,
+                                            pos[2] + float(z)*step
+                                        ));
+
+                    mvp.rotate(Vector3(x*0.21f, y*0.37f, z*0.19f), rotValue);
+
+                    _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(mvp);
+                    _model->draw();
+                }
     }
 
-    drawFrameRate(_font, Vector4(0, 0.5f, 1, 1), 5, 1, getFrameRate());
+    drawFrameRate(_font, Vector4(0, 0.5f, 1, 1), 5, getHeight()-20, getFrameRate());
 
     drawModelStats();
 

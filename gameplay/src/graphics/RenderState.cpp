@@ -702,10 +702,10 @@ void RenderState::StateBlock::apply(Mesh::PrimitiveType primitiveType)
         {
         default:
         case CULL_FACE_SIDE_BACK:
-            bgfxBits |= BGFX_STATE_CULL_CCW;
+            bgfxBits |= BGFX_STATE_CULL_CW;
             break;
         case CULL_FACE_SIDE_FRONT:
-            bgfxBits |= BGFX_STATE_CULL_CW;
+            bgfxBits |= BGFX_STATE_CULL_CCW;
             break;
         case CULL_FACE_SIDE_FRONT_AND_BACK:
             bgfxBits |= BGFX_STATE_CULL_CCW | BGFX_STATE_CULL_CW;
