@@ -12,12 +12,21 @@ BGFXVertexBuffer::BGFXVertexBuffer(const VertexFormat &vertexFormat, unsigned in
     createVertexDecl(vertexFormat, _vertexDecl);
 
     _svbh = BGFX_INVALID_HANDLE;
+    _dvbh = BGFX_INVALID_HANDLE;
 }
 
 BGFXVertexBuffer::~BGFXVertexBuffer()
 {
-    if(bgfx::isValid(_svbh))
-        bgfx::destroy(_svbh);
+    if(_dynamic)
+    {
+        if(bgfx::isValid(_dvbh))
+            bgfx::destroy(_dvbh);
+    }
+    else
+    {
+        if(bgfx::isValid(_svbh))
+            bgfx::destroy(_svbh);
+    }
 }
 
 

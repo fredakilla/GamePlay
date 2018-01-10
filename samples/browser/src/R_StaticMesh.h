@@ -25,8 +25,8 @@ protected:
 
 private:
 
-    void setStaticModel();
-    void setStaticIndexedModel();
+    void setGeometry(bool dynamic);
+    void setIndexedGeometry(bool dynamic);
     void drawModelStats();
 
     Form* _form;

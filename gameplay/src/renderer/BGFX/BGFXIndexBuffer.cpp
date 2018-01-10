@@ -10,6 +10,7 @@ BGFXIndexBuffer::BGFXIndexBuffer(const unsigned int indexFormat, unsigned int in
     _dynamic = dynamic;
 
     _sibh = BGFX_INVALID_HANDLE;
+    _dibh = BGFX_INVALID_HANDLE;
 
     //GL_ASSERT( glGenBuffers(1, &_ibh) );
     //GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibh) );
@@ -36,8 +37,16 @@ BGFXIndexBuffer::BGFXIndexBuffer(const unsigned int indexFormat, unsigned int in
 
 BGFXIndexBuffer::~BGFXIndexBuffer()
 {
-    if(bgfx::isValid(_sibh))
-        bgfx::destroy(_sibh);
+    if(_dynamic)
+    {
+        if(bgfx::isValid(_dibh))
+            bgfx::destroy(_dibh);
+    }
+    else
+    {
+        if(bgfx::isValid(_sibh))
+            bgfx::destroy(_sibh);
+    }
 }
 
 void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsigned int indexStart)
@@ -71,7 +80,7 @@ void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsign
         if(!bgfx::isValid(_sibh))
         {
             _sibh = bgfx::createIndexBuffer(mem, flags);
-            GP_ASSERT(bgfx::isValid(_dibh));
+            GP_ASSERT(bgfx::isValid(_sibh));
         }
         else
         {

@@ -12,7 +12,7 @@ struct PosColorVertex
     Vector4 m_color;
 };
 
-static Mesh* createStaticCube()
+static Mesh* createCube(bool dynamic)
 {
     PosColorVertex s_vertices[] =
     {
@@ -69,7 +69,7 @@ static Mesh* createStaticCube()
     };
 
     // Create mesh.
-    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
+    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, dynamic);
     if (mesh == NULL)
     {
         GP_ERROR("Failed to create mesh.");
@@ -84,7 +84,7 @@ static Mesh* createStaticCube()
 }
 
 
-static Mesh* createStaticIndexedCube()
+static Mesh* createIndexedCube(bool dynamic)
 {
     static PosColorVertex s_vertices[] =
     {
@@ -125,7 +125,7 @@ static Mesh* createStaticIndexedCube()
     };
 
     // Create mesh.
-    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
+    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, dynamic);
     if (mesh == NULL)
     {
         GP_ERROR("Failed to create mesh.");
@@ -137,7 +137,7 @@ static Mesh* createStaticIndexedCube()
     mesh->setVertexData(s_vertices, 0, vertexCount);
 
     // Set indices.
-    MeshPart * part = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, false);
+    MeshPart * part = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, dynamic);
     part->setIndexData(s_indices, 0, indexCount);
 
     return mesh;
@@ -146,31 +146,32 @@ static Mesh* createStaticIndexedCube()
 
 R_StaticMesh::R_StaticMesh()
     : _font(NULL), _model(NULL), _spinDirection(-1.0f)
-{
-    
+{    
+    _material = nullptr;
+    _form = nullptr;
 }
 
 
-void R_StaticMesh::setStaticModel()
+void R_StaticMesh::setGeometry(bool dynamic)
 {
     GP_ASSERT(_material);
 
     SAFE_RELEASE(_model);
 
-    Mesh* mesh = createStaticCube();
+    Mesh* mesh = createCube(dynamic);
     _model = Model::create(mesh);
     _model->setMaterial(_material);
 
     SAFE_RELEASE(mesh);
 }
 
-void R_StaticMesh::setStaticIndexedModel()
+void R_StaticMesh::setIndexedGeometry(bool dynamic)
 {
     GP_ASSERT(_material);
 
     SAFE_RELEASE(_model);
 
-    Mesh* mesh = createStaticIndexedCube();
+    Mesh* mesh = createIndexedCube(dynamic);
     _model = Model::create(mesh);
     _model->setMaterial(_material);
 
@@ -194,7 +195,7 @@ void R_StaticMesh::initialize()
     _material->getStateBlock()->setDepthWrite(true);
 
     // Set a static mesh non indexed at init.
-    setStaticModel();
+    setGeometry(false);
 
     // Set default view.
     Game * game = Game::getInstance();
@@ -226,8 +227,20 @@ void R_StaticMesh::initialize()
     radio2->setSelected(false);
     radio2->addListener(this, Control::Listener::CLICK);
 
+    RadioButton * radio3 = RadioButton::create("radio_dynamic");
+    radio3->setText("Dynamic");
+    radio3->setSelected(false);
+    radio3->addListener(this, Control::Listener::CLICK);
+
+    RadioButton * radio4 = RadioButton::create("radio_dynamic_indexed");
+    radio4->setText("Dynamic Indexed");
+    radio4->setSelected(false);
+    radio4->addListener(this, Control::Listener::CLICK);
+
     _form->addControl(radio1);
     _form->addControl(radio2);
+    _form->addControl(radio3);
+    _form->addControl(radio4);
 }
 
 void R_StaticMesh::finalize()
@@ -317,13 +330,18 @@ void R_StaticMesh::controlEvent(Control* control, EventType evt)
 
     if (strcmp(button->getId(), "radio_static") == 0)
     {
-        // set static model
-        setStaticModel();
-
+        setGeometry(false);
     }
     else if (strcmp(button->getId(), "radio_static_indexed") == 0)
     {
-        // set static indexed model
-        setStaticIndexedModel();
+        setIndexedGeometry(false);
+    }
+    else if (strcmp(button->getId(), "radio_dynamic") == 0)
+    {
+        setGeometry(true);
+    }
+    else if (strcmp(button->getId(), "radio_dynamic_indexed") == 0)
+    {
+        setIndexedGeometry(true);
     }
 }

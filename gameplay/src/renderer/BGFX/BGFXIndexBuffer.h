@@ -17,14 +17,8 @@ protected:
 
     virtual void set(const void* vertexData, unsigned int vertexCount, unsigned int vertexStart) override;
 
-
-    union
-    {
-        bgfx::IndexBufferHandle        _sibh;
-        bgfx::DynamicIndexBufferHandle _dibh;
-    };
-
-
+    bgfx::IndexBufferHandle         _sibh;  // static index buffer handle
+    bgfx::DynamicIndexBufferHandle  _dibh;  // dynamic index buffer handle
 };
 
 

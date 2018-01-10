@@ -17,22 +17,13 @@ public:
 
 protected:
 
-
     virtual void set(const void* vertexData, unsigned int vertexCount, unsigned int vertexStart) override;
-
-
 
 private:
 
-
-
-    union
-    {
-        bgfx::VertexBufferHandle        _svbh;
-        bgfx::DynamicVertexBufferHandle _dvbh;
-    };
-
-    bgfx::VertexDecl _vertexDecl;
+    bgfx::VertexBufferHandle            _svbh;          // static vertex buffer handle
+    bgfx::DynamicVertexBufferHandle     _dvbh;          // dynamic vertex buffer handle
+    bgfx::VertexDecl                    _vertexDecl;    // vertex declaration
 };
 
 } // end namespace gameplay
