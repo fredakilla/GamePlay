@@ -2,8 +2,8 @@
 # global var
 #--------------------------------------------------------------------
 
-linux: BGFX = /home/fred/Documents/fredakilla/bgfx
-linux: BX = /home/fred/Documents/fredakilla/bx
+linux: BGFX = /home/fred/Documents/bgfx
+linux: BX = /home/fred/Documents/bx
 
 #--------------------------------------------------------------------
 # output directory
@@ -38,6 +38,7 @@ INCLUDEPATH += src/renderer
 INCLUDEPATH += $${BGFX}/include
 INCLUDEPATH += $${BX}/include
 INCLUDEPATH += $${BGFX}/tools/shaderc   # include shaderc as lib for runtime compile
+
 
 #-------------------------------------------------
 #
@@ -607,7 +608,8 @@ INCLUDEPATH += $$PWD/../gameplay/src
 INCLUDEPATH += $$PWD/../external-deps/include
 DEFINES += GP_USE_GAMEPAD GP_NO_LUA_BINDINGS
 
-linux: SOURCES += src/core/PlatformLinux.cpp
+#linux: SOURCES += src/core/PlatformLinux.cpp
+linux: SOURCES += src/core/PlatformSDL2.cpp
 linux: SOURCES += src/core/gameplay-main-linux.cpp
 linux: QMAKE_CXXFLAGS += -lstdc++ -pthread -w
 linux: DEFINES += __linux__

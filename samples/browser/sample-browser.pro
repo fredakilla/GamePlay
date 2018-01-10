@@ -2,8 +2,8 @@
 # global var
 #--------------------------------------------------------------------
 
-linux: BGFX = /home/fred/Documents/fredakilla/bgfx
-linux: BX = /home/fred/Documents/fredakilla/bx
+linux: BGFX = /home/fred/Documents/bgfx
+linux: BX = /home/fred/Documents/bx
 
 #--------------------------------------------------------------------
 # output directory
@@ -37,7 +37,7 @@ INCLUDEPATH += ../../gameplay/src/renderer
 
 INCLUDEPATH += $${BGFX}/include
 INCLUDEPATH += $${BX}/include
-INCLUDEPATH += $${BGFX}/tools/shaderc                      # include shaderc as lib for runtime compile
+#INCLUDEPATH += $${BGFX}/tools/shaderc                      # include shaderc as lib for runtime compile
 #unix:!macx:INCLUDEPATH += $${BX}/include/compat/freebsd    # fix <alloca.h> include error (linux)
 #win32:INCLUDEPATH += $${BX}/include/compat/msvc            # fix <alloca.h> include error (windows)
 
@@ -50,7 +50,6 @@ INCLUDEPATH += $${BGFX}/tools/shaderc                      # include shaderc as 
 CONFIG(debug,debug|release) {
     message(debug)
     linux:PRE_TARGETDEPS += $${DESTDIR}/libgameplay.a
-    #linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libshadercDebug.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbgfxDebug.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbxDebug.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbimgDebug.a
@@ -61,7 +60,6 @@ CONFIG(debug,debug|release) {
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbgfxRelease.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbxRelease.a
     linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libbimgRelease.a
-    #linux:PRE_TARGETDEPS += $${BGFX}/.build/linux64_gcc/bin/libshadercRelease.a
 }
 
 #-------------------------------------------------
@@ -151,7 +149,7 @@ linux: INCLUDEPATH += /usr/include/libpng12
 linux: INCLUDEPATH += /usr/include/harfbuzz
 linux: LIBS += -L$${DESTDIR} -lgameplay
 linux: LIBS += -L$$PWD/../../external-deps/lib/linux/x86_64/ -lgameplay-deps
-linux: LIBS += -lm -lGL -lrt -ldl -lX11 -lpthread -lgtk-x11-2.0 -lglib-2.0 -lgobject-2.0 -lsndio
+# LINK
 linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/../../gameplay/res/shaders ../res$$escape_expand(\n\t))
 linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/../../gameplay/res/ui ../res$$escape_expand(\n\t))
 linux: QMAKE_POST_LINK += $$quote(cp -rf $$PWD/../../gameplay/res/logo_powered_white.png ../res$$escape_expand(\n\t))
@@ -159,39 +157,17 @@ linux: QMAKE_POST_LINK += $$quote(cp -rf $$PWD/../../gameplay/res/logo_powered_w
 
 CONFIG(debug,debug|release) {
     message(debug)
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercDebug
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbgfxDebug
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbimgDebug
-
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercDebug
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lfcppDebug
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglsl-optimizerDebug
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglslangDebug
-
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbxDebug
 
 } else {
     message(release)
-
-
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercRelease
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbgfxRelease
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbimgRelease
-
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercRelease
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lfcppRelease
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglsl-optimizerRelease
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lglslangRelease
-
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbxRelease
-
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbgfxRelease
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbimgRelease
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbxRelease
-    #LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lshadercRelease
 }
-
-
+linux: LIBS +=   -lm -lGL -lrt -ldl -lX11 -lpthread -lgtk-x11-2.0 -lglib-2.0 -lgobject-2.0 -lsndio -lSDL2
 
 macx: QMAKE_CXXFLAGS += -x c++ -x objective-c++ -stdlib=libc++ -w -arch x86_64
 macx: LIBS += -L$$PWD/../../gameplay/Debug/ -lgameplay

@@ -2,8 +2,8 @@
 # global var
 #--------------------------------------------------------------------
 
-linux: BGFX = /home/fred/Documents/fredakilla/bgfx
-linux: BX = /home/fred/Documents/fredakilla/bx
+linux: BGFX = /home/fred/Documents/bgfx
+linux: BX = /home/fred/Documents/bx
 
 #--------------------------------------------------------------------
 # output directory
