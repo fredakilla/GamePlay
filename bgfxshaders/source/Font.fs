@@ -13,5 +13,5 @@ void main()
 	//gl_FragColor.x = u_diffuseColor.x;*/
 
 	gl_FragColor = v_color0;
-    gl_FragColor.a = texture2D(u_texture, v_texcoord0).a * v_color0.a;
+    gl_FragColor.a = texture2D(u_texture, v_texcoord0).r * v_color0.a;
 }
