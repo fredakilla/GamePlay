@@ -7,7 +7,7 @@
 using namespace gameplay;
 
 
-class R_StaticMesh : public Sample
+class R_StaticMesh : public Sample, Control::Listener
 {
 public:
 
@@ -21,10 +21,18 @@ protected:
     void update(float elapsedTime);
     void render(float elapsedTime);
 
+    void controlEvent(Control* control, EventType evt);
+
 private:
 
+    void setStaticModel();
+    void setStaticIndexedModel();
+    void drawModelStats();
+
+    Form* _form;
     Font* _font;
     Model* _model;
+    Material* _material;
     float _spinDirection;
     Matrix _worldViewProjectionMatrix;
 };

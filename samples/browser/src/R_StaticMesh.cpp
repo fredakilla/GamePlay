@@ -6,80 +6,99 @@
 #endif
 
 
+struct PosColorVertex
+{
+    Vector3 m_pos;
+    Vector4 m_color;
+};
 
 static Mesh* createStaticCube()
 {
-    struct PosColorVertex
+    PosColorVertex s_vertices[] =
     {
-        Vector3 m_pos;
-        Vector4 m_color;
+        {  Vector3(-1.0f, -1.0f, -1.0f),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+        {  Vector3( 1.0f, -1.0f, -1.0f),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+        {  Vector3( 1.0f,  1.0f, -1.0f),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+        {  Vector3( 1.0f,  1.0f, -1.0f),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+        {  Vector3(-1.0f,  1.0f, -1.0f),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+        {  Vector3(-1.0f, -1.0f, -1.0f),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+
+        {  Vector3(-1.0f, -1.0f,  1.0f),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
+        {  Vector3( 1.0f, -1.0f,  1.0f),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
+        {  Vector3( 1.0f,  1.0f,  1.0f),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
+        {  Vector3( 1.0f,  1.0f,  1.0f),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
+        {  Vector3(-1.0f,  1.0f,  1.0f),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
+        {  Vector3(-1.0f, -1.0f,  1.0f),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
+
+        {  Vector3(-1.0f,  1.0f,  1.0f),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+        {  Vector3(-1.0f,  1.0f, -1.0f),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+        {  Vector3(-1.0f, -1.0f, -1.0f),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+        {  Vector3(-1.0f, -1.0f, -1.0f),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+        {  Vector3(-1.0f, -1.0f,  1.0f),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+        {  Vector3(-1.0f,  1.0f,  1.0f),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+
+        {  Vector3( 1.0f,  1.0f,  1.0f),  Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
+        {  Vector3( 1.0f,  1.0f, -1.0f),  Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
+        {  Vector3( 1.0f, -1.0f, -1.0f),  Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
+        {  Vector3( 1.0f, -1.0f, -1.0f),  Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
+        {  Vector3( 1.0f, -1.0f,  1.0f),  Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
+        {  Vector3( 1.0f,  1.0f,  1.0f),  Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
+
+        {  Vector3(-1.0f, -1.0f, -1.0f),  Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
+        {  Vector3( 1.0f, -1.0f, -1.0f),  Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
+        {  Vector3( 1.0f, -1.0f,  1.0f),  Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
+        {  Vector3( 1.0f, -1.0f,  1.0f),  Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
+        {  Vector3(-1.0f, -1.0f,  1.0f),  Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
+        {  Vector3(-1.0f, -1.0f, -1.0f),  Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
+
+        {  Vector3(-1.0f,  1.0f, -1.0f),  Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
+        {  Vector3( 1.0f,  1.0f, -1.0f),  Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
+        {  Vector3( 1.0f,  1.0f,  1.0f),  Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
+        {  Vector3( 1.0f,  1.0f,  1.0f),  Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
+        {  Vector3(-1.0f,  1.0f,  1.0f),  Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
+        {  Vector3(-1.0f,  1.0f, -1.0f),  Vector4(1.0f, 0.0f, 1.0f, 1.0f) }
     };
 
-    float side = 1.0f;
+    unsigned int vertexCount = 36;
 
-    static PosColorVertex s_cubeVertices[] =
+    // Vertex format
+    VertexFormat::Element elements[] =
     {
-        { Vector3(-side,  side,  side),   Vector4(1.0, 0.0, 0.0, 1.0 ) },
-        { Vector3( side,  side,  side),   Vector4(0.0, 1.0, 0.0, 1.0 ) },
-        { Vector3(-side, -side,  side),   Vector4(0.0, 0.0, 1.0, 1.0 ) },
-        { Vector3( side, -side,  side),   Vector4(1.0, 1.0, 0.0, 1.0 ) },
-        { Vector3(-side,  side, -side),   Vector4(1.0, 0.0, 1.0, 1.0 ) },
-        { Vector3( side,  side, -side),   Vector4(0.0, 1.0, 1.0, 1.0 ) },
-        { Vector3(-side, -side, -side),   Vector4(1.0, 1.0, 0.0, 1.0 ) },
-        { Vector3( side, -side, -side),   Vector4(0.0, 1.0, 0.0, 1.0 ) },
+        VertexFormat::Element(VertexFormat::POSITION, 3),
+        VertexFormat::Element(VertexFormat::COLOR, 4)
     };
 
-
-
-    PosColorVertex s_cubeVertices2[] =
+    // Create mesh.
+    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
+    if (mesh == NULL)
     {
-        {  Vector3(-side, -side, -side),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3( side, -side, -side),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3( side,  side, -side),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3( side,  side, -side),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3(-side,  side, -side),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3(-side, -side, -side),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+        GP_ERROR("Failed to create mesh.");
+        return NULL;
+    }
 
-        {  Vector3(-side, -side,  side),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3( side, -side,  side),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3( side,  side,  side),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3( side,  side,  side),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3(-side,  side,  side),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3(-side, -side,  side),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+    // Set vertices.
+    mesh->setPrimitiveType(Mesh::TRIANGLES);
+    mesh->setVertexData(s_vertices, 0, vertexCount);
 
-        {  Vector3(-side,  side,  side), -Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3(-side,  side, -side), -Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3(-side, -side, -side), -Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3(-side, -side, -side), -Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3(-side, -side,  side), -Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3(-side,  side,  side), -Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+    return mesh;
+}
 
-        {  Vector3( side,  side,  side),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3( side,  side, -side),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3( side, -side, -side),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3( side, -side, -side),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3( side, -side,  side),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3( side,  side,  side),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
 
-        {  Vector3(-side, -side, -side),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( side, -side, -side),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( side, -side,  side),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( side, -side,  side),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3(-side, -side,  side),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3(-side, -side, -side),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-
-        {  Vector3(-side,  side, -side),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( side,  side, -side),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( side,  side,  side),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( side,  side,  side),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3(-side,  side,  side),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3(-side,  side, -side),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) }
+static Mesh* createStaticIndexedCube()
+{
+    static PosColorVertex s_vertices[] =
+    {
+        { Vector3(-1.0f,  1.0f,  1.0f),   Vector4(1.0, 0.0, 0.0, 1.0 ) },
+        { Vector3( 1.0f,  1.0f,  1.0f),   Vector4(0.0, 1.0, 0.0, 1.0 ) },
+        { Vector3(-1.0f, -1.0f,  1.0f),   Vector4(0.0, 0.0, 1.0, 1.0 ) },
+        { Vector3( 1.0f, -1.0f,  1.0f),   Vector4(1.0, 1.0, 0.0, 1.0 ) },
+        { Vector3(-1.0f,  1.0f, -1.0f),   Vector4(1.0, 0.0, 1.0, 1.0 ) },
+        { Vector3( 1.0f,  1.0f, -1.0f),   Vector4(0.0, 1.0, 1.0, 1.0 ) },
+        { Vector3(-1.0f, -1.0f, -1.0f),   Vector4(1.0, 1.0, 0.0, 1.0 ) },
+        { Vector3( 1.0f, -1.0f, -1.0f),   Vector4(0.0, 1.0, 0.0, 1.0 ) },
     };
 
-
-
-
-    static const unsigned short s_cubeTriList[] =
+    static const unsigned short s_indices[] =
     {
         0, 1, 2, // 0
         1, 3, 2,
@@ -95,6 +114,9 @@ static Mesh* createStaticCube()
         6, 3, 7,
     };
 
+    unsigned int vertexCount = 8;
+    unsigned int indexCount = 36;
+
     // Vertex format
     VertexFormat::Element elements[] =
     {
@@ -103,7 +125,6 @@ static Mesh* createStaticCube()
     };
 
     // Create mesh.
-    unsigned int vertexCount = 8;
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
     if (mesh == NULL)
     {
@@ -113,16 +134,14 @@ static Mesh* createStaticCube()
 
     // Set vertices.
     mesh->setPrimitiveType(Mesh::TRIANGLES);
-    mesh->setVertexData(s_cubeVertices2, 0, 36);
+    mesh->setVertexData(s_vertices, 0, vertexCount);
 
     // Set indices.
-    /*unsigned int indexCount = 3 * 12;
     MeshPart * part = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, false);
-    part->setIndexData(s_cubeTriList, 0, indexCount);*/
+    part->setIndexData(s_indices, 0, indexCount);
 
     return mesh;
 }
-
 
 
 R_StaticMesh::R_StaticMesh()
@@ -131,30 +150,51 @@ R_StaticMesh::R_StaticMesh()
     
 }
 
+
+void R_StaticMesh::setStaticModel()
+{
+    GP_ASSERT(_material);
+
+    SAFE_RELEASE(_model);
+
+    Mesh* mesh = createStaticCube();
+    _model = Model::create(mesh);
+    _model->setMaterial(_material);
+
+    SAFE_RELEASE(mesh);
+}
+
+void R_StaticMesh::setStaticIndexedModel()
+{
+    GP_ASSERT(_material);
+
+    SAFE_RELEASE(_model);
+
+    Mesh* mesh = createStaticIndexedCube();
+    _model = Model::create(mesh);
+    _model->setMaterial(_material);
+
+    SAFE_RELEASE(mesh);
+}
+
 void R_StaticMesh::initialize()
 {
     // Create the font for drawing the framerate.
     _font = Font::create("res/ui/arial.gpb");
 
-    // Create an orthographic projection matrix.
+    // Create a perspective projection matrix.
     float ratio = getWidth() / (float)getHeight();
-    //Matrix::createOrthographic(width, height, -1.0f, 1.0f, &_worldViewProjectionMatrix);
     Matrix::createPerspective(45.0f, ratio, 1.0f, 1000.0f, &_worldViewProjectionMatrix);
-
     _worldViewProjectionMatrix.translate(Vector3(0,0,-15.0f));
 
-    // Create the triangle mesh.
-    Mesh* mesh = createStaticCube();
-
-    // Create a model for the triangle mesh. A model is an instance of a Mesh that can be drawn with a specified material.
-    _model = Model::create(mesh);
-    SAFE_RELEASE(mesh);
-
     // Create a material from the built-in "colored-unlit" vertex and fragment shaders.
-    Material * material = _model->setMaterial("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
-    material->getStateBlock()->setCullFace(false);
-    material->getStateBlock()->setDepthTest(true);
-    material->getStateBlock()->setDepthWrite(true);
+    _material = Material::create("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
+    _material->getStateBlock()->setCullFace(false);
+    _material->getStateBlock()->setDepthTest(true);
+    _material->getStateBlock()->setDepthWrite(true);
+
+    // Set a static mesh non indexed at init.
+    setStaticModel();
 
     // Set default view.
     Game * game = Game::getInstance();
@@ -165,19 +205,42 @@ void R_StaticMesh::initialize()
     defaultView.depth = 1.0f;
     defaultView.rectangle = Rectangle(game->getWidth(), game->getHeight());
     game->addView(defaultView);
+
+
+    // Create UI
+
+    Theme::Style* style = Theme::getDefault()->getEmptyStyle();
+
+    _form = Form::create("Form", style);
+    _form->setLayout(Layout::LAYOUT_VERTICAL);
+    _form->setWidth(200);
+    _form->setAlignment(Control::Alignment::ALIGN_VCENTER_LEFT);
+
+    RadioButton * radio1 = RadioButton::create("radio_static");
+    radio1->setText("Static");
+    radio1->setSelected(true);
+    radio1->addListener(this, Control::Listener::CLICK);
+
+    RadioButton * radio2 = RadioButton::create("radio_static_indexed");
+    radio2->setText("Static Indexed");
+    radio2->setSelected(false);
+    radio2->addListener(this, Control::Listener::CLICK);
+
+    _form->addControl(radio1);
+    _form->addControl(radio2);
 }
 
 void R_StaticMesh::finalize()
 {
-    // Model and font are reference counted and should be released before closing this sample.
     SAFE_RELEASE(_model);
+    SAFE_RELEASE(_material);
     SAFE_RELEASE(_font);
+    SAFE_RELEASE(_form);
 }
 
 void R_StaticMesh::update(float elapsedTime)
 {
     // Update the rotation of the triangle. The speed is 180 degrees per second.
-    //_worldViewProjectionMatrix.rotateZ( _spinDirection * MATH_PI * elapsedTime * 0.001f);
     _worldViewProjectionMatrix.rotate(Vector3(1,2,3), _spinDirection * MATH_PI * elapsedTime * 0.001f);
 }
 
@@ -185,10 +248,43 @@ void R_StaticMesh::render(float elapsedTime)
 {
     Game::getInstance()->bindView(0);
 
-    _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
-    _model->draw();
+    if(_model)
+    {
+        _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
+        _model->draw();
+    }
 
     drawFrameRate(_font, Vector4(0, 0.5f, 1, 1), 5, 1, getFrameRate());
+
+    drawModelStats();
+
+    _form->draw();
+}
+
+void R_StaticMesh::drawModelStats()
+{
+    int partCount = _model->getMeshPartCount();
+    unsigned vertexCount = _model->getMesh()->getVertexCount();
+    Mesh::PrimitiveType primitiveType = _model->getMesh()->getPrimitiveType();
+    bool indexed = partCount > 0 ? true : false;
+    unsigned indexCount = indexed ? _model->getMesh()->getPart(0)->getIndexCount() : 0;
+    bool dynamic = _model->getMesh()->isDynamic();
+
+    const char * dynamicStr[] = { "Static", "Dynamic" };
+    const char * prmitiveStr[] = { "TRIANGLES", "TRIANGLE_STRIP", "LINES", "LINE_STRIP", "POINTS", "UNKNOWN" };
+
+    char buffer[512];
+    sprintf(buffer, "Mesh [%s] [%s]\n"
+                    "VertexCount = %u\n"
+                    "IndexCount = %u"
+            , dynamicStr[dynamic]
+            , prmitiveStr[primitiveType]
+            , vertexCount, indexCount
+            );
+
+    _font->start();
+    _font->drawText(buffer, 10, 200, Vector4::one(), 18);
+    _font->finish();
 }
 
 void R_StaticMesh::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex)
@@ -212,4 +308,22 @@ void R_StaticMesh::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int 
     case Touch::TOUCH_MOVE:
         break;
     };
+}
+
+
+void R_StaticMesh::controlEvent(Control* control, EventType evt)
+{
+    Button* button = static_cast<Button*>(control);
+
+    if (strcmp(button->getId(), "radio_static") == 0)
+    {
+        // set static model
+        setStaticModel();
+
+    }
+    else if (strcmp(button->getId(), "radio_static_indexed") == 0)
+    {
+        // set static indexed model
+        setStaticIndexedModel();
+    }
 }
