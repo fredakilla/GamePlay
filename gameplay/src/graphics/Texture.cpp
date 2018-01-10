@@ -176,7 +176,7 @@ GLint Texture::getFormatInternal(Format format)
         case Texture::RGBA5551:
             return GL_RGBA;
         case Texture::ALPHA:
-            return GL_ALPHA;
+            return GL_RED;
         case Texture::DEPTH:
 #if !defined(OPENGL_ES) || defined(GL_ES_VERSION_3_0)
             return GL_DEPTH_COMPONENT32F;

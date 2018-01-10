@@ -16,7 +16,7 @@ bgfx::TextureFormat::Enum TEXTURE_BGFX_FORMAT_INFOS[] =
     /*bgfx::TextureFormat::RGBA8,*/ // 3 gameplay::Format::RGBA8888 = RGBA,
     bgfx::TextureFormat::Unknown,   // 4 gameplay::Format::RGBA4444,
     bgfx::TextureFormat::Unknown,   // 5 gameplay::Format::RGBA5551,
-    bgfx::TextureFormat::A8,        // 6 gameplay::Format::ALPHA,
+    bgfx::TextureFormat::R8,        // 6 gameplay::Format::ALPHA,
     bgfx::TextureFormat::D16,       // 7 gameplay::Format::DEPTH,
 
 
