@@ -696,6 +696,23 @@ void RenderState::StateBlock::apply(Mesh::PrimitiveType primitiveType)
         bgfxBits |= BGFX_STATE_BLEND_FUNC(TAB_BLEND[_defaultState->_blendSrc], TAB_BLEND[_defaultState->_blendDst]);
     }
 
+    if(_defaultState->_cullFaceEnabled)
+    {
+        switch(_defaultState->_cullFaceSide)
+        {
+        default:
+        case CULL_FACE_SIDE_BACK:
+            bgfxBits |= BGFX_STATE_CULL_CCW;
+            break;
+        case CULL_FACE_SIDE_FRONT:
+            bgfxBits |= BGFX_STATE_CULL_CW;
+            break;
+        case CULL_FACE_SIDE_FRONT_AND_BACK:
+            bgfxBits |= BGFX_STATE_CULL_CCW | BGFX_STATE_CULL_CW;
+            break;
+        }
+    }
+
 
     switch(primitiveType)
     {

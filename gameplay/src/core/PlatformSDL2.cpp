@@ -695,7 +695,7 @@ Platform* Platform::create(Game* game)
     bgfx::init(bgfx::RendererType::OpenGL);
 
 
-    uint32_t debug = BGFX_DEBUG_STATS;
+    uint32_t debug = BGFX_DEBUG_NONE;
     uint32_t reset = BGFX_RESET_NONE;
     bgfx::reset(__width, __height, reset);
 

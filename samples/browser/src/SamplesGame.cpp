@@ -281,6 +281,7 @@ void SamplesGame::addSample(const char* category, const char* title, void* func,
     if (_categories == NULL)
     {
         _categories = new std::vector<std::string>();
+        _categories->push_back("Renderer");
         _categories->push_back("Graphics");
         _categories->push_back("Physics");
         _categories->push_back("Media");
