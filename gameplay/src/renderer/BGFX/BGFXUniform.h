@@ -19,6 +19,7 @@ public:
     BGFXUniform(const char * name, UniformType type, uint16_t num);
     ~BGFXUniform();
 
+    void setValue(Uniform* uniform, float value) override;
     void setValue(Uniform* uniform, const Vector4* values, unsigned int count = 1) override;
     void setValue(Uniform* uniform, const Vector4& value) override;
     void setValue(Uniform* uniform, const Texture::Sampler* sampler) override;

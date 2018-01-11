@@ -39,6 +39,13 @@ BGFXUniform::~BGFXUniform()
 }
 
 
+void BGFXUniform::setValue(Uniform* uniform, float value)
+{
+    BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
+    GP_ASSERT(bgfxUniform && bgfx::isValid(bgfxUniform->_handle));
+    bgfx::setUniform(bgfxUniform->_handle, &value);
+}
+
 void BGFXUniform::setValue(Uniform* uniform, const Vector4* values, unsigned int count)
 {
     BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);

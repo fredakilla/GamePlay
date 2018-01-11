@@ -89,7 +89,7 @@ public:
      * @param uniform The uniform to set.
      * @param value The float value to set.
      */
-    void setValue(Uniform* uniform, float value);
+    virtual void setValue(Uniform* uniform, float value);
 
     /**
      * Sets a float array uniform value.
