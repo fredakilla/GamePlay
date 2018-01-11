@@ -5,177 +5,170 @@
     ADD_SAMPLE("Renderer", "DrawStress", R_DrawStress, 1);
 #endif
 
-
-struct PosColorVertex
+static Mesh* createColoredCube(float size = 1.0f)
 {
-    Vector3 m_pos;
-    Vector4 m_color;
-};
-
-static Mesh* createCube(bool dynamic)
-{
-    PosColorVertex s_vertices[] =
+    float a = size;
+    float vertices[] =
     {
-        {  Vector3(-1.0f, -1.0f, -1.0f),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3( 1.0f, -1.0f, -1.0f),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3( 1.0f,  1.0f, -1.0f),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3( 1.0f,  1.0f, -1.0f),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3(-1.0f,  1.0f, -1.0f),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-        {  Vector3(-1.0f, -1.0f, -1.0f),  Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-
-        {  Vector3(-1.0f, -1.0f,  1.0f),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( 1.0f, -1.0f,  1.0f),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( 1.0f,  1.0f,  1.0f),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( 1.0f,  1.0f,  1.0f),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3(-1.0f,  1.0f,  1.0f),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3(-1.0f, -1.0f,  1.0f),  Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-
-        {  Vector3(-1.0f,  1.0f,  1.0f),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3(-1.0f,  1.0f, -1.0f),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3(-1.0f, -1.0f, -1.0f),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3(-1.0f, -1.0f, -1.0f),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3(-1.0f, -1.0f,  1.0f),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3(-1.0f,  1.0f,  1.0f),  Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-
-        {  Vector3( 1.0f,  1.0f,  1.0f),  Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( 1.0f,  1.0f, -1.0f),  Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( 1.0f, -1.0f, -1.0f),  Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( 1.0f, -1.0f, -1.0f),  Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( 1.0f, -1.0f,  1.0f),  Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
-        {  Vector3( 1.0f,  1.0f,  1.0f),  Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
-
-        {  Vector3(-1.0f, -1.0f, -1.0f),  Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
-        {  Vector3( 1.0f, -1.0f, -1.0f),  Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
-        {  Vector3( 1.0f, -1.0f,  1.0f),  Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
-        {  Vector3( 1.0f, -1.0f,  1.0f),  Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
-        {  Vector3(-1.0f, -1.0f,  1.0f),  Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
-        {  Vector3(-1.0f, -1.0f, -1.0f),  Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
-
-        {  Vector3(-1.0f,  1.0f, -1.0f),  Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3( 1.0f,  1.0f, -1.0f),  Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3( 1.0f,  1.0f,  1.0f),  Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3( 1.0f,  1.0f,  1.0f),  Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3(-1.0f,  1.0f,  1.0f),  Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
-        {  Vector3(-1.0f,  1.0f, -1.0f),  Vector4(1.0f, 0.0f, 1.0f, 1.0f) }
+        // position         // color
+        -a, -a,  a,         0.0,  0.0,  1.0,  1.0f,
+         a, -a,  a,         0.0,  0.0,  1.0,  1.0f,
+        -a,  a,  a,         0.0,  0.0,  1.0,  1.0f,
+         a,  a,  a,         0.0,  0.0,  1.0,  1.0f,
+        -a,  a,  a,         0.0,  1.0,  0.0,  1.0f,
+         a,  a,  a,         0.0,  1.0,  0.0,  1.0f,
+        -a,  a, -a,         0.0,  1.0,  0.0,  1.0f,
+         a,  a, -a,         0.0,  1.0,  0.0,  1.0f,
+        -a,  a, -a,         0.0,  0.0,  1.0,  1.0f,
+         a,  a, -a,         0.0,  0.0,  1.0,  1.0f,
+        -a, -a, -a,         0.0,  0.0,  1.0,  1.0f,
+         a, -a, -a,         0.0,  0.0,  1.0,  1.0f,
+        -a, -a, -a,         0.0,  1.0,  0.0,  1.0f,
+         a, -a, -a,         0.0,  1.0,  0.0,  1.0f,
+        -a, -a,  a,         0.0,  1.0,  0.0,  1.0f,
+         a, -a,  a,         0.0,  1.0,  0.0,  1.0f,
+         a, -a,  a,         1.0,  0.0,  0.0,  1.0f,
+         a, -a, -a,         1.0,  0.0,  0.0,  1.0f,
+         a,  a,  a,         1.0,  0.0,  0.0,  1.0f,
+         a,  a, -a,         1.0,  0.0,  0.0,  1.0f,
+        -a, -a, -a,         1.0,  0.0,  0.0,  1.0f,
+        -a, -a,  a,         1.0,  0.0,  0.0,  1.0f,
+        -a,  a, -a,         1.0,  0.0,  0.0,  1.0f,
+        -a,  a,  a,         1.0,  0.0,  0.0,  1.0f,
     };
-
-    unsigned int vertexCount = 36;
-
-    // Vertex format
+    short indices[] =
+    {
+        0, 1, 2,
+        2, 1, 3,
+        4, 5, 6,
+        6, 5, 7,
+        8, 9, 10,
+        10, 9, 11,
+        12, 13, 14,
+        14, 13, 15,
+        16, 17, 18,
+        18, 17, 19,
+        20, 21, 22,
+        22, 21, 23
+    };
+    unsigned int vertexCount = 24;
+    unsigned int indexCount = 36;
     VertexFormat::Element elements[] =
     {
         VertexFormat::Element(VertexFormat::POSITION, 3),
-        VertexFormat::Element(VertexFormat::COLOR, 4)
+        VertexFormat::Element(VertexFormat::COLOR, 4),
     };
-
-    // Create mesh.
-    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, dynamic);
+    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
     if (mesh == NULL)
     {
         GP_ERROR("Failed to create mesh.");
         return NULL;
     }
-
-    // Set vertices.
-    mesh->setPrimitiveType(Mesh::TRIANGLES);
-    mesh->setVertexData(s_vertices, 0, vertexCount);
-
+    mesh->setVertexData(vertices, 0, vertexCount);
+    MeshPart* meshPart = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, false);
+    meshPart->setIndexData(indices, 0, indexCount);
     return mesh;
 }
 
-
-static Mesh* createIndexedCube(bool dynamic)
+static Mesh* createTexturedCube(float size = 1.0f)
 {
-    static PosColorVertex s_vertices[] =
+    float a = size;
+    float vertices[] =
     {
-        { Vector3(-1.0f,  1.0f,  1.0f),   Vector4(1.0, 0.0, 0.0, 1.0 ) },
-        { Vector3( 1.0f,  1.0f,  1.0f),   Vector4(0.0, 1.0, 0.0, 1.0 ) },
-        { Vector3(-1.0f, -1.0f,  1.0f),   Vector4(0.0, 0.0, 1.0, 1.0 ) },
-        { Vector3( 1.0f, -1.0f,  1.0f),   Vector4(1.0, 1.0, 0.0, 1.0 ) },
-        { Vector3(-1.0f,  1.0f, -1.0f),   Vector4(1.0, 0.0, 1.0, 1.0 ) },
-        { Vector3( 1.0f,  1.0f, -1.0f),   Vector4(0.0, 1.0, 1.0, 1.0 ) },
-        { Vector3(-1.0f, -1.0f, -1.0f),   Vector4(1.0, 1.0, 0.0, 1.0 ) },
-        { Vector3( 1.0f, -1.0f, -1.0f),   Vector4(0.0, 1.0, 0.0, 1.0 ) },
+         // position     // normal              // texcoord
+        -a, -a,  a,      0.0,  0.0,  1.0,       0.0, 0.0,
+         a, -a,  a,      0.0,  0.0,  1.0,       1.0, 0.0,
+        -a,  a,  a,      0.0,  0.0,  1.0,       0.0, 1.0,
+         a,  a,  a,      0.0,  0.0,  1.0,       1.0, 1.0,
+        -a,  a,  a,      0.0,  1.0,  0.0,       0.0, 0.0,
+         a,  a,  a,      0.0,  1.0,  0.0,       1.0, 0.0,
+        -a,  a, -a,      0.0,  1.0,  0.0,       0.0, 1.0,
+         a,  a, -a,      0.0,  1.0,  0.0,       1.0, 1.0,
+        -a,  a, -a,      0.0,  0.0, -1.0,       0.0, 0.0,
+         a,  a, -a,      0.0,  0.0, -1.0,       1.0, 0.0,
+        -a, -a, -a,      0.0,  0.0, -1.0,       0.0, 1.0,
+         a, -a, -a,      0.0,  0.0, -1.0,       1.0, 1.0,
+        -a, -a, -a,      0.0, -1.0,  0.0,       0.0, 0.0,
+         a, -a, -a,      0.0, -1.0,  0.0,       1.0, 0.0,
+        -a, -a,  a,      0.0, -1.0,  0.0,       0.0, 1.0,
+         a, -a,  a,      0.0, -1.0,  0.0,       1.0, 1.0,
+         a, -a,  a,      1.0,  0.0,  0.0,       0.0, 0.0,
+         a, -a, -a,      1.0,  0.0,  0.0,       1.0, 0.0,
+         a,  a,  a,      1.0,  0.0,  0.0,       0.0, 1.0,
+         a,  a, -a,      1.0,  0.0,  0.0,       1.0, 1.0,
+        -a, -a, -a,     -1.0,  0.0,  0.0,       0.0, 0.0,
+        -a, -a,  a,     -1.0,  0.0,  0.0,       1.0, 0.0,
+        -a,  a, -a,     -1.0,  0.0,  0.0,       0.0, 1.0,
+        -a,  a,  a,     -1.0,  0.0,  0.0,       1.0, 1.0
     };
-
-    static const unsigned short s_indices[] =
+    short indices[] =
     {
-        0, 1, 2, // 0
-        1, 3, 2,
-        4, 6, 5, // 2
-        5, 6, 7,
-        0, 2, 4, // 4
-        4, 2, 6,
-        1, 5, 3, // 6
-        5, 7, 3,
-        0, 4, 1, // 8
-        4, 5, 1,
-        2, 3, 6, // 10
-        6, 3, 7,
+        0, 1, 2,
+        2, 1, 3,
+        4, 5, 6,
+        6, 5, 7,
+        8, 9, 10,
+        10, 9, 11,
+        12, 13, 14,
+        14, 13, 15,
+        16, 17, 18,
+        18, 17, 19,
+        20, 21, 22,
+        22, 21, 23
     };
-
-    unsigned int vertexCount = 8;
+    unsigned int vertexCount = 24;
     unsigned int indexCount = 36;
-
-    // Vertex format
     VertexFormat::Element elements[] =
     {
         VertexFormat::Element(VertexFormat::POSITION, 3),
-        VertexFormat::Element(VertexFormat::COLOR, 4)
+        VertexFormat::Element(VertexFormat::NORMAL, 3),
+        VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
     };
-
-    // Create mesh.
-    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, dynamic);
+    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), vertexCount, false);
     if (mesh == NULL)
     {
         GP_ERROR("Failed to create mesh.");
         return NULL;
     }
-
-    // Set vertices.
-    mesh->setPrimitiveType(Mesh::TRIANGLES);
-    mesh->setVertexData(s_vertices, 0, vertexCount);
-
-    // Set indices.
-    MeshPart * part = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, dynamic);
-    part->setIndexData(s_indices, 0, indexCount);
-
+    mesh->setVertexData(vertices, 0, vertexCount);
+    MeshPart* meshPart = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, false);
+    meshPart->setIndexData(indices, 0, indexCount);
     return mesh;
 }
 
 
 R_DrawStress::R_DrawStress()
-    : _font(NULL), _model(NULL), _spinDirection(-1.0f)
+    : _font(NULL), _model(NULL)
 {    
-    _material = nullptr;
+    _materialColored = nullptr;
+    _materialTextured = nullptr;
     _form = nullptr;
     _rotValue = 0.0f;
     _maxDimensions = 20;
 }
 
-
-void R_DrawStress::setGeometry(bool dynamic)
+void R_DrawStress::setColoredGeometry()
 {
-    GP_ASSERT(_material);
+    GP_ASSERT(_materialColored);
 
     SAFE_RELEASE(_model);
 
-    Mesh* mesh = createCube(dynamic);
+    Mesh* mesh = createColoredCube();
     _model = Model::create(mesh);
-    _model->setMaterial(_material);
+    _model->setMaterial(_materialColored);
 
     SAFE_RELEASE(mesh);
 }
 
-void R_DrawStress::setIndexedGeometry(bool dynamic)
+void R_DrawStress::setTexturedGeometry()
 {
-    GP_ASSERT(_material);
+    GP_ASSERT(_materialTextured);
 
     SAFE_RELEASE(_model);
 
-    Mesh* mesh = createIndexedCube(dynamic);
+    Mesh* mesh = createTexturedCube();
     _model = Model::create(mesh);
-    _model->setMaterial(_material);
+    _model->setMaterial(_materialTextured);
 
     SAFE_RELEASE(mesh);
 }
@@ -191,20 +184,28 @@ void R_DrawStress::initialize()
 
     // Create a lookat matrix and multiply with projection matrix.
     Matrix dst;
-    Vector3 eye(100,100,-250);
+    Vector3 eye(-80,80,-180);
     Vector3 targetPos(0,0,0);
     Vector3 up(0,1,0);
     Matrix::createLookAt(eye, targetPos, up, &dst);
     _worldViewProjectionMatrix = _worldViewProjectionMatrix * dst;
 
     // Create a material from the built-in "colored-unlit" vertex and fragment shaders.
-    _material = Material::create("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
-    _material->getStateBlock()->setCullFace(false);
-    _material->getStateBlock()->setDepthTest(true);
-    _material->getStateBlock()->setDepthWrite(true);
+    _materialColored = Material::create("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
+    _materialColored->getStateBlock()->setCullFace(true);
+    _materialColored->getStateBlock()->setDepthTest(true);
+    _materialColored->getStateBlock()->setDepthWrite(true);
 
-    // Set a static mesh non indexed at init.
-    setGeometry(false);
+    // Create a material with texture
+    _materialTextured = Material::create("res/bgfxshaders/Textured_VS.bin", "res/bgfxshaders/Textured_FS.bin");
+    Texture::Sampler * sampler = Texture::Sampler::create("res/png/dirt.png");
+    _materialTextured->getParameter("u_diffuseTexture")->setValue(sampler);
+    _materialTextured->getStateBlock()->setCullFace(true);
+    _materialTextured->getStateBlock()->setDepthTest(true);
+    _materialTextured->getStateBlock()->setDepthWrite(true);
+
+    // Set colored cube at init.
+    setColoredGeometry();
 
     // Set default view.
     Game * game = Game::getInstance();
@@ -238,44 +239,33 @@ void R_DrawStress::initializeUI()
     slider->setValue(_maxDimensions);
     slider->addListener(this, Control::Listener::VALUE_CHANGED);
 
-    RadioButton * radio1 = RadioButton::create("radio_static");
-    radio1->setText("Static");
+    RadioButton * radio1 = RadioButton::create("radio_colored");
+    radio1->setText("Colored");
     radio1->setSelected(true);
     radio1->addListener(this, Control::Listener::CLICK);
 
-    RadioButton * radio2 = RadioButton::create("radio_static_indexed");
-    radio2->setText("Static Indexed");
-    radio2->setSelected(false);
-    radio2->addListener(this, Control::Listener::CLICK);
-
-    RadioButton * radio3 = RadioButton::create("radio_dynamic");
-    radio3->setText("Dynamic");
-    radio3->setSelected(false);
-    radio3->addListener(this, Control::Listener::CLICK);
-
-    RadioButton * radio4 = RadioButton::create("radio_dynamic_indexed");
-    radio4->setText("Dynamic Indexed");
-    radio4->setSelected(false);
-    radio4->addListener(this, Control::Listener::CLICK);
+    RadioButton * radio5 = RadioButton::create("radio_textured");
+    radio5->setText("Textured");
+    radio5->setSelected(false);
+    radio5->addListener(this, Control::Listener::CLICK);
 
     _form->addControl(slider);
     _form->addControl(radio1);
-    _form->addControl(radio2);
-    _form->addControl(radio3);
-    _form->addControl(radio4);
+    _form->addControl(radio5);
 }
 
 void R_DrawStress::finalize()
 {
     SAFE_RELEASE(_model);
-    SAFE_RELEASE(_material);
+    SAFE_RELEASE(_materialColored);
+    SAFE_RELEASE(_materialTextured);
     SAFE_RELEASE(_font);
     SAFE_RELEASE(_form);
 }
 
 void R_DrawStress::update(float elapsedTime)
 {
-    _rotValue += _spinDirection * MATH_PI * elapsedTime * 0.001f;
+    _rotValue += MATH_PI * elapsedTime * 0.001f;
 }
 
 void R_DrawStress::render(float elapsedTime)
@@ -294,68 +284,29 @@ void R_DrawStress::render(float elapsedTime)
             for(int y=0; y<_maxDimensions; ++y)
                 for(int z=0; z<_maxDimensions; ++z)
                 {
-                    Matrix mvp = _worldViewProjectionMatrix;
+                    Matrix matrix = _worldViewProjectionMatrix;
 
-                    mvp.translate(Vector3(  pos[0] + float(x)*step,
-                                            pos[1] + float(y)*step,
-                                            pos[2] + float(z)*step
-                                        ));
+                    matrix.translate(Vector3(pos[0] + float(x)*step,
+                                             pos[1] + float(y)*step,
+                                             pos[2] + float(z)*step));
 
-                    mvp.rotate(Vector3(x*0.21f, y*0.37f, z*0.19f), _rotValue);
+                    matrix.rotate(Quaternion(Vector3(1 + x*0.21f, 1 + y*0.37f, 1 + z*0.13f), _rotValue));
 
-                    _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(mvp);
+                    _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(matrix);
                     _model->draw();
                 }
     }
 
     drawFrameRate(_font, Vector4(0, 0.5f, 1, 1), 5, getHeight()-20, getFrameRate());
 
-   // drawModelStats();
-
     _form->draw();
-}
-
-void R_DrawStress::drawModelStats()
-{
-    int partCount = _model->getMeshPartCount();
-    unsigned vertexCount = _model->getMesh()->getVertexCount();
-    Mesh::PrimitiveType primitiveType = _model->getMesh()->getPrimitiveType();
-    bool indexed = partCount > 0 ? true : false;
-    unsigned indexCount = indexed ? _model->getMesh()->getPart(0)->getIndexCount() : 0;
-    bool dynamic = _model->getMesh()->isDynamic();
-
-    const char * dynamicStr[] = { "Static", "Dynamic" };
-    const char * prmitiveStr[] = { "TRIANGLES", "TRIANGLE_STRIP", "LINES", "LINE_STRIP", "POINTS", "UNKNOWN" };
-
-    char buffer[512];
-    sprintf(buffer, "Mesh [%s] [%s]\n"
-                    "VertexCount = %u\n"
-                    "IndexCount = %u"
-            , dynamicStr[dynamic]
-            , prmitiveStr[primitiveType]
-            , vertexCount, indexCount
-            );
-
-    _font->start();
-    _font->drawText(buffer, 10, 200, Vector4::one(), 18);
-    _font->finish();
 }
 
 void R_DrawStress::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex)
 {
     switch (evt)
     {
-    case Touch::TOUCH_PRESS:
-        if (x < 75 && y < 50)
-        {
-            // Toggle Vsync if the user touches the top left corner
-            setVsync(!isVsync());
-        }
-        else
-        {
-            // Reverse the spin direction if the user touches the screen.
-            _spinDirection *= -1.0f;
-        }
+    case Touch::TOUCH_PRESS:        
         break;
     case Touch::TOUCH_RELEASE:
         break;
@@ -369,26 +320,17 @@ void R_DrawStress::controlEvent(Control* control, EventType evt)
 {
     Button* button = static_cast<Button*>(control);
 
-    if (strcmp(button->getId(), "radio_static") == 0)
+    if (strcmp(button->getId(), "radio_colored") == 0)
     {
-        setGeometry(false);
+        setColoredGeometry();
     }
-    else if (strcmp(button->getId(), "radio_static_indexed") == 0)
+    else if (strcmp(button->getId(), "radio_textured") == 0)
     {
-        setIndexedGeometry(false);
-    }
-    else if (strcmp(button->getId(), "radio_dynamic") == 0)
-    {
-        setGeometry(true);
-    }
-    else if (strcmp(button->getId(), "radio_dynamic_indexed") == 0)
-    {
-        setIndexedGeometry(true);
+        setTexturedGeometry();
     }
     else if (strcmp(button->getId(), "slider_maxdim") == 0)
     {
         Slider* slider = static_cast<Slider*>(control);
         _maxDimensions = slider->getValue();
     }
-
 }

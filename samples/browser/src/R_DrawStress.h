@@ -26,15 +26,14 @@ protected:
 
 private:
 
-    void setGeometry(bool dynamic);
-    void setIndexedGeometry(bool dynamic);
-    void drawModelStats();
+    void setColoredGeometry();
+    void setTexturedGeometry();
 
     Form* _form;
     Font* _font;
     Model* _model;
-    Material* _material;
-    float _spinDirection;
+    Material* _materialColored;
+    Material* _materialTextured;
     Matrix _worldViewProjectionMatrix;
     float _rotValue;
     unsigned int _maxDimensions;
