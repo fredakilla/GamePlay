@@ -171,24 +171,24 @@ void MeshPrimitiveSample::initialize()
     // Create a material from the built-in "colored-unlit" vertex and fragment shaders.
     // This sample doesn't use lighting so the unlit shader is used.
     // This sample uses vertex color so VERTEX_COLOR is defined. Look at the shader source files to see the supported defines.
-    _triangles->setMaterial("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
+    _triangles->setMaterial("res/shaders/colored.vert", "res/shaders/colored_vertex.frag", "VERTEX_COLOR");
     
     Mesh* triangleStripMesh = createTriangleStripMesh();
     _triangleStrip = Model::create(triangleStripMesh);
     SAFE_RELEASE(triangleStripMesh);
-    Material* material = _triangleStrip->setMaterial("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
+    Material* material = _triangleStrip->setMaterial("res/shaders/colored.vert", "res/shaders/colored_vertex.frag", "VERTEX_COLOR");
     material->getStateBlock()->setDepthTest(true);
     material->getStateBlock()->setDepthWrite(true);
 
     Mesh* lineStripMesh = createLineStripMesh();
     _lineStrip = Model::create(lineStripMesh);
     SAFE_RELEASE(lineStripMesh);
-    _lineStrip->setMaterial("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
+    _lineStrip->setMaterial("res/shaders/colored.vert", "res/shaders/colored_vertex.frag", "VERTEX_COLOR");
     
     Mesh* lineMesh = createLinesMesh();
     _lines = Model::create(lineMesh);
     SAFE_RELEASE(lineMesh);
-    _lines->setMaterial("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
+    _lines->setMaterial("res/shaders/colored.vert", "res/shaders/colored_vertex.frag", "VERTEX_COLOR");
 }
 
 void MeshPrimitiveSample::finalize()

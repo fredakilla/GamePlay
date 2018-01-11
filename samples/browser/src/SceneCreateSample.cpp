@@ -102,7 +102,7 @@ void SceneCreateSample::initialize()
     SAFE_RELEASE(cubeMesh);
 
     // Create the material for the cube model and assign it to the first mesh part.
-    Material* material = cubeModel->setMaterial("res/bgfxshaders/Textured_VS.bin", "res/bgfxshaders/Textured_FS.bin", "DIRECTIONAL_LIGHT_COUNT 1");
+    Material* material = cubeModel->setMaterial("res/shaders/textured.vert", "res/shaders/textured.frag", "DIRECTIONAL_LIGHT_COUNT 1");
 
     // These parameters are normally set in a .material file but this example sets them programmatically.
     // Bind the uniform "u_worldViewProjectionMatrix" to use the WORLD_VIEW_PROJECTION_MATRIX from the scene's active camera and the node that the model belongs to.

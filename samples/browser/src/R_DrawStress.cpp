@@ -191,13 +191,13 @@ void R_DrawStress::initialize()
     _worldViewProjectionMatrix = _worldViewProjectionMatrix * dst;
 
     // Create a material from the built-in "colored-unlit" vertex and fragment shaders.
-    _materialColored = Material::create("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
+    _materialColored = Material::create("res/shaders/colored.vert", "res/shaders/colored_vertex.frag", "VERTEX_COLOR");
     _materialColored->getStateBlock()->setCullFace(true);
     _materialColored->getStateBlock()->setDepthTest(true);
     _materialColored->getStateBlock()->setDepthWrite(true);
 
     // Create a material with texture
-    _materialTextured = Material::create("res/bgfxshaders/Textured_VS.bin", "res/bgfxshaders/Textured_FS.bin");
+    _materialTextured = Material::create("res/shaders/textured.vert", "res/shaders/textured.frag");
     Texture::Sampler * sampler = Texture::Sampler::create("res/png/dirt.png");
     _materialTextured->getParameter("u_diffuseTexture")->setValue(sampler);
     _materialTextured->getStateBlock()->setCullFace(true);

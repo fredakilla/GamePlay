@@ -132,7 +132,7 @@ void R_RenderToTexture::initialize()
     SAFE_RELEASE(mesh);
 
     // Create a material for the triangle.
-    _triangleModel->setMaterial("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
+    _triangleModel->setMaterial("res/shaders/colored.vert", "res/shaders/colored_vertex.frag", "VERTEX_COLOR");
 
 
 
@@ -152,7 +152,7 @@ void R_RenderToTexture::initialize()
     // Create a frame buffer with render target
     _frameBuffer = FrameBuffer::create("myFrameBuffer", 128, 128);
 
-    Material* material = Material::create("res/bgfxshaders/Textured_VS.bin", "res/bgfxshaders/Textured_FS.bin");
+    Material* material = Material::create("res/shaders/textured.vert", "res/shaders/textured.frag");
     //Texture::Sampler * sampler = Texture::Sampler::create("res/png/brick.png");
     Texture::Sampler * sampler = Texture::Sampler::create(_frameBuffer->getRenderTarget(0)->getTexture());
     material->getParameter("u_diffuseTexture")->setValue(sampler);

@@ -44,8 +44,8 @@ public:
     unsigned int getWidth() const;
     unsigned int getHeight() const;
     float getAspectRatio() const;
-    void clear(Game::ClearFlags flags, const Vector4& clearColor, float clearDepth, int clearStencil, int viewId = 0);
-    void clear(Game::ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil, int viewId = 0);
+    void clear(Game::ClearFlags flags, const Vector4& clearColor, float clearDepth, int clearStencil);
+    void clear(Game::ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil);
     AudioController* getAudioController() const;
     AnimationController* getAnimationController() const;
     PhysicsController* getPhysicsController() const;

@@ -1359,7 +1359,7 @@ PhysicsController::DebugDrawer::DebugDrawer()
     //@@};
 
     //@@Effect* effect = Effect::createFromSource(vs_str, fs_str);
-    Effect* effect = Effect::createFromFile("res/bgfxshaders/PhysicsDebug_VS.bin", "res/bgfxshaders/PhysicsDebug_FS.bin");
+    Effect* effect = Effect::createFromFile("res/shaders/physics.vert", "res/shaders/physics.frag");
 
     Material* material = Material::create(effect);
     GP_ASSERT(material && material->getStateBlock());

@@ -189,7 +189,7 @@ void R_Geometry::initialize()
     _worldViewProjectionMatrix.translate(Vector3(0,0,-15.0f));
 
     // Create a material from the built-in "colored-unlit" vertex and fragment shaders.
-    _material = Material::create("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
+    _material = Material::create("res/shaders/colored.vert", "res/shaders/colored_vertex.frag", "VERTEX_COLOR");
     _material->getStateBlock()->setCullFace(false);
     _material->getStateBlock()->setDepthTest(true);
     _material->getStateBlock()->setDepthWrite(true);

@@ -7,8 +7,9 @@
 #include "Material.h"
 
 // Default font shaders
-#define FONT_VSH "res/bgfxshaders/Font_VS.bin"
-#define FONT_FSH "res/bgfxshaders/Font_FS.bin"
+#define FONT_VSH "res/shaders/font.vert"
+#define FONT_FSH "res/shaders/font.frag"
+#define FONT_DISTANCEFIELD_FSH "res/shaders/font_distfield.frag"
 
 namespace gameplay
 {
@@ -109,8 +110,15 @@ Font* Font::create(const char* family, Style style, unsigned int size, Glyph* gl
     {
         const char* defines = NULL;
         if (format == DISTANCE_FIELD)
+        {
             defines = "DISTANCE_FIELD";
-        __fontEffect = Effect::createFromFile(FONT_VSH, FONT_FSH, defines);
+            __fontEffect = Effect::createFromFile(FONT_VSH, FONT_DISTANCEFIELD_FSH, defines);
+        }
+        else
+        {
+            __fontEffect = Effect::createFromFile(FONT_VSH, FONT_FSH, defines);
+        }
+
         if (__fontEffect == NULL)
         {
             GP_WARN("Failed to create effect for font.");

@@ -33,10 +33,6 @@ private:
     Model* _model;
     float _spinDirection;
     Matrix _worldViewProjectionMatrix;
-
-
-    Model* _quadModel;
-    FrameBuffer * _frameBuffer;
 };
 
 #endif

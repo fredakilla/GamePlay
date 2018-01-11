@@ -25,7 +25,7 @@ Node* addQuadModelAndNode(Scene* scene, float x, float y, float width, float hei
 
 Material* setTextureUnlitMaterial(Model* model, const char* texturePath, bool mipmap = true)
 {
-    Material* material = model->setMaterial("res/bgfxshaders/Textured_VS.bin", "res/bgfxshaders/Textured_FS.bin");
+    Material* material = model->setMaterial("res/shaders/textured.vert", "res/shaders/textured.frag");
     material->setParameterAutoBinding("u_worldViewProjectionMatrix", "WORLD_VIEW_PROJECTION_MATRIX");
 
     // Load the texture from file.

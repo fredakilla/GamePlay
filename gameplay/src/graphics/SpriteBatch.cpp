@@ -16,8 +16,8 @@
     vtx.r = vr; vtx.g = vg; vtx.b = vb; vtx.a = va
 
 // Default sprite shaders
-#define SPRITE_VSH "res/bgfxshaders/Sprite_VS.bin"
-#define SPRITE_FSH "res/bgfxshaders/Sprite_FS.bin"
+#define SPRITE_VSH "res/shaders/sprite.vert"
+#define SPRITE_FSH "res/shaders/sprite.frag"
 
 namespace gameplay
 {
