@@ -296,7 +296,7 @@ void R_Geometry::drawModelStats()
             );
 
     _font->start();
-    _font->drawText(buffer, 10, 200, Vector4::one(), 18);
+    _font->drawText(buffer, 10, 0, Vector4::one(), 18);
     _font->finish();
 }
 
