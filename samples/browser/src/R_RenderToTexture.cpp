@@ -143,7 +143,7 @@ void R_RenderToTexture::initialize()
 
     // Create a lookat view matrix.
     Matrix viewMatrix;
-    Matrix::createLookAt(Vector3(5,5,-15), Vector3::zero(), Vector3::unitY(), &viewMatrix);
+    Matrix::createLookAt(Vector3(3,2,-5), Vector3::zero(), Vector3::unitY(), &viewMatrix);
 
     // mvp matrix
     Matrix mvp = projMatrix * viewMatrix;
