@@ -150,6 +150,7 @@ R_DrawStress::R_DrawStress()
     _material = nullptr;
     _form = nullptr;
     _rotValue = 0.0f;
+    _maxDimensions = 20;
 }
 
 
@@ -187,7 +188,14 @@ void R_DrawStress::initialize()
     // Create a perspective projection matrix.
     float ratio = getWidth() / (float)getHeight();
     Matrix::createPerspective(45.0f, ratio, 1.0f, 1000.0f, &_worldViewProjectionMatrix);
-    _worldViewProjectionMatrix.translate(Vector3(0,0,-280.0f));
+
+    // Create a lookat matrix and multiply with projection matrix.
+    Matrix dst;
+    Vector3 eye(100,100,-250);
+    Vector3 targetPos(0,0,0);
+    Vector3 up(0,1,0);
+    Matrix::createLookAt(eye, targetPos, up, &dst);
+    _worldViewProjectionMatrix = _worldViewProjectionMatrix * dst;
 
     // Create a material from the built-in "colored-unlit" vertex and fragment shaders.
     _material = Material::create("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
@@ -208,15 +216,27 @@ void R_DrawStress::initialize()
     defaultView.rectangle = Rectangle(game->getWidth(), game->getHeight());
     game->addView(defaultView);
 
+    // initialise UI
+    initializeUI();
+}
 
-    // Create UI
-
+void R_DrawStress::initializeUI()
+{
     Theme::Style* style = Theme::getDefault()->getEmptyStyle();
 
     _form = Form::create("Form", style);
     _form->setLayout(Layout::LAYOUT_VERTICAL);
     _form->setWidth(200);
     _form->setAlignment(Control::Alignment::ALIGN_VCENTER_LEFT);
+
+    Slider * slider = Slider::create("slider_maxdim");
+    slider->setText("Dimensions");
+    slider->setValueTextVisible(true);
+    slider->setWidth(190);
+    slider->setMin(1);
+    slider->setMax(40);
+    slider->setValue(_maxDimensions);
+    slider->addListener(this, Control::Listener::VALUE_CHANGED);
 
     RadioButton * radio1 = RadioButton::create("radio_static");
     radio1->setText("Static");
@@ -238,6 +258,7 @@ void R_DrawStress::initialize()
     radio4->setSelected(false);
     radio4->addListener(this, Control::Listener::CLICK);
 
+    _form->addControl(slider);
     _form->addControl(radio1);
     _form->addControl(radio2);
     _form->addControl(radio3);
@@ -263,17 +284,15 @@ void R_DrawStress::render(float elapsedTime)
 
     if(_model)
     {
-        int maxDim = 20;
-
         const float step = 3.0f;
         float pos[3];
-        pos[0] = -step*maxDim / 2.0f;
-        pos[1] = -step*maxDim / 2.0f;
+        pos[0] = -step*_maxDimensions / 2.0f;
+        pos[1] = -step*_maxDimensions / 2.0f;
         pos[2] = -15.0;
 
-        for(int x=0; x<maxDim; x++)
-            for(int y=0; y<maxDim; y++)
-                for(int z=0; z<maxDim; z++)
+        for(int x=0; x<_maxDimensions; ++x)
+            for(int y=0; y<_maxDimensions; ++y)
+                for(int z=0; z<_maxDimensions; ++z)
                 {
                     Matrix mvp = _worldViewProjectionMatrix;
 
@@ -291,7 +310,7 @@ void R_DrawStress::render(float elapsedTime)
 
     drawFrameRate(_font, Vector4(0, 0.5f, 1, 1), 5, getHeight()-20, getFrameRate());
 
-    drawModelStats();
+   // drawModelStats();
 
     _form->draw();
 }
@@ -366,4 +385,10 @@ void R_DrawStress::controlEvent(Control* control, EventType evt)
     {
         setIndexedGeometry(true);
     }
+    else if (strcmp(button->getId(), "slider_maxdim") == 0)
+    {
+        Slider* slider = static_cast<Slider*>(control);
+        _maxDimensions = slider->getValue();
+    }
+
 }

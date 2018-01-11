@@ -17,6 +17,7 @@ public:
 protected:
 
     void initialize();
+    void initializeUI();
     void finalize();
     void update(float elapsedTime);
     void render(float elapsedTime);
@@ -36,6 +37,7 @@ private:
     float _spinDirection;
     Matrix _worldViewProjectionMatrix;
     float _rotValue;
+    unsigned int _maxDimensions;
 };
 
 #endif
