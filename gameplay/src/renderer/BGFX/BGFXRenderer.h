@@ -15,11 +15,19 @@ public:
 
     void queryCaps() override;
 
+    void updateWindowSize(unsigned int width, unsigned height) override;
+    void toggleDebugStats() override;
+    void toggleVSync() override;
+
     void submit(const GpuProgram * gpuProgram) override;
 
 protected:
     BGFXRenderer();
     ~BGFXRenderer();
+
+
+    uint32_t _debug_flags;
+    uint32_t _reset_flags;
 };
 
 

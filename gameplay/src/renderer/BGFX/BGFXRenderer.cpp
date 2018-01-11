@@ -10,6 +10,8 @@ namespace gameplay {
 BGFXRenderer::BGFXRenderer()
 {
     printf("Derived Created\n");
+
+    _debug_flags = 0;
 }
 
 BGFXRenderer::~BGFXRenderer()
@@ -22,6 +24,33 @@ void BGFXRenderer::initInstance()
     new BGFXRenderer;
 }
 
+void BGFXRenderer::updateWindowSize(unsigned int width, unsigned height)
+{
+    _width = width;
+    _height = height;
+
+    bgfx::reset(_width, _height, _reset_flags);
+}
+
+void BGFXRenderer::toggleDebugStats()
+{
+    if ((_debug_flags & BGFX_DEBUG_STATS) == 0)
+        _debug_flags |= BGFX_DEBUG_STATS;
+    else
+        _debug_flags &= ~BGFX_DEBUG_STATS;
+
+    bgfx::setDebug(_debug_flags);
+}
+
+void BGFXRenderer::toggleVSync()
+{
+    if ((_reset_flags & BGFX_RESET_VSYNC) == 0)
+        _reset_flags |= BGFX_RESET_VSYNC;
+    else
+        _reset_flags &= ~BGFX_RESET_VSYNC;
+
+    bgfx::reset(_width, _height, _reset_flags);
+}
 
 void BGFXRenderer::queryCaps()
 {

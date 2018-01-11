@@ -108,6 +108,11 @@ static list<ConnectedGamepadDevInfo> __connectedGamepads;
 static SDL_Window * __window;
 //static SDL_GLContext __context = 0;
 
+
+
+
+
+
 // Gets the gameplay::Keyboard::Key enumeration constant that corresponds to the given X11 key symbol.
 static gameplay::Keyboard::Key getKey(KeySym sym)
 {
@@ -571,6 +576,21 @@ extern int strcmpnocase(const char* s1, const char* s2)
     return strcasecmp(s1, s2);
 }
 
+void updateWindowSize()
+{
+    //GP_ASSERT(__display);
+    GP_ASSERT(__window);
+
+    int width;
+    int height;
+    SDL_GetWindowSize(__window, &width, &height);
+
+    Renderer::getInstance().updateWindowSize(width, height);
+
+    __windowSize[0] = width;
+    __windowSize[1] = height;
+}
+
 Platform::Platform(Game* game) : _game(game)
 {
 }
@@ -695,7 +715,7 @@ Platform* Platform::create(Game* game)
     bgfx::init(bgfx::RendererType::OpenGL);
 
 
-    uint32_t debug = BGFX_DEBUG_STATS;
+    uint32_t debug = BGFX_DEBUG_NONE;
     uint32_t reset = BGFX_RESET_NONE;
     bgfx::reset(__width, __height, reset);
 
@@ -715,6 +735,8 @@ Platform* Platform::create(Game* game)
     Renderer::getInstance().queryCaps();
 
     game->setViewport(Rectangle(0,0,__width,__height), 0);
+
+    updateWindowSize();
 
     return platform;
 
@@ -957,20 +979,6 @@ double timespec2millis(struct timespec *a)
     GP_ASSERT(a);
     return (1000.0 * a->tv_sec) + (0.000001 * a->tv_nsec);
 }
-
-void updateWindowSize()
-{
-    //GP_ASSERT(__display);
-    GP_ASSERT(__window);  
-
-    int width;
-    int height;
-    SDL_GetWindowSize(__window, &width, &height);
-
-    __windowSize[0] = width;
-    __windowSize[1] = height;
-}
-
 
 // Will need to be dynamic, also should be handled in Gamepad class
 static const GamepadInfoEntry gamepadLookupTable[] = 
@@ -1322,7 +1330,7 @@ int Platform::enterMessagePump()
 {
     GP_ASSERT(_game);
 
-    updateWindowSize();
+    //updateWindowSize();
 
     // Get the initial time.
     clock_gettime(CLOCK_REALTIME, &__timespec);
@@ -1358,7 +1366,11 @@ int Platform::enterMessagePump()
                 case SDLK_ESCAPE:
                     loop = false;
                     break;
-                case SDLK_r:
+                case SDLK_F2:
+                    Renderer::getInstance().toggleDebugStats();
+                    break;
+                case SDLK_F7:
+                    Renderer::getInstance().toggleVSync();
                     break;
 
                 default:

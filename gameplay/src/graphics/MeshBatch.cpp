@@ -275,7 +275,7 @@ void MeshBatch::draw()
     //@@GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0 ) );
 
 
-
+#if 1
 
     // using transiant buffers
 
@@ -318,7 +318,7 @@ void MeshBatch::draw()
 
     return;
 
-
+#endif
 
 
     if (_started && _vertexCount != _model->getMesh()->getVertexCount())

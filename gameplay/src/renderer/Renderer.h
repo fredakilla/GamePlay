@@ -38,6 +38,10 @@ public:
     virtual void queryCaps() {}
     virtual const Caps getCaps() const { return _caps; }
 
+    virtual void toggleDebugStats() {}
+    virtual void toggleVSync() {}
+    virtual void updateWindowSize(unsigned int width, unsigned height) {}
+
     virtual void submit(const GpuProgram* gpuProgram) = 0;
 
 
@@ -54,6 +58,10 @@ protected:
 
 
     Caps _caps;
+
+
+    unsigned _width;
+    unsigned _height;
 
 };
 
