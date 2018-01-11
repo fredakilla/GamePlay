@@ -1,5 +1,5 @@
-#ifndef R_STATIC_MESH_H_
-#define R_STATIC_MESH_H_
+#ifndef R_GEOMETRY_H_
+#define R_GEOMETRY_H_
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -7,11 +7,11 @@
 using namespace gameplay;
 
 
-class R_StaticMesh : public Sample, Control::Listener
+class R_Geometry : public Sample, Control::Listener
 {
 public:
 
-    R_StaticMesh();
+    R_Geometry();
     void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
 
 protected:

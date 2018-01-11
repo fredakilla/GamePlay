@@ -1,8 +1,8 @@
-#include "R_StaticMesh.h"
+#include "R_Geometry.h"
 #include "SamplesGame.h"
 
 #if defined(ADD_SAMPLE)
-    ADD_SAMPLE("Renderer", "StaticMesh", R_StaticMesh, 0);
+    ADD_SAMPLE("Renderer", "Geometry", R_Geometry, 0);
 #endif
 
 
@@ -144,7 +144,7 @@ static Mesh* createIndexedCube(bool dynamic)
 }
 
 
-R_StaticMesh::R_StaticMesh()
+R_Geometry::R_Geometry()
     : _font(NULL), _model(NULL), _spinDirection(-1.0f)
 {    
     _material = nullptr;
@@ -152,7 +152,7 @@ R_StaticMesh::R_StaticMesh()
 }
 
 
-void R_StaticMesh::setGeometry(bool dynamic)
+void R_Geometry::setGeometry(bool dynamic)
 {
     GP_ASSERT(_material);
 
@@ -165,7 +165,7 @@ void R_StaticMesh::setGeometry(bool dynamic)
     SAFE_RELEASE(mesh);
 }
 
-void R_StaticMesh::setIndexedGeometry(bool dynamic)
+void R_Geometry::setIndexedGeometry(bool dynamic)
 {
     GP_ASSERT(_material);
 
@@ -178,7 +178,7 @@ void R_StaticMesh::setIndexedGeometry(bool dynamic)
     SAFE_RELEASE(mesh);
 }
 
-void R_StaticMesh::initialize()
+void R_Geometry::initialize()
 {
     // Create the font for drawing the framerate.
     _font = Font::create("res/ui/arial.gpb");
@@ -186,7 +186,7 @@ void R_StaticMesh::initialize()
     // Create a perspective projection matrix.
     float ratio = getWidth() / (float)getHeight();
     Matrix::createPerspective(45.0f, ratio, 1.0f, 1000.0f, &_worldViewProjectionMatrix);
-    _worldViewProjectionMatrix.translate(Vector3(0,0,-280.0f));
+    _worldViewProjectionMatrix.translate(Vector3(0,0,-15.0f));
 
     // Create a material from the built-in "colored-unlit" vertex and fragment shaders.
     _material = Material::create("res/bgfxshaders/Colored_VS.bin", "res/bgfxshaders/Colored_VERTEX_COLOR_FS.bin", "VERTEX_COLOR");
@@ -243,7 +243,7 @@ void R_StaticMesh::initialize()
     _form->addControl(radio4);
 }
 
-void R_StaticMesh::finalize()
+void R_Geometry::finalize()
 {
     SAFE_RELEASE(_model);
     SAFE_RELEASE(_material);
@@ -251,46 +251,20 @@ void R_StaticMesh::finalize()
     SAFE_RELEASE(_form);
 }
 
-float rotValue = 0.0f;
-
-void R_StaticMesh::update(float elapsedTime)
+void R_Geometry::update(float elapsedTime)
 {
     // Update the rotation of the triangle. The speed is 180 degrees per second.
-    //_worldViewProjectionMatrix.rotate(Vector3(1,2,3), _spinDirection * MATH_PI * elapsedTime * 0.001f);
-
-    rotValue += _spinDirection * MATH_PI * elapsedTime * 0.001f;
+    _worldViewProjectionMatrix.rotate(Vector3(1,2,3), _spinDirection * MATH_PI * elapsedTime * 0.001f);
 }
 
-void R_StaticMesh::render(float elapsedTime)
+void R_Geometry::render(float elapsedTime)
 {
     Game::getInstance()->bindView(0);
 
     if(_model)
     {
-        int maxDim = 40;
-
-        const float step = 3.0f;
-        float pos[3];
-        pos[0] = -step*maxDim / 2.0f;
-        pos[1] = -step*maxDim / 2.0f;
-        pos[2] = -15.0;
-
-        for(int x=0; x<maxDim; x++)
-            for(int y=0; y<maxDim; y++)
-                for(int z=0; z<maxDim; z++)
-                {
-                    Matrix mvp = _worldViewProjectionMatrix;
-
-                    mvp.translate(Vector3(  pos[0] + float(x)*step,
-                                            pos[1] + float(y)*step,
-                                            pos[2] + float(z)*step
-                                        ));
-
-                    mvp.rotate(Vector3(x*0.21f, y*0.37f, z*0.19f), rotValue);
-
-                    _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(mvp);
-                    _model->draw();
-                }
+        _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
+        _model->draw();
     }
 
     drawFrameRate(_font, Vector4(0, 0.5f, 1, 1), 5, getHeight()-20, getFrameRate());
@@ -300,7 +274,7 @@ void R_StaticMesh::render(float elapsedTime)
     _form->draw();
 }
 
-void R_StaticMesh::drawModelStats()
+void R_Geometry::drawModelStats()
 {
     int partCount = _model->getMeshPartCount();
     unsigned vertexCount = _model->getMesh()->getVertexCount();
@@ -326,7 +300,7 @@ void R_StaticMesh::drawModelStats()
     _font->finish();
 }
 
-void R_StaticMesh::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex)
+void R_Geometry::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex)
 {
     switch (evt)
     {
@@ -350,7 +324,7 @@ void R_StaticMesh::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int 
 }
 
 
-void R_StaticMesh::controlEvent(Control* control, EventType evt)
+void R_Geometry::controlEvent(Control* control, EventType evt)
 {
     Button* button = static_cast<Button*>(control);
 

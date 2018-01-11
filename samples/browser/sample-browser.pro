@@ -100,7 +100,8 @@ SOURCES += src/Audio3DSample.cpp \
     src/TextureSample.cpp \
     src/TriangleSample.cpp \
     src/WaterSample.cpp \
-    src/R_StaticMesh.cpp
+    src/R_Geometry.cpp \
+    src/R_DrawStress.cpp
 
 HEADERS += src/Audio3DSample.h \
     src/AudioSample.h \
@@ -128,7 +129,8 @@ HEADERS += src/Audio3DSample.h \
     src/TextureSample.h \
     src/TriangleSample.h \
     src/WaterSample.h \
-    src/R_StaticMesh.h
+    src/R_Geometry.h \
+    src/R_DrawStress.h
 
 INCLUDEPATH += $$PWD/../../gameplay/src
 INCLUDEPATH += $$PWD/../../external-deps/include
