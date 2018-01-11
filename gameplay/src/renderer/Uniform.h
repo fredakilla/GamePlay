@@ -98,7 +98,7 @@ public:
      * @param values The array to set.
      * @param count The number of elements in the array.
      */
-    void setValue(Uniform* uniform, const float* values, unsigned int count = 1);
+    virtual void setValue(Uniform* uniform, const float* values, unsigned int count = 1);
 
     /**
      * Sets an integer uniform value.
@@ -106,7 +106,7 @@ public:
      * @param uniform The uniform to set.
      * @param value The value to set.
      */
-    void setValue(Uniform* uniform, int value);
+    virtual void setValue(Uniform* uniform, int value);
 
     /**
      * Sets an integer array uniform value.
@@ -115,7 +115,7 @@ public:
      * @param values The array to set.
      * @param count The number of elements in the array.
      */
-    void setValue(Uniform* uniform, const int* values, unsigned int count = 1);
+    virtual void setValue(Uniform* uniform, const int* values, unsigned int count = 1);
 
     /**
      * Sets a matrix uniform value.
@@ -140,7 +140,7 @@ public:
      * @param uniform The uniform to set.
      * @param value The value to set.
      */
-    void setValue(Uniform* uniform, const Vector2& value);
+    virtual void setValue(Uniform* uniform, const Vector2& value);
 
     /**
      * Sets a vector array uniform value.
@@ -149,7 +149,7 @@ public:
      * @param values The array to set.
      * @param count The number of elements in the array.
      */
-    void setValue(Uniform* uniform, const Vector2* values, unsigned int count = 1);
+    virtual void setValue(Uniform* uniform, const Vector2* values, unsigned int count = 1);
 
     /**
      * Sets a vector uniform value.
@@ -166,7 +166,7 @@ public:
      * @param values The array to set.
      * @param count The number of elements in the array.
      */
-    void setValue(Uniform* uniform, const Vector3* values, unsigned int count = 1);
+    virtual void setValue(Uniform* uniform, const Vector3* values, unsigned int count = 1);
 
     /**
      * Sets a vector uniform value.

@@ -1,4 +1,6 @@
 #include "BGFXUniform.h"
+#include "Vector2.h"
+#include "Vector3.h"
 #include "Vector4.h"
 
 namespace gameplay {
@@ -46,27 +48,25 @@ void BGFXUniform::setValue(Uniform* uniform, float value)
     bgfx::setUniform(bgfxUniform->_handle, &value);
 }
 
-void BGFXUniform::setValue(Uniform* uniform, const Vector4* values, unsigned int count)
+void BGFXUniform::setValue(Uniform* uniform, const float* values, unsigned int count)
 {
     BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
     GP_ASSERT(bgfxUniform && bgfx::isValid(bgfxUniform->_handle));
-    bgfx::setUniform(bgfxUniform->_handle, &values[0].x, count);
+    bgfx::setUniform(bgfxUniform->_handle, &values[0], count);
 }
 
-
-void BGFXUniform::setValue(Uniform* uniform, const Vector4& value)
+void BGFXUniform::setValue(Uniform* uniform, int value)
 {
     BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
     GP_ASSERT(bgfxUniform && bgfx::isValid(bgfxUniform->_handle));
-    bgfx::setUniform(bgfxUniform->_handle, &value.x);
+    bgfx::setUniform(bgfxUniform->_handle, &value);
 }
 
-
-void BGFXUniform::setValue(Uniform* uniform, const Matrix* values, unsigned int count)
+void BGFXUniform::setValue(Uniform* uniform, const int* values, unsigned int count)
 {
     BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
     GP_ASSERT(bgfxUniform && bgfx::isValid(bgfxUniform->_handle));
-    bgfx::setUniform(bgfxUniform->_handle, &values[0].m, count);
+    bgfx::setUniform(bgfxUniform->_handle, &values[0], count);
 }
 
 void BGFXUniform::setValue(Uniform* uniform, const Matrix& value)
@@ -76,7 +76,54 @@ void BGFXUniform::setValue(Uniform* uniform, const Matrix& value)
     bgfx::setUniform(bgfxUniform->_handle, &value.m);
 }
 
+void BGFXUniform::setValue(Uniform* uniform, const Matrix* values, unsigned int count)
+{
+    BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
+    GP_ASSERT(bgfxUniform && bgfx::isValid(bgfxUniform->_handle));
+    bgfx::setUniform(bgfxUniform->_handle, &values[0].m, count);
+}
 
+void BGFXUniform::setValue(Uniform* uniform, const Vector2& value)
+{
+    BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
+    GP_ASSERT(bgfxUniform && bgfx::isValid(bgfxUniform->_handle));
+    bgfx::setUniform(bgfxUniform->_handle, &value.x);
+}
+
+void BGFXUniform::setValue(Uniform* uniform, const Vector2* values, unsigned int count)
+{
+    BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
+    GP_ASSERT(bgfxUniform && bgfx::isValid(bgfxUniform->_handle));
+    bgfx::setUniform(bgfxUniform->_handle, &values[0].x, count);
+}
+
+void BGFXUniform::setValue(Uniform* uniform, const Vector3& value)
+{
+    BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
+    GP_ASSERT(bgfxUniform && bgfx::isValid(bgfxUniform->_handle));
+    bgfx::setUniform(bgfxUniform->_handle, &value.x);
+}
+
+void BGFXUniform::setValue(Uniform* uniform, const Vector3* values, unsigned int count)
+{
+    BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
+    GP_ASSERT(bgfxUniform && bgfx::isValid(bgfxUniform->_handle));
+    bgfx::setUniform(bgfxUniform->_handle, &values[0].x, count);
+}
+
+void BGFXUniform::setValue(Uniform* uniform, const Vector4& value)
+{
+    BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
+    GP_ASSERT(bgfxUniform && bgfx::isValid(bgfxUniform->_handle));
+    bgfx::setUniform(bgfxUniform->_handle, &value.x);
+}
+
+void BGFXUniform::setValue(Uniform* uniform, const Vector4* values, unsigned int count)
+{
+    BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
+    GP_ASSERT(bgfxUniform && bgfx::isValid(bgfxUniform->_handle));
+    bgfx::setUniform(bgfxUniform->_handle, &values[0].x, count);
+}
 
 void BGFXUniform::setValue(Uniform* uniform, const Texture::Sampler* sampler)
 {
