@@ -56,7 +56,7 @@ public:
      *
      * @return The index buffer object handle.
      */
-    IndexBufferHandle getIndexBuffer() const;
+    const IndexBuffer* getIndexBuffer() const;
 
     /**
      * Maps the index buffer for the specified access.

@@ -91,9 +91,9 @@ Mesh::IndexFormat MeshPart::getIndexFormat() const
     return _indexFormat;
 }
 
-IndexBufferHandle MeshPart::getIndexBuffer() const
+const IndexBuffer* MeshPart::getIndexBuffer() const
 {
-    return _indexBuffer->getHandle();
+    return _indexBuffer;
 }
 
 void* MeshPart::mapIndexBuffer()
