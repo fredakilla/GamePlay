@@ -162,10 +162,10 @@ void R_RenderToTexture::initialize()
     material->getStateBlock()->setDepthWrite(true);
 
     // Create a cube.
-    Mesh* meshQuad = createTexturedCube();
-    _cubeModel = Model::create(meshQuad);
+    Mesh* meshCube = createTexturedCube();
+    _cubeModel = Model::create(meshCube);
     _cubeModel->setMaterial(material);
-    SAFE_RELEASE(mesh);
+    SAFE_RELEASE(meshCube);
 
 
 
