@@ -32,7 +32,7 @@ public:
     void setValue(const Vector4& value) override;
     void setValue(const Vector4* values, unsigned int count = 1) override;
     void setValue(const Texture::Sampler* sampler) override;
-    //void setValue(Uniform* uniform, const Texture::Sampler** values, unsigned int count) override;
+    void setValue(const Texture::Sampler** values, unsigned int count) override;
 
     bgfx::UniformHandle getHandle() { return _handle; }
 

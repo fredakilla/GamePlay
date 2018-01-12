@@ -202,7 +202,7 @@ public:
      *
      * @script{ignore}
      */
-    void setValue(const Texture::Sampler** values, unsigned int count);
+    virtual void setValue(const Texture::Sampler** values, unsigned int count);
 
 
 

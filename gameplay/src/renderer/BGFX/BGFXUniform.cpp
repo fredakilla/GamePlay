@@ -115,39 +115,24 @@ void BGFXUniform::setValue(const Vector4* values, unsigned int count)
 
 void BGFXUniform::setValue(const Texture::Sampler* sampler)
 {
-    //GP_ASSERT(uniform);
-    //GP_ASSERT(uniform->getType() == UT_SAMPLER);
-    //GP_ASSERT(sampler);
-    //
-    //// Bind the sampler - this binds the texture and applies sampler state
-    //const_cast<Texture::Sampler*>(sampler)->bind(uniform);
-
-
-
-
     GP_ASSERT(getType() == UT_SAMPLER);
     GP_ASSERT(sampler);
 
     // Bind the sampler - this binds the texture and applies sampler state
     const_cast<Texture::Sampler*>(sampler)->bind(this);
+}
 
+void BGFXUniform::setValue(const Texture::Sampler** values, unsigned int count)
+{
+    GP_ASSERT(getType() == UT_SAMPLER);
 
+    for (unsigned int i = 0; i < count; ++i)
+    {
+        GP_ASSERT(values[i]);
 
-
-
-
-    /*GP_ASSERT(uniform);
-    GP_ASSERT(uniform->_type == GL_SAMPLER_2D || uniform->_type == GL_SAMPLER_CUBE);
-    GP_ASSERT(sampler);
-    GP_ASSERT((sampler->getTexture()->getType() == Texture::TEXTURE_2D && uniform->_type == GL_SAMPLER_2D) ||
-        (sampler->getTexture()->getType() == Texture::TEXTURE_CUBE && uniform->_type == GL_SAMPLER_CUBE));
-
-    GL_ASSERT( glActiveTexture(GL_TEXTURE0 + uniform->_index) );
-
-    // Bind the sampler - this binds the texture and applies sampler state
-    const_cast<Texture::Sampler*>(sampler)->bind();
-
-    GL_ASSERT( glUniform1i(uniform->_location, uniform->_index) );*/
+        // Bind the sampler - this binds the texture and applies sampler state
+        const_cast<Texture::Sampler*>(values[i])->bind(this);
+    }
 }
 
 
