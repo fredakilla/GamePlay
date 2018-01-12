@@ -55,14 +55,20 @@ void BGFXUniform::setValue(const float* values, unsigned int count)
 
 void BGFXUniform::setValue(int value)
 {
+    // in bgfx, int is normally reserved for sampler
+
     GP_ASSERT(bgfx::isValid(_handle));
-    bgfx::setUniform(_handle, &value);
+    //bgfx::setUniform(_handle, &value);    // doesn't works
+    setValue(static_cast<float>(value));    // works with float
 }
 
 void BGFXUniform::setValue(const int* values, unsigned int count)
 {
+    // in bgfx, int is normally reserved for sampler
+
     GP_ASSERT(bgfx::isValid(_handle));
-    bgfx::setUniform(_handle, &values[0], count);
+    //bgfx::setUniform(_handle, &values[0], count);     // doesn't works
+    GP_ERROR("Not implemented.");
 }
 
 void BGFXUniform::setValue(const Matrix& value)
