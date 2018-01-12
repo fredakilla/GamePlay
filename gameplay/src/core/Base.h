@@ -280,7 +280,7 @@ namespace gameplay
 /** Vertex attribute. */
 typedef GLint VertexAttribute;
 /** Vertex buffer handle. */
-typedef GLuint VertexBufferHandle;
+//@@typedef GLuint VertexBufferHandle;
 /** Index buffer handle. */
 typedef GLuint IndexBufferHandle;
 /** Texture handle. */

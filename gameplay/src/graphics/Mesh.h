@@ -171,7 +171,7 @@ public:
      *
      * @return The vertex buffer object handle.
      */
-    VertexBufferHandle getVertexBuffer() const;
+    const VertexBuffer* getVertexBuffer() const;
 
     /**
      * Determines if the mesh is dynamic.

@@ -10,7 +10,6 @@ class BGFXVertexBuffer : public VertexBuffer
 public:
     BGFXVertexBuffer(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic);
     ~BGFXVertexBuffer();
-    //GLuint getHandle() override { return _vbh; }
     void bind() override;
 
     static void createVertexDecl(const VertexFormat &vertexFormat, bgfx::VertexDecl &vertexDecl);

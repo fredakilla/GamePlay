@@ -254,9 +254,9 @@ unsigned int Mesh::getVertexSize() const
     return _vertexFormat.getVertexSize();
 }
 
-VertexBufferHandle Mesh::getVertexBuffer() const
+const VertexBuffer* Mesh::getVertexBuffer() const
 {
-    return _vertexBuffer->getHandle();
+    return _vertexBuffer;
 }
 
 bool Mesh::isDynamic() const
