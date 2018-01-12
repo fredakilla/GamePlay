@@ -18,6 +18,7 @@ public:
     void updateWindowSize(unsigned int width, unsigned height) override;
     void toggleDebugStats() override;
     void toggleVSync() override;
+    void setVSync(bool enable) override;
 
     void submit(const GpuProgram * gpuProgram) override;
 

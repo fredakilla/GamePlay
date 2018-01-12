@@ -91,7 +91,7 @@ struct ConnectedGamepadDevInfo
 struct timespec __timespec;
 static double __timeStart;
 static double __timeAbsolute;
-static bool __vsync = WINDOW_VSYNC;
+//static bool __vsync = WINDOW_VSYNC;
 static bool __mouseCaptured = false;
 static float __mouseCapturePointX = 0;
 static float __mouseCapturePointY = 0;
@@ -716,7 +716,7 @@ Platform* Platform::create(Game* game)
 
 
     uint32_t debug = BGFX_DEBUG_NONE;
-    uint32_t reset = BGFX_RESET_NONE;
+    uint32_t reset = BGFX_RESET_VSYNC;
     bgfx::reset(__width, __height, reset);
 
     // Enable debug text.
@@ -734,6 +734,7 @@ Platform* Platform::create(Game* game)
     BGFXRenderer::initInstance();
     Renderer::getInstance().queryCaps();
 
+    game->setVsync(true);
     game->setViewport(Rectangle(0,0,__width,__height), 0);
 
     updateWindowSize();
@@ -1735,12 +1736,18 @@ void Platform::setAbsoluteTime(double time)
 
 bool Platform::isVsync()
 {
-    return __vsync;
+    return Renderer::getInstance().isVSync();
+    //@@return __vsync;
 }
 
 void Platform::setVsync(bool enable)
 {
-    __vsync = enable;
+    //@@__vsync = enable;
+
+    Renderer::getInstance().setVSync(enable);
+
+    /* BGFXRenderer* renderer = (BGFXRenderer*)Renderer::getInstance();
+     renderer.*/
 
     //@@if (glXSwapIntervalEXT)
     //@@    glXSwapIntervalEXT(__display, __window, __vsync ? 1 : 0);

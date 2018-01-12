@@ -39,8 +39,15 @@ public:
     virtual const Caps getCaps() const { return _caps; }
 
     virtual void toggleDebugStats() {}
-    virtual void toggleVSync() {}
+
     virtual void updateWindowSize(unsigned int width, unsigned height) {}
+
+
+    virtual void toggleVSync() {}
+    virtual void setVSync(bool enable) {}
+    bool isVSync() { return _isVsync; }
+
+
 
     virtual void submit(const GpuProgram* gpuProgram) = 0;
 
@@ -62,6 +69,8 @@ protected:
 
     unsigned _width;
     unsigned _height;
+
+    bool _isVsync;
 
 };
 

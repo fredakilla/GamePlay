@@ -44,7 +44,22 @@ void BGFXRenderer::toggleDebugStats()
 
 void BGFXRenderer::toggleVSync()
 {
-    if ((_reset_flags & BGFX_RESET_VSYNC) == 0)
+    /*if ((_reset_flags & BGFX_RESET_VSYNC) == 0)
+        _reset_flags |= BGFX_RESET_VSYNC;
+    else
+        _reset_flags &= ~BGFX_RESET_VSYNC;*/
+
+    if (_isVsync)
+        setVSync(false);
+    else
+        setVSync(true);
+}
+
+void BGFXRenderer::setVSync(bool enable)
+{
+    _isVsync = enable;
+
+    if (enable)
         _reset_flags |= BGFX_RESET_VSYNC;
     else
         _reset_flags &= ~BGFX_RESET_VSYNC;
