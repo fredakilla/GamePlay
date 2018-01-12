@@ -13,6 +13,8 @@ BGFXVertexBuffer::BGFXVertexBuffer(const VertexFormat &vertexFormat, unsigned in
 
     _svbh = BGFX_INVALID_HANDLE;
     _dvbh = BGFX_INVALID_HANDLE;
+
+    _lockState = LOCK_NONE;
 }
 
 BGFXVertexBuffer::~BGFXVertexBuffer()
@@ -141,12 +143,21 @@ void BGFXVertexBuffer::set(const void* vertexData, unsigned int vertexCount, uns
     {
         if(!bgfx::isValid(_dvbh))
         {
-            uint16_t flags = BGFX_BUFFER_ALLOW_RESIZE;
-            _dvbh = bgfx::createDynamicVertexBuffer(vertexCount, _vertexDecl, flags);
+            uint32_t size = _vertexDecl.getSize(_vertexCount);
+
+            uint16_t flags = BGFX_BUFFER_NONE; //BGFX_BUFFER_ALLOW_RESIZE;
+            _dvbh = bgfx::createDynamicVertexBuffer(_vertexCount, _vertexDecl, flags);
+
+            _vertexData = new char[size];
+            //_vertexMem = bgfx::makeRef(_vertexData, size);
+            //_vertexData = bgfx::alloc(size);
+
+            //_vertexData = bgfx::copy(vertexData, size);
+            //bgfx::updateDynamicVertexBuffer(_dvbh, vertexStart, _vertexData);
         }
 
         GP_ASSERT(bgfx::isValid(_dvbh));
-        bgfx::updateDynamicVertexBuffer(_dvbh, vertexStart, mem);
+        //bgfx::updateDynamicVertexBuffer(_dvbh, vertexStart, mem);
     }
     else
     {
@@ -179,6 +190,65 @@ void BGFXVertexBuffer::bind()
         else
             GP_WARN("BGFXVertexBuffer::bind() - static vertex buffer no set.");
     }
+}
+
+
+
+
+void * BGFXVertexBuffer::lock(unsigned start, unsigned count, bool discard)
+{
+    if (_lockState != LOCK_NONE)
+    {
+        GP_ERROR("Vertex buffer already locked");
+        return nullptr;
+    }
+
+    /*if (!_vertexDecl)
+    {
+        GP_ERROR("Vertex elements not defined, can not lock vertex buffer");
+        return nullptr;
+    }*/
+
+    if (start + count > _vertexCount)
+    {
+        GP_ERROR("Illegal range for locking vertex buffer");
+        return nullptr;
+    }
+
+    if (!count)
+        return nullptr;
+
+
+    _lockStart = start;
+    _lockCount = count;
+
+    _lockState = LOCK_SCRATCH;
+    //_lockScratchData = bx::mem graphics_->ReserveScratchBuffer(count * vertexSize_);
+   // _lockScratchData = bgfx::makeRef()
+    //const bgfx::Memory* mem = bgfx::alloc()
+
+   // _lockScratchData = _data;
+
+
+    GP_ASSERT(_vertexData);
+
+    return _vertexData;
+
+}
+void BGFXVertexBuffer::unLock()
+{
+    GP_ASSERT(bgfx::isValid(_dvbh));
+
+    if (_lockState == LOCK_SCRATCH)
+    {
+        bgfx::updateDynamicVertexBuffer(_dvbh, _lockStart, bgfx::makeRef(_vertexData, _vertexDecl.getSize(_vertexCount)) );
+
+        //setDataRange(shadowData_.Get() + lockStart_ * vertexSize_, lockStart_, lockCount_, discardLock_);
+        _lockState = LOCK_NONE;
+    }
+
+
+    //
 }
 
 } // end namespace gameplay
