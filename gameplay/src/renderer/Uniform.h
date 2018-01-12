@@ -89,7 +89,7 @@ public:
      * @param uniform The uniform to set.
      * @param value The float value to set.
      */
-    virtual void setValue(Uniform* uniform, float value);
+    virtual void setValue(float value);
 
     /**
      * Sets a float array uniform value.
@@ -98,7 +98,7 @@ public:
      * @param values The array to set.
      * @param count The number of elements in the array.
      */
-    virtual void setValue(Uniform* uniform, const float* values, unsigned int count = 1);
+    virtual void setValue(const float* values, unsigned int count = 1);
 
     /**
      * Sets an integer uniform value.
@@ -106,7 +106,7 @@ public:
      * @param uniform The uniform to set.
      * @param value The value to set.
      */
-    virtual void setValue(Uniform* uniform, int value);
+    virtual void setValue(int value);
 
     /**
      * Sets an integer array uniform value.
@@ -115,7 +115,7 @@ public:
      * @param values The array to set.
      * @param count The number of elements in the array.
      */
-    virtual void setValue(Uniform* uniform, const int* values, unsigned int count = 1);
+    virtual void setValue(const int* values, unsigned int count = 1);
 
     /**
      * Sets a matrix uniform value.
@@ -123,7 +123,7 @@ public:
      * @param uniform The uniform to set.
      * @param value The value to set.
      */
-    virtual void setValue(Uniform* uniform, const Matrix& value);
+    virtual void setValue(const Matrix& value);
 
     /**
      * Sets a matrix array uniform value.
@@ -132,7 +132,7 @@ public:
      * @param values The array to set.
      * @param count The number of elements in the array.
      */
-    virtual void setValue(Uniform* uniform, const Matrix* values, unsigned int count = 1);
+    virtual void setValue(const Matrix* values, unsigned int count = 1);
 
     /**
      * Sets a vector uniform value.
@@ -140,7 +140,7 @@ public:
      * @param uniform The uniform to set.
      * @param value The value to set.
      */
-    virtual void setValue(Uniform* uniform, const Vector2& value);
+    virtual void setValue(const Vector2& value);
 
     /**
      * Sets a vector array uniform value.
@@ -149,7 +149,7 @@ public:
      * @param values The array to set.
      * @param count The number of elements in the array.
      */
-    virtual void setValue(Uniform* uniform, const Vector2* values, unsigned int count = 1);
+    virtual void setValue(const Vector2* values, unsigned int count = 1);
 
     /**
      * Sets a vector uniform value.
@@ -157,7 +157,7 @@ public:
      * @param uniform The uniform to set.
      * @param value The value to set.
      */
-    virtual void setValue(Uniform* uniform, const Vector3& value);
+    virtual void setValue(const Vector3& value);
 
     /**
      * Sets a vector array uniform value.
@@ -166,7 +166,7 @@ public:
      * @param values The array to set.
      * @param count The number of elements in the array.
      */
-    virtual void setValue(Uniform* uniform, const Vector3* values, unsigned int count = 1);
+    virtual void setValue(const Vector3* values, unsigned int count = 1);
 
     /**
      * Sets a vector uniform value.
@@ -174,7 +174,7 @@ public:
      * @param uniform The uniform to set.
      * @param value The value to set.
      */
-    virtual void setValue(Uniform* uniform, const Vector4& value);
+    virtual void setValue(const Vector4& value);
 
     /**
      * Sets a vector array uniform value.
@@ -183,7 +183,7 @@ public:
      * @param values The array to set.
      * @param count The number of elements in the array.
      */
-    virtual void setValue(Uniform* uniform, const Vector4* values, unsigned int count = 1);
+    virtual void setValue(const Vector4* values, unsigned int count = 1);
 
     /**
      * Sets a sampler uniform value.
@@ -191,7 +191,7 @@ public:
      * @param uniform The uniform to set.
      * @param sampler The sampler to set.
      */
-    virtual void setValue(Uniform* uniform, const Texture::Sampler* sampler);
+    virtual void setValue(const Texture::Sampler* sampler);
 
     /**
      * Sets a sampler array uniform value.
@@ -202,7 +202,7 @@ public:
      *
      * @script{ignore}
      */
-    void setValue(Uniform* uniform, const Texture::Sampler** values, unsigned int count);
+    void setValue(const Texture::Sampler** values, unsigned int count);
 
 
 

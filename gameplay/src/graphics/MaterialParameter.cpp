@@ -471,49 +471,49 @@ void MaterialParameter::bind(Effect* effect)
     }
 
 
-    BGFXUniform* bgfxUniform = static_cast<BGFXUniform*>(_uniform);
+    //BGFXUniform* bgfxUniform = static_cast<BGFXUniform*>(_uniform);
 
     switch (_type)
     {
     case MaterialParameter::FLOAT:
         //@@->setValue(_uniform, _value.floatValue);
-        _uniform->setValue(_uniform, _value.floatValue);
+        _uniform->setValue(_value.floatValue);
         break;
     case MaterialParameter::FLOAT_ARRAY:
         //@@effect->setValue(_uniform, _value.floatPtrValue, _count);
-        _uniform->setValue(_uniform, _value.floatPtrValue, _count);
+        _uniform->setValue(_value.floatPtrValue, _count);
         break;
     case MaterialParameter::INT:
         //@@effect->setValue(_uniform, _value.intValue);
-        _uniform->setValue(_uniform, _value.intValue);
+        _uniform->setValue(_value.intValue);
         break;
     case MaterialParameter::INT_ARRAY:
         //@@effect->setValue(_uniform, _value.intPtrValue, _count);
-        _uniform->setValue(_uniform, _value.intPtrValue, _count);
+        _uniform->setValue(_value.intPtrValue, _count);
         break;
     case MaterialParameter::VECTOR2:
         //@@effect->setValue(_uniform, reinterpret_cast<Vector2*>(_value.floatPtrValue), _count);
-        bgfxUniform->setValue(_uniform, reinterpret_cast<Vector4*>(_value.floatPtrValue), _count);
+        _uniform->setValue(reinterpret_cast<Vector4*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::VECTOR3:
         //@@effect->setValue(_uniform, reinterpret_cast<Vector3*>(_value.floatPtrValue), _count);
-        _uniform->setValue(_uniform, reinterpret_cast<Vector3*>(_value.floatPtrValue), _count);
+        _uniform->setValue(reinterpret_cast<Vector3*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::VECTOR4:
         //@@effect->setValue(_uniform, reinterpret_cast<Vector4*>(_value.floatPtrValue), _count);
-        bgfxUniform->setValue(_uniform, reinterpret_cast<Vector4*>(_value.floatPtrValue), _count);
+        _uniform->setValue(reinterpret_cast<Vector4*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::MATRIX:
         //@@effect->setValue(_uniform, reinterpret_cast<Matrix*>(_value.floatPtrValue), _count);
-        bgfxUniform->setValue(_uniform, reinterpret_cast<Matrix*>(_value.floatPtrValue), _count);
+        _uniform->setValue(reinterpret_cast<Matrix*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::SAMPLER:
         //@@effect->setValue(_uniform, _value.samplerValue);
-        bgfxUniform->setValue(_uniform, _value.samplerValue);
+        _uniform->setValue(_value.samplerValue);
         break;
     case MaterialParameter::SAMPLER_ARRAY:
         //@@effect->setValue(_uniform, _value.samplerArrayValue, _count);
-        _uniform->setValue(_uniform, _value.samplerArrayValue, _count);
+        _uniform->setValue(_value.samplerArrayValue, _count);
         break;
     case MaterialParameter::METHOD:
         if (_value.method)

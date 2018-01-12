@@ -760,86 +760,87 @@ const unsigned int Uniform::getIndex() const
 
 
 
-void Uniform::setValue(Uniform* uniform, float value)
+void Uniform::setValue(float value)
 {
-    GP_ASSERT(uniform);
+    GP_ASSERT(0);
     GL_ASSERT( glUniform1f(uniform->_location, value) );
 }
 
-void Uniform::setValue(Uniform* uniform, const float* values, unsigned int count)
+void Uniform::setValue(const float* values, unsigned int count)
 {
-    GP_ASSERT(uniform);
+    GP_ASSERT(0);
     GP_ASSERT(values);
     GL_ASSERT( glUniform1fv(uniform->_location, count, values) );
 }
 
-void Uniform::setValue(Uniform* uniform, int value)
+void Uniform::setValue(int value)
 {
-    GP_ASSERT(uniform);
+    GP_ASSERT(0);
     GL_ASSERT( glUniform1i(uniform->_location, value) );
 }
 
-void Uniform::setValue(Uniform* uniform, const int* values, unsigned int count)
+void Uniform::setValue(const int* values, unsigned int count)
 {
-    GP_ASSERT(uniform);
+    GP_ASSERT(0);
     GP_ASSERT(values);
     GL_ASSERT( glUniform1iv(uniform->_location, count, values) );
 }
 
-void Uniform::setValue(Uniform* uniform, const Matrix& value)
+void Uniform::setValue(const Matrix& value)
 {
-    GP_ASSERT(uniform);
+    GP_ASSERT(0);
     GL_ASSERT( glUniformMatrix4fv(uniform->_location, 1, GL_FALSE, value.m) );
 }
 
-void Uniform::setValue(Uniform* uniform, const Matrix* values, unsigned int count)
+void Uniform::setValue(const Matrix* values, unsigned int count)
 {
-    GP_ASSERT(uniform);
+    GP_ASSERT(0);
     GP_ASSERT(values);
     GL_ASSERT( glUniformMatrix4fv(uniform->_location, count, GL_FALSE, (GLfloat*)values) );
 }
 
-void Uniform::setValue(Uniform* uniform, const Vector2& value)
+void Uniform::setValue(const Vector2& value)
 {
-    GP_ASSERT(uniform);
+    GP_ASSERT(0);
     GL_ASSERT( glUniform2f(uniform->_location, value.x, value.y) );
 }
 
-void Uniform::setValue(Uniform* uniform, const Vector2* values, unsigned int count)
+void Uniform::setValue(const Vector2* values, unsigned int count)
 {
-    GP_ASSERT(uniform);
+    GP_ASSERT(0);
     GP_ASSERT(values);
     GL_ASSERT( glUniform2fv(uniform->_location, count, (GLfloat*)values) );
 }
 
-void Uniform::setValue(Uniform* uniform, const Vector3& value)
+void Uniform::setValue(const Vector3& value)
 {
-    GP_ASSERT(uniform);
+    GP_ASSERT(0);
     GL_ASSERT( glUniform3f(uniform->_location, value.x, value.y, value.z) );
 }
 
-void Uniform::setValue(Uniform* uniform, const Vector3* values, unsigned int count)
+void Uniform::setValue(const Vector3* values, unsigned int count)
 {
-    GP_ASSERT(uniform);
+    GP_ASSERT(0);
     GP_ASSERT(values);
     GL_ASSERT( glUniform3fv(uniform->_location, count, (GLfloat*)values) );
 }
 
-void Uniform::setValue(Uniform* uniform, const Vector4& value)
+void Uniform::setValue(const Vector4& value)
 {
-    GP_ASSERT(uniform);
+    GP_ASSERT(0);
     GL_ASSERT( glUniform4f(uniform->_location, value.x, value.y, value.z, value.w) );
 }
 
-void Uniform::setValue(Uniform* uniform, const Vector4* values, unsigned int count)
+void Uniform::setValue(const Vector4* values, unsigned int count)
 {
-    GP_ASSERT(uniform);
+    GP_ASSERT(0);
     GP_ASSERT(values);
     GL_ASSERT( glUniform4fv(uniform->_location, count, (GLfloat*)values) );
 }
 
-void Uniform::setValue(Uniform* uniform, const Texture::Sampler* sampler)
+void Uniform::setValue(const Texture::Sampler* sampler)
 {
+    GP_ASSERT(0);
    //@@ GP_ASSERT(uniform);
    //@@ GP_ASSERT(uniform->_type == GL_SAMPLER_2D || uniform->_type == GL_SAMPLER_CUBE);
    //@@ GP_ASSERT(sampler);
@@ -854,8 +855,9 @@ void Uniform::setValue(Uniform* uniform, const Texture::Sampler* sampler)
    //@@ GL_ASSERT( glUniform1i(uniform->_location, uniform->_index) );
 }
 
-void Uniform::setValue(Uniform* uniform, const Texture::Sampler** values, unsigned int count)
+void Uniform::setValue(const Texture::Sampler** values, unsigned int count)
 {
+    GP_ASSERT(0);
    //@@ GP_ASSERT(uniform);
    //@@ GP_ASSERT(uniform->_type == GL_SAMPLER_2D || uniform->_type == GL_SAMPLER_CUBE);
    //@@ GP_ASSERT(values);
