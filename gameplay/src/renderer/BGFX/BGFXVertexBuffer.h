@@ -22,7 +22,44 @@ enum LockState
 
 
 
+class IBuffer
+{
+public:
+    IBuffer();
+    virtual ~IBuffer();
 
+    void resize(int newSize)
+    {
+        if (_sizeMax < newSize)
+            create(newSize);
+        _size = newSize;
+    }
+    virtual void create(int newSize);
+    virtual void destroy();
+    virtual void* map(int stride) { return nullptr; }
+    virtual void unmap() {}
+
+    int getSize() { return _size; }
+    int getSizeMax() { return _sizeMax; }
+
+protected:
+    int _sizeMax;
+    int _size;
+};
+
+class MemoryBuffer : public IBuffer
+{
+public:
+
+    MemoryBuffer();
+    virtual ~MemoryBuffer();
+    virtual void create(int newSize);
+    virtual void destroy();
+    virtual void* map(int stride) { return buffer; }
+
+private:
+    char* buffer;
+};
 
 
 
@@ -67,7 +104,9 @@ private:
     unsigned int _lockCount;
     void* _lockScratchData;
     //const bgfx::Memory * _vertexData;
-    void * _vertexData;
+    //void * _vertexData;
+
+    MemoryBuffer _memoryBuffer;
 };
 
 } // end namespace gameplay

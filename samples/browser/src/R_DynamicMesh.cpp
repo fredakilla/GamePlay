@@ -7,94 +7,10 @@
 
 
 
-    class IBuffer
-    {
-    public:
-        IBuffer();
-        virtual ~IBuffer();
-
-        void setSize(int newSize)
-        {
-            if (_sizeMax < newSize)
-                create(newSize);
-            _size = newSize;
-        }
-        virtual void create(int newSize);
-        virtual void destroy();
-        virtual void* lock(int stride) { return nullptr; }
-        virtual void unLock() {}
-
-    protected:
-        int _sizeMax;
-        int _size;
-    };
-
-    class MemoryBuffer : public IBuffer
-    {
-    public:
-
-        MemoryBuffer();
-        virtual ~MemoryBuffer();
-        virtual void create(int newSize);
-        virtual void destroy();
-        virtual void* lock(int stride) { return buffer; }
-
-    private:
-        char* buffer;
-    };
 
 
-    IBuffer::IBuffer()
-    {
-        _sizeMax = 0;
-        _size = 0;
-    }
 
-    IBuffer::~IBuffer()
-    {
-        destroy();
-    }
 
-    void IBuffer::create(int newSize)
-    {
-        destroy();
-        _sizeMax = newSize;
-    }
-
-    void IBuffer::destroy()
-    {
-        _sizeMax = 0;
-        _size = 0;
-    }
-
-    // --------------------------------
-
-    MemoryBuffer::MemoryBuffer() : IBuffer()
-    {
-        buffer = nullptr;
-    }
-
-    MemoryBuffer::~MemoryBuffer()
-    {
-        destroy();
-    }
-
-    void MemoryBuffer::create(int newSize)
-    {
-        IBuffer::create(newSize);
-        buffer = new char[newSize];
-    }
-
-    void MemoryBuffer::destroy()
-    {
-        IBuffer::destroy();
-
-        if (buffer)
-        {
-            delete[] buffer;
-            buffer = nullptr;
-        }
-    }
 
 
 
@@ -175,7 +91,7 @@ static Mesh* createTexturedCube(float size = 1.0f)
         GP_ERROR("Failed to create mesh.");
         return NULL;
     }
-    mesh->setVertexData(vertices, 0, vertexCount);
+    //mesh->setVertexData(vertices, 0, vertexCount);
     MeshPart* meshPart = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, false);
     meshPart->setIndexData(indices, 0, indexCount);
     return mesh;
@@ -255,6 +171,7 @@ void R_DynamicMeshUpdate::update(float elapsedTime)
     VertexBuffer * vb = (VertexBuffer *)_cubeModel->getMesh()->getVertexBuffer();
     float * data = (float*)vb->lock(0, 10, false);
     memcpy(data, vertices, sizeof(float) * 24 * 8);
+    data[8*6] = data[8*6] * sin(elapsedTime * 0.001) * 2;
     vb->unLock();
 }
 
