@@ -7,7 +7,7 @@
 #include "BGFX/BGFXVertexBuffer.h"
 
 
-//#define USE_TRANSIENT_BUFFER
+#define USE_TRANSIENT_BUFFER
 
 namespace gameplay
 {

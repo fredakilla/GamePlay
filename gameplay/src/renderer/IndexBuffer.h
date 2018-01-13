@@ -2,26 +2,27 @@
 #define INDEXBUFFER_H_
 
 #include "Base.h"
+#include "GeometryBuffer.h"
 
 namespace gameplay
 {
 
-class IndexBuffer
+class IndexBuffer : public GeometryBuffer
 {
 public:
+    //IndexBuffer() {}
     virtual ~IndexBuffer() {}
-    virtual void set(const void* indexData, unsigned int indexCount, unsigned int indexStart) = 0;
-    virtual void bind() = 0;
-
-    bool isDynamic() { return _dynamic; }
+    ///virtual void set(const void* indexData, unsigned int indexCount, unsigned int indexStart) = 0;
+    ///virtual void bind() = 0;
+    ///bool isDynamic() { return _dynamic; }
 
 
 protected:
     unsigned int _indexFormat;
-    unsigned int _indexCount;
+    /*unsigned int _indexCount;
     unsigned int _indexStart;
-    bool _dynamic;
-    unsigned int _indexSize;
+    bool _dynamic;*/
+    //unsigned int _indexSize;
 };
 
 }

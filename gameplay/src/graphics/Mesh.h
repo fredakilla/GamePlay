@@ -7,6 +7,7 @@
 #include "BoundingBox.h"
 #include "BoundingSphere.h"
 #include "VertexBuffer.h"
+#include "GeometryBuffer.h"
 
 namespace gameplay
 {
@@ -171,7 +172,7 @@ public:
      *
      * @return The vertex buffer object handle.
      */
-    const VertexBuffer* getVertexBuffer() const;
+    const VertexBuffer *getVertexBuffer() const;
 
     /**
      * Determines if the mesh is dynamic.
