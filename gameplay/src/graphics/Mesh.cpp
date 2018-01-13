@@ -52,6 +52,9 @@ Mesh* Mesh::createMesh(const VertexFormat& vertexFormat, unsigned int vertexCoun
     //@@GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, vbo) );
     //@@GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
 
+
+    GP_ASSERT(vertexCount > 0);
+
     Mesh* mesh = new Mesh(vertexFormat);    
     //@@mesh->_vertexCount = vertexCount;
     //@@mesh->_vertexBuffer = vbo;

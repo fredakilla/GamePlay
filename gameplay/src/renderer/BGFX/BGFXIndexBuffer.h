@@ -2,8 +2,10 @@
 #define BGFX_INDEXBUFFER_H_
 
 #include "IndexBuffer.h"
+#include "MemoryBuffer.h"
 
 namespace gameplay {
+
 
 class BGFXIndexBuffer : public IndexBuffer
 {
@@ -15,6 +17,15 @@ public:
 protected:
 
     virtual void set(const void* vertexData, unsigned int vertexCount, unsigned int vertexStart) override;
+
+private:
+
+    void createStaticBuffer();
+    void createDynamicBuffer();
+
+
+
+    MemoryBuffer _memoryBuffer;
 
     bgfx::IndexBufferHandle         _sibh;  // static index buffer handle
     bgfx::DynamicIndexBufferHandle  _dibh;  // dynamic index buffer handle

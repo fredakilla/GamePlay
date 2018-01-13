@@ -21,9 +21,14 @@ public:
 
     bool isDynamic() { return _dynamic; }
 
+
+    const unsigned int getVertexCount() const { return _vertexCount; }
+
+
 protected:
     VertexFormat * _vertexFormat;
     unsigned int _vertexCount;
+    unsigned int _vertexStart;
     bool _dynamic;
 
 };

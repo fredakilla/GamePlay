@@ -98,6 +98,7 @@ HEADERS += \
     src/graphics/Light.h \
     src/graphics/Material.h \
     src/graphics/MaterialParameter.h \
+    src/graphics/MemoryBuffer.h \
     src/graphics/Mesh.h \
     src/graphics/MeshBatch.h \
     src/graphics/MeshPart.h \
@@ -175,8 +176,8 @@ HEADERS += \
     src/renderer/Renderer.h \
     src/renderer/GpuProgram.h \
     src/renderer/Uniform.h \
-    src/renderer/TextureHandle.h \
-    src/renderer/BGFX/BGFXTexture.h
+    src/renderer/TextureHandle.h
+
 
 
 
@@ -217,6 +218,7 @@ SOURCES += \
     src/graphics/Light.cpp \
     src/graphics/Material.cpp \
     src/graphics/MaterialParameter.cpp \
+    src/graphics/MemoryBuffer.cpp \
     src/graphics/Mesh.cpp \
     src/graphics/MeshBatch.cpp \
     src/graphics/MeshPart.cpp \
@@ -287,8 +289,8 @@ SOURCES += \
     src/ui/TextBox.cpp \
     src/ui/Theme.cpp \
     src/ui/ThemeStyle.cpp \
-    src/ui/VerticalLayout.cpp \
-    src/renderer/BGFX/BGFXTexture.cpp
+    src/ui/VerticalLayout.cpp \    
+
 
 
 
@@ -317,14 +319,16 @@ HEADERS += \
     src/renderer/BGFX/BGFXVertexBuffer.h \
     src/renderer/BGFX/BGFXRenderer.h \
     src/renderer/BGFX/BGFXGpuProgram.h \
-    src/renderer/BGFX/BGFXUniform.h
+    src/renderer/BGFX/BGFXUniform.h \
+    src/renderer/BGFX/BGFXTexture.h
 
 SOURCES += \
     src/renderer/BGFX/BGFXIndexBuffer.cpp \
     src/renderer/BGFX/BGFXVertexBuffer.cpp \
     src/renderer/BGFX/BGFXRenderer.cpp \
     src/renderer/BGFX/BGFXGpuProgram.cpp \
-    src/renderer/BGFX/BGFXUniform.cpp
+    src/renderer/BGFX/BGFXUniform.cpp \
+    src/renderer/BGFX/BGFXTexture.cpp
 
 
 #--------------------------------------------------------------------

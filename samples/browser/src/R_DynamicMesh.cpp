@@ -2,66 +2,50 @@
 #include "SamplesGame.h"
 
 #if defined(ADD_SAMPLE)
-    ADD_SAMPLE("Renderer", "DyanmicMeshUpdate", R_DynamicMeshUpdate, 3);
+    ADD_SAMPLE("Renderer", "Dyanmic Mesh Update", R_DynamicMeshUpdate, 3);
 #endif
 
 
 
+struct PosColorVertex
+{
+    Vector3 m_pos;
+    Vector3 m_normal;
+    Vector2 m_uv;
+};
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    float vertices[] =
-    {
-         // position     // normal              // texcoord
-        -1, -1,  1,      0.0,  0.0,  1.0,       0.0, 0.0,
-         1, -1,  1,      0.0,  0.0,  1.0,       1.0, 0.0,
-        -1,  1,  1,      0.0,  0.0,  1.0,       0.0, 1.0,
-         1,  1,  1,      0.0,  0.0,  1.0,       1.0, 1.0,
-        -1,  1,  1,      0.0,  1.0,  0.0,       0.0, 0.0,
-         1,  1,  1,      0.0,  1.0,  0.0,       1.0, 0.0,
-        -1,  1, -1,      0.0,  1.0,  0.0,       0.0, 1.0,
-         1,  1, -1,      0.0,  1.0,  0.0,       1.0, 1.0,
-        -1,  1, -1,      0.0,  0.0, -1.0,       0.0, 0.0,
-         1,  1, -1,      0.0,  0.0, -1.0,       1.0, 0.0,
-        -1, -1, -1,      0.0,  0.0, -1.0,       0.0, 1.0,
-         1, -1, -1,      0.0,  0.0, -1.0,       1.0, 1.0,
-        -1, -1, -1,      0.0, -1.0,  0.0,       0.0, 0.0,
-         1, -1, -1,      0.0, -1.0,  0.0,       1.0, 0.0,
-        -1, -1,  1,      0.0, -1.0,  0.0,       0.0, 1.0,
-         1, -1,  1,      0.0, -1.0,  0.0,       1.0, 1.0,
-         1, -1,  1,      1.0,  0.0,  0.0,       0.0, 0.0,
-         1, -1, -1,      1.0,  0.0,  0.0,       1.0, 0.0,
-         1,  1,  1,      1.0,  0.0,  0.0,       0.0, 1.0,
-         1,  1, -1,      1.0,  0.0,  0.0,       1.0, 1.0,
-        -1, -1, -1,     -1.0,  0.0,  0.0,       0.0, 0.0,
-        -1, -1,  1,     -1.0,  0.0,  0.0,       1.0, 0.0,
-        -1,  1, -1,     -1.0,  0.0,  0.0,       0.0, 1.0,
-        -1,  1,  1,     -1.0,  0.0,  0.0,       1.0, 1.0
-    };
+PosColorVertex vertices[] =
+{
+       // position             // normal                       // texcoord
+    {  Vector3(-1, -1,  1),    Vector3(  0.0,  0.0,  1.0),     Vector2(0.0, 0.0)  },
+    {  Vector3( 1, -1,  1),    Vector3(  0.0,  0.0,  1.0),     Vector2(1.0, 0.0)  },
+    {  Vector3(-1,  1,  1),    Vector3(  0.0,  0.0,  1.0),     Vector2(0.0, 1.0)  },
+    {  Vector3( 1,  1,  1),    Vector3(  0.0,  0.0,  1.0),     Vector2(1.0, 1.0)  },
+    {  Vector3(-1,  1,  1),    Vector3(  0.0,  1.0,  0.0),     Vector2(0.0, 0.0)  },
+    {  Vector3( 1,  1,  1),    Vector3(  0.0,  1.0,  0.0),     Vector2(1.0, 0.0)  },
+    {  Vector3(-1,  1, -1),    Vector3(  0.0,  1.0,  0.0),     Vector2(0.0, 1.0)  },
+    {  Vector3( 1,  1, -1),    Vector3(  0.0,  1.0,  0.0),     Vector2(1.0, 1.0)  },
+    {  Vector3(-1,  1, -1),    Vector3(  0.0,  0.0, -1.0),     Vector2(0.0, 0.0)  },
+    {  Vector3( 1,  1, -1),    Vector3(  0.0,  0.0, -1.0),     Vector2(1.0, 0.0)  },
+    {  Vector3(-1, -1, -1),    Vector3(  0.0,  0.0, -1.0),     Vector2(0.0, 1.0)  },
+    {  Vector3( 1, -1, -1),    Vector3(  0.0,  0.0, -1.0),     Vector2(1.0, 1.0)  },
+    {  Vector3(-1, -1, -1),    Vector3(  0.0, -1.0,  0.0),     Vector2(0.0, 0.0)  },
+    {  Vector3( 1, -1, -1),    Vector3(  0.0, -1.0,  0.0),     Vector2(1.0, 0.0)  },
+    {  Vector3(-1, -1,  1),    Vector3(  0.0, -1.0,  0.0),     Vector2(0.0, 1.0)  },
+    {  Vector3( 1, -1,  1),    Vector3(  0.0, -1.0,  0.0),     Vector2(1.0, 1.0)  },
+    {  Vector3( 1, -1,  1),    Vector3(  1.0,  0.0,  0.0),     Vector2(0.0, 0.0)  },
+    {  Vector3( 1, -1, -1),    Vector3(  1.0,  0.0,  0.0),     Vector2(1.0, 0.0)  },
+    {  Vector3( 1,  1,  1),    Vector3(  1.0,  0.0,  0.0),     Vector2(0.0, 1.0)  },
+    {  Vector3( 1,  1, -1),    Vector3(  1.0,  0.0,  0.0),     Vector2(1.0, 1.0)  },
+    {  Vector3(-1, -1, -1),    Vector3( -1.0,  0.0,  0.0),     Vector2(0.0, 0.0)  },
+    {  Vector3(-1, -1,  1),    Vector3( -1.0,  0.0,  0.0),     Vector2(1.0, 0.0)  },
+    {  Vector3(-1,  1, -1),    Vector3( -1.0,  0.0,  0.0),     Vector2(0.0, 1.0)  },
+    {  Vector3(-1,  1,  1),    Vector3( -1.0,  0.0,  0.0),     Vector2(1.0, 1.0)  }
+};
 
 static Mesh* createTexturedCube(float size = 1.0f)
 {
-    float a = size;
-
     short indices[] =
     {
         0, 1, 2,
@@ -91,7 +75,10 @@ static Mesh* createTexturedCube(float size = 1.0f)
         GP_ERROR("Failed to create mesh.");
         return NULL;
     }
-    //mesh->setVertexData(vertices, 0, vertexCount);
+    mesh->setVertexData(0, 0, vertexCount);
+    //mesh->setVertexData(0, 0, vertexCount);
+    //mesh->setDrawRange(0,vertexCount);
+
     MeshPart* meshPart = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, false);
     meshPart->setIndexData(indices, 0, indexCount);
     return mesh;
@@ -123,14 +110,14 @@ void R_DynamicMeshUpdate::initialize()
     Matrix viewMatrix;
     Matrix::createLookAt(Vector3(3,2,-5), Vector3::zero(), Vector3::unitY(), &viewMatrix);
 
-    // mvp matrix
-    Matrix mvp = projMatrix * viewMatrix;
+    // set mvp matrix
+    _worldViewProjectionMatrix = projMatrix * viewMatrix;
 
 
     Material* material = Material::create("res/shaders/textured.vert", "res/shaders/textured.frag");
     Texture::Sampler * sampler = Texture::Sampler::create("res/png/brick.png");
     material->getParameter("u_diffuseTexture")->setValue(sampler);
-    material->getParameter("u_worldViewProjectionMatrix")->setValue(mvp);
+    material->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
     material->getStateBlock()->setCullFace(true);
     material->getStateBlock()->setDepthTest(true);
     material->getStateBlock()->setDepthWrite(true);
@@ -162,16 +149,43 @@ void R_DynamicMeshUpdate::finalize()
     SAFE_RELEASE(_font);
 }
 
+
+
 void R_DynamicMeshUpdate::update(float elapsedTime)
 {
-    // Update the rotation of the triangle. The speed is 180 degrees per second.
-    _worldViewProjectionMatrix.rotateZ( _spinDirection * MATH_PI * elapsedTime * 0.001f);
+    // Update the rotation of the cube.
+    float dt = elapsedTime * 0.001f;
+    float dx = _spinDirection * MATH_PI * 1.5f;
+    float dy = _spinDirection * MATH_PI * 1.2f;
+    float dz = _spinDirection * MATH_PI * 1.3f;
+    Quaternion rot = Quaternion(Vector3(dx, dy, dz), dt);
+    _worldViewProjectionMatrix.rotate(rot);
 
+
+    float t = Game::getAbsoluteTime() * 0.001f;
+    float phase = t * 10.0f;
 
     VertexBuffer * vb = (VertexBuffer *)_cubeModel->getMesh()->getVertexBuffer();
-    float * data = (float*)vb->lock(0, 10, false);
-    memcpy(data, vertices, sizeof(float) * 24 * 8);
-    data[8*6] = data[8*6] * sin(elapsedTime * 0.001) * 2;
+
+    PosColorVertex * ptr = (PosColorVertex*)vb->lock(0, vb->getVertexCount(), false);
+
+    if(vb)
+    {
+        for(int i=0; i<vb->getVertexCount(); i++)
+        {
+            Vector3& src = vertices[i].m_pos;
+            Vector3& dest = ptr->m_pos;
+            dest.x = src.x * (1.0f + 0.12f * sin(phase));
+            dest.y = src.y * (1.0f + 0.15f * sin(phase + 60.0f));
+            dest.z = src.z * (1.0f + 0.08f * sin(phase + 120.0f));
+
+            ptr->m_normal = vertices[i].m_normal;
+            ptr->m_uv = vertices[i].m_uv;
+
+            ptr++;
+        }
+    }
+
     vb->unLock();
 }
 
@@ -179,6 +193,7 @@ void R_DynamicMeshUpdate::render(float elapsedTime)
 {
     // draw the cube in main view
     Game::getInstance()->bindView(0);
+    _cubeModel->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
     _cubeModel->draw();
 
     // draw frame rate

@@ -6,6 +6,9 @@
 
 #include "BGFX/BGFXVertexBuffer.h"
 
+
+//#define USE_TRANSIENT_BUFFER
+
 namespace gameplay
 {
 
@@ -13,6 +16,8 @@ MeshBatch::MeshBatch(const VertexFormat& vertexFormat, Mesh::PrimitiveType primi
     : _vertexFormat(vertexFormat), _primitiveType(primitiveType), _material(material), _indexed(indexed), _capacity(0), _growSize(growSize),
     _vertexCapacity(0), _indexCapacity(0), _vertexCount(0), _indexCount(0), _vertices(NULL), _verticesPtr(NULL), _indices(NULL), _indicesPtr(NULL), _started(false)
 {
+
+#ifndef USE_TRANSIENT_BUFFER
     _model = Model::create(Mesh::createMesh(vertexFormat, initialCapacity, true));
     _model->getMesh()->setPrimitiveType(primitiveType);
     _model->getMesh()->release();
@@ -23,7 +28,7 @@ MeshBatch::MeshBatch(const VertexFormat& vertexFormat, Mesh::PrimitiveType primi
         _model->getMesh()->addPart(primitiveType, Mesh::INDEX16, _indexCount, true);
         _model->setMaterial(material, 0);
     }
-
+#endif
 
     BGFXVertexBuffer::createVertexDecl(vertexFormat, _vertexDecl);
 
@@ -32,7 +37,9 @@ MeshBatch::MeshBatch(const VertexFormat& vertexFormat, Mesh::PrimitiveType primi
 
 MeshBatch::~MeshBatch()
 {
+#ifndef USE_TRANSIENT_BUFFER
     SAFE_RELEASE(_model);
+#endif
 
     SAFE_RELEASE(_material);
     SAFE_DELETE_ARRAY(_vertices);
@@ -258,9 +265,12 @@ bool MeshBatch::isStarted() const
 
 void MeshBatch::finish()
 {
+#ifndef USE_TRANSIENT_BUFFER
     _model->getMesh()->setVertexData(reinterpret_cast<const float*>(_vertices), 0, _vertexCount);
     if(_indexed)
         _model->getMesh()->getPart(0)->setIndexData(reinterpret_cast<const float*>(_indices), 0, _indexCount);
+
+#endif
 
     _started = false;
 }
@@ -275,7 +285,7 @@ void MeshBatch::draw()
     //@@GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0 ) );
 
 
-#if 1
+#ifdef USE_TRANSIENT_BUFFER
 
     // using transiant buffers
 

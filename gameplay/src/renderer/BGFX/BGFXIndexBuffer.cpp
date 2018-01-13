@@ -12,10 +12,7 @@ BGFXIndexBuffer::BGFXIndexBuffer(const unsigned int indexFormat, unsigned int in
     _sibh = BGFX_INVALID_HANDLE;
     _dibh = BGFX_INVALID_HANDLE;
 
-    //GL_ASSERT( glGenBuffers(1, &_ibh) );
-    //GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibh) );
-    //
-    unsigned int indexSize = 0;
+
     switch (indexFormat)
     {
     case Mesh::INDEX8:
@@ -29,10 +26,21 @@ BGFXIndexBuffer::BGFXIndexBuffer(const unsigned int indexFormat, unsigned int in
         break;
     default:
         GP_ERROR("Unsupported index format (%d).", indexFormat);
-        //glDeleteBuffers(1, &_ibh);
     }
-    //
-    //GL_ASSERT( glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize * indexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
+
+
+    // allocate memory buffer
+    unsigned int memSize = _indexSize * _indexCount;
+    _memoryBuffer.create(memSize);
+
+    // if dynamic, create bgfx vertex buffer here.
+    // if static, creation will be delayed when setting vertice data.
+    if(_dynamic)
+    {
+        createDynamicBuffer();
+    }
+
+
 }
 
 BGFXIndexBuffer::~BGFXIndexBuffer()
@@ -49,9 +57,42 @@ BGFXIndexBuffer::~BGFXIndexBuffer()
     }
 }
 
+
+void BGFXIndexBuffer::createDynamicBuffer()
+{
+    GP_ASSERT(_dynamic);
+
+    uint16_t flags = /*BGFX_BUFFER_NONE; //*/BGFX_BUFFER_ALLOW_RESIZE;
+    if(_indexFormat == Mesh::INDEX32)
+        flags |= BGFX_BUFFER_INDEX32;
+
+    _dibh = bgfx::createDynamicIndexBuffer(_indexCount, flags);
+    GP_ASSERT(bgfx::isValid(_dibh));
+}
+
+void BGFXIndexBuffer::createStaticBuffer()
+{
+    GP_ASSERT(!_dynamic && !bgfx::isValid(_sibh));
+    GP_ASSERT(_memoryBuffer.getSize() > 0);
+
+    void * dataPtr = _memoryBuffer.map(0);
+    GP_ASSERT(dataPtr);
+    const bgfx::Memory * mem = bgfx::makeRef(dataPtr, _memoryBuffer.getSize());
+
+
+    uint16_t flags = BGFX_BUFFER_NONE;
+    if(_indexFormat == Mesh::INDEX32)
+        flags |= BGFX_BUFFER_INDEX32;
+
+    _sibh = bgfx::createIndexBuffer(mem, flags);
+    GP_ASSERT(bgfx::isValid(_sibh));
+}
+
+
+
 void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsigned int indexStart)
 {
-    if(indexCount == 0)
+    /*if(indexCount == 0)
     {
         GP_WARN("BGFXIndexBuffer::set() - indexCount is null.");
         return;
@@ -86,7 +127,7 @@ void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsign
         {
             GP_WARN("BGFXIndexBuffer::set() - static index buffer already set.");
         }
-    }
+    }*/
 
 
 
@@ -124,11 +165,96 @@ void BGFXIndexBuffer::set(const void* indexData, unsigned int indexCount, unsign
 
             GL_ASSERT( glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, indexStart * indexSize, indexCount * indexSize, indexData) );
         }*/
+
+
+
+
+    if (indexStart == 0 && indexCount == 0)
+    {
+        indexCount = _indexCount;
+
+    }
+    else
+    {
+        if (indexCount == 0)
+        {
+            indexCount = _indexCount - indexStart;
+        }
+        else
+        {
+            indexCount =  indexStart + indexCount;
+        }
+  }
+
+
+
+
+
+
+    if(_dynamic)
+    {
+        // need to resize buffer ?
+        //if(_vertexCount < (vertexStart + vertexCount))
+        if(_indexCount < indexCount)
+        {
+            uint32_t newSize = indexCount * _indexSize;
+            if(newSize > _memoryBuffer.getSize())
+                _memoryBuffer.resize(newSize);
+
+            //_vertexCount = vertexStart + vertexCount;
+            //vertexCount = vertexStart + vertexCount;
+        }
+    }
+    else
+    {
+        // create static bgfx buffer
+        if(!bgfx::isValid(_sibh))
+            createStaticBuffer();
+    }
+
+
+    if(indexData)
+    {
+        // copy vertex data to memory buffer
+        uint32_t memSize = indexCount * _indexSize;
+        GP_ASSERT(memSize <= _memoryBuffer.getSize());
+
+        memcpy(_memoryBuffer.map(0), indexData, memSize);
+
+        // if dynamic, update vertex buffer with memory buffer
+        if(_dynamic)
+        {
+            GP_ASSERT(bgfx::isValid(_dibh));
+
+            const bgfx::Memory* mem = bgfx::makeRef(_memoryBuffer.map(0), memSize);
+            bgfx::updateDynamicIndexBuffer(_dibh, indexStart, mem);
+        }
+    }
+
+
+    _indexStart = indexStart;
+    _indexCount = indexCount;
+
+
+
+
 }
 
 void BGFXIndexBuffer::bind()
 {
     if(_dynamic)
+    {
+        GP_ASSERT(bgfx::isValid(_dibh));
+        bgfx::setIndexBuffer(_dibh, _indexStart, _indexCount);
+    }
+    else
+    {
+        GP_ASSERT(bgfx::isValid(_sibh));
+        bgfx::setIndexBuffer(_sibh, _indexStart, _indexCount);
+    }
+
+
+    /*if(_dynamic)
     {
         if(bgfx::isValid(_dibh))
             bgfx::setIndexBuffer(_dibh);
@@ -143,7 +269,7 @@ void BGFXIndexBuffer::bind()
         else
             GP_WARN("BGFXIndexBuffer::bind() - static index buffer no set.");
 
-    }
+    }*/
 }
 
 
