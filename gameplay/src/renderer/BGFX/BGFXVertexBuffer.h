@@ -1,14 +1,15 @@
 #ifndef BGFX_VERTEXBUFFER_H_
 #define BGFX_VERTEXBUFFER_H_
 
-#include "VertexBuffer.h"
-#include "MemoryBuffer.h"
+
+#include "Base.h"
+#include "VertexFormat.h"
 #include "GeometryBuffer.h"
 
 namespace gameplay {
 
 
-class BGFXVertexBuffer : public VertexBuffer
+class BGFXVertexBuffer : public GeometryBuffer
 {
 public:
     BGFXVertexBuffer(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic);

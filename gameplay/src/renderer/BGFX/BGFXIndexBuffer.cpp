@@ -3,9 +3,6 @@
 
 namespace gameplay {
 
-
-
-
 BGFXIndexBuffer::BGFXIndexBuffer(const unsigned int indexFormat, unsigned int indexCount, bool dynamic)
 {
     _indexFormat = indexFormat;

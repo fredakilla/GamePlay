@@ -6,11 +6,12 @@
 #include "Vector3.h"
 #include "BoundingBox.h"
 #include "BoundingSphere.h"
-#include "VertexBuffer.h"
 #include "GeometryBuffer.h"
 
 namespace gameplay
 {
+
+typedef GeometryBuffer VertexBuffer;
 
 class MeshPart;
 class Material;

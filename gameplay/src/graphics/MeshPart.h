@@ -2,10 +2,12 @@
 #define MESHPART_H_
 
 #include "Mesh.h"
-#include "IndexBuffer.h"
+#include "GeometryBuffer.h"
 
 namespace gameplay
 {
+
+typedef GeometryBuffer IndexBuffer;
 
 /**
  * Defines a part of a mesh describing the way the

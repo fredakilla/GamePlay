@@ -167,11 +167,11 @@ void R_DynamicMeshUpdate::update(float elapsedTime)
 
     VertexBuffer * vb = (VertexBuffer *)_cubeModel->getMesh()->getVertexBuffer();
 
-    PosColorVertex * ptr = (PosColorVertex*)vb->lock(0, vb->getVertexCount(), false);
+    PosColorVertex * ptr = (PosColorVertex*)vb->lock(0, vb->getElementCount(), false);
 
     if(vb)
     {
-        for(int i=0; i<vb->getVertexCount(); i++)
+        for(int i=0; i<vb->getElementCount(); i++)
         {
             Vector3& src = vertices[i].m_pos;
             Vector3& dest = ptr->m_pos;

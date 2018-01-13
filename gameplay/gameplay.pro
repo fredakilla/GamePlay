@@ -171,8 +171,6 @@ HEADERS += \
     src/ui/ThemeStyle.h \
     src/ui/VerticalLayout.h \
     src/gameplay.h \
-    src/renderer/VertexBuffer.h \
-    src/renderer/IndexBuffer.h \
     src/renderer/Renderer.h \
     src/renderer/GpuProgram.h \
     src/renderer/Uniform.h \
