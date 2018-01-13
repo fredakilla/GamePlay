@@ -27,7 +27,6 @@ private:
 
     void setGeometry(bool dynamic);
     void setIndexedGeometry(bool dynamic);
-    void drawModelStats();
 
     Form* _form;
     Font* _font;

@@ -46,7 +46,7 @@ PosColorVertex vertices[] =
 
 static Mesh* createTexturedCube(float size = 1.0f)
 {
-    short indices[] =
+    /*short indices[] =
     {
         0, 1, 2,
         2, 1, 3,
@@ -60,7 +60,7 @@ static Mesh* createTexturedCube(float size = 1.0f)
         18, 17, 19,
         20, 21, 22,
         22, 21, 23
-    };
+    };*/
     unsigned int vertexCount = 24;
     unsigned int indexCount = 36;
     VertexFormat::Element elements[] =
@@ -76,11 +76,9 @@ static Mesh* createTexturedCube(float size = 1.0f)
         return NULL;
     }
     mesh->setVertexData(0, 0, vertexCount);
-    //mesh->setVertexData(0, 0, vertexCount);
-    //mesh->setDrawRange(0,vertexCount);
 
-    MeshPart* meshPart = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, false);
-    meshPart->setIndexData(indices, 0, indexCount);
+    MeshPart* meshPart = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, true);
+    meshPart->setIndexData(0, 0, indexCount);
     return mesh;
 }
 
@@ -130,9 +128,7 @@ void R_DynamicMeshUpdate::initialize()
 
 
     // Set views
-
     Game * game = Game::getInstance();
-
     View defaultView;
     defaultView.id = 0;
     defaultView.clearColor = 0x111111ff;
@@ -149,8 +145,6 @@ void R_DynamicMeshUpdate::finalize()
     SAFE_RELEASE(_font);
 }
 
-
-
 void R_DynamicMeshUpdate::update(float elapsedTime)
 {
     // Update the rotation of the cube.
@@ -162,31 +156,57 @@ void R_DynamicMeshUpdate::update(float elapsedTime)
     _worldViewProjectionMatrix.rotate(rot);
 
 
+    // Update vertex buffer.
+
     float t = Game::getAbsoluteTime() * 0.001f;
     float phase = t * 10.0f;
 
     VertexBuffer * vb = (VertexBuffer *)_cubeModel->getMesh()->getVertexBuffer();
-
-    PosColorVertex * ptr = (PosColorVertex*)vb->lock(0, vb->getElementCount(), false);
-
-    if(vb)
+    PosColorVertex * vbPtr = (PosColorVertex*)vb->lock(0, vb->getElementCount(), false);
+    if(vbPtr)
     {
         for(int i=0; i<vb->getElementCount(); i++)
         {
             Vector3& src = vertices[i].m_pos;
-            Vector3& dest = ptr->m_pos;
+            Vector3& dest = vbPtr->m_pos;
             dest.x = src.x * (1.0f + 0.12f * sin(phase));
             dest.y = src.y * (1.0f + 0.15f * sin(phase + 60.0f));
             dest.z = src.z * (1.0f + 0.08f * sin(phase + 120.0f));
 
-            ptr->m_normal = vertices[i].m_normal;
-            ptr->m_uv = vertices[i].m_uv;
+            vbPtr->m_normal = vertices[i].m_normal;
+            vbPtr->m_uv = vertices[i].m_uv;
 
-            ptr++;
+            vbPtr++;
         }
     }
-
     vb->unLock();
+
+
+    // Update index buffer.
+
+    IndexBuffer * ib = (IndexBuffer *)_cubeModel->getMesh()->getPart(0)->getIndexBuffer();
+    unsigned short * ibPtr = (unsigned short *)ib->lock(0, ib->getElementCount(), false);
+    if(ibPtr)
+    {
+        unsigned short indices[] =
+        {
+            0, 1, 2,
+            2, 1, 3,
+            4, 5, 6,
+            6, 5, 7,
+            8, 9, 10,
+            10, 9, 11,
+            12, 13, 14,
+            14, 13, 15,
+            16, 17, 18,
+            18, 17, 19,
+            20, 21, 22,
+            22, 21, 23
+        };
+
+        memcpy(ibPtr, indices, sizeof(unsigned short) * 3 * 12);
+    }
+    ib->unLock();
 }
 
 void R_DynamicMeshUpdate::render(float elapsedTime)

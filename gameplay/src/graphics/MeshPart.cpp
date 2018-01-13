@@ -58,6 +58,9 @@ MeshPart* MeshPart::create(Mesh* mesh, unsigned int meshIndex, Mesh::PrimitiveTy
     //@@
     //@@GL_ASSERT( glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize * indexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
 
+
+    GP_ASSERT(indexCount > 0);
+
     MeshPart* part = new MeshPart();
     part->_mesh = mesh;
     part->_meshIndex = meshIndex;

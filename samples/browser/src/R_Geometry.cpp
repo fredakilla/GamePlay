@@ -269,37 +269,8 @@ void R_Geometry::render(float elapsedTime)
 
     drawFrameRate(_font, Vector4(0, 0.5f, 1, 1), 5, getHeight()-20, getFrameRate());
 
-    drawModelStats();
-
     _form->draw();
 }
-
-void R_Geometry::drawModelStats()
-{
-    int partCount = _model->getMeshPartCount();
-    unsigned vertexCount = _model->getMesh()->getVertexCount();
-    Mesh::PrimitiveType primitiveType = _model->getMesh()->getPrimitiveType();
-    bool indexed = partCount > 0 ? true : false;
-    unsigned indexCount = indexed ? _model->getMesh()->getPart(0)->getIndexCount() : 0;
-    bool dynamic = _model->getMesh()->isDynamic();
-
-    const char * dynamicStr[] = { "Static", "Dynamic" };
-    const char * prmitiveStr[] = { "TRIANGLES", "TRIANGLE_STRIP", "LINES", "LINE_STRIP", "POINTS", "UNKNOWN" };
-
-    char buffer[512];
-    sprintf(buffer, "Mesh [%s] [%s]\n"
-                    "VertexCount = %u\n"
-                    "IndexCount = %u"
-            , dynamicStr[dynamic]
-            , prmitiveStr[primitiveType]
-            , vertexCount, indexCount
-            );
-
-    _font->start();
-    _font->drawText(buffer, 10, 0, Vector4::one(), 18);
-    _font->finish();
-}
-
 void R_Geometry::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex)
 {
     switch (evt)
