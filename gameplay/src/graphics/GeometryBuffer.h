@@ -11,19 +11,15 @@ class GeometryBuffer
 public:
     GeometryBuffer();
     virtual ~GeometryBuffer();
-
     virtual void set(const void* data, unsigned int count, unsigned int start);
     virtual void bind();
     virtual void * lock(unsigned start, unsigned count, bool discard=false);
     virtual void unLock();
-
     const unsigned int getElementCount() const { return _elementCount; }
-
-protected:
-    void create(unsigned int elementSize, unsigned int elementCount, bool dynamic);
     bool isDynamic() { return _dynamic; }
 
-
+protected:
+    void initialize(unsigned int elementSize, unsigned int elementCount, bool dynamic);
 
 protected:
     unsigned int    _elementSize;

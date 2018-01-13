@@ -1,7 +1,6 @@
 #ifndef BGFX_VERTEXBUFFER_H_
 #define BGFX_VERTEXBUFFER_H_
 
-
 #include "Base.h"
 #include "VertexFormat.h"
 #include "GeometryBuffer.h"
@@ -19,19 +18,15 @@ public:
     void * lock(unsigned start, unsigned count, bool discard=false);
     void unLock();
 
-
-
-
-
     static void createVertexDecl(const VertexFormat &vertexFormat, bgfx::VertexDecl &vertexDecl);
 
+private:
     void createStaticBuffer();
     void createDynamicBuffer();
 
     bgfx::VertexBufferHandle            _svbh;          // static vertex buffer handle
     bgfx::DynamicVertexBufferHandle     _dvbh;          // dynamic vertex buffer handle
     bgfx::VertexDecl                    _vertexDecl;    // vertex declaration
-
 
 };
 

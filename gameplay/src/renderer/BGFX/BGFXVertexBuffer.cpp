@@ -3,16 +3,16 @@
 namespace gameplay {
 
 
-
 BGFXVertexBuffer::BGFXVertexBuffer(const VertexFormat &vertexFormat, unsigned int vertexCount, bool dynamic)
 {
-    createVertexDecl(vertexFormat, _vertexDecl);
-
     _svbh = BGFX_INVALID_HANDLE;
     _dvbh = BGFX_INVALID_HANDLE;
 
-    create(_vertexDecl.getSize(1), vertexCount, dynamic);
+    // create vertex declaration
+    createVertexDecl(vertexFormat, _vertexDecl);
 
+    // initialise Geometry buffer.
+    initialize(_vertexDecl.getSize(1), vertexCount, dynamic);
 
     // if dynamic, create bgfx vertex buffer here.
     // if static, creation will be delayed when setting vertice data.
@@ -24,6 +24,16 @@ BGFXVertexBuffer::BGFXVertexBuffer(const VertexFormat &vertexFormat, unsigned in
 
 BGFXVertexBuffer::~BGFXVertexBuffer()
 {
+    if(_dynamic)
+    {
+        if(bgfx::isValid(_dvbh))
+            bgfx::destroy(_dvbh);
+    }
+    else
+    {
+        if(bgfx::isValid(_svbh))
+            bgfx::destroy(_svbh);
+    }
 }
 
 void getBgfxAttribute(const VertexFormat::Element& element, bgfx::Attrib::Enum& attrib)
@@ -122,7 +132,7 @@ void BGFXVertexBuffer::createStaticBuffer()
 
     void * dataPtr = _memoryBuffer.map(0);
     GP_ASSERT(dataPtr);
-    const bgfx::Memory * mem = bgfx::makeRef(dataPtr, _memoryBuffer.getSize());//_vertexDecl.getSize(_elementCount));
+    const bgfx::Memory * mem = bgfx::makeRef(dataPtr, _memoryBuffer.getSize());
 
     uint16_t flags = BGFX_BUFFER_NONE;
     _svbh = bgfx::createVertexBuffer(mem, _vertexDecl, flags);
@@ -173,21 +183,11 @@ void BGFXVertexBuffer::unLock()
 {
     GP_ASSERT(bgfx::isValid(_dvbh));
 
-    if (_lockState == LOCK_SCRATCH)
+    if (_lockState == LOCK_ACTIVE)
     {
-        //bgfx::updateDynamicVertexBuffer(_dvbh, _lockStart, bgfx::makeRef(_lockScratchData, _vertexDecl.getSize(_vertexCount)) );
         bgfx::updateDynamicVertexBuffer(_dvbh, _lockStart, bgfx::makeRef(_lockScratchData, _memoryBuffer.getSize()) );
-
-
-        /*_memoryBuffer.unmap();
-
-        //setDataRange(shadowData_.Get() + lockStart_ * vertexSize_, lockStart_, lockCount_, discardLock_);
-        _lockState = LOCK_NONE;
-        _lockScratchData = nullptr;*/
-    }
-
-    GeometryBuffer::unLock();
-
+        GeometryBuffer::unLock();
+    }    
 }
 
 

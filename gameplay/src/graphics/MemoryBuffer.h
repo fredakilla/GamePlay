@@ -8,14 +8,10 @@ namespace gameplay
 enum LockState
 {
     LOCK_NONE = 0,
-    LOCK_HARDWARE,
-    LOCK_SHADOW,
-    LOCK_SCRATCH
+    LOCK_ACTIVE,
 };
 
-
-
-
+/// Base Buffer
 class IBuffer
 {
 public:
@@ -35,6 +31,7 @@ protected:
 };
 
 
+/// Memory buffer
 class MemoryBuffer : public IBuffer
 {
 public:

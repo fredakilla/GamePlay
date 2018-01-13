@@ -3,10 +3,12 @@
 
 namespace gameplay {
 
-BGFXIndexBuffer::BGFXIndexBuffer(const unsigned int indexFormat, unsigned int indexCount, bool dynamic)
+BGFXIndexBuffer::BGFXIndexBuffer(const Mesh::IndexFormat indexFormat, unsigned int indexCount, bool dynamic)
 {
-    _indexFormat = indexFormat;
+    _sibh = BGFX_INVALID_HANDLE;
+    _dibh = BGFX_INVALID_HANDLE;
 
+    _indexFormat = indexFormat;
     switch (indexFormat)
     {
     case Mesh::INDEX8:
@@ -22,12 +24,8 @@ BGFXIndexBuffer::BGFXIndexBuffer(const unsigned int indexFormat, unsigned int in
         GP_ERROR("Unsupported index format (%d).", indexFormat);
     }
 
-
-    _sibh = BGFX_INVALID_HANDLE;
-    _dibh = BGFX_INVALID_HANDLE;
-
-    create(_elementSize, indexCount, dynamic);
-
+    // initialise Geometry buffer.
+    initialize(_elementSize, indexCount, dynamic);
 
     // if dynamic, create bgfx vertex buffer here.
     // if static, creation will be delayed when setting vertice data.
@@ -39,8 +37,17 @@ BGFXIndexBuffer::BGFXIndexBuffer(const unsigned int indexFormat, unsigned int in
 
 BGFXIndexBuffer::~BGFXIndexBuffer()
 {
+    if(_dynamic)
+    {
+        if(bgfx::isValid(_dibh))
+            bgfx::destroy(_dibh);
+    }
+    else
+    {
+        if(bgfx::isValid(_sibh))
+            bgfx::destroy(_sibh);
+    }
 }
-
 
 void BGFXIndexBuffer::createDynamicBuffer()
 {
@@ -108,12 +115,20 @@ void BGFXIndexBuffer::bind()
 
 void * BGFXIndexBuffer::lock(unsigned start, unsigned count, bool discard)
 {
+    GP_ASSERT(_dynamic && bgfx::isValid(_dibh));
 
+    return GeometryBuffer::lock(start, count, discard);
 }
 
 void BGFXIndexBuffer::unLock()
 {
+    GP_ASSERT(_dynamic && bgfx::isValid(_dibh));
 
+    if (_lockState == LOCK_ACTIVE)
+    {
+        bgfx::updateDynamicIndexBuffer(_dibh, _lockStart, bgfx::makeRef(_lockScratchData, _memoryBuffer.getSize()) );
+        GeometryBuffer::unLock();
+    }
 }
 
 

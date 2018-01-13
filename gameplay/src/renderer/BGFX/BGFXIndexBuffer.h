@@ -3,6 +3,7 @@
 
 #include "GeometryBuffer.h"
 #include "Base.h"
+#include "Mesh.h"
 
 namespace gameplay {
 
@@ -10,7 +11,7 @@ namespace gameplay {
 class BGFXIndexBuffer : public GeometryBuffer
 {
 public:
-    BGFXIndexBuffer(const unsigned int indexFormat, unsigned int indexCount, bool dynamic);
+    BGFXIndexBuffer(const Mesh::IndexFormat indexFormat, unsigned int indexCount, bool dynamic);
     virtual ~BGFXIndexBuffer();
     void set(const void* data, unsigned int count, unsigned int start);
     void bind();
@@ -18,17 +19,13 @@ public:
     void unLock();
 
 private:
-
     void createStaticBuffer();
     void createDynamicBuffer();
 
-    bgfx::IndexBufferHandle         _sibh;  // static index buffer handle
-    bgfx::DynamicIndexBufferHandle  _dibh;  // dynamic index buffer handle
-
-    unsigned int _indexFormat;
+    bgfx::IndexBufferHandle         _sibh;          // static index buffer handle
+    bgfx::DynamicIndexBufferHandle  _dibh;          // dynamic index buffer handle
+    Mesh::IndexFormat               _indexFormat;   // 8, 16 or 32 bits
 };
-
-
 
 
 
