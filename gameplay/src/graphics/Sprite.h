@@ -1,14 +1,14 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
 
-#include "Ref.h"
-#include "Drawable.h"
-#include "AnimationTarget.h"
-#include "Properties.h"
-#include "Rectangle.h"
-#include "Vector4.h"
-#include "SpriteBatch.h"
-#include "Effect.h"
+#include "../core/Ref.h"
+#include "../graphics/Drawable.h"
+#include "../animation/AnimationTarget.h"
+#include "../core/Properties.h"
+#include "../math/Rectangle.h"
+#include "../math/Vector4.h"
+#include "../graphics/SpriteBatch.h"
+#include "../graphics/Effect.h"
 
 namespace gameplay
 {

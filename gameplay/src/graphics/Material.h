@@ -1,9 +1,9 @@
 #ifndef MATERIAL_H_
 #define MATERIAL_H_
 
-#include "RenderState.h"
-#include "Technique.h"
-#include "Properties.h"
+#include "../graphics/RenderState.h"
+#include "../graphics/Technique.h"
+#include "../core/Properties.h"
 
 namespace gameplay
 {

@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "PhysicsSocketConstraint.h"
-#include "Node.h"
+#include "../core/Base.h"
+#include "../physics/PhysicsSocketConstraint.h"
+#include "../graphics/Node.h"
 
 namespace gameplay
 {

@@ -1,7 +1,7 @@
-#include "Base.h"
-#include "PhysicsSpringConstraint.h"
-#include "Node.h"
-#include "PhysicsRigidBody.h"
+#include "../core/Base.h"
+#include "../physics/PhysicsSpringConstraint.h"
+#include "../graphics/Node.h"
+#include "../physics/PhysicsRigidBody.h"
 
 namespace gameplay
 {

@@ -1,9 +1,9 @@
 #ifndef AUDIOSOURCE_H_
 #define AUDIOSOURCE_H_
 
-#include "Vector3.h"
-#include "Ref.h"
-#include "Transform.h"
+#include "../math/Vector3.h"
+#include "../core/Ref.h"
+#include "../math/Transform.h"
 
 namespace gameplay
 {

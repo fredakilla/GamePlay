@@ -1,11 +1,11 @@
 #ifndef IMAGECONTROL_H_
 #define IMAGECONTROL_H_
 
-#include "Control.h"
-#include "Theme.h"
-#include "Image.h"
-#include "SpriteBatch.h"
-#include "Rectangle.h"
+#include "../ui/Control.h"
+#include "../ui/Theme.h"
+#include "../graphics/Image.h"
+#include "../graphics/SpriteBatch.h"
+#include "../math/Rectangle.h"
 
 namespace gameplay
 {

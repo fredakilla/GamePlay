@@ -1,7 +1,7 @@
 #ifndef FONT_H_
 #define FONT_H_
 
-#include "SpriteBatch.h"
+#include "../graphics/SpriteBatch.h"
 
 namespace gameplay
 {

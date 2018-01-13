@@ -1,7 +1,7 @@
-#include "Base.h"
-#include "TileSet.h"
-#include "Matrix.h"
-#include "Scene.h"
+#include "../core/Base.h"
+#include "../graphics/TileSet.h"
+#include "../math/Matrix.h"
+#include "../graphics/Scene.h"
 
 namespace gameplay
 {

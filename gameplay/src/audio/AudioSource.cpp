@@ -1,10 +1,10 @@
-#include "Base.h"
-#include "Node.h"
-#include "AudioBuffer.h"
-#include "AudioController.h"
-#include "AudioSource.h"
-#include "Game.h"
-#include "Node.h"
+#include "../core/Base.h"
+#include "../graphics/Node.h"
+#include "../audio/AudioBuffer.h"
+#include "../audio/AudioController.h"
+#include "../audio/AudioSource.h"
+#include "../core/Game.h"
+#include "../graphics/Node.h"
 
 namespace gameplay
 {

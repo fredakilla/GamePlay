@@ -1,8 +1,8 @@
 #if 0
 
-#include "Base.h"
+#include "../core/Base.h"
 #include "VertexAttributeBinding.h"
-#include "Mesh.h"
+#include "../graphics/Mesh.h"
 #include "Effect.h"
 
 namespace gameplay

@@ -1,11 +1,11 @@
-#include "Base.h"
-#include "PhysicsController.h"
-#include "PhysicsRigidBody.h"
-#include "PhysicsCharacter.h"
-#include "Game.h"
-#include "MeshPart.h"
-#include "Bundle.h"
-#include "Terrain.h"
+#include "../core/Base.h"
+#include "../physics/PhysicsController.h"
+#include "../physics/PhysicsRigidBody.h"
+#include "../physics/PhysicsCharacter.h"
+#include "../core/Game.h"
+#include "../graphics/MeshPart.h"
+#include "../core/Bundle.h"
+#include "../graphics/Terrain.h"
 
 #ifdef GP_USE_MEM_LEAK_DETECTION
 #undef new

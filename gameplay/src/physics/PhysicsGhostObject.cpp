@@ -1,7 +1,7 @@
-#include "Base.h"
-#include "PhysicsGhostObject.h"
-#include "Node.h"
-#include "Game.h"
+#include "../core/Base.h"
+#include "../physics/PhysicsGhostObject.h"
+#include "../graphics/Node.h"
+#include "../core/Game.h"
 
 namespace gameplay
 {

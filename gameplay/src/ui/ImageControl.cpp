@@ -1,5 +1,5 @@
-#include "Base.h"
-#include "ImageControl.h"
+#include "../core/Base.h"
+#include "../ui/ImageControl.h"
 
 namespace gameplay
 {

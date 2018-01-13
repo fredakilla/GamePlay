@@ -1,9 +1,9 @@
-#include "Base.h"
-#include "AnimationTarget.h"
-#include "Animation.h"
-#include "Game.h"
-#include "Node.h"
-#include "MaterialParameter.h"
+#include "../core/Base.h"
+#include "../animation/AnimationTarget.h"
+#include "../animation/Animation.h"
+#include "../core/Game.h"
+#include "../graphics/Node.h"
+#include "../graphics/MaterialParameter.h"
 
 #define ANIMATION_TARGET_INDEFINITE_STR "INDEFINITE"
 

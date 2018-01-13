@@ -1,13 +1,13 @@
 #ifndef PLATFORM_H_
 #define PLATFORM_H_
 
-#include "Vector2.h"
-#include "Keyboard.h"
-#include "Mouse.h"
-#include "Touch.h"
-#include "Gesture.h"
-#include "Gamepad.h"
-#include "FileSystem.h"
+#include "../math/Vector2.h"
+#include "../core/Keyboard.h"
+#include "../core/Mouse.h"
+#include "../core/Touch.h"
+#include "../core/Gesture.h"
+#include "../core/Gamepad.h"
+#include "../core/FileSystem.h"
 
 namespace gameplay
 {
@@ -446,6 +446,6 @@ private:
 
 }
 
-#include "Game.h"
+#include "../core/Game.h"
 
 #endif

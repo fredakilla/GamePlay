@@ -1,8 +1,8 @@
-#include "Base.h"
-#include "AudioController.h"
-#include "AudioListener.h"
-#include "AudioBuffer.h"
-#include "AudioSource.h"
+#include "../core/Base.h"
+#include "../audio/AudioController.h"
+#include "../audio/AudioListener.h"
+#include "../audio/AudioBuffer.h"
+#include "../audio/AudioSource.h"
 
 namespace gameplay
 {

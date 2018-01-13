@@ -1,13 +1,13 @@
 #ifndef TILESET_H__
 #define TILESET_H__
 
-#include "Ref.h"
-#include "Drawable.h"
-#include "Properties.h"
-#include "Vector2.h"
-#include "Vector4.h"
-#include "SpriteBatch.h"
-#include "Effect.h"
+#include "../core/Ref.h"
+#include "../graphics/Drawable.h"
+#include "../core/Properties.h"
+#include "../math/Vector2.h"
+#include "../math/Vector4.h"
+#include "../graphics/SpriteBatch.h"
+#include "../graphics/Effect.h"
 
 namespace gameplay
 {

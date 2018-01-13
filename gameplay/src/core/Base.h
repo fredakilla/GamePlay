@@ -32,7 +32,7 @@
 #include <thread>
 #include <mutex>
 #include <chrono>
-#include "Logger.h"
+#include "../core/Logger.h"
 
 // Bring common functions from C into global namespace
 using std::memcpy;
@@ -130,7 +130,7 @@ extern int strcmpnocase(const char* s1, const char* s2);
 #define BQ(q) (btQuaternion((q).x, (q).y, (q).z, (q).w))
 
 // Debug new for memory leak detection
-#include "DebugNew.h"
+#include "../core/DebugNew.h"
 
 // Object deletion macro
 #define SAFE_DELETE(x) \

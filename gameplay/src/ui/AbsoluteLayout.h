@@ -1,7 +1,7 @@
 #ifndef ABSOLUTELAYOUT_H_
 #define ABSOLUTELAYOUT_H_
 
-#include "Layout.h"
+#include "../ui/Layout.h"
 
 namespace gameplay
 {

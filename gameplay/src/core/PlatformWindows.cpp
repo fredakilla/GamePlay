@@ -1,12 +1,12 @@
 #ifndef GP_NO_PLATFORM
 #ifdef WIN32
 
-#include "Base.h"
-#include "Platform.h"
-#include "FileSystem.h"
-#include "Game.h"
-#include "Form.h"
-#include "Vector2.h"
+#include "../core/Base.h"
+#include "../core/Platform.h"
+#include "../core/FileSystem.h"
+#include "../core/Game.h"
+#include "../ui/Form.h"
+#include "../math/Vector2.h"
 #include "ScriptController.h"
 #include <GL/wglew.h>
 #include <windowsx.h>

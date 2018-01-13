@@ -1,15 +1,15 @@
 #ifndef PARTICLEEMITTER_H_
 #define PARTICLEEMITTER_H_
 
-#include "Transform.h"
-#include "Mesh.h"
-#include "Vector2.h"
-#include "Vector4.h"
-#include "Texture.h"
-#include "Rectangle.h"
-#include "SpriteBatch.h"
-#include "Properties.h"
-#include "Drawable.h"
+#include "../math/Transform.h"
+#include "../graphics/Mesh.h"
+#include "../math/Vector2.h"
+#include "../math/Vector4.h"
+#include "../graphics/Texture.h"
+#include "../math/Rectangle.h"
+#include "../graphics/SpriteBatch.h"
+#include "../core/Properties.h"
+#include "../graphics/Drawable.h"
 
 namespace gameplay
 {

@@ -1,9 +1,9 @@
 #ifndef AUDIOLISTENER_H_
 #define AUDIOLISTENER_H_
 
-#include "Vector3.h"
-#include "Transform.h"
-#include "Camera.h"
+#include "../math/Vector3.h"
+#include "../math/Transform.h"
+#include "../graphics/Camera.h"
 
 namespace gameplay
 {

@@ -1,16 +1,16 @@
 #ifndef PHYSICSCONTROLLER_H_
 #define PHYSICSCONTROLLER_H_
 
-#include "PhysicsConstraint.h"
-#include "PhysicsFixedConstraint.h"
-#include "PhysicsGenericConstraint.h"
-#include "PhysicsHingeConstraint.h"
-#include "PhysicsSocketConstraint.h"
-#include "PhysicsSpringConstraint.h"
-#include "PhysicsCollisionObject.h"
-#include "MeshBatch.h"
-#include "HeightField.h"
-#include "ScriptTarget.h"
+#include "../physics/PhysicsConstraint.h"
+#include "../physics/PhysicsFixedConstraint.h"
+#include "../physics/PhysicsGenericConstraint.h"
+#include "../physics/PhysicsHingeConstraint.h"
+#include "../physics/PhysicsSocketConstraint.h"
+#include "../physics/PhysicsSpringConstraint.h"
+#include "../physics/PhysicsCollisionObject.h"
+#include "../graphics/MeshBatch.h"
+#include "../graphics/HeightField.h"
+#include "../script/ScriptTarget.h"
 
 namespace gameplay
 {

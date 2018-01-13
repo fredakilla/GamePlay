@@ -1,11 +1,11 @@
 #ifndef SCENE_H_
 #define SCENE_H_
 
-#include "Node.h"
-#include "MeshBatch.h"
-#include "ScriptController.h"
-#include "Light.h"
-#include "Model.h"
+#include "../graphics/Node.h"
+#include "../graphics/MeshBatch.h"
+#include "../script/ScriptController.h"
+#include "../graphics/Light.h"
+#include "../graphics/Model.h"
 
 namespace gameplay
 {

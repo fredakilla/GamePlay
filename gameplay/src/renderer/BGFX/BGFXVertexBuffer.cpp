@@ -1,4 +1,4 @@
-#include "BGFXVertexBuffer.h"
+#include "../../renderer/BGFX/BGFXVertexBuffer.h"
 
 namespace gameplay {
 

@@ -1,11 +1,11 @@
 #ifndef TRANSFORM_H_
 #define TRANSFORM_H_
 
-#include "ScriptTarget.h"
-#include "Vector3.h"
-#include "Quaternion.h"
-#include "Matrix.h"
-#include "AnimationTarget.h"
+#include "../script/ScriptTarget.h"
+#include "../math/Vector3.h"
+#include "../math/Quaternion.h"
+#include "../math/Matrix.h"
+#include "../animation/AnimationTarget.h"
 
 namespace gameplay
 {

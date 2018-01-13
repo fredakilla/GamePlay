@@ -1,7 +1,7 @@
 #ifndef FILESYSTEM_H_
 #define FILESYSTEM_H_
 
-#include "Stream.h"
+#include "../core/Stream.h"
 #include <string>
 
 namespace gameplay

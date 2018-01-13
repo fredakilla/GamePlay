@@ -1,9 +1,9 @@
 #ifndef RADIOBUTTON_H_
 #define RADIOBUTTON_H_
 
-#include "Button.h"
-#include "Theme.h"
-#include "Properties.h"
+#include "../ui/Button.h"
+#include "../ui/Theme.h"
+#include "../core/Properties.h"
 
 namespace gameplay
 {

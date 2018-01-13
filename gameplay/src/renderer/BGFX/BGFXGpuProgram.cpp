@@ -1,5 +1,5 @@
-#include "BGFXGpuProgram.h"
-#include "FileSystem.h"
+#include "../../renderer/BGFX/BGFXGpuProgram.h"
+#include "../../core/FileSystem.h"
 
 //#include <shaderc.h>
 

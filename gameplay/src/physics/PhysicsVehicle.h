@@ -1,8 +1,8 @@
 #ifndef PHYSICSVEHICLE_H_
 #define PHYSICSVEHICLE_H_
 
-#include "PhysicsCollisionObject.h"
-#include "PhysicsRigidBody.h"
+#include "../physics/PhysicsCollisionObject.h"
+#include "../physics/PhysicsRigidBody.h"
 
 namespace gameplay
 {

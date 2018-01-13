@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "FileSystem.h"
-#include "ScriptController.h"
+#include "../core/Base.h"
+#include "../core/FileSystem.h"
+#include "../script/ScriptController.h"
 
 #ifndef GP_NO_LUA_BINDINGS
 #include "lua/lua_all_bindings.h"

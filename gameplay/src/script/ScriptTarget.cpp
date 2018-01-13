@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "ScriptController.h"
-#include "ScriptTarget.h"
+#include "../core/Base.h"
+#include "../script/ScriptController.h"
+#include "../script/ScriptTarget.h"
 
 namespace gameplay
 {

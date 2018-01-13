@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "CheckBox.h"
-#include "Game.h"
+#include "../core/Base.h"
+#include "../ui/CheckBox.h"
+#include "../core/Game.h"
 
 namespace gameplay
 {

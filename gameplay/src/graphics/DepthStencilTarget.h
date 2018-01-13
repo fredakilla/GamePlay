@@ -1,8 +1,8 @@
 #ifndef DEPTHSTENCILTARGET_H_
 #define DEPTHSTENCILTARGET_H_
 
-#include "Base.h"
-#include "Texture.h"
+#include "../core/Base.h"
+#include "../graphics/Texture.h"
 
 namespace gameplay
 {

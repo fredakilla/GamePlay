@@ -1,7 +1,7 @@
 #ifndef SCRIPTTARGET_H_
 #define SCRIPTTARGET_H_
 
-#include "Script.h"
+#include "../script/Script.h"
 
 namespace gameplay
 {

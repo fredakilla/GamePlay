@@ -1,9 +1,9 @@
-#include "Base.h"
-#include "Game.h"
-#include "MathUtil.h"
-#include "Node.h"
-#include "PhysicsVehicle.h"
-#include "PhysicsVehicleWheel.h"
+#include "../core/Base.h"
+#include "../core/Game.h"
+#include "../core/MathUtil.h"
+#include "../graphics/Node.h"
+#include "../physics/PhysicsVehicle.h"
+#include "../physics/PhysicsVehicleWheel.h"
 
 #define AIR_DENSITY (1.2f)
 #define KPH_TO_MPS (1.0f / 3.6f)

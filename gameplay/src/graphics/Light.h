@@ -1,9 +1,9 @@
 #ifndef LIGHT_H_
 #define LIGHT_H_
 
-#include "Ref.h"
-#include "Vector3.h"
-#include "Properties.h"
+#include "../core/Ref.h"
+#include "../math/Vector3.h"
+#include "../core/Properties.h"
 
 namespace gameplay
 {

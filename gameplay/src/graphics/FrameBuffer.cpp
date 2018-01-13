@@ -1,8 +1,8 @@
-#include "Base.h"
-#include "FrameBuffer.h"
-#include "Game.h"
-#include "Renderer.h"
-#include "BGFX/BGFXTexture.h"
+#include "../core/Base.h"
+#include "../graphics/FrameBuffer.h"
+#include "../core/Game.h"
+#include "../renderer/Renderer.h"
+#include "../renderer/BGFX/BGFXTexture.h"
 
 #define FRAMEBUFFER_ID_DEFAULT "org.gameplay3d.framebuffer.default"
 

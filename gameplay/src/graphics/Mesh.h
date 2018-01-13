@@ -1,12 +1,12 @@
 #ifndef MESH_H_
 #define MESH_H_
 
-#include "Ref.h"
-#include "VertexFormat.h"
-#include "Vector3.h"
-#include "BoundingBox.h"
-#include "BoundingSphere.h"
-#include "GeometryBuffer.h"
+#include "../core/Ref.h"
+#include "../graphics/VertexFormat.h"
+#include "../math/Vector3.h"
+#include "../math/BoundingBox.h"
+#include "../math/BoundingSphere.h"
+#include "../graphics/GeometryBuffer.h"
 
 namespace gameplay
 {

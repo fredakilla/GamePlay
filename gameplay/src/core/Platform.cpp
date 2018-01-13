@@ -1,9 +1,9 @@
 // Implementation of base platform-agnostic platform functionality.
-#include "Base.h"
-#include "Platform.h"
-#include "Game.h"
-#include "ScriptController.h"
-#include "Form.h"
+#include "../core/Base.h"
+#include "../core/Platform.h"
+#include "../core/Game.h"
+#include "../script/ScriptController.h"
+#include "../ui/Form.h"
 
 namespace gameplay
 {

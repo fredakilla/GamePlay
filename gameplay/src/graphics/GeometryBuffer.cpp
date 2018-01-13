@@ -1,5 +1,5 @@
-#include "Base.h"
-#include "GeometryBuffer.h"
+#include "../core/Base.h"
+#include "../graphics/GeometryBuffer.h"
 
 namespace gameplay {
 

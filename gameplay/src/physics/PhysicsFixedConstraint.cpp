@@ -1,5 +1,5 @@
-#include "Base.h"
-#include "PhysicsFixedConstraint.h"
+#include "../core/Base.h"
+#include "../physics/PhysicsFixedConstraint.h"
 
 namespace gameplay
 {

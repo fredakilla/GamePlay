@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "Ref.h"
-#include "Game.h"
+#include "../core/Base.h"
+#include "../core/Ref.h"
+#include "../core/Game.h"
 
 namespace gameplay
 {

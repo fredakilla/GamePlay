@@ -1,8 +1,8 @@
 #ifndef GPUPROGRAM_H
 #define GPUPROGRAM_H
 
-#include "Base.h"
-#include "Uniform.h"
+#include "../core/Base.h"
+#include "../renderer/Uniform.h"
 
 namespace gameplay
 {

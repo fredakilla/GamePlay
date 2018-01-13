@@ -1,7 +1,7 @@
-#include "Base.h"
-#include "Node.h"
-#include "PhysicsVehicle.h"
-#include "PhysicsVehicleWheel.h"
+#include "../core/Base.h"
+#include "../graphics/Node.h"
+#include "../physics/PhysicsVehicle.h"
+#include "../physics/PhysicsVehicleWheel.h"
 
 namespace gameplay
 {

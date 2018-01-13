@@ -1,16 +1,16 @@
 #ifndef FORM_H_
 #define FORM_H_
 
-#include "Ref.h"
-#include "Container.h"
-#include "Mesh.h"
-#include "Node.h"
-#include "Touch.h"
-#include "Keyboard.h"
-#include "Mouse.h"
-#include "Gamepad.h"
-#include "FrameBuffer.h"
-#include "Drawable.h"
+#include "../core/Ref.h"
+#include "../ui/Container.h"
+#include "../graphics/Mesh.h"
+#include "../graphics/Node.h"
+#include "../core/Touch.h"
+#include "../core/Keyboard.h"
+#include "../core/Mouse.h"
+#include "../core/Gamepad.h"
+#include "../graphics/FrameBuffer.h"
+#include "../graphics/Drawable.h"
 
 namespace gameplay
 {

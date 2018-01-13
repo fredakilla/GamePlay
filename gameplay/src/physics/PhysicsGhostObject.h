@@ -1,9 +1,9 @@
 #ifndef PHYSICSGHOSTOBJECT_H_
 #define PHYSICSGHOSTOBJECT_H_
 
-#include "PhysicsCollisionObject.h"
-#include "PhysicsRigidBody.h"
-#include "Transform.h"
+#include "../physics/PhysicsCollisionObject.h"
+#include "../physics/PhysicsRigidBody.h"
+#include "../math/Transform.h"
 
 namespace gameplay
 {

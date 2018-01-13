@@ -1,8 +1,8 @@
 #ifndef VERTICALLAYOUT_H_
 #define VERTICALLAYOUT_H_
 
-#include "Layout.h"
-#include "Container.h"
+#include "../ui/Layout.h"
+#include "../ui/Container.h"
 
 namespace gameplay
 {

@@ -1,8 +1,8 @@
 #ifndef SCREENDISPLAYER_H_
 #define SCREENDISPLAYER_H_
 
-#include "Game.h"
-#include "Platform.h"
+#include "../core/Game.h"
+#include "../core/Platform.h"
 
 namespace gameplay
 {

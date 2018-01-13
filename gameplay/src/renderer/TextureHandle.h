@@ -1,7 +1,7 @@
 #ifndef TEXTUREHANDLE_H
 #define TEXTUREHANDLE_H
 
-#include "Base.h"
+#include "../core/Base.h"
 
 namespace gameplay
 {

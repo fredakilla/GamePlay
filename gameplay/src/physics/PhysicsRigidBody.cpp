@@ -1,11 +1,11 @@
-#include "Base.h"
-#include "PhysicsRigidBody.h"
-#include "PhysicsController.h"
-#include "Game.h"
-#include "Image.h"
-#include "MeshPart.h"
-#include "Node.h"
-#include "Terrain.h"
+#include "../core/Base.h"
+#include "../physics/PhysicsRigidBody.h"
+#include "../physics/PhysicsController.h"
+#include "../core/Game.h"
+#include "../graphics/Image.h"
+#include "../graphics/MeshPart.h"
+#include "../graphics/Node.h"
+#include "../graphics/Terrain.h"
 
 namespace gameplay
 {

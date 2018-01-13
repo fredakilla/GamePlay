@@ -1,6 +1,6 @@
-#include "BGFXTexture.h"
-#include "Texture.h"
-#include "BGFXUniform.h"
+#include "../../renderer/BGFX/BGFXTexture.h"
+#include "../../graphics/Texture.h"
+#include "../../renderer/BGFX/BGFXUniform.h"
 
 namespace gameplay {
 

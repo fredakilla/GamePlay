@@ -1,8 +1,8 @@
-#include "Base.h"
-#include "PhysicsConstraint.h"
-#include "Game.h"
-#include "Node.h"
-#include "PhysicsRigidBody.h"
+#include "../core/Base.h"
+#include "../physics/PhysicsConstraint.h"
+#include "../core/Game.h"
+#include "../graphics/Node.h"
+#include "../physics/PhysicsRigidBody.h"
 
 namespace gameplay
 {

@@ -1,9 +1,9 @@
 #ifndef FRUSTUM_H_
 #define FRUSTUM_H_
 
-#include "Matrix.h"
-#include "Ray.h"
-#include "Plane.h"
+#include "../math/Matrix.h"
+#include "../math/Ray.h"
+#include "../math/Plane.h"
 
 namespace gameplay
 {

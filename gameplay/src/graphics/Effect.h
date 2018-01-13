@@ -1,12 +1,12 @@
 #ifndef EFFECT_H_
 #define EFFECT_H_
 
-#include "Ref.h"
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Matrix.h"
-#include "Texture.h"
+#include "../core/Ref.h"
+#include "../math/Vector2.h"
+#include "../math/Vector3.h"
+#include "../math/Vector4.h"
+#include "../math/Matrix.h"
+#include "../graphics/Texture.h"
 
 namespace gameplay
 {

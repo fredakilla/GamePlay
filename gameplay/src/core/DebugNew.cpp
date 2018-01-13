@@ -101,7 +101,7 @@ void operator delete[] (void* p, const char* file, int line) throw()
 #endif
 
 // Include Base.h (needed for logging macros) AFTER new operator impls
-#include "Base.h"
+#include "../core/Base.h"
 
 void* debugAlloc(std::size_t size, const char* file, int line)
 {

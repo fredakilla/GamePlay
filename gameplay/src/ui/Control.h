@@ -1,16 +1,16 @@
 #ifndef CONTROL_H_
 #define CONTROL_H_
 
-#include "Ref.h"
-#include "Rectangle.h"
-#include "Vector2.h"
-#include "Theme.h"
-#include "ThemeStyle.h"
-#include "Touch.h"
-#include "Keyboard.h"
-#include "Mouse.h"
-#include "ScriptTarget.h"
-#include "Gamepad.h"
+#include "../core/Ref.h"
+#include "../math/Rectangle.h"
+#include "../math/Vector2.h"
+#include "../ui/Theme.h"
+#include "../ui/ThemeStyle.h"
+#include "../core/Touch.h"
+#include "../core/Keyboard.h"
+#include "../core/Mouse.h"
+#include "../script/ScriptTarget.h"
+#include "../core/Gamepad.h"
 
 namespace gameplay
 {

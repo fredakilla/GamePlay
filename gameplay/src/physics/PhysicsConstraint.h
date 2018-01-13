@@ -1,8 +1,8 @@
 #ifndef PHYSICSCONSTRAINT_H_
 #define PHYSICSCONSTRAINT_H_
 
-#include "Base.h"
-#include "Vector3.h"
+#include "../core/Base.h"
+#include "../math/Vector3.h"
 
 namespace gameplay
 {

@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "AIController.h"
-#include "Game.h"
+#include "../core/Base.h"
+#include "../ai/AIController.h"
+#include "../core/Game.h"
 
 namespace gameplay
 {

@@ -1,11 +1,11 @@
-#include "Base.h"
-#include "Mesh.h"
-#include "MeshPart.h"
-#include "Effect.h"
-#include "Model.h"
-#include "Material.h"
+#include "../core/Base.h"
+#include "../graphics/Mesh.h"
+#include "../graphics/MeshPart.h"
+#include "../graphics/Effect.h"
+#include "../graphics/Model.h"
+#include "../graphics/Material.h"
 
-#include "BGFX/BGFXVertexBuffer.h"
+#include "../renderer/BGFX/BGFXVertexBuffer.h"
 
 namespace gameplay
 {

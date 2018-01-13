@@ -1,11 +1,11 @@
 #ifndef BUTTON_H_
 #define BUTTON_H_
 
-#include "Container.h"
-#include "Label.h"
-#include "Touch.h"
-#include "Theme.h"
-#include "Properties.h"
+#include "../ui/Container.h"
+#include "../ui/Label.h"
+#include "../core/Touch.h"
+#include "../ui/Theme.h"
+#include "../core/Properties.h"
 
 namespace gameplay
 {

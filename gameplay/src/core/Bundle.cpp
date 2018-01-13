@@ -1,9 +1,9 @@
-#include "Base.h"
-#include "Bundle.h"
-#include "FileSystem.h"
-#include "MeshPart.h"
-#include "Scene.h"
-#include "Joint.h"
+#include "../core/Base.h"
+#include "../core/Bundle.h"
+#include "../core/FileSystem.h"
+#include "../graphics/MeshPart.h"
+#include "../graphics/Scene.h"
+#include "../graphics/Joint.h"
 
 // Minimum version numbers supported
 #define BUNDLE_VERSION_MAJOR_REQUIRED   1 

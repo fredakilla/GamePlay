@@ -1,8 +1,6 @@
-#include "BGFXRenderer.h"
-
-#include <bx/math.h>
-#include "Transform.h"
-#include "Game.h"
+#include "../../renderer/BGFX/BGFXRenderer.h"
+#include "../../math/Transform.h"
+#include "../../core/Game.h"
 
 namespace gameplay {
 

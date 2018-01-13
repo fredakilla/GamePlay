@@ -1,5 +1,5 @@
-#include "Script.h"
-#include "ScriptController.h"
+#include "../script/Script.h"
+#include "../script/ScriptController.h"
 
 namespace gameplay
 {

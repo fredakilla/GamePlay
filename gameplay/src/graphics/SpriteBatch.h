@@ -1,13 +1,13 @@
 #ifndef SPRITEBATCH_H_
 #define SPRITEBATCH_H_
 
-#include "Texture.h"
-#include "Effect.h"
-#include "Mesh.h"
-#include "Rectangle.h"
-#include "Matrix.h"
-#include "RenderState.h"
-#include "MeshBatch.h"
+#include "../graphics/Texture.h"
+#include "../graphics/Effect.h"
+#include "../graphics/Mesh.h"
+#include "../math/Rectangle.h"
+#include "../math/Matrix.h"
+#include "../graphics/RenderState.h"
+#include "../graphics/MeshBatch.h"
 
 namespace gameplay
 {

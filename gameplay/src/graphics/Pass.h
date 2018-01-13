@@ -1,8 +1,8 @@
 #ifndef PASS_H_
 #define PASS_H_
 
-#include "RenderState.h"
-#include "VertexAttributeBinding.h"
+#include "../graphics/RenderState.h"
+#include "../graphics/VertexAttributeBinding.h"
 
 namespace gameplay
 {

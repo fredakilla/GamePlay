@@ -1,7 +1,7 @@
 #ifndef CURVE_H_
 #define CURVE_H_
 
-#include "Ref.h"
+#include "../core/Ref.h"
 
 namespace gameplay
 {

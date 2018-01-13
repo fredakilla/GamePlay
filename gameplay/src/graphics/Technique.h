@@ -1,7 +1,7 @@
 #ifndef TECHNIQUE_H_
 #define TECHNIQUE_H_
 
-#include "Pass.h"
+#include "../graphics/Pass.h"
 
 namespace gameplay
 {

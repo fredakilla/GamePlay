@@ -1,7 +1,7 @@
 #ifndef FLOWLAYOUT_H_
 #define FLOWLAYOUT_H_
 
-#include "Layout.h"
+#include "../ui/Layout.h"
 
 namespace gameplay
 {

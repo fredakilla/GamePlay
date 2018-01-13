@@ -1,10 +1,10 @@
 #ifndef CHECKBOX_H_
 #define CHECKBOX_H_
 
-#include "Theme.h"
-#include "Properties.h"
-#include "Touch.h"
-#include "Button.h"
+#include "../ui/Theme.h"
+#include "../core/Properties.h"
+#include "../core/Touch.h"
+#include "../ui/Button.h"
 
 namespace gameplay
 {

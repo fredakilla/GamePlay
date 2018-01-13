@@ -1,5 +1,5 @@
-#include "TextBox.h"
-#include "Game.h"
+#include "../ui/TextBox.h"
+#include "../core/Game.h"
 
 namespace gameplay
 {

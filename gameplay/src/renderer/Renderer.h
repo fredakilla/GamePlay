@@ -1,7 +1,7 @@
 #ifndef RENDERER_H_
 #define RENDERER_H_
 
-#include "Base.h"
+#include "../core/Base.h"
 
 namespace gameplay
 {

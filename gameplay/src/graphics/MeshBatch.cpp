@@ -1,10 +1,10 @@
-#include "Base.h"
-#include "MeshBatch.h"
-#include "Material.h"
-#include "Model.h"
-#include "MeshPart.h"
+#include "../core/Base.h"
+#include "../graphics/MeshBatch.h"
+#include "../graphics/Material.h"
+#include "../graphics/Model.h"
+#include "../graphics/MeshPart.h"
 
-#include "BGFX/BGFXVertexBuffer.h"
+#include "../renderer/BGFX/BGFXVertexBuffer.h"
 
 
 #define USE_TRANSIENT_BUFFER

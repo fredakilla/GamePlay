@@ -1,9 +1,9 @@
 #ifndef PHYSICSGENERICCONSTRAINT_H_
 #define PHYSICSGENERICCONSTRAINT_H_
 
-#include "PhysicsConstraint.h"
-#include "Quaternion.h"
-#include "Vector3.h"
+#include "../physics/PhysicsConstraint.h"
+#include "../math/Quaternion.h"
+#include "../math/Vector3.h"
 
 namespace gameplay
 {

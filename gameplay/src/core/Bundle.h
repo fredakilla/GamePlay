@@ -1,11 +1,11 @@
 #ifndef BUNDLE_H_
 #define BUNDLE_H_
 
-#include "Mesh.h"
-#include "Font.h"
-#include "Node.h"
-#include "Game.h"
-#include "MeshSkin.h"
+#include "../graphics/Mesh.h"
+#include "../graphics/Font.h"
+#include "../graphics/Node.h"
+#include "../core/Game.h"
+#include "../graphics/MeshSkin.h"
 
 namespace gameplay
 {

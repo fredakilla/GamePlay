@@ -1,9 +1,9 @@
 #ifndef CONTAINER_H_
 #define CONTAINER_H_
 
-#include "Control.h"
-#include "Layout.h"
-#include "TimeListener.h"
+#include "../ui/Control.h"
+#include "../ui/Layout.h"
+#include "../core/TimeListener.h"
 
 namespace gameplay
 {

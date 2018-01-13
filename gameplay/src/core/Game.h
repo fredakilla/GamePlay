@@ -1,19 +1,19 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#include "Keyboard.h"
-#include "Mouse.h"
-#include "Touch.h"
-#include "Gesture.h"
-#include "Gamepad.h"
-#include "AudioController.h"
-#include "AnimationController.h"
-#include "PhysicsController.h"
-#include "AIController.h"
-#include "AudioListener.h"
-#include "Rectangle.h"
-#include "Vector4.h"
-#include "TimeListener.h"
+#include "../core/Keyboard.h"
+#include "../core/Mouse.h"
+#include "../core/Touch.h"
+#include "../core/Gesture.h"
+#include "../core/Gamepad.h"
+#include "../audio/AudioController.h"
+#include "../animation/AnimationController.h"
+#include "../physics/PhysicsController.h"
+#include "../ai/AIController.h"
+#include "../audio/AudioListener.h"
+#include "../math/Rectangle.h"
+#include "../math/Vector4.h"
+#include "../core/TimeListener.h"
 
 namespace gameplay
 {

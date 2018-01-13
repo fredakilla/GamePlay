@@ -1,7 +1,7 @@
 #ifndef GAMEPAD_H_
 #define GAMEPAD_H_
 
-#include "Vector2.h"
+#include "../math/Vector2.h"
 
 namespace gameplay
 {

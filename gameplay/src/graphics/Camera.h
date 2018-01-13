@@ -1,11 +1,11 @@
 #ifndef CAMERA_H_
 #define CAMERA_H_
 
-#include "Ref.h"
-#include "Transform.h"
-#include "Frustum.h"
-#include "Rectangle.h"
-#include "Properties.h"
+#include "../core/Ref.h"
+#include "../math/Transform.h"
+#include "../math/Frustum.h"
+#include "../math/Rectangle.h"
+#include "../core/Properties.h"
 
 namespace gameplay
 {

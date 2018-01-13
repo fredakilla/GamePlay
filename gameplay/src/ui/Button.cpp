@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "Button.h"
-#include "Gamepad.h"
+#include "../core/Base.h"
+#include "../ui/Button.h"
+#include "../core/Gamepad.h"
 
 namespace gameplay
 {

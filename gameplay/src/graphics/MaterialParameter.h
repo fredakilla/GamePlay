@@ -1,14 +1,14 @@
 #ifndef MATERIALPARAMETER_H_
 #define MATERIALPARAMETER_H_
 
-#include "AnimationTarget.h"
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Matrix.h"
-#include "Texture.h"
-#include "Effect.h"
-#include "Uniform.h"
+#include "../animation/AnimationTarget.h"
+#include "../math/Vector2.h"
+#include "../math/Vector3.h"
+#include "../math/Vector4.h"
+#include "../math/Matrix.h"
+#include "../graphics/Texture.h"
+#include "../graphics/Effect.h"
+#include "../renderer/Uniform.h"
 
 namespace gameplay
 {

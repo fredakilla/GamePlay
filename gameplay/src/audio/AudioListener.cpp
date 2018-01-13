@@ -1,7 +1,7 @@
-#include "Base.h"
-#include "Node.h"
-#include "AudioListener.h"
-#include "Game.h"
+#include "../core/Base.h"
+#include "../graphics/Node.h"
+#include "../audio/AudioListener.h"
+#include "../core/Game.h"
 
 namespace gameplay
 {

@@ -1,11 +1,11 @@
-#include "Base.h"
-#include "Material.h"
-#include "FileSystem.h"
-#include "Effect.h"
-#include "Technique.h"
-#include "Pass.h"
-#include "Properties.h"
-#include "Node.h"
+#include "../core/Base.h"
+#include "../graphics/Material.h"
+#include "../core/FileSystem.h"
+#include "../graphics/Effect.h"
+#include "../graphics/Technique.h"
+#include "../graphics/Pass.h"
+#include "../core/Properties.h"
+#include "../graphics/Node.h"
 
 namespace gameplay
 {

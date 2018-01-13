@@ -1,11 +1,11 @@
-#include "Base.h"
-#include "AudioListener.h"
-#include "Scene.h"
-#include "SceneLoader.h"
-#include "MeshSkin.h"
-#include "Joint.h"
-#include "Terrain.h"
-#include "Bundle.h"
+#include "../core/Base.h"
+#include "../audio/AudioListener.h"
+#include "../graphics/Scene.h"
+#include "../graphics/SceneLoader.h"
+#include "../graphics/MeshSkin.h"
+#include "../graphics/Joint.h"
+#include "../graphics/Terrain.h"
+#include "../core/Bundle.h"
 
 namespace gameplay
 {

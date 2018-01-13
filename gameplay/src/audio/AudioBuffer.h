@@ -1,8 +1,8 @@
 #ifndef AUDIOBUFFER_H_
 #define AUDIOBUFFER_H_
 
-#include "Ref.h"
-#include "Stream.h"
+#include "../core/Ref.h"
+#include "../core/Stream.h"
 
 namespace gameplay
 {

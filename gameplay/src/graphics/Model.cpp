@@ -1,10 +1,10 @@
-#include "Base.h"
-#include "Model.h"
-#include "MeshPart.h"
-#include "Scene.h"
-#include "Technique.h"
-#include "Pass.h"
-#include "Node.h"
+#include "../core/Base.h"
+#include "../graphics/Model.h"
+#include "../graphics/MeshPart.h"
+#include "../graphics/Scene.h"
+#include "../graphics/Technique.h"
+#include "../graphics/Pass.h"
+#include "../graphics/Node.h"
 
 namespace gameplay
 {

@@ -1,5 +1,5 @@
-#include "Base.h"
-#include "JoystickControl.h"
+#include "../core/Base.h"
+#include "../ui/JoystickControl.h"
 
 namespace gameplay
 {

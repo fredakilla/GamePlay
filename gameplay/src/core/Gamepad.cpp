@@ -1,10 +1,10 @@
-#include "Base.h"
-#include "Gamepad.h"
-#include "Game.h"
-#include "Button.h"
-#include "Platform.h"
-#include "Form.h"
-#include "JoystickControl.h"
+#include "../core/Base.h"
+#include "../core/Gamepad.h"
+#include "../core/Game.h"
+#include "../ui/Button.h"
+#include "../core/Platform.h"
+#include "../ui/Form.h"
+#include "../ui/JoystickControl.h"
 
 namespace gameplay
 {

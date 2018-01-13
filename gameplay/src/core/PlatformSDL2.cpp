@@ -1,12 +1,12 @@
 #ifndef GP_NO_PLATFORM
 #ifdef __linux__
 
-#include "Base.h"
-#include "Platform.h"
-#include "FileSystem.h"
-#include "Game.h"
-#include "Form.h"
-#include "ScriptController.h"
+#include "../core/Base.h"
+#include "../core/Platform.h"
+#include "../core/FileSystem.h"
+#include "../core/Game.h"
+#include "../ui/Form.h"
+#include "../script/ScriptController.h"
 
 
 //#include <X11/X.h>
@@ -31,7 +31,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_syswm.h>
 #include <bgfx/platform.h>
-#include "BGFX/BGFXRenderer.h"
+#include "../renderer/BGFX/BGFXRenderer.h"
 
 #define TOUCH_COUNT_MAX     4
 #define MAX_GAMEPADS 4

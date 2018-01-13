@@ -1,9 +1,9 @@
-#include "Base.h"
-#include "TerrainPatch.h"
-#include "Terrain.h"
-#include "MeshPart.h"
-#include "Scene.h"
-#include "Game.h"
+#include "../core/Base.h"
+#include "../graphics/TerrainPatch.h"
+#include "../graphics/Terrain.h"
+#include "../graphics/MeshPart.h"
+#include "../graphics/Scene.h"
+#include "../core/Game.h"
 
 namespace gameplay
 {

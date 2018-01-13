@@ -1,7 +1,7 @@
 #ifndef JOINT_H_
 #define JOINT_H_
 
-#include "Node.h"
+#include "../graphics/Node.h"
 
 namespace gameplay
 {

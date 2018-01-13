@@ -1,8 +1,8 @@
-#include "Base.h"
-#include "Game.h"
-#include "Control.h"
-#include "Form.h"
-#include "Theme.h"
+#include "../core/Base.h"
+#include "../core/Game.h"
+#include "../ui/Control.h"
+#include "../ui/Form.h"
+#include "../ui/Theme.h"
 
 namespace gameplay
 {

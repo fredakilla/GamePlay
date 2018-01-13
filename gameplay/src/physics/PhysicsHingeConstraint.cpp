@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "PhysicsHingeConstraint.h"
-#include "Node.h"
+#include "../core/Base.h"
+#include "../physics/PhysicsHingeConstraint.h"
+#include "../graphics/Node.h"
 
 namespace gameplay
 {

@@ -1,10 +1,10 @@
-#include "Base.h"
-#include "Font.h"
-#include "Text.h"
-#include "Game.h"
-#include "FileSystem.h"
-#include "Bundle.h"
-#include "Material.h"
+#include "../core/Base.h"
+#include "../graphics/Font.h"
+#include "../graphics/Text.h"
+#include "../core/Game.h"
+#include "../core/FileSystem.h"
+#include "../core/Bundle.h"
+#include "../graphics/Material.h"
 
 // Default font shaders
 #define FONT_VSH "res/shaders/font.vert"

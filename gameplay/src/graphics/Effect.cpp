@@ -1,10 +1,10 @@
-#include "Base.h"
-#include "Effect.h"
-#include "FileSystem.h"
-#include "Game.h"
+#include "../core/Base.h"
+#include "../graphics/Effect.h"
+#include "../core/FileSystem.h"
+#include "../core/Game.h"
 
-#include "BGFX/BGFXGpuProgram.h"
-#include "BGFX/BGFXUniform.h"
+#include "../renderer/BGFX/BGFXGpuProgram.h"
+#include "../renderer/BGFX/BGFXUniform.h"
 
 #define OPENGL_ES_DEFINE  "OPENGL_ES"
 

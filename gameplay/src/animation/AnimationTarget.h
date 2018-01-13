@@ -1,8 +1,8 @@
 #ifndef ANIMATIONTARGET_H_
 #define ANIMATIONTARGET_H_
 
-#include "Curve.h"
-#include "AnimationController.h"
+#include "../math/Curve.h"
+#include "../animation/AnimationController.h"
 
 namespace gameplay
 {

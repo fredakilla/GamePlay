@@ -1,8 +1,8 @@
-#include "Base.h"
-#include "FileSystem.h"
-#include "Properties.h"
-#include "Stream.h"
-#include "Platform.h"
+#include "../core/Base.h"
+#include "../core/FileSystem.h"
+#include "../core/Properties.h"
+#include "../core/Stream.h"
+#include "../core/Platform.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>

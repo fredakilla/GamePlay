@@ -1,5 +1,5 @@
-#include "Base.h"
-#include "Rectangle.h"
+#include "../core/Base.h"
+#include "../math/Rectangle.h"
 
 namespace gameplay
 {

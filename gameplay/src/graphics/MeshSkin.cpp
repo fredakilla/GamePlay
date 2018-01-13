@@ -1,7 +1,7 @@
-#include "Base.h"
-#include "MeshSkin.h"
-#include "Joint.h"
-#include "Model.h"
+#include "../core/Base.h"
+#include "../graphics/MeshSkin.h"
+#include "../graphics/Joint.h"
+#include "../graphics/Model.h"
 
 // The number of rows in each palette matrix.
 #define PALETTE_ROWS 3

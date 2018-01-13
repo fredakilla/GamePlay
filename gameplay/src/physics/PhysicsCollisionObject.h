@@ -1,9 +1,9 @@
 #ifndef PHYSICSCOLLISIONOBJECT_H_
 #define PHYSICSCOLLISIONOBJECT_H_
 
-#include "Script.h"
-#include "Vector3.h"
-#include "PhysicsCollisionShape.h"
+#include "../script/Script.h"
+#include "../math/Vector3.h"
+#include "../physics/PhysicsCollisionShape.h"
 
 namespace gameplay
 {

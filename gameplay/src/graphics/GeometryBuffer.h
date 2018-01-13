@@ -1,7 +1,7 @@
 #ifndef GEOMETRYBUFFER_H
 #define GEOMETRYBUFFER_H
 
-#include "MemoryBuffer.h"
+#include "../graphics/MemoryBuffer.h"
 
 namespace gameplay
 {

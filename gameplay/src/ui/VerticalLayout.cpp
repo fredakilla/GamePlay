@@ -1,5 +1,5 @@
-#include "Base.h"
-#include "VerticalLayout.h"
+#include "../core/Base.h"
+#include "../ui/VerticalLayout.h"
 
 namespace gameplay
 {

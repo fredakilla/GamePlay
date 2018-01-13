@@ -1,7 +1,7 @@
-#include "Base.h"
-#include "MeshPart.h"
+#include "../core/Base.h"
+#include "../graphics/MeshPart.h"
 
-#include "BGFX/BGFXIndexBuffer.h"
+#include "../renderer/BGFX/BGFXIndexBuffer.h"
 
 namespace gameplay
 {

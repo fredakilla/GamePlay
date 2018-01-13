@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "BoundingSphere.h"
-#include "BoundingBox.h"
+#include "../core/Base.h"
+#include "../math/BoundingSphere.h"
+#include "../math/BoundingBox.h"
 
 namespace gameplay
 {

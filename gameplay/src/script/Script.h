@@ -1,8 +1,8 @@
 #ifndef SCRIPT_H_
 #define SCRIPT_H_
 
-#include "Base.h"
-#include "Ref.h"
+#include "../core/Base.h"
+#include "../core/Ref.h"
 
 namespace gameplay
 {

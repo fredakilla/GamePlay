@@ -1,9 +1,9 @@
 #ifndef ANIMATION_H_
 #define ANIMATION_H_
 
-#include "Ref.h"
-#include "Properties.h"
-#include "Curve.h"
+#include "../core/Ref.h"
+#include "../core/Properties.h"
+#include "../math/Curve.h"
 
 namespace gameplay
 {

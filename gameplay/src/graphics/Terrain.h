@@ -1,14 +1,14 @@
 #ifndef TERRAIN_H_
 #define TERRAIN_H_
 
-#include "Ref.h"
-#include "Drawable.h"
-#include "Transform.h"
-#include "Properties.h"
-#include "HeightField.h"
-#include "Texture.h"
-#include "BoundingBox.h"
-#include "TerrainPatch.h"
+#include "../core/Ref.h"
+#include "../graphics/Drawable.h"
+#include "../math/Transform.h"
+#include "../core/Properties.h"
+#include "../graphics/HeightField.h"
+#include "../graphics/Texture.h"
+#include "../math/BoundingBox.h"
+#include "../graphics/TerrainPatch.h"
 
 namespace gameplay
 {

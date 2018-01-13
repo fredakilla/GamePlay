@@ -1,9 +1,8 @@
-#include "Base.h"
-#include "Image.h"
-#include "Texture.h"
-#include "FileSystem.h"
-
-#include "BGFX/BGFXTexture.h"
+#include "../core/Base.h"
+#include "../graphics/Image.h"
+#include "../graphics/Texture.h"
+#include "../core/FileSystem.h"
+#include "../renderer/BGFX/BGFXTexture.h"
 
 // PVRTC (GL_IMG_texture_compression_pvrtc) : Imagination based gpus
 #ifndef GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG

@@ -1,13 +1,13 @@
-#include "Base.h"
-#include "Game.h"
-#include "Platform.h"
-#include "RenderState.h"
-#include "FileSystem.h"
-#include "FrameBuffer.h"
-#include "SceneLoader.h"
-#include "ControlFactory.h"
-#include "Theme.h"
-#include "Form.h"
+#include "../core/Base.h"
+#include "../core/Game.h"
+#include "../core/Platform.h"
+#include "../graphics/RenderState.h"
+#include "../core/FileSystem.h"
+#include "../graphics/FrameBuffer.h"
+#include "../graphics/SceneLoader.h"
+#include "../ui/ControlFactory.h"
+#include "../ui/Theme.h"
+#include "../ui/Form.h"
 
 /** @script{ignore} */
 GLenum __gl_error_code = GL_NO_ERROR;

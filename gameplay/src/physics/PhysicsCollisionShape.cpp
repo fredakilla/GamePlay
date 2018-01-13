@@ -1,11 +1,11 @@
-#include "Base.h"
-#include "PhysicsCollisionShape.h"
-#include "Node.h"
-#include "Image.h"
-#include "Properties.h"
-#include "FileSystem.h"
-#include "HeightField.h"
-#include "Terrain.h"
+#include "../core/Base.h"
+#include "../physics/PhysicsCollisionShape.h"
+#include "../graphics/Node.h"
+#include "../graphics/Image.h"
+#include "../core/Properties.h"
+#include "../core/FileSystem.h"
+#include "../graphics/HeightField.h"
+#include "../graphics/Terrain.h"
 
 namespace gameplay
 {

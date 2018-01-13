@@ -1,7 +1,7 @@
 #ifndef BOUNDINGSPHERE_H_
 #define BOUNDINGSPHERE_H_
 
-#include "Frustum.h"
+#include "../math/Frustum.h"
 
 namespace gameplay
 {

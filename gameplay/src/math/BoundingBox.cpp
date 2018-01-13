@@ -1,7 +1,7 @@
-#include "Base.h"
-#include "BoundingBox.h"
-#include "BoundingSphere.h"
-#include "Plane.h"
+#include "../core/Base.h"
+#include "../math/BoundingBox.h"
+#include "../math/BoundingSphere.h"
+#include "../math/Plane.h"
 
 namespace gameplay
 {

@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "AIAgent.h"
-#include "Node.h"
+#include "../core/Base.h"
+#include "../ai/AIAgent.h"
+#include "../graphics/Node.h"
 
 namespace gameplay
 {

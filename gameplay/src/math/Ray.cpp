@@ -1,9 +1,9 @@
-#include "Base.h"
-#include "Ray.h"
-#include "Plane.h"
-#include "Frustum.h"
-#include "BoundingSphere.h"
-#include "BoundingBox.h"
+#include "../core/Base.h"
+#include "../math/Ray.h"
+#include "../math/Plane.h"
+#include "../math/Frustum.h"
+#include "../math/BoundingSphere.h"
+#include "../math/BoundingBox.h"
 
 namespace gameplay
 {

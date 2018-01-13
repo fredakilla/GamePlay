@@ -1,9 +1,9 @@
-#include "Base.h"
-#include "Camera.h"
-#include "Game.h"
-#include "Node.h"
-#include "Game.h"
-#include "PhysicsController.h"
+#include "../core/Base.h"
+#include "../graphics/Camera.h"
+#include "../core/Game.h"
+#include "../graphics/Node.h"
+#include "../core/Game.h"
+#include "../physics/PhysicsController.h"
 
 // Camera dirty bits
 #define CAMERA_DIRTY_VIEW 1

@@ -1,8 +1,8 @@
-#include "Base.h"
-#include "Matrix.h"
-#include "Plane.h"
-#include "Quaternion.h"
-#include "MathUtil.h"
+#include "../core/Base.h"
+#include "../math/Matrix.h"
+#include "../math/Plane.h"
+#include "../math/Quaternion.h"
+#include "../core/MathUtil.h"
 
 namespace gameplay
 {

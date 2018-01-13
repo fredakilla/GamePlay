@@ -1,11 +1,11 @@
 #ifndef SLIDER_H_
 #define SLIDER_H_
 
-#include "Base.h"
-#include "Theme.h"
-#include "Properties.h"
-#include "Button.h"
-#include "Touch.h"
+#include "../core/Base.h"
+#include "../ui/Theme.h"
+#include "../core/Properties.h"
+#include "../ui/Button.h"
+#include "../core/Touch.h"
 
 namespace gameplay
 {

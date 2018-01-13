@@ -1,8 +1,8 @@
 #ifndef LABEL_H_
 #define LABEL_H_
 
-#include "Control.h"
-#include "Theme.h"
+#include "../ui/Control.h"
+#include "../ui/Theme.h"
 
 namespace gameplay
 {

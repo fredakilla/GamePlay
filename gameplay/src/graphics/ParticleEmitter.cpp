@@ -1,10 +1,10 @@
-#include "Base.h"
-#include "ParticleEmitter.h"
-#include "Game.h"
-#include "Node.h"
-#include "Scene.h"
-#include "Quaternion.h"
-#include "Properties.h"
+#include "../core/Base.h"
+#include "../graphics/ParticleEmitter.h"
+#include "../core/Game.h"
+#include "../graphics/Node.h"
+#include "../graphics/Scene.h"
+#include "../math/Quaternion.h"
+#include "../core/Properties.h"
 
 #define PARTICLE_COUNT_MAX                       100
 #define PARTICLE_EMISSION_RATE                   10

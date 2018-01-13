@@ -1,5 +1,5 @@
-#include "Base.h"
-#include "Vector2.h"
+#include "../core/Base.h"
+#include "../math/Vector2.h"
 
 namespace gameplay
 {

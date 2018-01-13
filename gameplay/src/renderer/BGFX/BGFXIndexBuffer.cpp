@@ -1,5 +1,5 @@
-#include "BGFXIndexBuffer.h"
-#include "Mesh.h"
+#include "../../renderer/BGFX/BGFXIndexBuffer.h"
+#include "../../graphics/Mesh.h"
 
 namespace gameplay {
 

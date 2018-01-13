@@ -1,10 +1,10 @@
 #ifndef RENDERSTATE_H_
 #define RENDERSTATE_H_
 
-#include "Ref.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Mesh.h"
+#include "../core/Ref.h"
+#include "../math/Vector3.h"
+#include "../math/Vector4.h"
+#include "../graphics/Mesh.h"
 
 namespace gameplay
 {

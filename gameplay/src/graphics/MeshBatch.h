@@ -1,7 +1,7 @@
 #ifndef MESHBATCH_H_
 #define MESHBATCH_H_
 
-#include "Mesh.h"
+#include "../graphics/Mesh.h"
 
 namespace gameplay
 {

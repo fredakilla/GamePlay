@@ -1,5 +1,5 @@
-#include "Base.h"
-#include "AnimationValue.h"
+#include "../core/Base.h"
+#include "../animation/AnimationValue.h"
 
 namespace gameplay
 {

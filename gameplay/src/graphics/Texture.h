@@ -1,8 +1,8 @@
 #ifndef TEXTURE_H_
 #define TEXTURE_H_
 
-#include "Ref.h"
-#include "Stream.h"
+#include "../core/Ref.h"
+#include "../core/Stream.h"
 
 namespace gameplay
 {

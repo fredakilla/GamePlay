@@ -1,8 +1,8 @@
 #ifndef MESHPART_H_
 #define MESHPART_H_
 
-#include "Mesh.h"
-#include "GeometryBuffer.h"
+#include "../graphics/Mesh.h"
+#include "../graphics/GeometryBuffer.h"
 
 namespace gameplay
 {

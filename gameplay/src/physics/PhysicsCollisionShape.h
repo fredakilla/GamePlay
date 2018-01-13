@@ -1,9 +1,9 @@
 #ifndef PHYSICSCOLLISIONSHAPE_H_
 #define PHYSICSCOLLISIONSHAPE_H_
 
-#include "Vector3.h"
-#include "Mesh.h"
-#include "HeightField.h"
+#include "../math/Vector3.h"
+#include "../graphics/Mesh.h"
+#include "../graphics/HeightField.h"
 
 namespace gameplay
 {

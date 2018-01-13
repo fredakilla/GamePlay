@@ -1,7 +1,7 @@
-#include "BGFXUniform.h"
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
+#include "../../renderer/BGFX/BGFXUniform.h"
+#include "../../math/Vector2.h"
+#include "../../math/Vector3.h"
+#include "../../math/Vector4.h"
 
 namespace gameplay {
 

@@ -1,10 +1,10 @@
-#include "Base.h"
-#include "AnimationClip.h"
-#include "Animation.h"
-#include "AnimationTarget.h"
-#include "Game.h"
-#include "Quaternion.h"
-#include "ScriptController.h"
+#include "../core/Base.h"
+#include "../animation/AnimationClip.h"
+#include "../animation/Animation.h"
+#include "../animation/AnimationTarget.h"
+#include "../core/Game.h"
+#include "../math/Quaternion.h"
+#include "../script/ScriptController.h"
 
 namespace gameplay
 {

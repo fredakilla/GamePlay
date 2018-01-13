@@ -1,7 +1,7 @@
-#include "Base.h"
-#include "Joint.h"
-#include "MeshSkin.h"
-#include "Model.h"
+#include "../core/Base.h"
+#include "../graphics/Joint.h"
+#include "../graphics/MeshSkin.h"
+#include "../graphics/Model.h"
 
 namespace gameplay
 {

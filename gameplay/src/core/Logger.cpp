@@ -1,7 +1,7 @@
 
-#include "Base.h"
-#include "Game.h"
-#include "ScriptController.h"
+#include "../core/Base.h"
+#include "../core/Game.h"
+#include "../script/ScriptController.h"
 
 namespace gameplay
 {

@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "Drawable.h"
-#include "Node.h"
+#include "../core/Base.h"
+#include "../graphics/Drawable.h"
+#include "../graphics/Node.h"
 
 
 namespace gameplay

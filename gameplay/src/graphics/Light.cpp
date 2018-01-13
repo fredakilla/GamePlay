@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "Light.h"
-#include "Node.h"
+#include "../core/Base.h"
+#include "../graphics/Light.h"
+#include "../graphics/Node.h"
 
 namespace gameplay
 {

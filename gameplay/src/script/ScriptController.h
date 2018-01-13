@@ -1,8 +1,8 @@
 #ifndef SCRIPTCONTROLLER_H_
 #define SCRIPTCONTROLLER_H_
 
-#include "Script.h"
-#include "Game.h"
+#include "../script/Script.h"
+#include "../core/Game.h"
 
 namespace gameplay
 {

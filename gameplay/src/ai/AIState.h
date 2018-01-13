@@ -1,7 +1,7 @@
 #ifndef AISTATE_H_
 #define AISTATE_H_
 
-#include "Ref.h"
+#include "../core/Ref.h"
 
 namespace gameplay
 {

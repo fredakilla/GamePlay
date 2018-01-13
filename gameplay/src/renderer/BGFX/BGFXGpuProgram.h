@@ -1,7 +1,7 @@
 #ifndef BGFXGPUPROGRAM_H
 #define BGFXGPUPROGRAM_H
 
-#include "GpuProgram.h"
+#include "../../renderer/GpuProgram.h"
 
 
 namespace gameplay

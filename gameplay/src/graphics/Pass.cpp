@@ -1,9 +1,9 @@
-#include "Base.h"
-#include "Pass.h"
-#include "Technique.h"
-#include "Material.h"
-#include "Node.h"
-#include "Renderer.h"
+#include "../core/Base.h"
+#include "../graphics/Pass.h"
+#include "../graphics/Technique.h"
+#include "../graphics/Material.h"
+#include "../graphics/Node.h"
+#include "../renderer/Renderer.h"
 
 namespace gameplay
 {

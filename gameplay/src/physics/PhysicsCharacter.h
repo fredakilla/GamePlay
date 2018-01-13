@@ -1,9 +1,9 @@
 #ifndef PHYSICSCHARACTER_H_
 #define PHYSICSCHARACTER_H_
 
-#include "Node.h"
-#include "PhysicsGhostObject.h"
-#include "Properties.h"
+#include "../graphics/Node.h"
+#include "../physics/PhysicsGhostObject.h"
+#include "../core/Properties.h"
 
 namespace gameplay
 {

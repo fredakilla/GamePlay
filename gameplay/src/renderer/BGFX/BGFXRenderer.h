@@ -1,8 +1,8 @@
 #ifndef BGFX_RENDERER_H_
 #define BGFX_RENDERER_H_
 
-#include "Renderer.h"
-#include "BGFXGpuProgram.h"
+#include "../../renderer/Renderer.h"
+#include "../../renderer/BGFX/BGFXGpuProgram.h"
 
 namespace gameplay {
 

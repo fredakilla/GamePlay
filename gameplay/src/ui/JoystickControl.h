@@ -1,7 +1,7 @@
 #ifndef JOYSTICKCONTROL_H_
 #define JOYSTICKCONTROL_H_
 
-#include "Control.h"
+#include "../ui/Control.h"
 
 namespace gameplay
 {

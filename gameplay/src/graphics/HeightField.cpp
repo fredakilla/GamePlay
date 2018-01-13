@@ -1,7 +1,7 @@
-#include "Base.h"
-#include "HeightField.h"
-#include "Image.h"
-#include "FileSystem.h"
+#include "../core/Base.h"
+#include "../graphics/HeightField.h"
+#include "../graphics/Image.h"
+#include "../core/FileSystem.h"
 
 namespace gameplay
 {

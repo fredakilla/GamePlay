@@ -1,7 +1,7 @@
 #ifndef HEIGHTFIELD_H_
 #define HEIGHTFIELD_H_
 
-#include "Ref.h"
+#include "../core/Ref.h"
 
 namespace gameplay
 {

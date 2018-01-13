@@ -1,11 +1,11 @@
 #ifndef SCENELOADER_H_
 #define SCENELOADER_H_
 
-#include "Base.h"
-#include "Mesh.h"
-#include "PhysicsRigidBody.h"
-#include "Properties.h"
-#include "Scene.h"
+#include "../core/Base.h"
+#include "../graphics/Mesh.h"
+#include "../physics/PhysicsRigidBody.h"
+#include "../core/Properties.h"
+#include "../graphics/Scene.h"
 
 namespace gameplay
 {

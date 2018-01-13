@@ -1,8 +1,8 @@
 #ifndef MESHSKIN_H_
 #define MESHSKIN_H_
 
-#include "Matrix.h"
-#include "Transform.h"
+#include "../math/Matrix.h"
+#include "../math/Transform.h"
 
 namespace gameplay
 {

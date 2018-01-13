@@ -1,10 +1,10 @@
 #ifndef PHYSICSHINGECONSTRAINT_H_
 #define PHYSICSHINGECONSTRAINT_H_
 
-#include "PhysicsConstraint.h"
-#include "PhysicsRigidBody.h"
-#include "Quaternion.h"
-#include "Vector3.h"
+#include "../physics/PhysicsConstraint.h"
+#include "../physics/PhysicsRigidBody.h"
+#include "../math/Quaternion.h"
+#include "../math/Vector3.h"
 
 namespace gameplay
 {

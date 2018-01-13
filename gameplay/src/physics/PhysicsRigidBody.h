@@ -1,11 +1,11 @@
 #ifndef PHYSICSRIGIDBODY_H_
 #define PHYSICSRIGIDBODY_H_
 
-#include "Mesh.h"
-#include "PhysicsConstraint.h"
-#include "Transform.h"
-#include "Vector3.h"
-#include "PhysicsCollisionObject.h"
+#include "../graphics/Mesh.h"
+#include "../physics/PhysicsConstraint.h"
+#include "../math/Transform.h"
+#include "../math/Vector3.h"
+#include "../physics/PhysicsCollisionObject.h"
 
 namespace gameplay
 {

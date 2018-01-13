@@ -1,7 +1,7 @@
-#include "Base.h"
-#include "Properties.h"
-#include "FileSystem.h"
-#include "Quaternion.h"
+#include "../core/Base.h"
+#include "../core/Properties.h"
+#include "../core/FileSystem.h"
+#include "../math/Quaternion.h"
 
 namespace gameplay
 {

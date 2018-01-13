@@ -1,8 +1,8 @@
-#include "Base.h"
-#include "MaterialParameter.h"
-#include "Node.h"
+#include "../core/Base.h"
+#include "../graphics/MaterialParameter.h"
+#include "../graphics/Node.h"
 
-#include "BGFX/BGFXUniform.h"
+#include "../renderer/BGFX/BGFXUniform.h"
 
 namespace gameplay
 {

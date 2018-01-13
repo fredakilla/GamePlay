@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "Sprite.h"
-#include "Scene.h"
+#include "../core/Base.h"
+#include "../graphics/Sprite.h"
+#include "../graphics/Scene.h"
 
 namespace gameplay
 {

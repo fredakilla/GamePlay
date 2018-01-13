@@ -1,7 +1,7 @@
 #ifndef ANIMATIONVALUE_H_
 #define ANIMATIONVALUE_H_
 
-#include "Animation.h"
+#include "../animation/Animation.h"
 
 namespace gameplay
 {

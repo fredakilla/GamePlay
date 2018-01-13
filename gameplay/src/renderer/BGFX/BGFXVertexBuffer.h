@@ -1,9 +1,9 @@
 #ifndef BGFX_VERTEXBUFFER_H_
 #define BGFX_VERTEXBUFFER_H_
 
-#include "Base.h"
-#include "VertexFormat.h"
-#include "GeometryBuffer.h"
+#include "../../core/Base.h"
+#include "../../graphics/VertexFormat.h"
+#include "../../graphics/GeometryBuffer.h"
 
 namespace gameplay {
 

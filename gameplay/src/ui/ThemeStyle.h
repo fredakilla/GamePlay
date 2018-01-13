@@ -1,13 +1,13 @@
 #ifndef THEMESTYLE_H_
 #define THEMESTYLE_H_
 
-#include "Base.h"
-#include "Ref.h"
-#include "Font.h"
-#include "Rectangle.h"
-#include "Texture.h"
-#include "Properties.h"
-#include "Theme.h"
+#include "../core/Base.h"
+#include "../core/Ref.h"
+#include "../graphics/Font.h"
+#include "../math/Rectangle.h"
+#include "../graphics/Texture.h"
+#include "../core/Properties.h"
+#include "../ui/Theme.h"
 
 namespace gameplay
 {

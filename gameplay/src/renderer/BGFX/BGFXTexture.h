@@ -1,8 +1,8 @@
 #ifndef BGFXTEXTUREHANDLE_H
 #define BGFXTEXTUREHANDLE_H
 
-#include "TextureHandle.h"
-#include "Texture.h"
+#include "../../renderer/TextureHandle.h"
+#include "../../graphics/Texture.h"
 
 namespace gameplay {
 

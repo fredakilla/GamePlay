@@ -1,20 +1,20 @@
 #ifndef NODE_H_
 #define NODE_H_
 
-#include "Transform.h"
-#include "ScriptTarget.h"
-#include "Model.h"
-#include "Sprite.h"
-#include "TileSet.h"
-#include "Text.h"
-#include "Form.h"
-#include "ParticleEmitter.h"
-#include "Camera.h"
-#include "Light.h"
-#include "PhysicsRigidBody.h"
-#include "PhysicsCollisionObject.h"
-#include "BoundingBox.h"
-#include "AIAgent.h"
+#include "../math/Transform.h"
+#include "../script/ScriptTarget.h"
+#include "../graphics/Model.h"
+#include "../graphics/Sprite.h"
+#include "../graphics/TileSet.h"
+#include "../graphics/Text.h"
+#include "../ui/Form.h"
+#include "../graphics/ParticleEmitter.h"
+#include "../graphics/Camera.h"
+#include "../graphics/Light.h"
+#include "../physics/PhysicsRigidBody.h"
+#include "../physics/PhysicsCollisionObject.h"
+#include "../math/BoundingBox.h"
+#include "../ai/AIAgent.h"
 
 namespace gameplay
 {

@@ -1,12 +1,12 @@
 #ifndef THEME_H_
 #define THEME_H_
 
-#include "Base.h"
-#include "Ref.h"
-#include "Font.h"
-#include "Rectangle.h"
-#include "Texture.h"
-#include "Properties.h"
+#include "../core/Base.h"
+#include "../core/Ref.h"
+#include "../graphics/Font.h"
+#include "../math/Rectangle.h"
+#include "../graphics/Texture.h"
+#include "../core/Properties.h"
 
 namespace gameplay
 {

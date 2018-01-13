@@ -1,10 +1,10 @@
 #ifndef FRAMEBUFFER_H_
 #define FRAMEBUFFER_H_
 
-#include "Base.h"
-#include "RenderTarget.h"
-#include "DepthStencilTarget.h"
-#include "Image.h"
+#include "../core/Base.h"
+#include "../graphics/RenderTarget.h"
+#include "../graphics/DepthStencilTarget.h"
+#include "../graphics/Image.h"
 
 namespace gameplay
 {

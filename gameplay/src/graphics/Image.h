@@ -1,7 +1,7 @@
 #ifndef IMAGE_H__
 #define IMAGE_H__
 
-#include "Ref.h"
+#include "../core/Ref.h"
 
 namespace gameplay
 {

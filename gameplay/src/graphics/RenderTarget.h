@@ -1,8 +1,8 @@
 #ifndef RENDERTARGET_H_
 #define RENDERTARGET_H_
 
-#include "Base.h"
-#include "Texture.h"
+#include "../core/Base.h"
+#include "../graphics/Texture.h"
 
 namespace gameplay
 {

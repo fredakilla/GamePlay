@@ -1,8 +1,8 @@
 #ifndef BGFXUNIFORM_H
 #define BGFXUNIFORM_H
 
-#include "Base.h"
-#include "Uniform.h"
+#include "../../core/Base.h"
+#include "../../renderer/Uniform.h"
 
 
 namespace gameplay

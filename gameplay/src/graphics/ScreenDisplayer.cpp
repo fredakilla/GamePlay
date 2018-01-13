@@ -1,5 +1,5 @@
-#include "Base.h"
-#include "ScreenDisplayer.h"
+#include "../core/Base.h"
+#include "../graphics/ScreenDisplayer.h"
 
 namespace gameplay
 {

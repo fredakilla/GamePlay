@@ -1,10 +1,10 @@
 #ifndef PROPERTIES_H_
 #define PROPERTIES_H_
 
-#include "Base.h"
-#include "Matrix.h"
-#include "Vector2.h"
-#include "Stream.h"
+#include "../core/Base.h"
+#include "../math/Matrix.h"
+#include "../math/Vector2.h"
+#include "../core/Stream.h"
 
 namespace gameplay
 {

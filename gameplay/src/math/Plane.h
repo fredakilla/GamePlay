@@ -1,7 +1,7 @@
 #ifndef PLANE_H_
 #define PLANE_H_
 
-#include "Matrix.h"
+#include "../math/Matrix.h"
 
 namespace gameplay
 {

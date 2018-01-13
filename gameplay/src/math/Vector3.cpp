@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "Vector3.h"
-#include "MathUtil.h"
+#include "../core/Base.h"
+#include "../math/Vector3.h"
+#include "../core/MathUtil.h"
 
 namespace gameplay
 {

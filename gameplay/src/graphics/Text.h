@@ -1,14 +1,14 @@
 #ifndef TEXT_H__
 #define TEXT_H__
 
-#include "Ref.h"
-#include "AnimationTarget.h"
-#include "Properties.h"
-#include "Font.h"
-#include "Vector2.h"
-#include "Vector4.h"
-#include "Effect.h"
-#include "Drawable.h"
+#include "../core/Ref.h"
+#include "../animation/AnimationTarget.h"
+#include "../core/Properties.h"
+#include "../graphics/Font.h"
+#include "../math/Vector2.h"
+#include "../math/Vector4.h"
+#include "../graphics/Effect.h"
+#include "../graphics/Drawable.h"
 
 namespace gameplay
 {

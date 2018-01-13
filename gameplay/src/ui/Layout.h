@@ -1,9 +1,9 @@
 #ifndef LAYOUT_H_
 #define LAYOUT_H_
 
-#include "Ref.h"
-#include "Touch.h"
-#include "Vector2.h"
+#include "../core/Ref.h"
+#include "../core/Touch.h"
+#include "../math/Vector2.h"
 
 namespace gameplay
 {

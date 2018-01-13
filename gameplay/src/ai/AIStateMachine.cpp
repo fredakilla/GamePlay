@@ -1,8 +1,8 @@
-#include "Base.h"
-#include "AIStateMachine.h"
-#include "AIAgent.h"
-#include "AIMessage.h"
-#include "Game.h"
+#include "../core/Base.h"
+#include "../ai/AIStateMachine.h"
+#include "../ai/AIAgent.h"
+#include "../ai/AIMessage.h"
+#include "../core/Game.h"
 
 namespace gameplay
 {

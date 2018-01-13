@@ -1,10 +1,10 @@
 #ifndef ANIMATIONCLIP_H_
 #define ANIMATIONCLIP_H_
 
-#include "AnimationValue.h"
-#include "Curve.h"
-#include "Animation.h"
-#include "ScriptTarget.h"
+#include "../animation/AnimationValue.h"
+#include "../math/Curve.h"
+#include "../animation/Animation.h"
+#include "../script/ScriptTarget.h"
 
 namespace gameplay
 {

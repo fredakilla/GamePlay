@@ -1,9 +1,9 @@
 #ifndef AIAGENT_H_
 #define AIAGENT_H_
 
-#include "Ref.h"
-#include "AIStateMachine.h"
-#include "AIMessage.h"
+#include "../core/Ref.h"
+#include "../ai/AIStateMachine.h"
+#include "../ai/AIMessage.h"
 
 namespace gameplay
 {

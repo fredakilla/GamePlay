@@ -1,7 +1,7 @@
 #ifndef	CONTROLFACTORY_H_
 #define	CONTROLFACTORY_H_
 
-#include "Theme.h"
+#include "../ui/Theme.h"
 
 namespace gameplay 
 {	

@@ -1,9 +1,9 @@
 #ifndef QUATERNION_H_
 #define QUATERNION_H_
 
-#include "Vector3.h"
-#include "Matrix.h"
-#include "Plane.h"
+#include "../math/Vector3.h"
+#include "../math/Matrix.h"
+#include "../math/Plane.h"
 
 namespace gameplay
 {

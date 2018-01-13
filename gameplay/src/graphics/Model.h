@@ -1,10 +1,10 @@
 #ifndef MODEL_H_
 #define MODEL_H_
 
-#include "Mesh.h"
-#include "MeshSkin.h"
-#include "Material.h"
-#include "Drawable.h"
+#include "../graphics/Mesh.h"
+#include "../graphics/MeshSkin.h"
+#include "../graphics/Material.h"
+#include "../graphics/Drawable.h"
 
 namespace gameplay
 {

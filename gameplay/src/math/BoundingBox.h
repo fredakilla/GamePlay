@@ -1,7 +1,7 @@
 #ifndef BOUNDINGBOX_H_
 #define BOUNDINGBOX_H_
 
-#include "Frustum.h"
+#include "../math/Frustum.h"
 
 namespace gameplay
 {

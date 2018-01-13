@@ -1,7 +1,7 @@
 #ifndef PHYSICSSPRINGCONSTRAINT_H_
 #define PHYSICSSPRINGCONSTRAINT_H_
 
-#include "PhysicsGenericConstraint.h"
+#include "../physics/PhysicsGenericConstraint.h"
 
 namespace gameplay
 {

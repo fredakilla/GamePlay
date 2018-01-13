@@ -1,5 +1,5 @@
-#include "Slider.h"
-#include "Game.h"
+#include "../ui/Slider.h"
+#include "../core/Game.h"
 
 namespace gameplay
 {

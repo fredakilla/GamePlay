@@ -1,6 +1,6 @@
-#include "Base.h"
-#include "AudioBuffer.h"
-#include "FileSystem.h"
+#include "../core/Base.h"
+#include "../audio/AudioBuffer.h"
+#include "../core/FileSystem.h"
 
 namespace gameplay
 {

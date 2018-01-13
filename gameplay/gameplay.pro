@@ -22,18 +22,18 @@ QMAKE_CLEAN += $$DESTDIR/$$TARGET
 # libraries includes
 #--------------------------------------------------------------------
 
-INCLUDEPATH += src/ai
-INCLUDEPATH += src/animation
-INCLUDEPATH += src/audio
-INCLUDEPATH += src/core
-INCLUDEPATH += src/graphics
-INCLUDEPATH += src/lua
-INCLUDEPATH += src/math
-INCLUDEPATH += src/org
-INCLUDEPATH += src/physics
-INCLUDEPATH += src/script
-INCLUDEPATH += src/ui
-INCLUDEPATH += src/renderer
+#INCLUDEPATH += src/ai
+#INCLUDEPATH += src/animation
+#INCLUDEPATH += src/audio
+#INCLUDEPATH += src/core
+#INCLUDEPATH += src/graphics
+#INCLUDEPATH += src/lua
+#INCLUDEPATH += src/math
+#INCLUDEPATH += src/org
+#INCLUDEPATH += src/physics
+#INCLUDEPATH += src/script
+#INCLUDEPATH += src/ui
+#INCLUDEPATH += src/renderer
 
 INCLUDEPATH += $${BGFX}/include
 INCLUDEPATH += $${BX}/include

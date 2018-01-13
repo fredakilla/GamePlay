@@ -1,8 +1,8 @@
 #ifndef AICONTROLLER_H_
 #define AICONTROLLER_H_
 
-#include "AIAgent.h"
-#include "AIMessage.h"
+#include "../ai/AIAgent.h"
+#include "../ai/AIMessage.h"
 
 namespace gameplay
 {

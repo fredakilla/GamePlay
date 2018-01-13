@@ -1,5 +1,5 @@
-#include "Base.h"
-#include "AIMessage.h"
+#include "../core/Base.h"
+#include "../ai/AIMessage.h"
 
 namespace gameplay
 {

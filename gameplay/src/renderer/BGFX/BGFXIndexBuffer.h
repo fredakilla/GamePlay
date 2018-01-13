@@ -1,9 +1,9 @@
 #ifndef BGFX_INDEXBUFFER_H_
 #define BGFX_INDEXBUFFER_H_
 
-#include "GeometryBuffer.h"
-#include "Base.h"
-#include "Mesh.h"
+#include "../../graphics/GeometryBuffer.h"
+#include "../../core/Base.h"
+#include "../../graphics/Mesh.h"
 
 namespace gameplay {
 

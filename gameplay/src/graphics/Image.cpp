@@ -1,9 +1,9 @@
-#include "Base.h"
-#include "FileSystem.h"
-#include "Image.h"
+#include "../core/Base.h"
+#include "../core/FileSystem.h"
+#include "../graphics/Image.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image/stb_image.h"
+#include <stb_image/stb_image.h>
 
 
 namespace gameplay

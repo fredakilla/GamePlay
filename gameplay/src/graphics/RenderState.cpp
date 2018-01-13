@@ -1,10 +1,10 @@
-#include "Base.h"
-#include "RenderState.h"
-#include "Node.h"
-#include "Pass.h"
-#include "Technique.h"
-#include "Node.h"
-#include "Scene.h"
+#include "../core/Base.h"
+#include "../graphics/RenderState.h"
+#include "../graphics/Node.h"
+#include "../graphics/Pass.h"
+#include "../graphics/Technique.h"
+#include "../graphics/Node.h"
+#include "../graphics/Scene.h"
 
 // Render state override bits
 #define RS_BLEND 1

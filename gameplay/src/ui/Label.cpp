@@ -1,5 +1,5 @@
-#include "Base.h"
-#include "Label.h"
+#include "../core/Base.h"
+#include "../ui/Label.h"
 
 namespace gameplay
 {

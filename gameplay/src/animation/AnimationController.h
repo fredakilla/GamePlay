@@ -1,10 +1,10 @@
 #ifndef ANIMATIONCONTROLLER_H_
 #define ANIMATIONCONTROLLER_H_
 
-#include "AnimationClip.h"
-#include "Animation.h"
-#include "AnimationTarget.h"
-#include "Properties.h"
+#include "../animation/AnimationClip.h"
+#include "../animation/Animation.h"
+#include "../animation/AnimationTarget.h"
+#include "../core/Properties.h"
 
 namespace gameplay
 {
