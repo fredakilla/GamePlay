@@ -22,18 +22,18 @@ QMAKE_CLEAN += $$DESTDIR/$$TARGET
 # libraries includes
 #--------------------------------------------------------------------
 
-INCLUDEPATH += ../../gameplay/src/ai
-INCLUDEPATH += ../../gameplay/src/animation
-INCLUDEPATH += ../../gameplay/src/audio
-INCLUDEPATH += ../../gameplay/src/core
-INCLUDEPATH += ../../gameplay/src/graphics
-INCLUDEPATH += ../../gameplay/src/lua
-INCLUDEPATH += ../../gameplay/src/math
-INCLUDEPATH += ../../gameplay/src/org
-INCLUDEPATH += ../../gameplay/src/physics
-INCLUDEPATH += ../../gameplay/src/script
-INCLUDEPATH += ../../gameplay/src/ui
-INCLUDEPATH += ../../gameplay/src/renderer
+#INCLUDEPATH += ../../gameplay/src/ai
+#INCLUDEPATH += ../../gameplay/src/animation
+#INCLUDEPATH += ../../gameplay/src/audio
+#INCLUDEPATH += ../../gameplay/src/core
+#INCLUDEPATH += ../../gameplay/src/graphics
+#INCLUDEPATH += ../../gameplay/src/lua
+#INCLUDEPATH += ../../gameplay/src/math
+#INCLUDEPATH += ../../gameplay/src/org
+#INCLUDEPATH += ../../gameplay/src/physics
+#INCLUDEPATH += ../../gameplay/src/script
+#INCLUDEPATH += ../../gameplay/src/ui
+#INCLUDEPATH += ../../gameplay/src/renderer
 
 INCLUDEPATH += $${BGFX}/include
 INCLUDEPATH += $${BX}/include

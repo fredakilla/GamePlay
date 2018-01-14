@@ -2,7 +2,8 @@
 #define GAMEPADSAMPLE_H_
 
 #include "SamplesGame.h"
-#include "../core/Gamepad.h"
+#include "core/Gamepad.h"
+
 
 using namespace gameplay;
 

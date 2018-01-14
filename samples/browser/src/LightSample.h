@@ -3,8 +3,8 @@
 
 #include "gameplay.h"
 #include "Sample.h"
-#include "Material.h"
-#include "Model.h"
+#include "graphics/Material.h"
+#include "graphics/Model.h"
 
 using namespace gameplay;
 
