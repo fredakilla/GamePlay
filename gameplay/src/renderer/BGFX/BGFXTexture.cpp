@@ -4,7 +4,6 @@
 
 namespace gameplay {
 
-
 bgfx::TextureFormat::Enum TEXTURE_BGFX_FORMAT_INFOS[] =
 {
 
@@ -54,8 +53,8 @@ enum Format
 
 uint32_t MIN_FILTER[] =
 {
-    BGFX_TEXTURE_MIN_ANISOTROPIC,   //NEAREST = GL_NEAREST,
-    BGFX_TEXTURE_MIN_POINT,         //LINEAR = GL_LINEAR,
+    BGFX_TEXTURE_MIN_POINT,         //NEAREST = GL_NEAREST,
+    BGFX_TEXTURE_MIN_ANISOTROPIC,   //LINEAR = GL_LINEAR,
     BGFX_TEXTURE_NONE,              //NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
     BGFX_TEXTURE_NONE,              //LINEAR_MIPMAP_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
     BGFX_TEXTURE_NONE,              //NEAREST_MIPMAP_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
@@ -64,8 +63,8 @@ uint32_t MIN_FILTER[] =
 
 uint32_t MAG_FILTER[] =
 {
-    BGFX_TEXTURE_MAG_ANISOTROPIC,   //NEAREST = GL_NEAREST,
-    BGFX_TEXTURE_MAG_POINT,         //LINEAR = GL_LINEAR,
+    BGFX_TEXTURE_MAG_POINT,         //NEAREST = GL_NEAREST,
+    BGFX_TEXTURE_MAG_ANISOTROPIC,   //LINEAR = GL_LINEAR,
     BGFX_TEXTURE_NONE,              //NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
     BGFX_TEXTURE_NONE,              //LINEAR_MIPMAP_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
     BGFX_TEXTURE_NONE,              //NEAREST_MIPMAP_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
@@ -138,12 +137,16 @@ BGFXTexture::BGFXTexture(Texture* texture, const unsigned char *data, unsigned i
 
         _handle = bgfx::createTexture2D( texture->getWidth()
                                      , texture->getHeight()
-                                     , texture->isMipmapped()
+                                     , false//texture->isMipmapped()
                                      , 1
                                      , bgfxTextureFormat //texture->_format
                                      , flags//BGFX_TEXTURE_U_CLAMP | BGFX_TEXTURE_V_CLAMP
-                                        //, mem
+                                     , NULL
                                      );
+
+
+
+
 
     }
     else if(type == Texture::Type::TEXTURE_RT)

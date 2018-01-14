@@ -129,6 +129,57 @@ void TextureSample::initialize()
         _scene->getActiveCamera()->project(getViewport(), node->getTranslationWorld(), &x, &y);
         //_text.push_back(_font->createText("MipMap: On", Rectangle(x, y, textWidth, fontSize), Vector4::one(), fontSize, Font::ALIGN_HCENTER, false));
     }
+
+
+    // Wrap modes
+
+    int xstart = -25;
+    int xoffset = 11;
+
+    Texture::Wrap WRAP[] = { Texture::REPEAT, Texture::CLAMP, Texture::BORDER, Texture::MIRROR };
+    const char * WRAP_NAME[] = { "REPEAT", "CLAMP", "BORDER", "MIRROR" };
+
+
+    for(int i=0; i<4; i++)
+    {
+        Node* node = addQuadModelAndNode(_scene, 0, 0, cubeSize, cubeSize, -1, -1, 2, 2);
+        setTextureUnlitMaterial(dynamic_cast<Model*>(node->getDrawable()), "res/png/smiley.png");
+        node->setId("wrapmodel");
+        Texture::Sampler* sampler = dynamic_cast<Model*>(node->getDrawable())->getMaterial()->getParameter("u_diffuseTexture")->getSampler();
+        if (sampler)
+        {
+            Texture::Wrap wrap = WRAP[i];
+            sampler->setWrapMode(wrap, wrap);
+        }
+        node->setTranslation(xstart + xoffset*i, -15, 0);
+        _scene->getActiveCamera()->project(getViewport(), node->getTranslationWorld(), &x, &y);
+        //_text.push_back(_font->createText("Wrap: Repeat", Rectangle(x, y, textWidth, fontSize), Vector4::one(), fontSize, Font::ALIGN_HCENTER, false));
+    }
+
+    // Linear filter
+    {
+        Node* node = addQuadModelAndNode(_scene, 0, 0, cubeSize, cubeSize, 0.25, 0.25, 0.70, 0.70);
+        setTextureUnlitMaterial(dynamic_cast<Model*>(node->getDrawable()), "res/png/smiley.png");
+        node->setTranslation(22, 1, 0);
+        Texture::Sampler* sampler = dynamic_cast<Model*>(node->getDrawable())->getMaterial()->getParameter("u_diffuseTexture")->getSampler();
+        if (sampler)
+        {
+            sampler->setFilterMode(Texture::LINEAR, Texture::LINEAR);
+        }
+    }
+
+    // Nearest filter
+    {
+        Node* node = addQuadModelAndNode(_scene, 0, 0, cubeSize, cubeSize, 0.25, 0.25, 0.70, 0.70);
+        setTextureUnlitMaterial(dynamic_cast<Model*>(node->getDrawable()), "res/png/smiley.png");
+        node->setTranslation(22, -10, 0);
+        Texture::Sampler* sampler = dynamic_cast<Model*>(node->getDrawable())->getMaterial()->getParameter("u_diffuseTexture")->getSampler();
+        if (sampler)
+        {
+            sampler->setFilterMode(Texture::NEAREST, Texture::NEAREST);
+        }
+    }
+
 }
 
 void TextureSample::finalize()

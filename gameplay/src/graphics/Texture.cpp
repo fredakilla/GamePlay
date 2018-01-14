@@ -1199,6 +1199,22 @@ GpuTexture *Texture::getHandle() const
 
 void Texture::generateMipmaps()
 {
+    if (!_mipmapped)
+    {
+        /*GLenum target = (GLenum)_type;
+        GL_ASSERT( glBindTexture(target, _handle) );
+        GL_ASSERT( glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST) );
+        if( std::addressof(glGenerateMipmap) )
+            GL_ASSERT( glGenerateMipmap(target) );*/
+
+        _mipmapped = true;
+
+        // Restore the texture id
+        //GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
+    }
+
+
+
     //@@if (!_mipmapped)
     //@@{
     //@@    GLenum target = (GLenum)_type;
