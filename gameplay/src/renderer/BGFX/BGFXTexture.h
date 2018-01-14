@@ -18,6 +18,9 @@ public:
 
 private:
     bgfx::TextureHandle _handle;
+    Texture* _texture;
+
+    uint32_t _flags;
 
 };
 

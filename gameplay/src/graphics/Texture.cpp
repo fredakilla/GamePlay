@@ -1273,7 +1273,39 @@ void Texture::Sampler::bind(Uniform * uniform)
 {
     GP_ASSERT( _texture );
 
+
+
+    if (_texture->_minFilter != _minFilter)
+    {
+        _texture->_minFilter = _minFilter;
+    }
+    if (_texture->_magFilter != _magFilter)
+    {
+        _texture->_magFilter = _magFilter;
+    }
+    if (_texture->_wrapS != _wrapS)
+    {
+        _texture->_wrapS = _wrapS;
+    }
+    if (_texture->_wrapT != _wrapT)
+    {
+        _texture->_wrapT = _wrapT;
+    }
+    if (_texture->_wrapR != _wrapR)
+    {
+        _texture->_wrapR = _wrapR;
+    }
+
+
+
+
     _texture->_gpuTtexture->bind(uniform);
+
+
+    int debug1 = _wrapS;
+    int debug2 = _wrapT;
+    int debu3 = 0;
+
 
     //@@
 #if 0

@@ -1333,6 +1333,10 @@ int Platform::enterMessagePump()
 
     //updateWindowSize();
 
+    static bool shiftDown = false;
+    static bool capsOn = false;
+
+
     // Get the initial time.
     clock_gettime(CLOCK_REALTIME, &__timespec);
     __timeStart = timespec2millis(&__timespec);
@@ -1377,7 +1381,35 @@ int Platform::enterMessagePump()
                 default:
                     break;
                 }
+
+
+                KeySym sym = event.key.keysym.sym;
+
+                Keyboard::Key key = getKey(sym);
+                gameplay::Platform::keyEventInternal(gameplay::Keyboard::KEY_PRESS, key);
+
+                if (key == Keyboard::KEY_CAPS_LOCK)
+                    capsOn = !capsOn;
+                if (key == Keyboard::KEY_SHIFT)
+                    shiftDown = true;
+
+                if (int character = getUnicode(key))
+                    gameplay::Platform::keyEventInternal(gameplay::Keyboard::KEY_CHAR, character);
+
+
             }
+
+            if (event.type == SDL_KEYUP)
+            {
+                KeySym sym = event.key.keysym.sym;
+                Keyboard::Key key = getKey(sym);
+                gameplay::Platform::keyEventInternal(gameplay::Keyboard::KEY_RELEASE, key);
+
+                if (key == Keyboard::KEY_SHIFT)
+                    shiftDown = false;
+            }
+
+
 
             if (event.type == SDL_MOUSEBUTTONDOWN)
             {

@@ -50,10 +50,73 @@ enum Format
 };*/
 
 
+
+
+uint32_t MIN_FILTER[] =
+{
+    BGFX_TEXTURE_MIN_ANISOTROPIC,   //NEAREST = GL_NEAREST,
+    BGFX_TEXTURE_MIN_POINT,         //LINEAR = GL_LINEAR,
+    BGFX_TEXTURE_NONE,              //NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
+    BGFX_TEXTURE_NONE,              //LINEAR_MIPMAP_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
+    BGFX_TEXTURE_NONE,              //NEAREST_MIPMAP_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
+    BGFX_TEXTURE_MIP_POINT,         //LINEAR_MIPMAP_LINEAR = GL_LINEAR_MIPMAP_LINEAR
+};
+
+uint32_t MAG_FILTER[] =
+{
+    BGFX_TEXTURE_MAG_ANISOTROPIC,   //NEAREST = GL_NEAREST,
+    BGFX_TEXTURE_MAG_POINT,         //LINEAR = GL_LINEAR,
+    BGFX_TEXTURE_NONE,              //NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
+    BGFX_TEXTURE_NONE,              //LINEAR_MIPMAP_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
+    BGFX_TEXTURE_NONE,              //NEAREST_MIPMAP_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
+    BGFX_TEXTURE_MIP_POINT,         //LINEAR_MIPMAP_LINEAR = GL_LINEAR_MIPMAP_LINEAR
+};
+
+uint32_t WRAP_S[] =
+{
+    BGFX_TEXTURE_NONE,              //REPEAT = GL_REPEAT,
+    BGFX_TEXTURE_U_CLAMP,           //CLAMP = GL_CLAMP_TO_EDGE
+    BGFX_TEXTURE_U_MIRROR,
+    BGFX_TEXTURE_U_BORDER,
+};
+
+uint32_t WRAP_T[] =
+{
+    BGFX_TEXTURE_NONE,              //REPEAT = GL_REPEAT,
+    BGFX_TEXTURE_V_CLAMP,           //CLAMP = GL_CLAMP_TO_EDGE
+    BGFX_TEXTURE_V_MIRROR,
+    BGFX_TEXTURE_V_BORDER,
+};
+
+uint32_t WRAP_R[] =
+{
+    BGFX_TEXTURE_NONE,              //REPEAT = GL_REPEAT,
+    BGFX_TEXTURE_W_CLAMP,           //CLAMP = GL_CLAMP_TO_EDGE
+    BGFX_TEXTURE_W_MIRROR,
+    BGFX_TEXTURE_W_BORDER,
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 BGFXTexture::BGFXTexture(Texture* texture, const unsigned char *data, unsigned int size, Texture::Type type)
 {
     GP_ASSERT(texture);
 
+    _texture = texture;
+    _flags = BGFX_TEXTURE_NONE;
 
 
     bgfx::TextureFormat::Enum bgfxTextureFormat = TEXTURE_BGFX_FORMAT_INFOS[texture->getFormat()];
@@ -65,14 +128,22 @@ BGFXTexture::BGFXTexture(Texture* texture, const unsigned char *data, unsigned i
     if(type == Texture::Type::TEXTURE_2D)
     {
 
+        uint32_t flags = BGFX_TEXTURE_NONE;
+        flags |= MIN_FILTER[_texture->_minFilter];
+        flags |= MAG_FILTER[_texture->_magFilter];
+        flags |= WRAP_S[_texture->_wrapS];
+        flags |= WRAP_T[_texture->_wrapT];
+        flags |= WRAP_R[_texture->_wrapR];
+        _flags = flags;
+
         _handle = bgfx::createTexture2D( texture->getWidth()
                                      , texture->getHeight()
                                      , texture->isMipmapped()
                                      , 1
                                      , bgfxTextureFormat //texture->_format
-            , 0//BGFX_TEXTURE_U_CLAMP | BGFX_TEXTURE_V_CLAMP
-            //, mem
-            );
+                                     , flags//BGFX_TEXTURE_U_CLAMP | BGFX_TEXTURE_V_CLAMP
+                                        //, mem
+                                     );
 
     }
     else if(type == Texture::Type::TEXTURE_RT)
@@ -116,14 +187,20 @@ BGFXTexture::~BGFXTexture()
         bgfx::destroy(_handle);
 }
 
+
+
+
+
 void BGFXTexture::bind(Uniform * uniform)
 {
-
     BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
 
-   //bgfx::setTexture(index, dp.material->textures[i]->uniformHandle, dp.material->textures[i]->textureHandle);
-
-    uint32_t flags = UINT32_MAX;
+    uint32_t flags = BGFX_TEXTURE_NONE;
+    flags |= MIN_FILTER[_texture->_minFilter];
+    flags |= MAG_FILTER[_texture->_magFilter];
+    flags |= WRAP_S[_texture->_wrapS];
+    flags |= WRAP_T[_texture->_wrapT];
+    flags |= WRAP_R[_texture->_wrapR];
 
     bgfx::setTexture(uniform->getIndex(), bgfxUniform->getHandle(), _handle, flags);
 }

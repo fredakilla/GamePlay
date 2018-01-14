@@ -17,6 +17,7 @@ class Uniform;
 class Texture : public Ref
 {
     friend class Sampler;
+    friend class BGFXTexture;
 
 public:
 
@@ -42,12 +43,12 @@ public:
      */
     enum Filter
     {
-        NEAREST = GL_NEAREST,
-        LINEAR = GL_LINEAR,
-        NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
-        LINEAR_MIPMAP_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
-        NEAREST_MIPMAP_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
-        LINEAR_MIPMAP_LINEAR = GL_LINEAR_MIPMAP_LINEAR
+        NEAREST,                //@@= GL_NEAREST,
+        LINEAR,                 //@@= GL_LINEAR,
+        NEAREST_MIPMAP_NEAREST, //@@= GL_NEAREST_MIPMAP_NEAREST,
+        LINEAR_MIPMAP_NEAREST,  //@@= GL_LINEAR_MIPMAP_NEAREST,
+        NEAREST_MIPMAP_LINEAR,  //@@= GL_NEAREST_MIPMAP_LINEAR,
+        LINEAR_MIPMAP_LINEAR    //@@= GL_LINEAR_MIPMAP_LINEAR
     };
 
     /**
@@ -55,8 +56,10 @@ public:
      */
     enum Wrap
     {
-        REPEAT = GL_REPEAT,
-        CLAMP = GL_CLAMP_TO_EDGE
+        REPEAT,                 //@@= GL_REPEAT,
+        CLAMP,                  //@@= GL_CLAMP_TO_EDGE
+        MIRROR,                 //@@ new bgfx
+        BORDER,                 //@@ new bgfx
     };
 
     /**
@@ -64,8 +67,8 @@ public:
      */
     enum Type
     {
-        TEXTURE_2D,     //@@ = GL_TEXTURE_2D,
-        TEXTURE_CUBE,   //@@ = GL_TEXTURE_CUBE_MAP,
+        TEXTURE_2D,             //@@ = GL_TEXTURE_2D,
+        TEXTURE_CUBE,           //@@ = GL_TEXTURE_CUBE_MAP,
         TEXTURE_RT
     };
 
