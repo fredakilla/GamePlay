@@ -4,6 +4,7 @@
 
 linux: BGFX = /home/fred/Documents/bgfx
 linux: BX = /home/fred/Documents/bx
+linux: BIMG = /home/fred/Documents/bimg
 
 #--------------------------------------------------------------------
 # output directory
@@ -37,6 +38,7 @@ QMAKE_CLEAN += $$DESTDIR/$$TARGET
 
 INCLUDEPATH += $${BGFX}/include
 INCLUDEPATH += $${BX}/include
+INCLUDEPATH += $${BIMG}/include
 INCLUDEPATH += $${BGFX}/tools/shaderc   # include shaderc as lib for runtime compile
 
 

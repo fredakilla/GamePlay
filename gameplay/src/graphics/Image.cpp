@@ -6,6 +6,9 @@
 #include <stb_image/stb_image.h>
 
 
+#include <bimg/bimg.h>
+#include <bx/allocator.h>
+
 namespace gameplay
 {
 // Callback for reading a png image using Stream
@@ -18,6 +21,12 @@ static void readStream(png_structp png, png_bytep data, png_size_t length)
     }
 }
 
+bx::AllocatorI* getDefaultAllocator()
+{
+        static bx::DefaultAllocator s_allocator;
+        return &s_allocator;
+}
+
 Image* Image::create(const char* path)
 {
     GP_ASSERT(path);
@@ -28,10 +37,93 @@ Image* Image::create(const char* path)
     const char * filePath = FileSystem::resolvePath(path);
 
     // load image vertically flipped
-    stbi_set_flip_vertically_on_load(1);
+   // stbi_set_flip_vertically_on_load(1);
 
     // load image using stb_image
-    unsigned char* imageData = stbi_load(filePath, &width, &height, &channels, 0);
+   // unsigned char* imageData = stbi_load(filePath, &width, &height, &channels, 0);
+
+
+    unsigned char* imageData = 0;
+
+
+
+    // Open the file.
+    std::unique_ptr<Stream> stream(FileSystem::open(path));
+    if (stream.get() == NULL || !stream->canRead())
+    {
+        GP_ERROR("Failed to open image file '%s'.", path);
+        return NULL;
+    }
+
+    // Verify PNG signature.
+    unsigned char sig[8];
+    if (stream->read(sig, 1, 8) != 8 || png_sig_cmp(sig, 0, 8) == 0)
+    {
+
+        // load image vertically flipped
+        stbi_set_flip_vertically_on_load(1);
+
+        // load image using stb_image
+       imageData = stbi_load(filePath, &width, &height, &channels, 0);
+
+    }
+    else
+    {
+        /*size_t filesize = stream->length() ;
+        char *buffer = (char*) malloc (sizeof(char)*filesize);
+        stream->read(buffer, 1, filesize);*/
+
+        int fileSize = 0;
+        char * fileData = FileSystem::readAll(path, &fileSize);
+        if (fileData == NULL)
+        {
+            GP_ERROR("Failed to read image from file '%s'.", path);
+            return nullptr;
+        }
+
+        //bimg::ImageContainer container;
+        //bimg::imageParse(container, fileData, stream->length());
+
+
+        //bx::AllocatorI* alloc = getDefaultAllocator()
+        //bimg::ImageContainer* imageContainer = bimg::imageParse(getDefaultAllocator(), fileData, fileSize);
+
+        bimg::ImageContainer* imageContainer = bimg::imageParseDds(getDefaultAllocator(), fileData, fileSize, 0);
+
+        imageData = (unsigned char*)imageContainer->m_data;
+        channels = 3;
+
+
+        const bgfx::Memory* mem = bgfx::makeRef(
+                              imageContainer->m_data
+                            , imageContainer->m_size
+                            , 0
+                            , imageContainer
+                            );
+
+        Format format = Image::RGB;
+
+        // create image from data
+        Image* img = Image::create(width, height, format, imageData);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     Format format;
     switch (channels)

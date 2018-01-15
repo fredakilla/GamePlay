@@ -123,7 +123,7 @@ void TextureSample::initialize()
     // Mipmapping On
     {
         Node* node = addQuadModelAndNode(_scene, 0, 0, cubeSize, cubeSize);
-        setTextureUnlitMaterial(dynamic_cast<Model*>(node->getDrawable()), "res/png/logo.png");
+        setTextureUnlitMaterial(dynamic_cast<Model*>(node->getDrawable()), "res/png/logo.dds");
         node->setId("mipmap on");
         node->setTranslation(-5.5f, -2.5f, 0);
         _scene->getActiveCamera()->project(getViewport(), node->getTranslationWorld(), &x, &y);
