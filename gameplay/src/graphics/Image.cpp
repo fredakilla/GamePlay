@@ -6,8 +6,9 @@
 #include <stb_image/stb_image.h>
 
 
-#include <bimg/bimg.h>
+//#include <bimg/bimg.h>
 #include <bx/allocator.h>
+#include <bimg/decode.h>
 
 namespace gameplay
 {
@@ -21,12 +22,22 @@ static void readStream(png_structp png, png_bytep data, png_size_t length)
     }
 }
 
+#if 0
 bx::AllocatorI* getDefaultAllocator()
 {
         static bx::DefaultAllocator s_allocator;
         return &s_allocator;
 }
 
+
+static void imageReleaseCb(void* _ptr, void* _userData)
+{
+    BX_UNUSED(_ptr);
+    bimg::ImageContainer* imageContainer = (bimg::ImageContainer*)_userData;
+    bimg::imageFree(imageContainer);
+}
+
+#endif
 Image* Image::create(const char* path)
 {
     GP_ASSERT(path);
@@ -66,12 +77,19 @@ Image* Image::create(const char* path)
         // load image using stb_image
        imageData = stbi_load(filePath, &width, &height, &channels, 0);
 
+
+
+
+
+
+
     }
+#if 0
     else
     {
-        /*size_t filesize = stream->length() ;
-        char *buffer = (char*) malloc (sizeof(char)*filesize);
-        stream->read(buffer, 1, filesize);*/
+       /* size_t fileSize = stream->length() ;
+        void *fileData = malloc (sizeof(char)*fileSize);
+        stream->read(fileData, 1, fileSize);*/
 
         int fileSize = 0;
         char * fileData = FileSystem::readAll(path, &fileSize);
@@ -88,7 +106,11 @@ Image* Image::create(const char* path)
         //bx::AllocatorI* alloc = getDefaultAllocator()
         //bimg::ImageContainer* imageContainer = bimg::imageParse(getDefaultAllocator(), fileData, fileSize);
 
-        bimg::ImageContainer* imageContainer = bimg::imageParseDds(getDefaultAllocator(), fileData, fileSize, 0);
+        bimg::ImageContainer* imageContainer = bimg::imageParseDds(getDefaultAllocator(), (void*)fileData, fileSize, 0 );
+
+        /*bimg::ImageContainer imageContainer;
+        bimg::imageParse(imageContainer, fileData, fileSize);*/
+
 
         imageData = (unsigned char*)imageContainer->m_data;
         channels = 3;
@@ -97,18 +119,29 @@ Image* Image::create(const char* path)
         const bgfx::Memory* mem = bgfx::makeRef(
                               imageContainer->m_data
                             , imageContainer->m_size
-                            , 0
+                            , imageReleaseCb
                             , imageContainer
                             );
+        BX_FREE(getDefaultAllocator(), fileData);
 
         Format format = Image::RGB;
 
+
+
         // create image from data
-        Image* img = Image::create(width, height, format, imageData);
+        Image* img = Image::create(imageContainer->m_width
+                                   , imageContainer->m_height
+                                   , format
+                                   , mem->data);
+
+
+
+        return img;
+
 
     }
 
-
+#endif
 
 
 

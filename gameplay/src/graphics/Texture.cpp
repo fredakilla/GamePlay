@@ -4,6 +4,9 @@
 #include "../core/FileSystem.h"
 #include "../renderer/BGFX/BGFXTexture.h"
 
+#include <bx/allocator.h>
+#include <bimg/decode.h>
+
 // PVRTC (GL_IMG_texture_compression_pvrtc) : Imagination based gpus
 #ifndef GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG
 #define GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG 0x8C01
@@ -108,16 +111,44 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
     const char* ext = strrchr(FileSystem::resolvePath(path), '.');
     if (ext)
     {
+        if(!strcmp(ext, ".png"))
+        {
+            // PNG file
+            Image* image = Image::create(path);
+            if (image)
+                texture = create(image, generateMipmaps);
+            SAFE_RELEASE(image);
+        }
+        else if(!strcmp(ext, ".dds"))
+        {
+            // DDS file
+            texture = createDDS(path);
+        }
+        else
+        {
+            GP_ERROR("Unknow texture file extension : %s", ext);
+            return NULL;
+        }
+
+
+#if 0//@@
         switch (strlen(ext))
         {
         case 4:
-            //if (tolower(ext[1]) == 'p' && tolower(ext[2]) == 'n' && tolower(ext[3]) == 'g')
+            if (tolower(ext[1]) == 'p' && tolower(ext[2]) == 'n' && tolower(ext[3]) == 'g')
             {
                 Image* image = Image::create(path);
                 if (image)
                     texture = create(image, generateMipmaps);
                 SAFE_RELEASE(image);
             }
+            else if (tolower(ext[1]) == 'd' && tolower(ext[2]) == 'd' && tolower(ext[3]) == 's')
+            {
+                // DDS file format
+                texture = createDDS(path);
+            }
+
+
             //@@else if (tolower(ext[1]) == 'p' && tolower(ext[2]) == 'v' && tolower(ext[3]) == 'r')
             //@@{
             //@@    // PowerVR Compressed Texture RGBA.
@@ -130,10 +161,14 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
             //@@}
             //@@break;
         }
+
+#endif//@@
     }
 
     if (texture)
     {
+        GP_ASSERT(texture->_gpuTtexture);
+
         texture->_path = path;
         texture->_cached = true;
 
@@ -319,8 +354,34 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
     if (generateMipmaps)
         texture->generateMipmaps();
 
+    // create bgfx texture
+
+    bimg::TextureFormat::Enum bgfxFormat = (bimg::TextureFormat::Enum)BGFXTexture::toBgfxFormat(format);
+    uint8_t numMips = bimg::imageGetNumMips(bgfxFormat, width, height);
+    uint32_t imgSize = bimg::imageGetSize(0, width, height, 0, false, false, 1, bgfxFormat);
+
+    bimg::ImageContainer * imageContainer = new bimg::ImageContainer();
+    imageContainer->m_size = imgSize; //width * height * bpp;
+    imageContainer->m_offset = 0;
+    imageContainer->m_width = width;
+    imageContainer->m_height = height;
+    imageContainer->m_depth = 1;
+    imageContainer->m_numLayers = 1;
+    imageContainer->m_numMips = 1;
+    imageContainer->m_hasAlpha = bpp > 3 ? true : false;
+    imageContainer->m_cubeMap = false;
+    imageContainer->m_ktx = false;
+    imageContainer->m_ktxLE = false;
+    imageContainer->m_srgb = false;
+    imageContainer->m_format = bgfxFormat;
+    imageContainer->m_data = (void*)data;
+    imageContainer->m_orientation = bimg::Orientation::R0;
+
+
+
     unsigned int textureSize = width * height * bpp;
-    texture->_gpuTtexture = new BGFXTexture(texture, data, textureSize, type);
+    texture->_gpuTtexture = new BGFXTexture(texture, data, textureSize, type, imageContainer);
+
 
 
     // Restore the texture id
@@ -520,6 +581,7 @@ Texture* Texture::createCompressedPVRTC(const char* path)
 #endif
 //@@
 
+#if 0 //@@
 GLubyte* Texture::readCompressedPVRTC(const char* path, Stream* stream, GLsizei* width, GLsizei* height, GLenum* format, unsigned int* mipMapCount, unsigned int* faceCount, GLenum* faces)
 {
     GP_ASSERT( stream );
@@ -698,6 +760,7 @@ GLubyte* Texture::readCompressedPVRTC(const char* path, Stream* stream, GLsizei*
     return data;
 }
 
+
 GLubyte* Texture::readCompressedPVRTCLegacy(const char* path, Stream* stream, GLsizei* width, GLsizei* height, GLenum* format, unsigned int* mipMapCount, unsigned int* faceCount, GLenum* faces)
 {
     char PVRTCIdentifier[] = "PVR!";
@@ -788,6 +851,7 @@ GLubyte* Texture::readCompressedPVRTCLegacy(const char* path, Stream* stream, GL
 
     return data;
 }
+#endif //@@
 
 int Texture::getMaskByteIndex(unsigned int mask)
 {
@@ -806,6 +870,142 @@ int Texture::getMaskByteIndex(unsigned int mask)
     }
 }
 
+
+
+bx::AllocatorI* getDefaultAllocator()
+{
+    static bx::DefaultAllocator s_allocator;
+    return &s_allocator;
+}
+
+static void imageReleaseCb(void* _ptr, void* _userData)
+{
+    BX_UNUSED(_ptr);
+    bimg::ImageContainer* imageContainer = (bimg::ImageContainer*)_userData;
+    bimg::imageFree(imageContainer);
+}
+
+
+Texture* Texture::createDDS(const char* path)
+{
+    GP_ASSERT( path );
+
+    // Read DDS file.
+    std::unique_ptr<Stream> stream(FileSystem::open(path));
+    if (stream.get() == NULL || !stream->canRead())
+    {
+        GP_ERROR("Failed to open file '%s'.", path);
+        return NULL;
+    }
+
+    // Validate DDS magic number.
+    char code[4];
+    if (stream->read(code, 1, 4) != 4 || strncmp(code, "DDS ", 4) != 0)
+    {
+        GP_ERROR("Failed to read DDS file '%s': invalid DDS magic number.", path);
+        return NULL;
+    }
+
+
+
+    // Read Data
+    int fileSize = 0;
+    char * fileData = FileSystem::readAll(path, &fileSize);
+    if (fileData == NULL)
+    {
+        GP_ERROR("Failed to read image from file '%s'.", path);
+        return NULL;
+    }
+
+
+
+    //
+
+   /* bimg::ImageContainer imgContain;
+    bimg::imageParse(imgContain, fileData, fileSize);
+    bimg::ImageContainer* imageContainer = &imgContain;
+    imgContain.m_data = fileData;*/
+
+    bimg::ImageContainer* imageContainer = bimg::imageParseDds(getDefaultAllocator(), (void*)fileData, fileSize, 0 );
+
+    //imageData = (unsigned char*)imageContainer->m_data;
+    //channels = 3;
+
+    const bgfx::Memory* mem = bgfx::makeRef(
+                          imageContainer->m_data
+                        , imageContainer->m_size
+                        , imageReleaseCb
+                        , imageContainer
+                        );
+    //BX_FREE(getDefaultAllocator(), fileData);
+    //free(fileData);
+
+   // Format format = Image::RGB;
+
+
+
+
+
+
+
+
+
+
+
+
+    // Close file.
+    stream->close();
+
+
+
+
+
+
+
+
+
+
+
+
+
+    Filter minFilter = imageContainer->m_numMips > 1 ? NEAREST_MIPMAP_LINEAR : LINEAR;
+
+    Texture* texture = nullptr;
+
+    Format format = Format::RGB;
+    size_t bpp = getFormatBPP(format);
+
+    Type type = TEXTURE_2D;
+
+    // Create gameplay texture.
+    texture = new Texture();
+    texture->_format = format;
+    texture->_type = type;
+    texture->_width = imageContainer->m_width;
+    texture->_height = imageContainer->m_height;
+    texture->_compressed = false;
+    texture->_mipmapped = imageContainer->m_numMips > 1;
+    texture->_minFilter = minFilter;
+    texture->_bpp = bpp;
+
+    if(!strcmp(path, "res/png/logo3.dds"))
+        imageContainer->m_ktx = true;
+
+    // create bgfx texture
+    unsigned int textureSize = texture->_width * texture->_height * bpp;
+    texture->_gpuTtexture = new BGFXTexture(texture, mem->data, textureSize, type, imageContainer);
+
+
+
+    BX_FREE(getDefaultAllocator(), fileData);
+    //free(fileData);
+
+    return texture;
+}
+
+
+
+#if 0 //@@
 Texture* Texture::createCompressedDDS(const char* path)
 {
     GP_ASSERT( path );
@@ -1166,6 +1366,8 @@ Texture* Texture::createCompressedDDS(const char* path)
 
     return texture;
 }
+#endif //@@
+
 
 Texture::Format Texture::getFormat() const
 {

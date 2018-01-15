@@ -3,18 +3,22 @@
 
 #include "../../renderer/TextureHandle.h"
 #include "../../graphics/Texture.h"
+#include "bimg/bimg.h"
 
 namespace gameplay {
 
 class BGFXTexture : public GpuTexture
 {
 public:
-    BGFXTexture(Texture *texture, const unsigned char* data, unsigned int size, Texture::Type type);
+    BGFXTexture(Texture *texture, const unsigned char* data, unsigned int size, Texture::Type type, bimg::ImageContainer * imageContainer);
     ~BGFXTexture();
 
     void bind(Uniform * uniform) override;
 
     const bgfx::TextureHandle getHandle() const { return _handle; }
+
+    static bgfx::TextureFormat::Enum toBgfxFormat(Texture::Format gp3dFormat);
+
 
 private:
     bgfx::TextureHandle _handle;
