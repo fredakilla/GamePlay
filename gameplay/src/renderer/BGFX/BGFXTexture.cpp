@@ -253,12 +253,12 @@ void BGFXTexture::bind(Uniform * uniform)
 {
     BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
 
-    uint32_t flags = BGFX_TEXTURE_NONE;
-    flags |= MIN_FILTER[_texture->_minFilter];
-    flags |= MAG_FILTER[_texture->_magFilter];
-    flags |= WRAP_S[_texture->_wrapS];
-    flags |= WRAP_T[_texture->_wrapT];
-    flags |= WRAP_R[_texture->_wrapR];
+    uint32_t flags = BGFX_TEXTURE_NONE
+            | MIN_FILTER[_texture->_minFilter]
+            | MAG_FILTER[_texture->_magFilter]
+            | WRAP_S[_texture->_wrapS]
+            | WRAP_T[_texture->_wrapT]
+            | WRAP_R[_texture->_wrapR];
 
     bgfx::setTexture(uniform->getIndex(), bgfxUniform->getHandle(), _handle, flags);
 }
