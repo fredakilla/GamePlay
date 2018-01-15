@@ -395,6 +395,8 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
     unsigned int textureSize = width * height * bpp;
     texture->_gpuTtexture = new BGFXTexture(texture, type, imageContainer);
 
+    delete imageContainer;
+    //bimg::imageFree(imageContainer);
 
     // Restore the texture id
     //@@GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
@@ -950,6 +952,7 @@ Texture* Texture::createBIMG(const char* path, TextureFileType fileType)
 
     // free file data
     free(fileData);
+    bimg::imageFree(imageContainer);
 
     return texture;
 }
