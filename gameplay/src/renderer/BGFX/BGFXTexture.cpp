@@ -3,32 +3,67 @@
 #include "../../renderer/BGFX/BGFXUniform.h"
 
 #include <bx/allocator.h>
-#include <bimg/decode.h>
-#include <bgfx/platform.h>
+//#include <bimg/decode.h>
+//#include <bgfx/platform.h>
 
 namespace gameplay {
 
-bgfx::TextureFormat::Enum TEXTURE_BGFX_FORMAT_INFOS[] =
-{
 
-    bgfx::TextureFormat::Unknown,   // 0 gameplay::Format::UNKNOWN = 0,
-    bgfx::TextureFormat::RGB8   ,   // 1 gameplay::Format::RGB,
-    /*bgfx::TextureFormat::RGB8,*/  // 1 gameplay::Format::RGB888 = RGB,
-    bgfx::TextureFormat::Unknown,   // 2 gameplay::Format::RGB565,
-    bgfx::TextureFormat::RGBA8,     // 3 gameplay::Format::RGBA,
-    /*bgfx::TextureFormat::RGBA8,*/ // 3 gameplay::Format::RGBA8888 = RGBA,
-    bgfx::TextureFormat::Unknown,   // 4 gameplay::Format::RGBA4444,
-    bgfx::TextureFormat::Unknown,   // 5 gameplay::Format::RGBA5551,
-    bgfx::TextureFormat::R8,        // 6 gameplay::Format::ALPHA,
-    bgfx::TextureFormat::D16,       // 7 gameplay::Format::DEPTH,
+/*  GP3D <=> BGFX - texture format
+----------------------------------------------------------------------
+    Texture::Format::UNKNOWN   == bgfx::TextureFormat::Unknown
+    Texture::Format::RGB       == bgfx::TextureFormat::RGB8
+    Texture::Format::RGB888    == bgfx::TextureFormat::RGB8
+    Texture::Format::RGB565    == bgfx::TextureFormat::R5G6B5
+    Texture::Format::RGBA      == bgfx::TextureFormat::RGBA8
+    Texture::Format::RGBA8888  == bgfx::TextureFormat::RGBA8
+    Texture::Format::RGBA4444  == bgfx::TextureFormat::RGBA4
+    Texture::Format::RGBA5551  == bgfx::TextureFormat::RGB5A1
+    Texture::Format::ALPHA     == bgfx::TextureFormat::R8
+    Texture::Format::DEPTH     == bgfx::TextureFormat::D16
+----------------------------------------------------------------------
+*/
 
-};
+
 
 
 bgfx::TextureFormat::Enum BGFXTexture::toBgfxFormat(Texture::Format gp3dFormat)
 {
-    return TEXTURE_BGFX_FORMAT_INFOS[gp3dFormat];
+    switch(gp3dFormat)
+    {
+    case Texture::Format::UNKNOWN    : return bgfx::TextureFormat::Unknown;
+    case Texture::Format::RGB        : return bgfx::TextureFormat::RGB8;
+    case Texture::Format::RGB565     : return bgfx::TextureFormat::R5G6B5;
+    case Texture::Format::RGBA       : return bgfx::TextureFormat::RGBA8;
+    case Texture::Format::RGBA4444   : return bgfx::TextureFormat::RGBA4;
+    case Texture::Format::RGBA5551   : return bgfx::TextureFormat::RGB5A1;
+    case Texture::Format::ALPHA      : return bgfx::TextureFormat::R8;
+    case Texture::Format::DEPTH      : return bgfx::TextureFormat::D16;
+    default:
+        GP_ASSERT(!"gp3d texture format unknown.");
+        return bgfx::TextureFormat::Unknown;
+    }
 }
+
+Texture::Format BGFXTexture::toGp3dFormat(bimg::TextureFormat::Enum bimgTextureFormat)
+{
+    switch(bimgTextureFormat)
+    {
+    case bgfx::TextureFormat::Unknown   : return Texture::Format::UNKNOWN;
+    case bgfx::TextureFormat::RGB8      : return Texture::Format::RGB;
+    case bgfx::TextureFormat::R5G6B5    : return Texture::Format::RGB565;
+    case bgfx::TextureFormat::RGBA8     : return Texture::Format::RGBA;
+    case bgfx::TextureFormat::RGBA4     : return Texture::Format::RGBA4444;
+    case bgfx::TextureFormat::RGB5A1    : return Texture::Format::RGBA5551;
+    case bgfx::TextureFormat::R8        : return Texture::Format::ALPHA;
+    case bgfx::TextureFormat::D16       : return Texture::Format::DEPTH;
+    default:
+        GP_ASSERT(!"bimg texture format not supported.");
+        return Texture::Format::UNKNOWN;
+    }
+}
+
+
 
 
 
@@ -98,7 +133,7 @@ static void imageReleaseCb(void* _ptr, void* _userData)
 
 
 
-BGFXTexture::BGFXTexture(Texture* texture, const unsigned char *data, unsigned int size, Texture::Type type, bimg::ImageContainer *imageContainer)
+BGFXTexture::BGFXTexture(Texture* texture, Texture::Type type, bimg::ImageContainer *imageContainer)
 {
     GP_ASSERT(texture);
 
@@ -106,8 +141,7 @@ BGFXTexture::BGFXTexture(Texture* texture, const unsigned char *data, unsigned i
     _flags = BGFX_TEXTURE_NONE;
 
 
-    bgfx::TextureFormat::Enum bgfxTextureFormat = TEXTURE_BGFX_FORMAT_INFOS[texture->getFormat()];
-
+    bgfx::TextureFormat::Enum bgfxTextureFormat = toBgfxFormat(texture->getFormat());
     GP_ASSERT(bgfxTextureFormat != bgfx::TextureFormat::Unknown);
 
 
@@ -152,10 +186,7 @@ BGFXTexture::BGFXTexture(Texture* texture, const unsigned char *data, unsigned i
                                 , imageContainer->m_cubeMap
                                 , 1 < imageContainer->m_numMips
                                 , imageContainer->m_numLayers
-                                , bgfx::TextureFormat::Enum(imageContainer->m_format)
-                    );
-
-
+                                , bgfx::TextureFormat::Enum(imageContainer->m_format));
 
 
             /*const bgfx::Memory* mem = bgfx::makeRef(
@@ -167,16 +198,16 @@ BGFXTexture::BGFXTexture(Texture* texture, const unsigned char *data, unsigned i
 
 
 
-            const bgfx::Memory * mem = bgfx::alloc(info.storageSize);
-            memcpy(mem->data, imageContainer->m_data, imageContainer->m_size);
+            //const bgfx::Memory * mem = bgfx::alloc(info.storageSize);
+            //memcpy(mem->data, imageContainer->m_data, imageContainer->m_size);
 
 
 
 
-            /*const bgfx::Memory* mem = bgfx::copy(
+            const bgfx::Memory* mem = bgfx::copy(
                                               imageContainer->m_data
-                                            , info.storageSize /// imageContainer->m_size
-                        );*/
+                                            , /*info.storageSize ///*/ imageContainer->m_size
+                        );
 
 
             _handle = bgfx::createTexture2D(
@@ -188,10 +219,6 @@ BGFXTexture::BGFXTexture(Texture* texture, const unsigned char *data, unsigned i
                                 , _flags
                                 , mem
             );
-
-
-            if(imageContainer->m_ktx)
-            _handle = bgfx::createTexture(mem, _flags);
 
 
 

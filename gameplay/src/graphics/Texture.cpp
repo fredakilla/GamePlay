@@ -5,7 +5,7 @@
 #include "../renderer/BGFX/BGFXTexture.h"
 
 #include <bx/allocator.h>
-#include <bimg/decode.h>
+#include <bimg/bimg.h>
 
 // PVRTC (GL_IMG_texture_compression_pvrtc) : Imagination based gpus
 #ifndef GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG
@@ -55,8 +55,20 @@ static std::vector<Texture*> __textureCache;
 //@@static TextureHandle __currentTextureId = 0;
 static Texture::Type __currentTextureType = Texture::TEXTURE_2D;
 
-Texture::Texture() : _gpuTtexture(nullptr), _format(UNKNOWN), _type((Texture::Type)0), _width(0), _height(0), _mipmapped(false), _cached(false), _compressed(false),
-    _wrapS(Texture::REPEAT), _wrapT(Texture::REPEAT), _wrapR(Texture::REPEAT), _minFilter(Texture::NEAREST_MIPMAP_LINEAR), _magFilter(Texture::LINEAR)
+Texture::Texture() :
+    _gpuTtexture(nullptr),
+    _format(UNKNOWN),
+    _type((Texture::Type)0),
+    _width(0),
+    _height(0),
+    _mipmapped(false),
+    _cached(false),
+    _compressed(false),
+    _wrapS(Texture::REPEAT),
+    _wrapT(Texture::REPEAT),
+    _wrapR(Texture::REPEAT),
+    _minFilter(Texture::NEAREST_MIPMAP_LINEAR),
+    _magFilter(Texture::LINEAR)
 {
 }
 
@@ -121,8 +133,11 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
         }
         else if(!strcmp(ext, ".dds"))
         {
-            // DDS file
-            texture = createDDS(path);
+            texture = createBIMG(path, DDS);
+        }
+        else if(!strcmp(ext, ".ktx"))
+        {
+            texture = createBIMG(path, KTX);
         }
         else
         {
@@ -377,11 +392,8 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
     imageContainer->m_data = (void*)data;
     imageContainer->m_orientation = bimg::Orientation::R0;
 
-
-
     unsigned int textureSize = width * height * bpp;
-    texture->_gpuTtexture = new BGFXTexture(texture, data, textureSize, type, imageContainer);
-
+    texture->_gpuTtexture = new BGFXTexture(texture, type, imageContainer);
 
 
     // Restore the texture id
@@ -886,29 +898,11 @@ static void imageReleaseCb(void* _ptr, void* _userData)
 }
 
 
-Texture* Texture::createDDS(const char* path)
+Texture* Texture::createBIMG(const char* path, TextureFileType fileType)
 {
     GP_ASSERT( path );
 
-    // Read DDS file.
-    std::unique_ptr<Stream> stream(FileSystem::open(path));
-    if (stream.get() == NULL || !stream->canRead())
-    {
-        GP_ERROR("Failed to open file '%s'.", path);
-        return NULL;
-    }
-
-    // Validate DDS magic number.
-    char code[4];
-    if (stream->read(code, 1, 4) != 4 || strncmp(code, "DDS ", 4) != 0)
-    {
-        GP_ERROR("Failed to read DDS file '%s': invalid DDS magic number.", path);
-        return NULL;
-    }
-
-
-
-    // Read Data
+    // Read file
     int fileSize = 0;
     char * fileData = FileSystem::readAll(path, &fileSize);
     if (fileData == NULL)
@@ -917,68 +911,30 @@ Texture* Texture::createDDS(const char* path)
         return NULL;
     }
 
-
-
-    //
-
-   /* bimg::ImageContainer imgContain;
-    bimg::imageParse(imgContain, fileData, fileSize);
-    bimg::ImageContainer* imageContainer = &imgContain;
-    imgContain.m_data = fileData;*/
-
-    bimg::ImageContainer* imageContainer = bimg::imageParseDds(getDefaultAllocator(), (void*)fileData, fileSize, 0 );
-
-    //imageData = (unsigned char*)imageContainer->m_data;
-    //channels = 3;
-
-    const bgfx::Memory* mem = bgfx::makeRef(
-                          imageContainer->m_data
-                        , imageContainer->m_size
-                        , imageReleaseCb
-                        , imageContainer
-                        );
-    //BX_FREE(getDefaultAllocator(), fileData);
-    //free(fileData);
-
-   // Format format = Image::RGB;
-
-
-
-
-
-
-
-
-
-
-
-
-    // Close file.
-    stream->close();
-
-
-
-
-
-
-
-
-
-
-
+    // Parse data
+    bimg::ImageContainer* imageContainer = nullptr;
+    switch (fileType)
+    {
+    case DDS:
+        imageContainer = bimg::imageParseDds(getDefaultAllocator(), (void*)fileData, fileSize, 0);
+        break;
+    case KTX:
+        imageContainer = bimg::imageParseKtx(getDefaultAllocator(), (void*)fileData, fileSize, 0);
+        break;
+    default:
+        GP_ERROR("Unsupported texture type");
+        return NULL;
+        break;
+    }
 
 
     Filter minFilter = imageContainer->m_numMips > 1 ? NEAREST_MIPMAP_LINEAR : LINEAR;
-
-    Texture* texture = nullptr;
-
-    Format format = Format::RGB;
+    Format format = BGFXTexture::toGp3dFormat(imageContainer->m_format);
     size_t bpp = getFormatBPP(format);
-
     Type type = TEXTURE_2D;
 
     // Create gameplay texture.
-    texture = new Texture();
+    Texture* texture = new Texture();
     texture->_format = format;
     texture->_type = type;
     texture->_width = imageContainer->m_width;
@@ -988,17 +944,12 @@ Texture* Texture::createDDS(const char* path)
     texture->_minFilter = minFilter;
     texture->_bpp = bpp;
 
-    if(!strcmp(path, "res/png/logo3.dds"))
-        imageContainer->m_ktx = true;
-
     // create bgfx texture
     unsigned int textureSize = texture->_width * texture->_height * bpp;
-    texture->_gpuTtexture = new BGFXTexture(texture, mem->data, textureSize, type, imageContainer);
+    texture->_gpuTtexture = new BGFXTexture(texture, type, imageContainer);
 
-
-
-    BX_FREE(getDefaultAllocator(), fileData);
-    //free(fileData);
+    // free file data
+    free(fileData);
 
     return texture;
 }
@@ -1403,16 +1354,7 @@ void Texture::generateMipmaps()
 {
     if (!_mipmapped)
     {
-        /*GLenum target = (GLenum)_type;
-        GL_ASSERT( glBindTexture(target, _handle) );
-        GL_ASSERT( glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST) );
-        if( std::addressof(glGenerateMipmap) )
-            GL_ASSERT( glGenerateMipmap(target) );*/
-
         _mipmapped = true;
-
-        // Restore the texture id
-        //GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
     }
 
 
@@ -1492,7 +1434,6 @@ void Texture::Sampler::bind(Uniform * uniform)
     GP_ASSERT( _texture );
 
 
-
     if (_texture->_minFilter != _minFilter)
     {
         _texture->_minFilter = _minFilter;
@@ -1514,15 +1455,7 @@ void Texture::Sampler::bind(Uniform * uniform)
         _texture->_wrapR = _wrapR;
     }
 
-
-
-
     _texture->_gpuTtexture->bind(uniform);
-
-
-    int debug1 = _wrapS;
-    int debug2 = _wrapT;
-    int debu3 = 0;
 
 
     //@@

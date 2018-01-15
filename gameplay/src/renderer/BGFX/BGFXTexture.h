@@ -10,7 +10,7 @@ namespace gameplay {
 class BGFXTexture : public GpuTexture
 {
 public:
-    BGFXTexture(Texture *texture, const unsigned char* data, unsigned int size, Texture::Type type, bimg::ImageContainer * imageContainer);
+    BGFXTexture(Texture *texture, Texture::Type type, bimg::ImageContainer * imageContainer);
     ~BGFXTexture();
 
     void bind(Uniform * uniform) override;
@@ -18,7 +18,7 @@ public:
     const bgfx::TextureHandle getHandle() const { return _handle; }
 
     static bgfx::TextureFormat::Enum toBgfxFormat(Texture::Format gp3dFormat);
-
+    static Texture::Format toGp3dFormat(bimg::TextureFormat::Enum bimgTextureFormat);
 
 private:
     bgfx::TextureHandle _handle;
