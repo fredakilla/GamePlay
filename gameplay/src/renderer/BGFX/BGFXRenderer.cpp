@@ -77,7 +77,7 @@ void BGFXRenderer::queryCaps()
 void BGFXRenderer::beginFrame()
 {
 #ifdef GP_DRAW_DEBUG
-    Renderer::getInstance().debugClearText();
+    bgfx::dbgTextClear();
 #endif
 
     bgfx::touch(0);
@@ -90,27 +90,6 @@ void BGFXRenderer::endFrame()
     bgfx::frame();
 }
 
-
-void BGFXRenderer::debugClearText()
-{
-#ifdef GP_DRAW_DEBUG
-    bgfx::dbgTextClear();
-#endif
-}
-
-void BGFXRenderer::debugPrintText(unsigned int x, unsigned int y, unsigned char attr , const char* format, ...)
-{
-#ifdef GP_DRAW_DEBUG
-    static char buffer[2048] = "";
-
-    va_list argptr;
-    va_start(argptr,format);
-    vsprintf(buffer, format, argptr);
-    va_end(argptr);
-
-    bgfx::dbgTextPrintf(x,y,attr,buffer);
-#endif
-}
 
 
 

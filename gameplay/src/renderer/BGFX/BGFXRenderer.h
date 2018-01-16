@@ -27,8 +27,6 @@ public:
     void endFrame();
 
 
-    void debugClearText() override;
-    void debugPrintText(unsigned int x, unsigned int y, unsigned char attr , const char* format, ...) override;
 
 
 
