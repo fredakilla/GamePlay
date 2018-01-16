@@ -1410,6 +1410,22 @@ int Platform::enterMessagePump()
             }
 
 
+            if (event.type == SDL_MOUSEWHEEL)
+            {
+                int wheelDelta;
+                if(event.wheel.y == 1) // scroll up
+                {
+                    wheelDelta = 1;
+                }
+                else if(event.wheel.y == -1) // scroll down
+                {
+                    wheelDelta = -1;
+                }
+                else
+                    wheelDelta = 0;
+
+                gameplay::Platform::mouseEventInternal(gameplay::Mouse::MOUSE_WHEEL, event.wheel.x, event.wheel.y, wheelDelta);
+            }
 
             if (event.type == SDL_MOUSEBUTTONDOWN)
             {
@@ -1432,6 +1448,8 @@ int Platform::enterMessagePump()
                 {
                     gameplay::Platform::touchEventInternal(gameplay::Touch::TOUCH_PRESS, event.button.x, event.button.y, 0, true);
                 }
+
+
             }
 
             if (event.type == SDL_MOUSEBUTTONUP)
