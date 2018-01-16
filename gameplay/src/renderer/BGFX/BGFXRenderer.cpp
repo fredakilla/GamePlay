@@ -2,6 +2,8 @@
 #include "../../math/Transform.h"
 #include "../../core/Game.h"
 
+#define GP_DRAW_DEBUG
+
 namespace gameplay {
 
 
@@ -9,7 +11,7 @@ BGFXRenderer::BGFXRenderer()
 {
     printf("Derived Created\n");
 
-    _debug_flags = 0;
+    _debug_flags = BGFX_DEBUG_TEXT;
 }
 
 BGFXRenderer::~BGFXRenderer()
@@ -70,6 +72,46 @@ void BGFXRenderer::queryCaps()
     // Query caps and limits.
     _caps._maxFrameBufferAttachments = bgfx::getCaps()->limits.maxFBAttachments;
 }
+
+
+void BGFXRenderer::beginFrame()
+{
+#ifdef GP_DRAW_DEBUG
+    Renderer::getInstance().debugClearText();
+#endif
+
+    bgfx::touch(0);
+
+
+}
+
+void BGFXRenderer::endFrame()
+{
+    bgfx::frame();
+}
+
+
+void BGFXRenderer::debugClearText()
+{
+#ifdef GP_DRAW_DEBUG
+    bgfx::dbgTextClear();
+#endif
+}
+
+void BGFXRenderer::debugPrintText(unsigned int x, unsigned int y, unsigned char attr , const char* format, ...)
+{
+#ifdef GP_DRAW_DEBUG
+    static char buffer[2048] = "";
+
+    va_list argptr;
+    va_start(argptr,format);
+    vsprintf(buffer, format, argptr);
+    va_end(argptr);
+
+    bgfx::dbgTextPrintf(x,y,attr,buffer);
+#endif
+}
+
 
 
 void BGFXRenderer::submit(const GpuProgram * gpuProgram)

@@ -6,6 +6,12 @@
 namespace gameplay
 {
 
+
+#define DRAW_DEBUG_TEXT(X,Y,ATTR,FORMAT,...) \
+    Renderer::getInstance().debugPrintText(X,Y,ATTR,FORMAT,__VA_ARGS__)
+
+
+
 class GpuProgram;
 
 class Renderer
@@ -47,6 +53,12 @@ public:
     virtual void setVSync(bool enable) {}
     bool isVSync() { return _isVsync; }
 
+
+    virtual void beginFrame() {}
+    virtual void endFrame() {}
+
+    virtual void debugClearText() {}
+    virtual void debugPrintText(unsigned int x, unsigned int y, unsigned char attr , const char* format, ...)  {}
 
 
     virtual void submit(const GpuProgram* gpuProgram) = 0;

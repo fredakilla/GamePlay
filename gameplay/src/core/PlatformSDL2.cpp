@@ -715,7 +715,7 @@ Platform* Platform::create(Game* game)
     bgfx::init(bgfx::RendererType::OpenGL);
 
 
-    uint32_t debug = BGFX_DEBUG_NONE;
+    uint32_t debug = BGFX_DEBUG_TEXT;
     uint32_t reset = BGFX_RESET_VSYNC;
     bgfx::reset(__width, __height, reset);
 
@@ -1346,14 +1346,18 @@ int Platform::enterMessagePump()
     _game->run();
 
 
+    Renderer * renderer = &Renderer::getInstance();
+
+
     bool loop = true;
     while (loop)
     {
         if (_game)
         {
-            bgfx::touch(0);
+            renderer->beginFrame(); //bgfx::touch(0);
             _game->frame();
-            bgfx::frame();
+            renderer->endFrame(); //bgfx::frame();
+
         }
 
 
@@ -1808,7 +1812,7 @@ void Platform::setVsync(bool enable)
 void Platform::swapBuffers()
 {
     //@@glXSwapBuffers(__display, __window);
-    bgfx::frame();
+    //bgfx::frame();
 }
 
 void Platform::sleep(long ms)
