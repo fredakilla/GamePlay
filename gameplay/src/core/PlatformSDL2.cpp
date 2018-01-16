@@ -1424,7 +1424,7 @@ int Platform::enterMessagePump()
                 else
                     wheelDelta = 0;
 
-                gameplay::Platform::mouseEventInternal(gameplay::Mouse::MOUSE_WHEEL, event.wheel.x, event.wheel.y, wheelDelta);
+                gameplay::Platform::mouseEventInternal(gameplay::Mouse::MOUSE_WHEEL, 0, 0, wheelDelta);
             }
 
             if (event.type == SDL_MOUSEBUTTONDOWN)
