@@ -277,13 +277,13 @@ void R_Instancing::render(float elapsedTime)
     if(_model)
     {
         // 80 bytes stride = 64 bytes for 4x4 matrix + 16 bytes for RGBA color.
-        const uint16_t instanceStride = 64 + 16;
+        const uint16_t instanceStride = sizeof(Matrix) + sizeof(Vector4);
+
         // 11x11 cubes
         const uint32_t numInstances = _maxDimensions*_maxDimensions*_maxDimensions;
 
         if (numInstances == bgfx::getAvailInstanceDataBuffer(numInstances, instanceStride) )
         {
-
             bgfx::InstanceDataBuffer idb;
             bgfx::allocInstanceDataBuffer(&idb, numInstances, instanceStride);
             uint8_t* data = idb.data;
@@ -343,14 +343,12 @@ void R_Instancing::render(float elapsedTime)
 
 
 
-
                         Matrix* mtx = (Matrix*)data;
                         mtx->setIdentity();
                         /*bx::mtxRotateXY(mtx->m, time + x*0.21f, time + y*0.37f);
                         mtx->m[12] = pos[0] + float(x)*step;
                         mtx->m[13] = pos[1] + float(y)*step;
                         mtx->m[14] = pos[2] + float(z)*step;*/
-
 
 
                         mtx->translate(Vector3( pos[0] + float(x)*step,
@@ -371,17 +369,11 @@ void R_Instancing::render(float elapsedTime)
 
 
                         data += instanceStride;
-
-
                     }
-
-
-
-               // Matrix m;
-               // m.set((float*)data);
 
                 // Set instance data buffer.
                 bgfx::setInstanceDataBuffer(&idb);
+
 
                 _model->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
                 _model->draw();
