@@ -4,7 +4,7 @@
 #include "../core/FileSystem.h"
 #include "../renderer/BGFX/BGFXTexture.h"
 
-#include <bx/allocator.h>
+//#include <bx/allocator.h>
 #include <bimg/bimg.h>
 
 // PVRTC (GL_IMG_texture_compression_pvrtc) : Imagination based gpus
@@ -886,7 +886,7 @@ int Texture::getMaskByteIndex(unsigned int mask)
 
 
 
-bx::AllocatorI* getDefaultAllocator()
+/*bx::AllocatorI* getDefaultAllocator()
 {
     static bx::DefaultAllocator s_allocator;
     return &s_allocator;
@@ -897,7 +897,7 @@ static void imageReleaseCb(void* _ptr, void* _userData)
     BX_UNUSED(_ptr);
     bimg::ImageContainer* imageContainer = (bimg::ImageContainer*)_userData;
     bimg::imageFree(imageContainer);
-}
+}*/
 
 
 Texture* Texture::createBIMG(const char* path, TextureFileType fileType)
@@ -918,10 +918,10 @@ Texture* Texture::createBIMG(const char* path, TextureFileType fileType)
     switch (fileType)
     {
     case DDS:
-        imageContainer = bimg::imageParseDds(getDefaultAllocator(), (void*)fileData, fileSize, 0);
+        imageContainer = bimg::imageParseDds(/*getDefaultAllocator()*/0, (void*)fileData, fileSize, 0);
         break;
     case KTX:
-        imageContainer = bimg::imageParseKtx(getDefaultAllocator(), (void*)fileData, fileSize, 0);
+        imageContainer = bimg::imageParseKtx(/*getDefaultAllocator()*/0, (void*)fileData, fileSize, 0);
         break;
     default:
         GP_ERROR("Unsupported texture type");

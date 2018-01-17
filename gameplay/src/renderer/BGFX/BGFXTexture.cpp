@@ -2,7 +2,7 @@
 #include "../../graphics/Texture.h"
 #include "../../renderer/BGFX/BGFXUniform.h"
 
-#include <bx/allocator.h>
+//#include <bx/allocator.h>
 //#include <bimg/decode.h>
 //#include <bgfx/platform.h>
 
@@ -114,12 +114,12 @@ uint32_t WRAP_R[] =
 
 
 
-static void imageReleaseCb(void* _ptr, void* _userData)
+/*static void imageReleaseCb(void* _ptr, void* _userData)
 {
     BX_UNUSED(_ptr);
     bimg::ImageContainer* imageContainer = (bimg::ImageContainer*)_userData;
     bimg::imageFree(imageContainer);
-}
+}*/
 
 
 

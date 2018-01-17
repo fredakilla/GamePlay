@@ -177,7 +177,7 @@ HEADERS += \
     src/renderer/GpuProgram.h \
     src/renderer/Uniform.h \
     src/renderer/TextureHandle.h \
-    src/graphics/GeometryBuffer.h
+    src/graphics/GeometryBuffer.h \
 
 
 
@@ -291,7 +291,7 @@ SOURCES += \
     src/ui/Theme.cpp \
     src/ui/ThemeStyle.cpp \
     src/ui/VerticalLayout.cpp \     
-    src/graphics/GeometryBuffer.cpp
+    src/graphics/GeometryBuffer.cpp \
 
 
 

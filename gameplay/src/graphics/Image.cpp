@@ -6,10 +6,6 @@
 #include <stb_image/stb_image.h>
 
 
-//#include <bimg/bimg.h>
-#include <bx/allocator.h>
-#include <bimg/decode.h>
-
 namespace gameplay
 {
 // Callback for reading a png image using Stream
@@ -22,22 +18,6 @@ static void readStream(png_structp png, png_bytep data, png_size_t length)
     }
 }
 
-#if 0
-bx::AllocatorI* getDefaultAllocator()
-{
-        static bx::DefaultAllocator s_allocator;
-        return &s_allocator;
-}
-
-
-static void imageReleaseCb(void* _ptr, void* _userData)
-{
-    BX_UNUSED(_ptr);
-    bimg::ImageContainer* imageContainer = (bimg::ImageContainer*)_userData;
-    bimg::imageFree(imageContainer);
-}
-
-#endif
 Image* Image::create(const char* path)
 {
     GP_ASSERT(path);
