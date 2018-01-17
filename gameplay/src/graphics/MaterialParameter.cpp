@@ -2,8 +2,6 @@
 #include "../graphics/MaterialParameter.h"
 #include "../graphics/Node.h"
 
-#include "../renderer/BGFX/BGFXUniform.h"
-
 namespace gameplay
 {
 
@@ -470,13 +468,9 @@ void MaterialParameter::bind(Effect* effect)
         }
     }
 
-
-    //BGFXUniform* bgfxUniform = static_cast<BGFXUniform*>(_uniform);
-
     switch (_type)
     {
     case MaterialParameter::FLOAT:
-        //@@->setValue(_uniform, _value.floatValue);
         _uniform->setValue(_value.floatValue);
         break;
     case MaterialParameter::FLOAT_ARRAY:
