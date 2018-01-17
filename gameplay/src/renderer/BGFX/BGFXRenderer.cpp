@@ -12,6 +12,7 @@ BGFXRenderer::BGFXRenderer()
     printf("Derived Created\n");
 
     _debug_flags = BGFX_DEBUG_TEXT;
+    _reset_flags = BGFX_RESET_NONE;
 }
 
 BGFXRenderer::~BGFXRenderer()
