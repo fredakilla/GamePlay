@@ -12,16 +12,16 @@ BGFXUniform::BGFXUniform(const char * name, UniformType type, uint16_t num) :
     bgfx::UniformType::Enum bgfxUniformType;
     switch(type)
     {
-        case UniformType::UT_SAMPLER: //!< Int, used for samplers only.
+        case UniformType::UT_SAMPLER: // Int, used for samplers only.
             bgfxUniformType =  bgfx::UniformType::Int1;
             break;
-        case UniformType::UT_VECTOR4: //!< 4 floats vector.
+        case UniformType::UT_VECTOR4: // 4 floats vector.
             bgfxUniformType = bgfx::UniformType::Vec4;
             break;
-        case UniformType::UT_MATRIX3: //!< 3x3 matrix.
+        case UniformType::UT_MATRIX3: // 3x3 matrix.
             bgfxUniformType = bgfx::UniformType::Mat3;
             break;
-        case UniformType::UT_MATRIX4: //!< 4x4 matrix.
+        case UniformType::UT_MATRIX4: // 4x4 matrix.
             bgfxUniformType = bgfx::UniformType::Mat4;
             break;
         default:
@@ -55,20 +55,22 @@ void BGFXUniform::setValue(const float* values, unsigned int count)
 
 void BGFXUniform::setValue(int value)
 {
-    // in bgfx, int is normally reserved for sampler
+    // in bgfx, Int used for samplers only.
+    GP_ERROR("BGFXUniform::setValue : int reserved for samplers.");
 
-    GP_ASSERT(bgfx::isValid(_handle));
+    //GP_ASSERT(bgfx::isValid(_handle));
     //bgfx::setUniform(_handle, &value);    // doesn't works
-    setValue(static_cast<float>(value));    // works with float
+    //setValue(static_cast<float>(value));  // works with float
 }
 
 void BGFXUniform::setValue(const int* values, unsigned int count)
 {
-    // in bgfx, int is normally reserved for sampler
+    // in bgfx, Int used for samplers only.
+    GP_ERROR("BGFXUniform::setValue : int reserved for samplers.");
 
-    GP_ASSERT(bgfx::isValid(_handle));
+    //GP_ASSERT(bgfx::isValid(_handle));
     //bgfx::setUniform(_handle, &values[0], count);     // doesn't works
-    GP_ERROR("Not implemented.");
+    //GP_ERROR("Not implemented.");
 }
 
 void BGFXUniform::setValue(const Matrix& value)
@@ -140,7 +142,5 @@ void BGFXUniform::setValue(const Texture::Sampler** values, unsigned int count)
         const_cast<Texture::Sampler*>(values[i])->bind(this);
     }
 }
-
-
 
 } // end namespace gameplay

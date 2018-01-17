@@ -140,14 +140,13 @@ BGFXTexture::BGFXTexture(Texture* texture, Texture::Type type, bimg::ImageContai
 
     if(type == Texture::Type::TEXTURE_2D)
     {
-        uint32_t flags = BGFX_TEXTURE_NONE;
-        flags |= MIN_FILTER[_texture->_minFilter];
-        flags |= MAG_FILTER[_texture->_magFilter];
-        flags |= WRAP_S[_texture->_wrapS];
-        flags |= WRAP_T[_texture->_wrapT];
-        flags |= WRAP_R[_texture->_wrapR];
+        uint32_t flags = BGFX_TEXTURE_NONE
+                | MIN_FILTER[_texture->_minFilter]
+                | MAG_FILTER[_texture->_magFilter]
+                | WRAP_S[_texture->_wrapS]
+                | WRAP_T[_texture->_wrapT]
+                | WRAP_R[_texture->_wrapR];
         _flags = flags;
-
 
         bgfx::TextureInfo info;
         bgfx::calcTextureSize(
@@ -245,10 +244,6 @@ BGFXTexture::~BGFXTexture()
         bgfx::destroy(_handle);
 }
 
-
-
-
-
 void BGFXTexture::bind(Uniform * uniform)
 {
     BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
@@ -262,6 +257,5 @@ void BGFXTexture::bind(Uniform * uniform)
 
     bgfx::setTexture(uniform->getIndex(), bgfxUniform->getHandle(), _handle, flags);
 }
-
 
 } // end namespace gameplay

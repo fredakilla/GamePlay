@@ -16,7 +16,6 @@ class Renderer
 {
     static Renderer * _instance;
 
-
     struct Caps
     {
         // limits
@@ -32,8 +31,6 @@ public:
         return *_instance;
     }
 
-    //virtual void callMe() = 0;
-
     void destroy()
     {
         delete _instance;
@@ -41,45 +38,30 @@ public:
 
     virtual void queryCaps() {}
     virtual const Caps getCaps() const { return _caps; }
-
     virtual void toggleDebugStats() {}
-
     virtual void updateWindowSize(unsigned int width, unsigned height) {}
-
-
     virtual void toggleVSync() {}
     virtual void setVSync(bool enable) {}
     bool isVSync() { return _isVsync; }
-
-
     virtual void beginFrame() {}
     virtual void endFrame() {}
-
-
-
-
     virtual void submit(const GpuProgram* gpuProgram) = 0;
 
 
 protected:
     Renderer()
     {
-        GP_ASSERT(!_instance); // Instance already exists
-        //if (_instance)
-        //    throw std::logic_error("Instance already exists");
+        GP_ASSERT(!_instance); // Instance already exists        
         _instance = this;
     }
 
-    virtual ~Renderer() { printf("Base Deleted\n"); } // so random strangers can't delete me
+    virtual ~Renderer() { print("Renderer Deleted\n"); }
 
 
-    Caps _caps;
-
-
-    unsigned _width;
-    unsigned _height;
-
-    bool _isVsync;
+    Caps        _caps;
+    unsigned    _width;
+    unsigned    _height;
+    bool        _isVsync;
 
 };
 
