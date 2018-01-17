@@ -3,15 +3,8 @@
 
 #include "../../renderer/GpuProgram.h"
 
-
 namespace gameplay
 {
-
-
-
-
-
-
 
 class BGFXGpuProgram : public GpuProgram
 {
@@ -22,9 +15,7 @@ public:
     virtual void set(ShaderFiles shaderFiles) override;
     void bind() override;
 
-
     const bgfx::ProgramHandle getProgram() const;
-
 
 private:
 

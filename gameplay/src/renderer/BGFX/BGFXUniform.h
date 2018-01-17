@@ -4,7 +4,6 @@
 #include "../../core/Base.h"
 #include "../../renderer/Uniform.h"
 
-
 namespace gameplay
 {
 
@@ -12,10 +11,7 @@ class Vector4;
 
 class BGFXUniform : public Uniform
 {
-
 public:
-
-
     BGFXUniform(const char * name, UniformType type, uint16_t num);
     ~BGFXUniform();
 
@@ -33,9 +29,7 @@ public:
     void setValue(const Vector4* values, unsigned int count = 1) override;
     void setValue(const Texture::Sampler* sampler) override;
     void setValue(const Texture::Sampler** values, unsigned int count) override;
-
     bgfx::UniformHandle getHandle() { return _handle; }
-
 
 private:
     bgfx::UniformHandle _handle;

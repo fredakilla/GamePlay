@@ -5,7 +5,8 @@
 #include "../../graphics/Texture.h"
 #include "bimg/bimg.h"
 
-namespace gameplay {
+namespace gameplay
+{
 
 class BGFXTexture : public GpuTexture
 {

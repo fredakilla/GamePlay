@@ -4,17 +4,15 @@
 #include "../../renderer/Renderer.h"
 #include "../../renderer/BGFX/BGFXGpuProgram.h"
 
-namespace gameplay {
-
+namespace gameplay
+{
 
 class BGFXRenderer : public Renderer
 {
 public:
     static void initInstance();
 
-
     void queryCaps() override;
-
     void updateWindowSize(unsigned int width, unsigned height) override;
     void toggleDebugStats() override;
     void toggleVSync() override;
@@ -22,20 +20,13 @@ public:
 
     void submit(const GpuProgram * gpuProgram) override;
 
-
     void beginFrame();
     void endFrame();
-
-
-
-
-
 
 
 protected:
     BGFXRenderer();
     ~BGFXRenderer();
-
 
     uint32_t _debug_flags;
     uint32_t _reset_flags;

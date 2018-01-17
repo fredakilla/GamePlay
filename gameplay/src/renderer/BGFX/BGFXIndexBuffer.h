@@ -5,8 +5,8 @@
 #include "../../core/Base.h"
 #include "../../graphics/Mesh.h"
 
-namespace gameplay {
-
+namespace gameplay
+{
 
 class BGFXIndexBuffer : public GeometryBuffer
 {
@@ -26,37 +26,6 @@ private:
     bgfx::DynamicIndexBufferHandle  _dibh;          // dynamic index buffer handle
     Mesh::IndexFormat               _indexFormat;   // 8, 16 or 32 bits
 };
-
-
-
-
-
-
-#if 0
-class BGFXIndexBuffer : public IndexBuffer
-{
-public:
-    BGFXIndexBuffer(const unsigned int indexFormat, unsigned int indexCount, bool dynamic);
-    ~BGFXIndexBuffer();
-    void bind() override;
-
-protected:
-
-    virtual void set(const void* vertexData, unsigned int vertexCount, unsigned int vertexStart) override;
-
-private:
-
-    void createStaticBuffer();
-    void createDynamicBuffer();
-
-
-
-    MemoryBuffer _memoryBuffer;
-
-    bgfx::IndexBufferHandle         _sibh;  // static index buffer handle
-    bgfx::DynamicIndexBufferHandle  _dibh;  // dynamic index buffer handle
-};
-#endif
 
 } // end namespace gameplay
 
