@@ -1,7 +1,7 @@
 #ifndef BGFXTEXTUREHANDLE_H
 #define BGFXTEXTUREHANDLE_H
 
-#include "../../renderer/TextureHandle.h"
+#include "../../renderer/GpuTexture.h"
 #include "../../graphics/Texture.h"
 #include "bimg/bimg.h"
 

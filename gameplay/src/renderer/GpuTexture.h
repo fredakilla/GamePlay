@@ -1,5 +1,5 @@
-#ifndef TEXTUREHANDLE_H
-#define TEXTUREHANDLE_H
+#ifndef GPUTEXTURE_H
+#define GPUTEXTURE_H
 
 #include "../core/Base.h"
 
@@ -20,4 +20,4 @@ public:
 
 } // end namespace gameplay
 
-#endif // TEXTUREHANDLE_H
+#endif // GPUTEXTURE_H

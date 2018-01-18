@@ -176,8 +176,8 @@ HEADERS += \
     src/renderer/Renderer.h \
     src/renderer/GpuProgram.h \
     src/renderer/Uniform.h \
-    src/renderer/TextureHandle.h \
     src/graphics/GeometryBuffer.h \
+    src/renderer/GpuTexture.h
 
 
 
