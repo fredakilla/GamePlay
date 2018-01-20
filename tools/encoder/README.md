@@ -21,6 +21,11 @@ Simply execute the gameplay-encoder command-line executable:
 
 `Usage: gameplay-encoder [options] <file(s)>`
 
+if error : error while loading shared libraries: libfbxsdk.so: cannot open shared object file: No such file or directory.
+do :
+export LD_LIBRARY_PATH=. 
+before running gameplay-encoder.
+
 ## Building gameplay-encoder
 The tools come pre-built and are part of the install.bat/install.sh script. 
 If you need to build them yourself:

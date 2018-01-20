@@ -177,7 +177,7 @@ CONFIG(debug,debug|release) {
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbimgRelease
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbxRelease
 }
-linux: LIBS +=   -lm -lGL -lrt -ldl -lX11 -lpthread -lgtk-x11-2.0 -lglib-2.0 -lgobject-2.0 -lsndio -lSDL2
+linux: LIBS +=   -lm -lGL -lrt -ldl -lX11 -lpthread -lgtk-x11-2.0 -lglib-2.0 -lgobject-2.0 -lsndio
 
 macx: QMAKE_CXXFLAGS += -x c++ -x objective-c++ -stdlib=libc++ -w -arch x86_64
 macx: LIBS += -L$$PWD/../../gameplay/Debug/ -lgameplay
