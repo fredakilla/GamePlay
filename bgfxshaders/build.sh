@@ -33,3 +33,8 @@ echo "build water2d"
 
 echo "build colored instanced"
 ./shadercDebug -f  colored_instanced.vs -o  $OUTPWD/colored_instanced.vert --varyingdef colored_instanced.io --type v --platform $PLATFORM
+
+
+echo "build light"
+./shadercDebug -f  light.vs -o  $OUTPWD/light.vert --varyingdef light.io --type v --platform $PLATFORM
+./shadercDebug -f  light.fs -o  $OUTPWD/light.frag --varyingdef light.io --type f --platform $PLATFORM
