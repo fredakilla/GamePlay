@@ -35,6 +35,15 @@ public:
         TEXCOORD7 = 15
     };
 
+
+    enum AttribType
+    {
+        Uint8,
+        Int16,
+        Float
+    };
+
+
     /**
      * Defines a single element within a vertex format.
      *
@@ -56,6 +65,12 @@ public:
          */
         unsigned int size;
 
+
+        AttribType type;
+        bool normalized;
+
+
+
         /**
          * Constructor.
          */
@@ -67,7 +82,7 @@ public:
          * @param usage The vertex element usage semantic.
          * @param size The number of float values in the vertex element.
          */
-        Element(Usage usage, unsigned int size);
+        Element(Usage usage, unsigned int size, AttribType type = AttribType::Float, bool normalized = false);
 
         /**
          * Compares two vertex elements for equality.

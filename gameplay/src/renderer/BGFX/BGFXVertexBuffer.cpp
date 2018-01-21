@@ -58,36 +58,21 @@ void getBgfxAttribute(const VertexFormat::Element& element, bgfx::Attrib::Enum& 
     }
 }
 
-void getBgfxAttributeType(const VertexFormat::Element& element, bgfx::AttribType::Enum &type, bool& normalized)
+bgfx::AttribType::Enum getBgfxAttributeType2(const VertexFormat::AttribType type)
 {
-    switch(element.usage)
+    switch (type)
     {
-        case VertexFormat::POSITION:
-        case VertexFormat::NORMAL:
-        case VertexFormat::TANGENT:
-        case VertexFormat::BINORMAL:
-        case VertexFormat::BLENDWEIGHTS:
-        case VertexFormat::BLENDINDICES:
-        case VertexFormat::TEXCOORD0:
-        case VertexFormat::TEXCOORD1:
-        case VertexFormat::TEXCOORD2:
-        case VertexFormat::TEXCOORD3:
-        case VertexFormat::TEXCOORD4:
-        case VertexFormat::TEXCOORD5:
-        case VertexFormat::TEXCOORD6:
-        case VertexFormat::TEXCOORD7:
-            type = bgfx::AttribType::Float;
-            normalized = false;
+    case VertexFormat::Uint8:
+        return bgfx::AttribType::Uint8;
         break;
-
-        case VertexFormat::COLOR:
-            type = bgfx::AttribType::Float;
-            normalized = true;
+    case VertexFormat::Int16:
+        return bgfx::AttribType::Int16;
         break;
-
-        default:
-            type = bgfx::AttribType::Float;
-            normalized = false;
+    case VertexFormat::Float:
+        return bgfx::AttribType::Float;
+        break;
+    default:
+        GP_ERROR("Attribute type unknown.");
         break;
     }
 }
@@ -101,14 +86,15 @@ void BGFXVertexBuffer::createVertexDecl(const VertexFormat &vertexFormat, bgfx::
         const VertexFormat::Element element = vertexFormat.getElement(i);
 
         bgfx::Attrib::Enum attrib;
-        bgfx::AttribType::Enum type;
-        bool normalized;
-
         getBgfxAttribute(element, attrib);
-        getBgfxAttributeType(element, type, normalized);
+
+        bgfx::AttribType::Enum type = getBgfxAttributeType2(element.type);
+        bool normalized = element.normalized;
         uint8_t num = element.size;
 
-        vertexDecl.add(attrib,num,type,normalized,false);
+        bool asInt = element.type == VertexFormat::Float ? false : true;
+
+        vertexDecl.add(attrib,num,type,normalized,asInt);
     }
 
     vertexDecl.end();

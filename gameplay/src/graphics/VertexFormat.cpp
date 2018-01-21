@@ -62,12 +62,12 @@ bool VertexFormat::operator != (const VertexFormat& f) const
 }
 
 VertexFormat::Element::Element() :
-    usage(POSITION), size(0)
+    usage(POSITION), size(0), type(AttribType::Float), normalized(false)
 {
 }
 
-VertexFormat::Element::Element(Usage usage, unsigned int size) :
-    usage(usage), size(size)
+VertexFormat::Element::Element(Usage usage, unsigned int size, AttribType type, bool normalized) :
+    usage(usage), size(size), type(type), normalized(normalized)
 {
 }
 

@@ -20,6 +20,9 @@ public:
 
     static void createVertexDecl(const VertexFormat &vertexFormat, bgfx::VertexDecl &vertexDecl);
 
+
+    const bgfx::VertexDecl getVertexDecl() const { return _vertexDecl; }
+
 private:
     void createStaticBuffer();
     void createDynamicBuffer();

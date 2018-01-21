@@ -103,7 +103,7 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
             uniform->_type = info.type;
             if (info.type == UniformType::UT_SAMPLER)
             {
-                uniform->_index = samplerIndex;
+                uniform->_index = samplerIndex++;
                 //samplerIndex += info.uniformSize;
             }
             else
