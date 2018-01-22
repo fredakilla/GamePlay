@@ -251,7 +251,7 @@ void R_Lights::initialize()
 
 
     // create  material
-    Material* material = Material::create("res/shaders/light.vert", "res/shaders/light.frag");
+    Material* material = Material::create("res/shaders/debug.vert", "res/shaders/debug.frag");
 
     Texture::Sampler * sampler1 = Texture::Sampler::create("res/png/brick.png");
     material->getParameter("s_texColor")->setValue(sampler1);
@@ -267,6 +267,25 @@ void R_Lights::initialize()
 
 
 
+    Matrix modelMatrix;
+    modelMatrix.setIdentity();
+    modelMatrix.translate(0,0,0);
+
+    Matrix modelViewMatrix = viewMatrix * modelMatrix;
+    Matrix modelViewProjMatrix =  projMatrix * modelViewMatrix; //viewMatrix * modelMatrix;
+
+    material->getParameter("u_matrixModel")->setValue(modelMatrix);
+    material->getParameter("u_matrixView")->setValue(viewMatrix);
+    material->getParameter("u_matrixProj")->setValue(projMatrix);
+    material->getParameter("u_matrixModelView")->setValue(modelViewMatrix);
+    material->getParameter("u_matrixModelViewProj")->setValue(modelViewProjMatrix);
+
+    //material->getParameter("u_normalMatrix")->setValue( );
+    Matrix normalMatrix = modelViewMatrix;
+    normalMatrix.invert();
+    normalMatrix.transpose();
+
+    material->getParameter("u_matrixNormal")->setValue(normalMatrix);
 
 
 
@@ -341,6 +360,9 @@ void R_Lights::render(float elapsedTime)
 
     _cubeModel->getMaterial()->getParameter("u_lightPosRadius")->setValue(lightPosRadius, m_numLights);
     _cubeModel->getMaterial()->getParameter("u_lightRgbInnerR")->setValue(lightRgbInnerR, m_numLights);
+
+
+
 
 
 
