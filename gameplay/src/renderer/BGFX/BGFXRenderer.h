@@ -24,6 +24,11 @@ public:
     void endFrame();
 
 
+    void setViewTransform(Matrix& view, Matrix& proj);
+    void setModelTransform(Matrix * matrix, unsigned short count = 1);
+
+
+
 protected:
     BGFXRenderer();
     ~BGFXRenderer();

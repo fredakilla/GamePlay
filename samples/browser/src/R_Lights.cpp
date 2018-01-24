@@ -1,5 +1,6 @@
 #include "R_Lights.h"
 #include "SamplesGame.h"
+#include "renderer/Renderer.h"
 
 #if defined(ADD_SAMPLE)
     ADD_SAMPLE("Renderer", "Lights", R_Lights, 5);
@@ -250,20 +251,23 @@ void R_Lights::initialize()
 
 
 
+
+
+
     // Create a perspective projection matrix.
     Matrix projMatrix;
-    Matrix::createPerspective(45.0f, getWidth() / (float)getHeight(), 1.0f, 1000.0f, &projMatrix);
+    Matrix::createPerspective(60.0f, getWidth() / (float)getHeight(), 0.1f, 1000.0f, &projMatrix);
 
     // Create a lookat view matrix.
     Matrix viewMatrix;
-    Matrix::createLookAt(Vector3(0,1,-4), Vector3::zero(), Vector3::unitY(), &viewMatrix);
+    Matrix::createLookAt(Vector3(0,2,-5), Vector3::zero(), Vector3::unitY(), &viewMatrix);
 
     // set mvp matrix
     _worldViewProjectionMatrix = projMatrix * viewMatrix;
 
 
     // create  material
-    Material* material = Material::create("res/shaders/debug.vert", "res/shaders/debug.frag");
+    Material* material = Material::create("res/shaders/debug2.vert", "res/shaders/debug2.frag");
 
     Texture::Sampler * sampler1 = Texture::Sampler::create("res/png/brick.png");
     material->getParameter("s_texColor")->setValue(sampler1);
@@ -285,6 +289,36 @@ void R_Lights::initialize()
     modelMatrix.translate(0,-1,0);
     modelMatrix.scale(0.01);
     modelMatrix.rotate(Vector3(0,1,0),  MATH_DEG_TO_RAD(35));
+
+
+    //bgfx::setViewTransform(0, view, proj);
+    //bgfx::setTransform(mtx);
+
+
+    Renderer::getInstance().setViewTransform(viewMatrix, projMatrix);
+    //Renderer::getInstance().setModelTransform(&modelMatrix);
+
+    //bgfx::setViewTransform(0, viewMatrix.m, projMatrix.m);
+    //bgfx::setTransform(&modelMatrix.m[0]);*/
+
+
+    /*float at[3]  = { 0.0f, 0.0f,   0.0f };
+        float eye[3] = { 0.0f, 0.0f, -100.0f };
+        float view[16];
+        bx::mtxLookAt(view, eye, at);
+        float proj[16];
+        bx::mtxProj(proj, 60.0f, float(1280)/float(720), 0.1f, 10000.0f, bgfx::getCaps()->homogeneousDepth);
+        bgfx::setViewTransform(0, view, proj);*/
+
+        /*Transform t;
+            t.set(Vector3(0.01,0.01,0.01), Quaternion::identity(), Vector3(0,0,0));
+            bgfx::setTransform(t.getMatrix().m);*/
+
+
+
+
+
+
 
     Matrix modelViewMatrix = viewMatrix * modelMatrix;
     Matrix modelViewProjMatrix =  projMatrix * modelViewMatrix; //viewMatrix * modelMatrix;
@@ -387,9 +421,18 @@ void R_Lights::render(float elapsedTime)
 
 
 
+   /*float mtx[16];
+        bx::mtxIdentity(mtx);
+        bx::mtxSRT(mtx, 0.01, 0.01, 0.01,  0,0.25,0,  -2,0,-1);
+        //bx::mtxScale(mtx, 0.01f);
+        bgfx::setTransform(mtx);*/
 
-
-
+        Matrix modelMatrix;
+        modelMatrix.setIdentity();
+        modelMatrix.translate(0,0,0);
+        modelMatrix.rotate(Vector3(0,1,0),  MATH_DEG_TO_RAD(35));
+        modelMatrix.scale(0.01);
+    Renderer::getInstance().setModelTransform(&modelMatrix);
 
 
 

@@ -114,16 +114,19 @@ void light( int lightIndex, vec3 position, vec3 norm, out vec3 ambient, out vec3
 
 void main()
 {
-	Light[0].Position = vec3(-2,2,0);
+
+/*
+
+	Light[0].Position = vec3(0,1,0);
 	Light[0].La = vec3(0.2,0.2,0.2);
 	Light[0].Ld = vec3(0.8,0.8,0.8);
-	Light[0].Ls = vec3(0.9,0.9,0.9);
+	Light[0].Ls = vec3(0.8,0.8,0.8);
 
 
-    Material.Ka = vec3(0.2,0.2,0.2);
-    Material.Kd = vec3(0.8,0.8,0.8);
-    Material.Ks = vec3(0.8,0.8,0.8);
-    Material.Shininess = 0.2f;
+    Material.Ka = vec3(0.5,0.5,0.5);
+    Material.Kd = vec3(0.5,0.5,0.5);
+    Material.Ks = vec3(0.5,0.5,0.5);
+    Material.Shininess = 0.5f;
 
 	
     vec3 ambientSum = vec3(0);
@@ -163,7 +166,7 @@ void main()
 	gl_FragColor = vec4( ambientSum + diffuseSum, 1 ) * texColor + vec4( specSum, 1 );
 
 
-
+*/
 
 
 
@@ -189,4 +192,32 @@ void main()
 	gl_FragColor.xyz = max(vec3_splat(0.05), lightColor.xyz)*color.xyz;
 	gl_FragColor.w = 1.0;
 	gl_FragColor = toGamma(gl_FragColor);*/
+
+	
+
+
+	/*
+
+	vec4 texColor = texture2D(s_texColor, v_texcoord0);
+
+
+	vec3 lightDir = vec3(0.0, 0.0, -1.0);
+	float ndotl = dot(normalize(v_normal), lightDir);
+	float spec = pow(ndotl, 30.0);
+	gl_FragColor = vec4(pow(pow(texColor.xyz, vec3_splat(2.2) ) * ndotl + spec, vec3_splat(1.0/2.2) ), 1.0);
+*/
+
+
+	vec4 texColor = texture2D(s_texColor, v_texcoord0);
+	vec3 lightDir = vec3(0.0, 0.0, -1.0);
+
+	vec3 N = normalize(v_normal);
+	vec3 L = normalize(lightDir);	
+	float lambertTerm = dot(N,L);
+
+
+	//float ndotl = dot(normalize(v_normal), lightDir);
+	//float spec = pow(ndotl, 30.0);
+	//gl_FragColor = vec4(pow(pow(texColor.xyz, vec3_splat(2.2) ) * ndotl + spec, vec3_splat(1.0/2.2) ), 1.0);
+
 }

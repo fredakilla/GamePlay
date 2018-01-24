@@ -57,33 +57,74 @@ vec3 calcLight(int _idx, mat3 _tbn, vec3 _wpos, vec3 _normal, vec3 _view)
 
 vec4 Ambient;
 
-vec3 Light = vec3(0,0,1);
+
 
 void main()
 {
 
-	vec4 color = texture2D(s_texColor, v_texcoord0);
+	//Ambient = vec4(0.2,0.2,0.2,1.0);
+
+	//vec4 Color = texture2D(s_texColor, v_texcoord0);
+
+	
+	// step1 : no color
+	/*
+	gl_FragColor = Color;
+	*/
 
 
-	/*vec3 diffuse = vec3(0.5f, 0.5f, 0.5f);
-	vec3 ambient = color.rgb; //vec3(0.1, 0.0, 0.0);
-	vec3 rgb = ambient + diffuse * saturate(dot(Light, v_normal));
-	gl_FragColor = vec4(rgb, 1.0);*/
+	// step2 : ambient lighting
+	/*
+	vec3 scatteredLight = vec3(Ambient); // this is the only light
+	vec3 rgb = min(Color.rgb * scatteredLight, vec3(1.0));
+	gl_FragColor = vec4(rgb, Color.a);
+	*/
 
+
+	// step3 : directionnal light
 /*
-	vec3 lightDir = vec3(0.0, -0.5, 0.2);
-	float ndotl = dot(normalize(v_normal), -lightDir);
-	float spec = pow(ndotl, 30.0);
-	gl_FragColor = vec4(pow(pow(color.xyz, vec3_splat(2.2) ) * ndotl + spec, vec3_splat(1.0/2.2) ), 1.0);
+	vec3 LightColor = vec3(1.0, 0.2, 1.0);
+	vec3 LightDirection = vec3(0.0, 0.1, 0.1);
+	vec3 HalfVector = vec3(0.0, 0.1, 0.1);
+	float Shininess = 0.25;
+	float Strength = 1.0;
+
+	// compute cosine of the directions, using dot products,
+	// to see how much light would be reflected
+	float diffuse = max(0.0, dot(v_normal, LightDirection));
+	float specular = max(0.0, dot(v_normal, HalfVector));
+
+	// surfaces facing away from the light (negative dot products)
+	// won’t be lit by the directional light
+	if (diffuse == 0.0)
+		specular = 0.0;
+	else
+		specular = pow(specular, Shininess); // sharpen the highlight
+
+	vec3 scatteredLight = Ambient.rgb + LightColor * diffuse;
+	vec3 reflectedLight = LightColor * specular * Strength;
+
+	// don’t modulate the underlying color with reflected light,
+	// only with scattered light
+	vec3 rgb = min(Color.rgb * scatteredLight + reflectedLight, vec3(1.0));
+	gl_FragColor = vec4(rgb, Color.a);	
 	*/
 
 
 
 
-	vec3 lightColor = vec3(0.7, 0.7, 0.7);
-	vec3 lightDir = vec3(0, 1, 0);
+	vec3 lightColor = vec3(1.0, 0.2, 1.0);
+	vec3 lightDir = vec3(0.0, 1.0, 0.0);
+	vec4 objectColor = texture2D(s_texColor, v_texcoord0);
 
-	// ambient
+	/*float ambientStrength = 0.1;
+    vec3 ambient = ambientStrength * lightColor;
+
+    vec3 result = ambient * objectColor.rgb;
+    gl_FragColor = vec4(result, 1.0);*/
+
+
+    // ambient
     float ambientStrength = 0.1;
     vec3 ambient = ambientStrength * lightColor;
   	
@@ -93,7 +134,7 @@ void main()
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
             
-    vec3 result = (ambient + diffuse) * color.rgb;
+    vec3 result = (ambient + diffuse) * objectColor.rgb;
 	gl_FragColor = vec4(result, 1.0);
 
 }

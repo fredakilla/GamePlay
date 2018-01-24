@@ -90,4 +90,17 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
     bgfx::submit(Game::__curentViewId, bgfxGpuProgram->getProgram());
 }
 
+
+
+
+void BGFXRenderer::setViewTransform(Matrix &view, Matrix &proj)
+{
+    bgfx::setViewTransform(Game::__curentViewId, view.m, proj.m);
+}
+
+void BGFXRenderer::setModelTransform(Matrix *matrix, unsigned short count)
+{
+    bgfx::setTransform(&matrix->m[0], count);
+}
+
 } // end namespace gameplay

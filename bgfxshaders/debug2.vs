@@ -16,11 +16,16 @@ uniform mat4 u_matrixNormal;
 
 void main()
 {
-	gl_Position = mul(u_worldViewProjectionMatrix, vec4(a_position, 1.0) );
+	gl_Position = mul(u_modelViewProj, vec4(a_position, 1.0) );
 	v_texcoord0 = a_texcoord0;
+	//v_normal = a_normal.rgb;
 
-	//v_normal = a_normal.xyz;
-	//v_normal = mul(u_model[0], a_normal).xyz;
-	//v_normal = mul(u_matrixModel, a_normal).rgb;	
-	v_normal = mul(u_matrixNormal, a_normal).rgb;
+	//FragPos = vec3(model * vec4(aPos, 1.0));
+
+
+	// directionnal light
+	//v_normal = normalize( mul(u_matrixNormal, a_normal) ).rgb;
+
+	//v_normal = mul(u_matrixNormal, a_normal).rgb;
+	v_normal = mul(u_model[0], a_normal).xyz;
 }

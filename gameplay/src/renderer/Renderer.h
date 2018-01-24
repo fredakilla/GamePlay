@@ -6,6 +6,9 @@
 namespace gameplay
 {
 
+class Matrix;
+class Model;
+
 #define DRAW_DEBUG_TEXT bgfx::dbgTextPrintf
 
 
@@ -46,6 +49,10 @@ public:
     virtual void beginFrame() {}
     virtual void endFrame() {}
     virtual void submit(const GpuProgram* gpuProgram) = 0;
+
+
+    virtual void setViewTransform(Matrix& view, Matrix& proj) {}
+    virtual void setModelTransform(Matrix * matrix, unsigned short count = 1) {}
 
 
 protected:
