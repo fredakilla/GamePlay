@@ -18,21 +18,40 @@ void main()
 {
 
 
-	gl_Position = mul(u_matrixModelViewProj, vec4(a_position, 1.0) );
+	/*gl_Position = mul(u_worldViewProjectionMatrix, vec4(a_position, 1.0) );
 	v_texcoord0 = a_texcoord0;
 
+	
 
 	
 	v_wpos = vec3(u_matrixModelView * vec4(a_position, 1));
 	v_texcoord0 = a_texcoord0;
-	v_normal = mul(u_model[0], a_normal).xyz;
-	//v_normal = normalize( mul(a_normal, u_matrixNormal)).xyz;
+	//v_normal = mul(u_model[0], a_normal).xyz;
+	//v_normal = normalize( mul(u_matrixNormal, normal)).xyz;
+
+
+
+	vec4 normal = a_normal * 2.0 - 1.0;
+	vec3 wnormal = mul(u_model[0], vec4(normal.xyz, 0.0) ).xyz;
+	vec3 viewNormal = normalize(mul(u_matrixNormal, normal).xyz);
+	v_normal = viewNormal;*/
+
+
+
+
+	gl_Position = mul(u_worldViewProjectionMatrix, vec4(a_position, 1.0) );
+	v_texcoord0 = a_texcoord0;
+	//v_normal = a_normal.xyz;
+	//v_normal = mul(u_model[0], a_normal).xyz;
+	//v_normal = mul(u_matrixModel, a_normal).rgb;	
+	v_normal = mul(u_matrixNormal, a_normal).rgb;
 
 
 
 
 
 
+	
 
 	/*vec3 wpos = mul(u_model[0], vec4(a_position, 1.0) ).xyz;
 	gl_Position = mul(u_worldViewProjectionMatrix, vec4(wpos, 1.0) );

@@ -237,17 +237,29 @@ void R_Lights::initialize()
 
 
 
+   /*Scene * scene = Scene::load("res/common/lightBrickWall.gpb");
+    Node * node = scene->findNode("wall");
+    _cubeModel = dynamic_cast<Model*>(node->getDrawable());*/
+
+
+    Scene * scene = Scene::load("res/common/duck.gpb");
+    // Initialize box model
+    Node * node = scene->findNode("duck");
+    _cubeModel = dynamic_cast<Model*>(node->getDrawable());
+    //_cubeModel->setMaterial("res/common/duck.material");
+
+
+
     // Create a perspective projection matrix.
     Matrix projMatrix;
     Matrix::createPerspective(45.0f, getWidth() / (float)getHeight(), 1.0f, 1000.0f, &projMatrix);
 
     // Create a lookat view matrix.
     Matrix viewMatrix;
-    Matrix::createLookAt(Vector3(3,2,-5), Vector3::zero(), Vector3::unitY(), &viewMatrix);
+    Matrix::createLookAt(Vector3(0,1,-4), Vector3::zero(), Vector3::unitY(), &viewMatrix);
 
     // set mvp matrix
     _worldViewProjectionMatrix = projMatrix * viewMatrix;
-    _worldViewProjectionMatrix.scale(1.0f);
 
 
     // create  material
@@ -261,6 +273,7 @@ void R_Lights::initialize()
 
     material->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
 
+
     material->getStateBlock()->setCullFace(true);
     material->getStateBlock()->setDepthTest(true);
     material->getStateBlock()->setDepthWrite(true);
@@ -269,7 +282,9 @@ void R_Lights::initialize()
 
     Matrix modelMatrix;
     modelMatrix.setIdentity();
-    modelMatrix.translate(0,0,0);
+    modelMatrix.translate(0,-1,0);
+    modelMatrix.scale(0.01);
+    modelMatrix.rotate(Vector3(0,1,0),  MATH_DEG_TO_RAD(35));
 
     Matrix modelViewMatrix = viewMatrix * modelMatrix;
     Matrix modelViewProjMatrix =  projMatrix * modelViewMatrix; //viewMatrix * modelMatrix;
@@ -280,10 +295,17 @@ void R_Lights::initialize()
     material->getParameter("u_matrixModelView")->setValue(modelViewMatrix);
     material->getParameter("u_matrixModelViewProj")->setValue(modelViewProjMatrix);
 
+    _worldViewProjectionMatrix = modelViewProjMatrix;
+
     //material->getParameter("u_normalMatrix")->setValue( );
     Matrix normalMatrix = modelViewMatrix;
-    normalMatrix.invert();
+    modelViewMatrix.invert();
     normalMatrix.transpose();
+
+    /*Matrix normalMatrix;
+    Matrix::multiply(viewMatrix, modelMatrix, &normalMatrix);
+    normalMatrix.invert();
+    normalMatrix.transpose();*/
 
     material->getParameter("u_matrixNormal")->setValue(normalMatrix);
 
@@ -293,10 +315,10 @@ void R_Lights::initialize()
 
 
     // Create a cube.
-    Mesh* meshQuad = createTexturedCube();
-    _cubeModel = Model::create(meshQuad);
+    /*Mesh* meshQuad = createTexturedCube();
+    _cubeModel = Model::create(meshQuad);*/
     _cubeModel->setMaterial(material);
-    SAFE_RELEASE(meshQuad);
+    //SAFE_RELEASE(meshQuad);
 
 
     // Set views
@@ -326,6 +348,7 @@ void R_Lights::update(float elapsedTime)
     float dz = _spinDirection * MATH_PI * 1.3f;
     Quaternion rot = Quaternion(Vector3(dx, dy, dz), dt);
     //_worldViewProjectionMatrix.rotate(rot);
+
 }
 
 void R_Lights::render(float elapsedTime)
@@ -358,9 +381,9 @@ void R_Lights::render(float elapsedTime)
         { 1.0f, 0.4f, 0.2f, 0.8f },
     };
 
-    _cubeModel->getMaterial()->getParameter("u_lightPosRadius")->setValue(lightPosRadius, m_numLights);
-    _cubeModel->getMaterial()->getParameter("u_lightRgbInnerR")->setValue(lightRgbInnerR, m_numLights);
-
+  /*-cubeModel->getMaterial()->getParameter("u_lightPosRadius")->setValue(lightPosRadius, m_numLights);
+  _cubeModel->getMaterial()->getParameter("u_lightRgbInnerR")->setValue(lightRgbInnerR, m_numLights);
+*/
 
 
 

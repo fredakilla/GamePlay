@@ -114,16 +114,16 @@ void light( int lightIndex, vec3 position, vec3 norm, out vec3 ambient, out vec3
 
 void main()
 {
-	Light[0].Position = vec3(0,5,5);
-	Light[0].La = vec3(0.1,0.1,0.1);
+	Light[0].Position = vec3(-2,2,0);
+	Light[0].La = vec3(0.2,0.2,0.2);
 	Light[0].Ld = vec3(0.8,0.8,0.8);
-	Light[0].Ls = vec3(0.1,0.1,0.1);
+	Light[0].Ls = vec3(0.9,0.9,0.9);
 
 
-    Material.Ka = vec3(0.1,0.1,0.1);
-    Material.Kd = vec3(0.5,0.5,0.5);
-    Material.Ks = vec3(0.2,0.2,0.2);
-    Material.Shininess = 0.5f;
+    Material.Ka = vec3(0.2,0.2,0.2);
+    Material.Kd = vec3(0.8,0.8,0.8);
+    Material.Ks = vec3(0.8,0.8,0.8);
+    Material.Shininess = 0.2f;
 
 	
     vec3 ambientSum = vec3(0);
