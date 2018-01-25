@@ -248,7 +248,6 @@ void R_Lights::initialize()
 
 
     Scene * scene = Scene::load("res/common/duck.gpb");
-    // Initialize box model
     Node * node = scene->findNode("duck");
     _cubeModel = dynamic_cast<Model*>(node->getDrawable());
     //_cubeModel->setMaterial("res/common/duck.material");
@@ -285,7 +284,6 @@ void R_Lights::initialize()
     material->getStateBlock()->setCullFace(true);
     material->getStateBlock()->setDepthTest(true);
     material->getStateBlock()->setDepthWrite(true);
-
 
 
     Matrix modelMatrix;
@@ -339,12 +337,10 @@ void R_Lights::initialize()
     Matrix normalMatrix = modelViewMatrix;
     modelViewMatrix.invert();
     normalMatrix.transpose();
-
     /*Matrix normalMatrix;
     Matrix::multiply(viewMatrix, modelMatrix, &normalMatrix);
     normalMatrix.invert();
     normalMatrix.transpose();*/
-
     material->getParameter("u_matrixNormal")->setValue(normalMatrix);
 
 
@@ -357,8 +353,7 @@ void R_Lights::initialize()
     _cubeModel = Model::create(meshQuad);*/
     _cubeModel->setMaterial(material);
     //SAFE_RELEASE(meshQuad);
-    _cubeModel->getNode()->set(Vector3(0.01,0.01,0.01), Quaternion(Vector3(0,1,0), MATH_DEG_TO_RAD(45.0f)), Vector3(0,0,0));
-    //_cubeModel->setModelTransform(Transform(Vector3(0.01,0.01,0.01), Quaternion(Vector3(0,1,0), MATH_DEG_TO_RAD(45.0f)), Vector3(0,0,0)).getMatrix());
+    //_cubeModel->getNode()->set(Vector3(0.01,0.01,0.01), Quaternion(Vector3(0,1,0), MATH_DEG_TO_RAD(45.0f)), Vector3(0,0,0));
     _cubeModel->getModelMatrix().set(Transform(Vector3(0.01,0.01,0.01), Quaternion(Vector3(0,1,0), MATH_DEG_TO_RAD(45.0f)), Vector3(0,0,0)).getMatrix());
 
     // Set views
