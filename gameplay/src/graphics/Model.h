@@ -192,6 +192,17 @@ private:
     unsigned int _partCount;
     Material** _partMaterials;
     MeshSkin* _skin;
+
+
+
+
+
+    //@@
+    Matrix _modelMatrix;
+
+public:
+    //void setModelTransform(const Matrix &modelMatrix);
+    Matrix& getModelMatrix();
 };
 
 }

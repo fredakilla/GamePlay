@@ -93,9 +93,9 @@ void BGFXRenderer::submit(const GpuProgram * gpuProgram)
 
 
 
-void BGFXRenderer::setViewTransform(Matrix &view, Matrix &proj)
+void BGFXRenderer::setViewTransform(Matrix &view, Matrix &proj, unsigned short viewId)
 {
-    bgfx::setViewTransform(Game::__curentViewId, view.m, proj.m);
+    bgfx::setViewTransform(viewId, view.m, proj.m);
 }
 
 void BGFXRenderer::setModelTransform(Matrix *matrix, unsigned short count)

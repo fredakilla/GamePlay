@@ -6,6 +6,8 @@
     ADD_SAMPLE("Renderer", "Lights", R_Lights, 5);
 #endif
 
+#if 0
+
 #include <bx/allocator.h>
     #include <bx/math.h>
 #include "renderer/BGFX/BGFXVertexBuffer.h"
@@ -221,6 +223,8 @@ static Mesh* createTexturedCube(float size = 1.0f)
 }
 
 
+#endif
+
 R_Lights::R_Lights()
     : _font(NULL)
     , _triangleModel(NULL)
@@ -353,7 +357,9 @@ void R_Lights::initialize()
     _cubeModel = Model::create(meshQuad);*/
     _cubeModel->setMaterial(material);
     //SAFE_RELEASE(meshQuad);
-
+    _cubeModel->getNode()->set(Vector3(0.01,0.01,0.01), Quaternion(Vector3(0,1,0), MATH_DEG_TO_RAD(45.0f)), Vector3(0,0,0));
+    //_cubeModel->setModelTransform(Transform(Vector3(0.01,0.01,0.01), Quaternion(Vector3(0,1,0), MATH_DEG_TO_RAD(45.0f)), Vector3(0,0,0)).getMatrix());
+    _cubeModel->getModelMatrix().set(Transform(Vector3(0.01,0.01,0.01), Quaternion(Vector3(0,1,0), MATH_DEG_TO_RAD(45.0f)), Vector3(0,0,0)).getMatrix());
 
     // Set views
     Game * game = Game::getInstance();
@@ -383,6 +389,15 @@ void R_Lights::update(float elapsedTime)
     Quaternion rot = Quaternion(Vector3(dx, dy, dz), dt);
     //_worldViewProjectionMatrix.rotate(rot);
 
+
+    /*Matrix m;
+    m.rotateY(_spinDirection * MATH_PI * elapsedTime * 0.001f);
+    //_cubeModel->setModelTransform(m);*/
+    _cubeModel->getModelMatrix().rotateZ(_spinDirection * MATH_PI * elapsedTime * 0.001f );
+    //_cubeModel->getNode()->rotateX(_spinDirection * MATH_PI * elapsedTime * 0.001f * 1.1);
+    //_cubeModel->getNode()->rotateY(_spinDirection * MATH_PI * elapsedTime * 0.001f * 1.4);
+    //_cubeModel->getNode()->rotateZ(_spinDirection * MATH_PI * elapsedTime * 0.001f * 0.8);
+
 }
 
 void R_Lights::render(float elapsedTime)
@@ -401,8 +416,8 @@ void R_Lights::render(float elapsedTime)
     Vector4 lightPosRadius[4];
     for (uint32_t ii = 0; ii < m_numLights; ++ii)
     {
-        lightPosRadius[ii].x = sin( (time*(0.1f + ii*0.17f) + ii*bx::kPiHalf*1.37f ) )*3.0f;
-        lightPosRadius[ii].y = cos( (time*(0.2f + ii*0.29f) + ii*bx::kPiHalf*1.49f ) )*3.0f;
+        lightPosRadius[ii].x = sin( (time*(0.1f + ii*0.17f) + ii*MATH_PIOVER4*1.37f ) )*3.0f;
+        lightPosRadius[ii].y = cos( (time*(0.2f + ii*0.29f) + ii*MATH_PIOVER4*1.49f ) )*3.0f;
         lightPosRadius[ii].z = -2.5f;
         lightPosRadius[ii].w = 3.0f;
     }
@@ -427,14 +442,14 @@ void R_Lights::render(float elapsedTime)
         //bx::mtxScale(mtx, 0.01f);
         bgfx::setTransform(mtx);*/
 
-        Matrix modelMatrix;
+       /* Matrix modelMatrix;
         modelMatrix.setIdentity();
         modelMatrix.translate(0,0,0);
         modelMatrix.rotate(Vector3(0,1,0),  MATH_DEG_TO_RAD(35));
         modelMatrix.scale(0.01);
-    Renderer::getInstance().setModelTransform(&modelMatrix);
+    Renderer::getInstance().setModelTransform(&modelMatrix);*/
 
-
+   // _cubeModel->getNode()->set(Vector3(0.01,0.01,0.01), Quaternion(Vector3(0,1,0), MATH_DEG_TO_RAD(45.0f)), Vector3(0,0,0));
 
     _cubeModel->draw();
 

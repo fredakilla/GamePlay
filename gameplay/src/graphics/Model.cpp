@@ -5,6 +5,7 @@
 #include "../graphics/Technique.h"
 #include "../graphics/Pass.h"
 #include "../graphics/Node.h"
+#include "../renderer/Renderer.h"
 
 namespace gameplay
 {
@@ -331,6 +332,21 @@ unsigned int Model::draw(bool wireframe)
 {
     GP_ASSERT(_mesh);
 
+    // use bgfx model transformation
+    if(_node)
+    {
+        // if node, use node's matrix
+        Matrix * modelMatrix = const_cast<Matrix*>(&_node->getMatrix());
+        Renderer::getInstance().setModelTransform(modelMatrix);
+    }
+    else
+    {
+        // if no node, use internal auxilliary model matrix
+        Matrix * modelMatrix = const_cast<Matrix*>(&_modelMatrix);
+        Renderer::getInstance().setModelTransform(modelMatrix);
+    }
+
+
     unsigned int partCount = _mesh->getPartCount();
     if (partCount == 0)
     {
@@ -475,5 +491,36 @@ void Model::validatePartCount()
         _partCount = _mesh->getPartCount();
     }
 }
+
+
+
+
+//@@
+Matrix& Model::getModelMatrix()
+{
+    if(_node)
+    {
+        return const_cast<Matrix&>(_node->getMatrix());
+    }
+    else
+    {
+        return _modelMatrix;
+    }
+
+}
+
+//void Model::setModelTransform(const Matrix& modelMatrix)
+//{
+//    if(_node)
+//    {
+//        //_node->set();
+//        //_node->set(mdelMatrix.getScale();)
+//    }
+//    else
+//    {
+//        _modelTransform = modelMatrix;
+//    }
+//
+//}
 
 }

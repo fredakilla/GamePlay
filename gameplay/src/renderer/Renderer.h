@@ -51,7 +51,7 @@ public:
     virtual void submit(const GpuProgram* gpuProgram) = 0;
 
 
-    virtual void setViewTransform(Matrix& view, Matrix& proj) {}
+    virtual void setViewTransform(Matrix& view, Matrix& proj, unsigned short viewId = 0) {}
     virtual void setModelTransform(Matrix * matrix, unsigned short count = 1) {}
 
 
