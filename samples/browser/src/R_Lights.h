@@ -25,10 +25,9 @@ protected:
 private:
 
     Font* _font;
-    Model* _triangleModel;
     float _spinDirection;
     Matrix _worldViewProjectionMatrix;
-    Model* _cubeModel;
+    Model* _myModel;
 };
 
 #endif
