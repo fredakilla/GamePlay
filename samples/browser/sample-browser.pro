@@ -105,7 +105,8 @@ SOURCES += src/Audio3DSample.cpp \
     src/R_RenderToTexture.cpp \
     src/R_DynamicMesh.cpp \
     src/R_Instancing.cpp \
-    src/R_Lights.cpp
+    src/R_Lights.cpp \
+    src/R_Sponza.cpp
 
 HEADERS += src/Audio3DSample.h \
     src/AudioSample.h \
@@ -138,7 +139,8 @@ HEADERS += src/Audio3DSample.h \
     src/R_RenderToTexture.h \
     src/R_DynamicMesh.h \
     src/R_Instancing.h \
-    src/R_Lights.h
+    src/R_Lights.h \
+    src/R_Sponza.h
 
 INCLUDEPATH += $$PWD/../../gameplay/src
 INCLUDEPATH += $$PWD/../../external-deps/include
