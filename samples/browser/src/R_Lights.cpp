@@ -124,13 +124,9 @@ void R_Lights::render(float elapsedTime)
 {
     // draw the cube in main view
     Game::getInstance()->bindView(0);
-    _myModel->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(_worldViewProjectionMatrix);
-
-
 
 
     int m_numLights = 4;
-
     float time = Game::getAbsoluteTime() * 0.001f;
 
     Vector4 lightPosRadius[4];
