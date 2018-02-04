@@ -133,14 +133,13 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
     const char* ext = strrchr(FileSystem::resolvePath(path), '.');
     if (ext)
     {
-        if(!strcmp(ext, ".png"))
+        if(!strcmp(ext, ".png") || !strcmp(ext, ".tga"))
         {
-            // PNG file
             Image* image = Image::create(path);
             if (image)
                 texture = create(image, generateMipmaps);
             SAFE_RELEASE(image);
-        }
+        }       
         else if(!strcmp(ext, ".dds"))
         {
             texture = createBIMG(path, DDS);
@@ -154,40 +153,6 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
             GP_ERROR("Unknow texture file extension : %s", ext);
             return NULL;
         }
-
-
-#if 0//@@
-        switch (strlen(ext))
-        {
-        case 4:
-            if (tolower(ext[1]) == 'p' && tolower(ext[2]) == 'n' && tolower(ext[3]) == 'g')
-            {
-                Image* image = Image::create(path);
-                if (image)
-                    texture = create(image, generateMipmaps);
-                SAFE_RELEASE(image);
-            }
-            else if (tolower(ext[1]) == 'd' && tolower(ext[2]) == 'd' && tolower(ext[3]) == 's')
-            {
-                // DDS file format
-                texture = createDDS(path);
-            }
-
-
-            //@@else if (tolower(ext[1]) == 'p' && tolower(ext[2]) == 'v' && tolower(ext[3]) == 'r')
-            //@@{
-            //@@    // PowerVR Compressed Texture RGBA.
-            //@@    texture = createCompressedPVRTC(path);
-            //@@}
-            //@@else if (tolower(ext[1]) == 'd' && tolower(ext[2]) == 'd' && tolower(ext[3]) == 's')
-            //@@{
-            //@@    // DDS file format (DXT/S3TC) compressed textures
-            //@@    texture = createCompressedDDS(path);
-            //@@}
-            //@@break;
-        }
-
-#endif//@@
     }
 
     if (texture)
