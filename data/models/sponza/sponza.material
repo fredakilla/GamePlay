@@ -1,0 +1,493 @@
+material textured
+{
+    u_worldViewProjectionMatrix = WORLD_VIEW_PROJECTION_MATRIX
+    
+    sampler u_diffuseTexture
+    {
+        mipmap = true
+        wrapS = CLAMP
+        wrapT = CLAMP
+        minFilter = LINEAR_MIPMAP_LINEAR
+        magFilter = LINEAR
+    }
+
+    renderState
+    {
+        cullFace = true
+        depthTest = true
+    }
+    
+    technique
+    {
+        pass 
+        {
+            vertexShader = res/shaders/textured.vert
+            fragmentShader = res/shaders/textured.frag
+        }
+    }
+}
+
+material colored
+{
+    u_worldViewProjectionMatrix = WORLD_VIEW_PROJECTION_MATRIX
+    
+    renderState
+    {
+        cullFace = true
+        depthTest = true
+    }
+    
+    technique
+    {
+        pass 
+        {
+            vertexShader = res/shaders/colored.vert
+            fragmentShader = res/shaders/colored.frag
+        }
+    }
+}
+
+material Material__25 : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/lion.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material Material__298 : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/background.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material Material__47 : colored
+{
+    u_cameraPosition = CAMERA_WORLD_POSITION
+    u_diffuseColor = 0.588, 0.588, 0.588, 1
+    u_inverseTransposeWorldViewMatrix = INVERSE_TRANSPOSE_WORLD_VIEW_MATRIX
+    u_specularExponent = 0.980392
+    
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material Material__57 : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/vase_plant.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material arch : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_arch_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material bricks : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/spnza_bricks_a_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material ceiling : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_ceiling_a_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material chain : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/chain_texture.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material column_a : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_column_a_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material column_b : textured
+{
+    u_cameraPosition = CAMERA_WORLD_POSITION
+    u_inverseTransposeWorldViewMatrix = INVERSE_TRANSPOSE_WORLD_VIEW_MATRIX
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_column_b_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material column_c : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_column_c_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material details : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_details_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material fabric_a : textured
+{
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_fabric_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+}
+
+material fabric_c : textured
+{
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_curtain_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+}
+
+material fabric_d : textured
+{
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_fabric_blue_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+}
+
+material fabric_e : textured
+{
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_fabric_green_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+}
+
+material fabric_f : textured
+{
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_curtain_green_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+}
+
+material fabric_g : textured
+{
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_curtain_blue_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+}
+
+material flagpole : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_flagpole_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material floor : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_floor_a_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material leaf : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_thorn_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material roof : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/sponza_roof_diff.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material vase : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/vase_dif.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material vase_hanging : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/vase_hanging.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material vase_round : textured
+{
+    u_specularExponent = 0.980392
+    
+    sampler u_diffuseTexture
+    {
+        path = textures/vase_round.png
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+

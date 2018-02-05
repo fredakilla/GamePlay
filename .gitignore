@@ -16,7 +16,6 @@ Thumbs.db
 /Debug
 /Release
 /api/xml
-/bin
 /external-deps
 /api/html
 Makefile

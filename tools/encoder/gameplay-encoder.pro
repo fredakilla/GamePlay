@@ -125,7 +125,7 @@ linux: INCLUDEPATH += /usr/include/fbxsdk
 linux: INCLUDEPATH += /usr/include/freetype2
 linux: INCLUDEPATH += /usr/include
 linux: LIBS += -L$$PWD/../../external-deps/lib/linux/x86_64/ -lgameplay-deps -lfreetype
-linux: LIBS += -L/usr/lib/gcc4/x64/release -lfbxsdk
+linux: LIBS += -L/usr/lib/gcc4/x64/release -lfbxsdk-static
 linux: LIBS += -lstdc++ -ldl -lpthread
 
 macx: QMAKE_CXXFLAGS += -x c++ -stdlib=libc++ -w -arch x86_64

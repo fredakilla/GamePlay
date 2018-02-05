@@ -13,7 +13,7 @@
     static const unsigned int MOVE_RIGHT = 8;
     static const unsigned int MOVE_UP = 16;
     static const unsigned int MOVE_DOWN = 32;
-    static const float MOVE_SPEED = 15.0f;
+    static const float MOVE_SPEED = 150.0f;
     static const float UP_DOWN_SPEED = 10.0f;
 
 
@@ -48,10 +48,12 @@ void R_Sponza::initialize()
 
 
    _scene = Scene::load("res/sponza/sponza.gpb");
-    Node * node = _scene->findNode("mesh_19");
+
+
+   /* Node * node = _scene->findNode("mesh_19");
     _myModel = dynamic_cast<Model*>(node->getDrawable());
-    _myModel->setMaterial("res/sponza/sponza.material");
-    node->setScale(0.1f);
+    _myModel->setMaterial("res/sponza/sponza.material");*/
+    //node->setScale(0.1f);
 
 
 
@@ -60,7 +62,7 @@ void R_Sponza::initialize()
 
     // Create a perspective projection matrix.
     Matrix projMatrix;
-    Matrix::createPerspective(60.0f, getWidth() / (float)getHeight(), 0.1f, 1000.0f, &projMatrix);
+    Matrix::createPerspective(60.0f, getWidth() / (float)getHeight(), 0.1f, 100000.0f, &projMatrix);
     // Create a lookat view matrix.
     Matrix viewMatrix;
     Matrix::createLookAt(Vector3(0,2,-5), Vector3::zero(), Vector3::unitY(), &viewMatrix);
@@ -109,13 +111,14 @@ void R_Sponza::initialize()
     // set camera
 
     Vector3 cameraPosition(0, 1, 10);
-    _fpCamera.initialize();
+    _fpCamera.initialize(1.0, 100000.0f);
     _fpCamera.setPosition(cameraPosition);
     _scene->addNode(_fpCamera.getRootNode());
     _scene->setActiveCamera(_fpCamera.getCamera());
 
     // Update the aspect ratio for our scene's camera to match the current device resolution
     _scene->getActiveCamera()->setAspectRatio(getAspectRatio());
+
 
 
 
