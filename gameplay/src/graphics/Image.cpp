@@ -2,13 +2,15 @@
 #include "../core/FileSystem.h"
 #include "../graphics/Image.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image/stb_image.h>
+//#define STB_IMAGE_IMPLEMENTATION
+//#include <stb_image/stb_image.h>
 
 namespace gameplay {
 
 Image* Image::create(const char* path)
 {
+
+#if 0
     GP_ASSERT(path);
 
     int width, height, channels;
@@ -57,6 +59,7 @@ Image* Image::create(const char* path)
     stbi_image_free(imageData);
 
     return img;
+#endif
 }
 
 Image* Image::create(unsigned int width, unsigned int height, Image::Format format, unsigned char* data)

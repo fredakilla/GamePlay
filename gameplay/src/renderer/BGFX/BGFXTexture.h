@@ -3,7 +3,7 @@
 
 #include "../../renderer/GpuTexture.h"
 #include "../../graphics/Texture.h"
-#include "bimg/bimg.h"
+#include "bimg/decode.h"
 
 namespace gameplay
 {

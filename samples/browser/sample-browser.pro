@@ -174,6 +174,7 @@ CONFIG(debug,debug|release) {
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbgfxDebug
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbimgDebug
     LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbxDebug
+    LIBS += -L$${BGFX}/.build/linux64_gcc/bin -lbimg_decodeDebug
 
 } else {
     message(release)

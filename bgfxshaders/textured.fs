@@ -1,5 +1,7 @@
 $input v_texcoord0
 
+#define TEXTURE_DISCARD_ALPHA
+
 #include "common/common.sh"
 
 SAMPLER2D(u_diffuseTexture, 0);
