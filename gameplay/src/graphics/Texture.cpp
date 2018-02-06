@@ -15,7 +15,7 @@
 #endif
 
 
-#include <bimg/bimg.h>
+#include <bimg/decode.h>
 
 // PVRTC (GL_IMG_texture_compression_pvrtc) : Imagination based gpus
 #ifndef GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG
@@ -127,33 +127,8 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
         }
     }
 
-    Texture* texture = NULL;
-
-    // Filter loading based on file extension.
-    const char* ext = strrchr(FileSystem::resolvePath(path), '.');
-    if (ext)
-    {
-        if(!strcmp(ext, ".png") || !strcmp(ext, ".tga"))
-        {
-            Image* image = Image::create(path);
-            if (image)
-                texture = create(image, generateMipmaps);
-            SAFE_RELEASE(image);
-        }       
-        else if(!strcmp(ext, ".dds"))
-        {
-            texture = createBIMG(path, DDS);
-        }
-        else if(!strcmp(ext, ".ktx"))
-        {
-            texture = createBIMG(path, KTX);
-        }
-        else
-        {
-            GP_ERROR("Unknow texture file extension : %s", ext);
-            return NULL;
-        }
-    }
+    // Create texture.
+    Texture* texture = createBIMG(path);
 
     if (texture)
     {
@@ -876,7 +851,7 @@ static void imageReleaseCb(void* _ptr, void* _userData)
 }*/
 
 
-Texture* Texture::createBIMG(const char* path, TextureFileType fileType)
+Texture* Texture::createBIMG(const char* path)
 {
     GP_ASSERT( path );
 
@@ -891,20 +866,12 @@ Texture* Texture::createBIMG(const char* path, TextureFileType fileType)
 
     // Parse data
     bimg::ImageContainer* imageContainer = nullptr;
-    switch (fileType)
+    imageContainer = bimg::imageParse(getDefaultAllocator(), (void*)fileData, fileSize);
+    if(imageContainer == nullptr)
     {
-    case DDS:
-        imageContainer = bimg::imageParseDds(getDefaultAllocator(), (void*)fileData, fileSize, 0);
-        break;
-    case KTX:
-        imageContainer = bimg::imageParseKtx(getDefaultAllocator(), (void*)fileData, fileSize, 0);
-        break;
-    default:
-        GP_ERROR("Unsupported texture type");
+        GP_ERROR("Failed to parse image data from file '%s'.", path);
         return NULL;
-        break;
     }
-
 
     Filter minFilter = imageContainer->m_numMips > 1 ? NEAREST_MIPMAP_LINEAR : LINEAR;
     Format format = BGFXTexture::toGp3dFormat(imageContainer->m_format);

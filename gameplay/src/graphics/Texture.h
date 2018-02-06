@@ -329,13 +329,8 @@ private:
     Texture& operator=(const Texture&);
 
     //@@static Texture* createCompressedPVRTC(const char* path);
-    //@@static Texture* createCompressedDDS(const char* path);
-    enum TextureFileType
-    {
-        DDS,
-        KTX
-    };
-    static Texture* createBIMG(const char* path, TextureFileType fileType);
+    //@@static Texture* createCompressedDDS(const char* path);    
+    static Texture* createBIMG(const char* path);
 
     //@@static GLubyte* readCompressedPVRTC(const char* path, Stream* stream, GLsizei* width, GLsizei* height, GLenum* format, unsigned int* mipMapCount, unsigned int* faceCount, GLenum faces[6]);
 
