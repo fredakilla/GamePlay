@@ -6,9 +6,12 @@
 #include "Vector3.h"
 #include "BoundingBox.h"
 #include "BoundingSphere.h"
+#include "BGFX/GeometryBuffer.h"
 
 namespace gameplay
 {
+
+typedef GeometryBuffer VertexBuffer;
 
 class MeshPart;
 class Material;
@@ -40,11 +43,13 @@ public:
      */
     enum PrimitiveType
     {
-        TRIANGLES = GL_TRIANGLES,
-        TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
-        LINES = GL_LINES,
-        LINE_STRIP = GL_LINE_STRIP,
-        POINTS = GL_POINTS
+        TRIANGLES,          //@@= GL_TRIANGLES,
+        TRIANGLE_STRIP,     //@@= GL_TRIANGLE_STRIP,
+        LINES,              //@@= GL_LINES,
+        LINE_STRIP,         //@@= GL_LINE_STRIP,
+        POINTS,             //@@= GL_POINTS
+
+        PrimitiveTypeUnknow,
     };
 
     /**
@@ -168,7 +173,7 @@ public:
      *
      * @return The vertex buffer object handle.
      */
-    VertexBufferHandle getVertexBuffer() const;
+    const VertexBuffer *getVertexBuffer() const;
 
     /**
      * Determines if the mesh is dynamic.
@@ -350,15 +355,22 @@ private:
     Mesh& operator=(const Mesh&);
 
     std::string _url;
-    const VertexFormat _vertexFormat;
+    VertexFormat _vertexFormat;
     unsigned int _vertexCount;
-    VertexBufferHandle _vertexBuffer;
+    //@@VertexBufferHandle _vertexBuffer;
     PrimitiveType _primitiveType;
     unsigned int _partCount;
     MeshPart** _parts;
     bool _dynamic;
     BoundingBox _boundingBox;
     BoundingSphere _boundingSphere;
+
+private:
+    VertexBuffer * _vertexBuffer;
+    void set(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic);
+
+public:
+    void draw();
 };
 
 }

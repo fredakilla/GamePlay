@@ -127,35 +127,36 @@ void Model::setMaterial(Material* material, int partIndex)
     // Release existing material and binding.
     if (oldMaterial)
     {
-        for (unsigned int i = 0, tCount = oldMaterial->getTechniqueCount(); i < tCount; ++i)
-        {
-            Technique* t = oldMaterial->getTechniqueByIndex(i);
-            GP_ASSERT(t);
-            for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
-            {
-                GP_ASSERT(t->getPassByIndex(j));
-                t->getPassByIndex(j)->setVertexAttributeBinding(NULL);
-            }
-        }
+        //@@for (unsigned int i = 0, tCount = oldMaterial->getTechniqueCount(); i < tCount; ++i)
+        //@@{
+        //@@    Technique* t = oldMaterial->getTechniqueByIndex(i);
+        //@@    GP_ASSERT(t);
+        //@@    for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
+        //@@    {
+        //@@        GP_ASSERT(t->getPassByIndex(j));
+        //@@        t->getPassByIndex(j)->setVertexAttributeBinding(NULL);
+        //@@    }
+        //@@}
         SAFE_RELEASE(oldMaterial);
     }
 
     if (material)
     {
-        // Hookup vertex attribute bindings for all passes in the new material.
-        for (unsigned int i = 0, tCount = material->getTechniqueCount(); i < tCount; ++i)
-        {
-            Technique* t = material->getTechniqueByIndex(i);
-            GP_ASSERT(t);
-            for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
-            {
-                Pass* p = t->getPassByIndex(j);
-                GP_ASSERT(p);
-                VertexAttributeBinding* b = VertexAttributeBinding::create(_mesh, p->getEffect());
-                p->setVertexAttributeBinding(b);
-                SAFE_RELEASE(b);
-            }
-        }
+        //@@    // Hookup vertex attribute bindings for all passes in the new material.
+        //@@    for (unsigned int i = 0, tCount = material->getTechniqueCount(); i < tCount; ++i)
+        //@@    {
+        //@@        Technique* t = material->getTechniqueByIndex(i);
+        //@@        GP_ASSERT(t);
+        //@@        for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
+        //@@        {
+        //@@            Pass* p = t->getPassByIndex(j);
+        //@@            GP_ASSERT(p);
+        //@@            VertexAttributeBinding* b = VertexAttributeBinding::create(_mesh, p->getEffect());
+        //@@            p->setVertexAttributeBinding(b);
+        //@@            SAFE_RELEASE(b);
+        //@@        }
+        //@@    }
+
         // Apply node binding for the new material.
         if (_node)
         {
@@ -343,11 +344,16 @@ unsigned int Model::draw(bool wireframe)
             {
                 Pass* pass = technique->getPassByIndex(i);
                 GP_ASSERT(pass);
-                pass->bind();
-                GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0) );
+                pass->bind(_mesh->getPrimitiveType());
+
+                //@@GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0) );
+                _mesh->_vertexBuffer->bind();
+
                 if (!wireframe || !drawWireframe(_mesh))
                 {
-                    GL_ASSERT( glDrawArrays(_mesh->getPrimitiveType(), 0, _mesh->getVertexCount()) );
+                    //@@GL_ASSERT( glDrawArrays(_mesh->getPrimitiveType(), 0, _mesh->getVertexCount()) );
+                    _mesh->draw();
+
                 }
                 pass->unbind();
             }
@@ -355,6 +361,8 @@ unsigned int Model::draw(bool wireframe)
     }
     else
     {
+        _mesh->_vertexBuffer->bind();
+
         for (unsigned int i = 0; i < partCount; ++i)
         {
             MeshPart* part = _mesh->getPart(i);
@@ -371,11 +379,17 @@ unsigned int Model::draw(bool wireframe)
                 {
                     Pass* pass = technique->getPassByIndex(j);
                     GP_ASSERT(pass);
-                    pass->bind();
-                    GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->_indexBuffer) );
+                    pass->bind(_mesh->getPrimitiveType()); // part->getPrimitiveType());
+
+                    //@@GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->_indexBuffer->getHandle()) );
+
+                    //_mesh->_vertexBuffer->bind();
+                    part->_indexBuffer->bind();
+
                     if (!wireframe || !drawWireframe(part))
                     {
-                        GL_ASSERT( glDrawElements(part->getPrimitiveType(), part->getIndexCount(), part->getIndexFormat(), 0) );
+                        //@@GL_ASSERT( glDrawElements(part->getPrimitiveType(), part->getIndexCount(), part->getIndexFormat(), 0) );
+                        part->draw();
                     }
                     pass->unbind();
                 }

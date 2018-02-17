@@ -1,6 +1,7 @@
 #include "Base.h"
 #include "MeshBatch.h"
 #include "Material.h"
+#include "BGFX/BGFXVertexBuffer.h"
 
 namespace gameplay
 {
@@ -9,6 +10,8 @@ MeshBatch::MeshBatch(const VertexFormat& vertexFormat, Mesh::PrimitiveType primi
     : _vertexFormat(vertexFormat), _primitiveType(primitiveType), _material(material), _indexed(indexed), _capacity(0), _growSize(growSize),
     _vertexCapacity(0), _indexCapacity(0), _vertexCount(0), _indexCount(0), _vertices(NULL), _verticesPtr(NULL), _indices(NULL), _indicesPtr(NULL), _started(false)
 {
+    BGFXVertexBuffer::createVertexDecl(vertexFormat, _vertexDecl);
+
     resize(initialCapacity);
 }
 
@@ -103,25 +106,25 @@ void MeshBatch::add(const void* vertices, size_t size, unsigned int vertexCount,
     _vertexCount = newVertexCount;
 }
 
-void MeshBatch::updateVertexAttributeBinding()
-{
-    GP_ASSERT(_material);
-
-    // Update our vertex attribute bindings.
-    for (unsigned int i = 0, techniqueCount = _material->getTechniqueCount(); i < techniqueCount; ++i)
-    {
-        Technique* t = _material->getTechniqueByIndex(i);
-        GP_ASSERT(t);
-        for (unsigned int j = 0, passCount = t->getPassCount(); j < passCount; ++j)
-        {
-            Pass* p = t->getPassByIndex(j);
-            GP_ASSERT(p);
-            VertexAttributeBinding* b = VertexAttributeBinding::create(_vertexFormat, _vertices, p->getEffect());
-            p->setVertexAttributeBinding(b);
-            SAFE_RELEASE(b);
-        }
-    }
-}
+//@@void MeshBatch::updateVertexAttributeBinding()
+//@@{
+//@@    GP_ASSERT(_material);
+//@@
+//@@    // Update our vertex attribute bindings.
+//@@    for (unsigned int i = 0, techniqueCount = _material->getTechniqueCount(); i < techniqueCount; ++i)
+//@@    {
+//@@        Technique* t = _material->getTechniqueByIndex(i);
+//@@        GP_ASSERT(t);
+//@@        for (unsigned int j = 0, passCount = t->getPassCount(); j < passCount; ++j)
+//@@        {
+//@@            Pass* p = t->getPassByIndex(j);
+//@@            GP_ASSERT(p);
+//@@            VertexAttributeBinding* b = VertexAttributeBinding::create(_vertexFormat, _vertices, p->getEffect());
+//@@            p->setVertexAttributeBinding(b);
+//@@            SAFE_RELEASE(b);
+//@@        }
+//@@    }
+//@@}
 
 unsigned int MeshBatch::getCapacity() const
 {
@@ -212,7 +215,7 @@ bool MeshBatch::resize(unsigned int capacity)
     _indexCapacity = indexCapacity;
 
     // Update our vertex attribute bindings now that our client array pointers have changed
-    updateVertexAttributeBinding();
+    //@@updateVertexAttributeBinding();
 
     return true;
 }
@@ -248,7 +251,48 @@ void MeshBatch::draw()
 
     // Not using VBOs, so unbind the element array buffer.
     // ARRAY_BUFFER will be unbound automatically during pass->bind().
-    GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0 ) );
+    //@@GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0 ) );
+
+    // using transiant buffers
+
+    bgfx::TransientVertexBuffer tvb;
+    bgfx::allocTransientVertexBuffer(&tvb, _vertexCount, _vertexDecl);
+    memcpy(tvb.data, &_vertices[0], _vertexDecl.getSize(_vertexCount));
+    bgfx::setVertexBuffer(0, &tvb, 0, _vertexCount);
+
+    if(_indexed)
+    {
+        bgfx::TransientIndexBuffer tib;
+        bgfx::allocTransientIndexBuffer(&tib, _indexCount);
+        memcpy(tib.data, &_indices[0], sizeof(unsigned short)*_indexCount);
+        bgfx::setIndexBuffer(&tib, 0, _indexCount);
+    }
+
+    // Bind the material.
+    Technique* technique = _material->getTechnique();
+    GP_ASSERT(technique);
+    unsigned int passCount = technique->getPassCount();
+    for (unsigned int i = 0; i < passCount; ++i)
+    {
+        Pass* pass = technique->getPassByIndex(i);
+        GP_ASSERT(pass);
+        pass->bind(_primitiveType);
+
+        /*if (_indexed)
+        {
+            //GL_ASSERT( glDrawElements(_primitiveType, _indexCount, GL_UNSIGNED_SHORT, (GLvoid*)_indices) );
+        }
+        else
+        {
+            //GL_ASSERT( glDrawArrays(_primitiveType, 0, _vertexCount) );
+        }*/
+
+        pass->unbind();
+    }
+
+    return;
+
+#if 0//@@
 
     GP_ASSERT(_material);
     if (_indexed)
@@ -275,6 +319,7 @@ void MeshBatch::draw()
 
         pass->unbind();
     }
+#endif//@@
 }
     
 

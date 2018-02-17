@@ -1,6 +1,7 @@
 #include "../BGFX/BGFXRenderer.h"
 #include "../Transform.h"
 #include "../Game.h"
+#include "../BGFX/BGFXGpuProgram.h"
 
 #include <bgfx/bgfx.h>
 
@@ -93,12 +94,12 @@ void BGFXRenderer::endFrame()
     bgfx::frame();
 }
 
-/*void BGFXRenderer::submit(const BGFXGpuProgram *gpuProgram)
+void BGFXRenderer::submit(const BGFXGpuProgram *gpuProgram)
 {
     const BGFXGpuProgram * bgfxGpuProgram = static_cast<const BGFXGpuProgram*>(gpuProgram);
     GP_ASSERT(bgfx::isValid(bgfxGpuProgram->getProgram()));
-    bgfx::submit(Game::__curentViewId, bgfxGpuProgram->getProgram());
-}*/
+    bgfx::submit(0, bgfxGpuProgram->getProgram());
+}
 
 
 

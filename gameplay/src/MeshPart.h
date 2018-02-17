@@ -2,9 +2,12 @@
 #define MESHPART_H_
 
 #include "Mesh.h"
+#include "BGFX/GeometryBuffer.h"
 
 namespace gameplay
 {
+
+typedef GeometryBuffer IndexBuffer;
 
 /**
  * Defines a part of a mesh describing the way the
@@ -55,7 +58,7 @@ public:
      *
      * @return The index buffer object handle.
      */
-    IndexBufferHandle getIndexBuffer() const;
+    const IndexBuffer* getIndexBuffer() const;
 
     /**
      * Maps the index buffer for the specified access.
@@ -135,8 +138,15 @@ private:
     Mesh::PrimitiveType _primitiveType;
     Mesh::IndexFormat _indexFormat;
     unsigned int _indexCount;
-    IndexBufferHandle _indexBuffer;
+    //@@IndexBufferHandle _indexBuffer;
     bool _dynamic;
+
+private:
+    IndexBuffer * _indexBuffer;
+    void set(Mesh::IndexFormat indexFormat, unsigned int indexCount, bool dynamic);
+
+public:
+    void draw();
 };
 
 }

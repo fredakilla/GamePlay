@@ -8,7 +8,7 @@ namespace gameplay
 {
 
 Pass::Pass(const char* id, Technique* technique) :
-    _id(id ? id : ""), _technique(technique), _effect(NULL), _vaBinding(NULL)
+    _id(id ? id : ""), _technique(technique), _effect(NULL)//@@, _vaBinding(NULL)
 {
     RenderState::_parent = _technique;
 }
@@ -16,7 +16,7 @@ Pass::Pass(const char* id, Technique* technique) :
 Pass::~Pass()
 {
     SAFE_RELEASE(_effect);
-    SAFE_RELEASE(_vaBinding);
+    //@@SAFE_RELEASE(_vaBinding);
 }
 
 bool Pass::initialize(const char* vshPath, const char* fshPath, const char* defines)
@@ -25,7 +25,7 @@ bool Pass::initialize(const char* vshPath, const char* fshPath, const char* defi
     GP_ASSERT(fshPath);
 
     SAFE_RELEASE(_effect);
-    SAFE_RELEASE(_vaBinding);
+    //@@SAFE_RELEASE(_vaBinding);
 
     // Attempt to create/load the effect.
     _effect = Effect::createFromFile(vshPath, fshPath, defines);
@@ -48,23 +48,23 @@ Effect* Pass::getEffect() const
     return _effect;
 }
 
-void Pass::setVertexAttributeBinding(VertexAttributeBinding* binding)
-{
-    SAFE_RELEASE(_vaBinding);
+//@@void Pass::setVertexAttributeBinding(VertexAttributeBinding* binding)
+//@@{
+//@@    SAFE_RELEASE(_vaBinding);
+//@@
+//@@    if (binding)
+//@@    {
+//@@        _vaBinding = binding;
+//@@        binding->addRef();
+//@@    }
+//@@}
 
-    if (binding)
-    {
-        _vaBinding = binding;
-        binding->addRef();
-    }
-}
+//@@VertexAttributeBinding* Pass::getVertexAttributeBinding() const
+//@@{
+//@@    return _vaBinding;
+//@@}
 
-VertexAttributeBinding* Pass::getVertexAttributeBinding() const
-{
-    return _vaBinding;
-}
-
-void Pass::bind()
+void Pass::bind(Mesh::PrimitiveType primitiveType)
 {
     GP_ASSERT(_effect);
 
@@ -72,22 +72,24 @@ void Pass::bind()
     _effect->bind();
 
     // Bind our render state
-    RenderState::bind(this);
+    RenderState::bind(this, primitiveType);
 
     // If we have a vertex attribute binding, bind it
-    if (_vaBinding)
-    {
-        _vaBinding->bind();
-    }
+    //@@if (_vaBinding)
+    //@@{
+    //@@    _vaBinding->bind();
+    //@@}
 }
 
 void Pass::unbind()
 {
     // If we have a vertex attribute binding, unbind it
-    if (_vaBinding)
-    {
-        _vaBinding->unbind();
-    }
+    //@@if (_vaBinding)
+    //@@{
+    //@@    _vaBinding->unbind();
+    //@@}
+
+    BGFXRenderer::getInstance().submit(_effect->getGpuProgram());
 }
 
 Pass* Pass::clone(Technique* technique, NodeCloneContext &context) const

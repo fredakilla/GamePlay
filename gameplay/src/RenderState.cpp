@@ -73,8 +73,63 @@ MaterialParameter* RenderState::getParameter(const char* name) const
         }
     }
 
+    // Check for array element parameter name ("u_directionalLightColor[0]" -> "u_directionalLightColor")
+    // If yes, extract base name and element index of element.
+    int index = -1;
+    std::string baseName;
+    char* token = new char[strlen(name)+1];
+    strcpy(token, name);
+    if (strtok(token, "[") != NULL)
+    {
+        baseName = token;
+        token = strtok(NULL, "]");
+        if(token != NULL)
+        {
+            index = atoi(token);
+            GP_ASSERT(index >= 0 && index <= 32);   // 32, arbitrary max size of an array uniform.
+        }
+    }
+
+
     // Create a new parameter and store it in our list.
     param = new MaterialParameter(name);
+
+    // If parameter is an element of an array
+    if(index != -1)
+    {
+        // Search for an existing parent parameter.
+        MaterialParameter * parent = 0;
+        MaterialParameter * p;
+        for (size_t i = 0, count = _parameters.size(); i < count; ++i)
+        {
+            p = _parameters[i];
+            GP_ASSERT(p);
+            if (strcmp(p->getName(), baseName.c_str()) == 0)
+            {
+                parent = p;
+                break;
+            }
+        }
+
+        // No parent found, create one.
+        if(parent == 0)
+        {
+            parent = new MaterialParameter(baseName.c_str());
+            parent->_uniformName =  baseName;
+            _parameters.push_back(parent);
+        }
+
+        // Set array elements info
+        param->_parent = parent;
+        param->_index = index;
+    }
+    else
+    {
+        // If not an element, baseName should be equal to name.
+        GP_ASSERT(baseName == name);
+    }
+
+    param->_uniformName = baseName;
     _parameters.push_back(param);
 
     return param;
@@ -401,7 +456,7 @@ const Vector3& RenderState::autoBindingGetAmbientColor() const
     return scene ? scene->getAmbientColor() : Vector3::zero();
 }
 
-void RenderState::bind(Pass* pass)
+void RenderState::bind(Pass* pass, Mesh::PrimitiveType primitiveType)
 {
     GP_ASSERT(pass);
 
@@ -436,6 +491,9 @@ void RenderState::bind(Pass* pass)
             rs->_state->bindNoRestore();
         }
     }
+
+    // Apply bgfx render state
+    StateBlock::apply(primitiveType);
 }
 
 RenderState* RenderState::getTopmost(RenderState* below)
@@ -532,6 +590,41 @@ void RenderState::StateBlock::bind()
     bindNoRestore();
 }
 
+
+
+
+
+uint64_t TAB_BLEND[] = {
+    BGFX_STATE_BLEND_ZERO,              // BLEND_ZERO = GL_ZERO,
+    BGFX_STATE_BLEND_ONE,               // BLEND_ONE = GL_ONE,
+    BGFX_STATE_BLEND_SRC_COLOR,         // BLEND_SRC_COLOR = GL_SRC_COLOR,
+    BGFX_STATE_BLEND_INV_SRC_COLOR,     // BLEND_ONE_MINUS_SRC_COLOR = GL_ONE_MINUS_SRC_COLOR,
+    BGFX_STATE_BLEND_DST_COLOR,         // BLEND_DST_COLOR = GL_DST_COLOR,
+    BGFX_STATE_BLEND_INV_DST_COLOR,     // BLEND_ONE_MINUS_DST_COLOR = GL_ONE_MINUS_DST_COLOR,
+    BGFX_STATE_BLEND_SRC_ALPHA,         // BLEND_SRC_ALPHA = GL_SRC_ALPHA,
+    BGFX_STATE_BLEND_INV_SRC_ALPHA,     // BLEND_ONE_MINUS_SRC_ALPHA = GL_ONE_MINUS_SRC_ALPHA,
+    BGFX_STATE_BLEND_DST_ALPHA,         // BLEND_DST_ALPHA = GL_DST_ALPHA,
+    BGFX_STATE_BLEND_INV_DST_ALPHA,     // BLEND_ONE_MINUS_DST_ALPHA = GL_ONE_MINUS_DST_ALPHA,
+    BGFX_STATE_BLEND_FACTOR,            // BLEND_CONSTANT_ALPHA = GL_CONSTANT_ALPHA,
+    BGFX_STATE_BLEND_INV_FACTOR,        // BLEND_ONE_MINUS_CONSTANT_ALPHA = GL_ONE_MINUS_CONSTANT_ALPHA,
+    BGFX_STATE_BLEND_SRC_ALPHA_SAT      // BLEND_SRC_ALPHA_SATURATE = GL_SRC_ALPHA_SATURATE
+};
+
+
+uint64_t TAB_DEPTH_FUNC[] = {
+    BGFX_STATE_DEPTH_TEST_NEVER,        // DEPTH_NEVER = GL_NEVER,
+    BGFX_STATE_DEPTH_TEST_LESS,         // DEPTH_LESS = GL_LESS,
+    BGFX_STATE_DEPTH_TEST_EQUAL,        // DEPTH_EQUAL = GL_EQUAL,
+    BGFX_STATE_DEPTH_TEST_LEQUAL,       // DEPTH_LEQUAL = GL_LEQUAL,
+    BGFX_STATE_DEPTH_TEST_GREATER,      // DEPTH_GREATER = GL_GREATER,
+    BGFX_STATE_DEPTH_TEST_NOTEQUAL,     // DEPTH_NOTEQUAL = GL_NOTEQUAL,
+    BGFX_STATE_DEPTH_TEST_GEQUAL,       // DEPTH_GEQUAL = GL_GEQUAL,
+    BGFX_STATE_DEPTH_TEST_ALWAYS        // DEPTH_ALWAYS = GL_ALWAYS
+};
+
+
+
+
 void RenderState::StateBlock::bindNoRestore()
 {
     GP_ASSERT(_defaultState);
@@ -539,72 +632,72 @@ void RenderState::StateBlock::bindNoRestore()
     // Update any state that differs from _defaultState and flip _defaultState bits
     if ((_bits & RS_BLEND) && (_blendEnabled != _defaultState->_blendEnabled))
     {
-        if (_blendEnabled)
-            GL_ASSERT( glEnable(GL_BLEND) );
-        else
-            GL_ASSERT( glDisable(GL_BLEND) );
+        //@@if (_blendEnabled)
+        //@@    GL_ASSERT( glEnable(GL_BLEND) );
+        //@@else
+        //@@    GL_ASSERT( glDisable(GL_BLEND) );
         _defaultState->_blendEnabled = _blendEnabled;
     }
     if ((_bits & RS_BLEND_FUNC) && (_blendSrc != _defaultState->_blendSrc || _blendDst != _defaultState->_blendDst))
     {
-        GL_ASSERT( glBlendFunc((GLenum)_blendSrc, (GLenum)_blendDst) );
+        //@@GL_ASSERT( glBlendFunc((GLenum)_blendSrc, (GLenum)_blendDst) );
         _defaultState->_blendSrc = _blendSrc;
         _defaultState->_blendDst = _blendDst;
     }
     if ((_bits & RS_CULL_FACE) && (_cullFaceEnabled != _defaultState->_cullFaceEnabled))
     {
-        if (_cullFaceEnabled)
-            GL_ASSERT( glEnable(GL_CULL_FACE) );
-        else
-            GL_ASSERT( glDisable(GL_CULL_FACE) );
+        //@@if (_cullFaceEnabled)
+        //@@    GL_ASSERT( glEnable(GL_CULL_FACE) );
+        //@@else
+        //@@    GL_ASSERT( glDisable(GL_CULL_FACE) );
         _defaultState->_cullFaceEnabled = _cullFaceEnabled;
     }
     if ((_bits & RS_CULL_FACE_SIDE) && (_cullFaceSide != _defaultState->_cullFaceSide))
     {
-        GL_ASSERT( glCullFace((GLenum)_cullFaceSide) );
+        //@@GL_ASSERT( glCullFace((GLenum)_cullFaceSide) );
         _defaultState->_cullFaceSide = _cullFaceSide;
     }
     if ((_bits & RS_FRONT_FACE) && (_frontFace != _defaultState->_frontFace))
     {
-        GL_ASSERT( glFrontFace((GLenum)_frontFace) );
+        //@@GL_ASSERT( glFrontFace((GLenum)_frontFace) );
         _defaultState->_frontFace = _frontFace;
     }
     if ((_bits & RS_DEPTH_TEST) && (_depthTestEnabled != _defaultState->_depthTestEnabled))
     {
-        if (_depthTestEnabled)
-            GL_ASSERT( glEnable(GL_DEPTH_TEST) );
-        else
-            GL_ASSERT( glDisable(GL_DEPTH_TEST) );
+        //@@if (_depthTestEnabled)
+        //@@    GL_ASSERT( glEnable(GL_DEPTH_TEST) );
+        //@@else
+        //@@    GL_ASSERT( glDisable(GL_DEPTH_TEST) );
         _defaultState->_depthTestEnabled = _depthTestEnabled;
     }
     if ((_bits & RS_DEPTH_WRITE) && (_depthWriteEnabled != _defaultState->_depthWriteEnabled))
     {
-        GL_ASSERT( glDepthMask(_depthWriteEnabled ? GL_TRUE : GL_FALSE) );
+        //@@GL_ASSERT( glDepthMask(_depthWriteEnabled ? GL_TRUE : GL_FALSE) );
         _defaultState->_depthWriteEnabled = _depthWriteEnabled;
     }
     if ((_bits & RS_DEPTH_FUNC) && (_depthFunction != _defaultState->_depthFunction))
     {
-        GL_ASSERT( glDepthFunc((GLenum)_depthFunction) );
+        //@@GL_ASSERT( glDepthFunc((GLenum)_depthFunction) );
         _defaultState->_depthFunction = _depthFunction;
     }
 	if ((_bits & RS_STENCIL_TEST) && (_stencilTestEnabled != _defaultState->_stencilTestEnabled))
     {
-        if (_stencilTestEnabled)
-			GL_ASSERT( glEnable(GL_STENCIL_TEST) );
-        else
-            GL_ASSERT( glDisable(GL_STENCIL_TEST) );
+        //@@if (_stencilTestEnabled)
+        //@@	GL_ASSERT( glEnable(GL_STENCIL_TEST) );
+        //@@else
+        //@@    GL_ASSERT( glDisable(GL_STENCIL_TEST) );
         _defaultState->_stencilTestEnabled = _stencilTestEnabled;
     }
 	if ((_bits & RS_STENCIL_WRITE) && (_stencilWrite != _defaultState->_stencilWrite))
     {
-		GL_ASSERT( glStencilMask(_stencilWrite) );
+        //@@GL_ASSERT( glStencilMask(_stencilWrite) );
         _defaultState->_stencilWrite = _stencilWrite;
     }
 	if ((_bits & RS_STENCIL_FUNC) && (_stencilFunction != _defaultState->_stencilFunction ||
 										_stencilFunctionRef != _defaultState->_stencilFunctionRef ||
 										_stencilFunctionMask != _defaultState->_stencilFunctionMask))
     {
-		GL_ASSERT( glStencilFunc((GLenum)_stencilFunction, _stencilFunctionRef, _stencilFunctionMask) );
+        //@@GL_ASSERT( glStencilFunc((GLenum)_stencilFunction, _stencilFunctionRef, _stencilFunctionMask) );
         _defaultState->_stencilFunction = _stencilFunction;
 		_defaultState->_stencilFunctionRef = _stencilFunctionRef;
 		_defaultState->_stencilFunctionMask = _stencilFunctionMask;
@@ -613,13 +706,100 @@ void RenderState::StateBlock::bindNoRestore()
 									_stencilOpDpfail != _defaultState->_stencilOpDpfail ||
 									_stencilOpDppass != _defaultState->_stencilOpDppass))
     {
-		GL_ASSERT( glStencilOp((GLenum)_stencilOpSfail, (GLenum)_stencilOpDpfail, (GLenum)_stencilOpDppass) );
+        //@@GL_ASSERT( glStencilOp((GLenum)_stencilOpSfail, (GLenum)_stencilOpDpfail, (GLenum)_stencilOpDppass) );
         _defaultState->_stencilOpSfail = _stencilOpSfail;
 		_defaultState->_stencilOpDpfail = _stencilOpDpfail;
 		_defaultState->_stencilOpDppass = _stencilOpDppass;
     }
 
     _defaultState->_bits |= _bits;
+}
+
+void RenderState::StateBlock::apply(Mesh::PrimitiveType primitiveType)
+{
+    GP_ASSERT(_defaultState);
+
+
+
+    uint64_t bgfxBits = 0L;
+
+    /*
+     * | BGFX_STATE_RGB_WRITE       \
+            | BGFX_STATE_ALPHA_WRITE     \
+            | BGFX_STATE_DEPTH_TEST_LESS \
+            | BGFX_STATE_DEPTH_WRITE     \
+            | BGFX_STATE_CULL_CW         \
+            | BGFX_STATE_MSAA            \
+            */
+
+
+    bgfxBits |= BGFX_STATE_RGB_WRITE;
+    bgfxBits |= BGFX_STATE_ALPHA_WRITE;
+
+    if (_defaultState->_depthWriteEnabled)
+    {
+        bgfxBits |= BGFX_STATE_DEPTH_WRITE;
+    }
+
+    if(_defaultState->_depthTestEnabled)
+    {
+        bgfxBits |= TAB_DEPTH_FUNC[_defaultState->_depthFunction];
+    }
+
+    if(_defaultState->_blendEnabled)
+    {
+        bgfxBits |= BGFX_STATE_BLEND_FUNC(TAB_BLEND[_defaultState->_blendSrc], TAB_BLEND[_defaultState->_blendDst]);
+    }
+
+    if(_defaultState->_cullFaceEnabled)
+    {
+        switch(_defaultState->_cullFaceSide)
+        {
+        default:
+        case CULL_FACE_SIDE_BACK:
+            bgfxBits |= BGFX_STATE_CULL_CW;
+            break;
+        case CULL_FACE_SIDE_FRONT:
+            bgfxBits |= BGFX_STATE_CULL_CCW;
+            break;
+        case CULL_FACE_SIDE_FRONT_AND_BACK:
+            bgfxBits |= BGFX_STATE_CULL_CCW | BGFX_STATE_CULL_CW;
+            break;
+        }
+    }
+
+
+    switch(primitiveType)
+    {
+    case Mesh::PrimitiveType::TRIANGLES:
+        // default primitive type for bgfx,
+        break;
+    case Mesh::PrimitiveType::TRIANGLE_STRIP:
+        bgfxBits |= BGFX_STATE_PT_TRISTRIP;
+        break;
+    case Mesh::PrimitiveType::LINES:
+        bgfxBits |= BGFX_STATE_PT_LINES;
+        break;
+    case Mesh::PrimitiveType::LINE_STRIP:
+        bgfxBits |= BGFX_STATE_PT_LINESTRIP;
+        break;
+    case Mesh::PrimitiveType::POINTS:
+        bgfxBits |= BGFX_STATE_PT_POINTS;
+        break;
+    default:
+        GP_ERROR("Primitive type undefined");
+    }
+
+
+    bgfxBits |= BGFX_STATE_MSAA;
+
+
+    bgfx::setState(bgfxBits);
+
+
+
+
+
 }
 
 void RenderState::StateBlock::restore(long stateOverrideBits)
@@ -635,68 +815,68 @@ void RenderState::StateBlock::restore(long stateOverrideBits)
     // Restore any state that is not overridden and is not default
     if (!(stateOverrideBits & RS_BLEND) && (_defaultState->_bits & RS_BLEND))
     {
-        GL_ASSERT( glDisable(GL_BLEND) );
+        //@@GL_ASSERT( glDisable(GL_BLEND) );
         _defaultState->_bits &= ~RS_BLEND;
         _defaultState->_blendEnabled = false;
     }
     if (!(stateOverrideBits & RS_BLEND_FUNC) && (_defaultState->_bits & RS_BLEND_FUNC))
     {
-        GL_ASSERT( glBlendFunc(GL_ONE, GL_ZERO) );
+        //@@GL_ASSERT( glBlendFunc(GL_ONE, GL_ZERO) );
         _defaultState->_bits &= ~RS_BLEND_FUNC;
         _defaultState->_blendSrc = RenderState::BLEND_ONE;
         _defaultState->_blendDst = RenderState::BLEND_ZERO;
     }
     if (!(stateOverrideBits & RS_CULL_FACE) && (_defaultState->_bits & RS_CULL_FACE))
     {
-        GL_ASSERT( glDisable(GL_CULL_FACE) );
+        //@@GL_ASSERT( glDisable(GL_CULL_FACE) );
         _defaultState->_bits &= ~RS_CULL_FACE;
         _defaultState->_cullFaceEnabled = false;
     }
     if (!(stateOverrideBits & RS_CULL_FACE_SIDE) && (_defaultState->_bits & RS_CULL_FACE_SIDE))
     {
-        GL_ASSERT( glCullFace((GLenum)GL_BACK) );
+        //@@GL_ASSERT( glCullFace((GLenum)GL_BACK) );
         _defaultState->_bits &= ~RS_CULL_FACE_SIDE;
         _defaultState->_cullFaceSide = RenderState::CULL_FACE_SIDE_BACK;
     }
     if (!(stateOverrideBits & RS_FRONT_FACE) && (_defaultState->_bits & RS_FRONT_FACE))
     {
-        GL_ASSERT( glFrontFace((GLenum)GL_CCW) );
+        //@@GL_ASSERT( glFrontFace((GLenum)GL_CCW) );
         _defaultState->_bits &= ~RS_FRONT_FACE;
         _defaultState->_frontFace = RenderState::FRONT_FACE_CCW;
     }
     if (!(stateOverrideBits & RS_DEPTH_TEST) && (_defaultState->_bits & RS_DEPTH_TEST))
     {
-        GL_ASSERT( glDisable(GL_DEPTH_TEST) );
+        //@@GL_ASSERT( glDisable(GL_DEPTH_TEST) );
         _defaultState->_bits &= ~RS_DEPTH_TEST;
         _defaultState->_depthTestEnabled = false;
     }
     if (!(stateOverrideBits & RS_DEPTH_WRITE) && (_defaultState->_bits & RS_DEPTH_WRITE))
     {
-        GL_ASSERT( glDepthMask(GL_TRUE) );
+        //@@GL_ASSERT( glDepthMask(GL_TRUE) );
         _defaultState->_bits &= ~RS_DEPTH_WRITE;
         _defaultState->_depthWriteEnabled = true;
     }
     if (!(stateOverrideBits & RS_DEPTH_FUNC) && (_defaultState->_bits & RS_DEPTH_FUNC))
     {
-        GL_ASSERT( glDepthFunc((GLenum)GL_LESS) );
+        //@@GL_ASSERT( glDepthFunc((GLenum)GL_LESS) );
         _defaultState->_bits &= ~RS_DEPTH_FUNC;
         _defaultState->_depthFunction = RenderState::DEPTH_LESS;
     }
 	if (!(stateOverrideBits & RS_STENCIL_TEST) && (_defaultState->_bits & RS_STENCIL_TEST))
     {
-        GL_ASSERT( glDisable(GL_STENCIL_TEST) );
+        //@@GL_ASSERT( glDisable(GL_STENCIL_TEST) );
         _defaultState->_bits &= ~RS_STENCIL_TEST;
         _defaultState->_stencilTestEnabled = false;
     }
 	if (!(stateOverrideBits & RS_STENCIL_WRITE) && (_defaultState->_bits & RS_STENCIL_WRITE))
     {
-		GL_ASSERT( glStencilMask(RS_ALL_ONES) );
+        //@@GL_ASSERT( glStencilMask(RS_ALL_ONES) );
         _defaultState->_bits &= ~RS_STENCIL_WRITE;
 		_defaultState->_stencilWrite = RS_ALL_ONES;
     }
 	if (!(stateOverrideBits & RS_STENCIL_FUNC) && (_defaultState->_bits & RS_STENCIL_FUNC))
     {
-		GL_ASSERT( glStencilFunc((GLenum)RenderState::STENCIL_ALWAYS, 0, RS_ALL_ONES) );
+        //@@GL_ASSERT( glStencilFunc((GLenum)RenderState::STENCIL_ALWAYS, 0, RS_ALL_ONES) );
         _defaultState->_bits &= ~RS_STENCIL_FUNC;
         _defaultState->_stencilFunction = RenderState::STENCIL_ALWAYS;
 		_defaultState->_stencilFunctionRef = 0;
@@ -704,7 +884,7 @@ void RenderState::StateBlock::restore(long stateOverrideBits)
     }
 	if (!(stateOverrideBits & RS_STENCIL_OP) && (_defaultState->_bits & RS_STENCIL_OP))
     {
-		GL_ASSERT( glStencilOp((GLenum)RenderState::STENCIL_OP_KEEP, (GLenum)RenderState::STENCIL_OP_KEEP, (GLenum)RenderState::STENCIL_OP_KEEP) );
+        //@@GL_ASSERT( glStencilOp((GLenum)RenderState::STENCIL_OP_KEEP, (GLenum)RenderState::STENCIL_OP_KEEP, (GLenum)RenderState::STENCIL_OP_KEEP) );
         _defaultState->_bits &= ~RS_STENCIL_OP;
         _defaultState->_stencilOpSfail = RenderState::STENCIL_OP_KEEP;
 		_defaultState->_stencilOpDpfail = RenderState::STENCIL_OP_KEEP;

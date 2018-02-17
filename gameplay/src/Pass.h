@@ -43,14 +43,14 @@ public:
      *
      * @param binding The VertexAttributeBinding to set (or NULL to remove an existing binding).
      */
-    void setVertexAttributeBinding(VertexAttributeBinding* binding);
+    //@@void setVertexAttributeBinding(VertexAttributeBinding* binding);
 
     /**
      * Sets a vertex attribute binding for this pass.
      *
      * @return The vertex attribute binding for this pass.
      */
-    VertexAttributeBinding* getVertexAttributeBinding() const;
+    //@@VertexAttributeBinding* getVertexAttributeBinding() const;
 
     /**
      * Binds the render state for this pass.
@@ -58,7 +58,7 @@ public:
      * This method should be called before executing any drawing code that should
      * use this pass. When drawing code is complete, the unbind() method should be called.
      */
-    void bind();
+    void bind(Mesh::PrimitiveType primitiveType);
 
     /**
      * Unbinds the render state for this pass.
@@ -108,7 +108,7 @@ private:
     std::string _id;
     Technique* _technique;
     Effect* _effect;
-    VertexAttributeBinding* _vaBinding;
+    //@@VertexAttributeBinding* _vaBinding;
 };
 
 }

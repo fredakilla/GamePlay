@@ -4,6 +4,7 @@
 #include "Ref.h"
 #include "Vector3.h"
 #include "Vector4.h"
+#include "Mesh.h"
 
 namespace gameplay
 {
@@ -167,19 +168,19 @@ public:
      */
     enum Blend
     {
-        BLEND_ZERO = GL_ZERO,
-        BLEND_ONE = GL_ONE,
-        BLEND_SRC_COLOR = GL_SRC_COLOR,
-        BLEND_ONE_MINUS_SRC_COLOR = GL_ONE_MINUS_SRC_COLOR,
-        BLEND_DST_COLOR = GL_DST_COLOR,
-        BLEND_ONE_MINUS_DST_COLOR = GL_ONE_MINUS_DST_COLOR,
-        BLEND_SRC_ALPHA = GL_SRC_ALPHA,
-        BLEND_ONE_MINUS_SRC_ALPHA = GL_ONE_MINUS_SRC_ALPHA,
-        BLEND_DST_ALPHA = GL_DST_ALPHA,
-        BLEND_ONE_MINUS_DST_ALPHA = GL_ONE_MINUS_DST_ALPHA,
-        BLEND_CONSTANT_ALPHA = GL_CONSTANT_ALPHA,
-        BLEND_ONE_MINUS_CONSTANT_ALPHA = GL_ONE_MINUS_CONSTANT_ALPHA,
-        BLEND_SRC_ALPHA_SATURATE = GL_SRC_ALPHA_SATURATE
+        BLEND_ZERO,                     //@@ = GL_ZERO,
+        BLEND_ONE,                      //@@ = GL_ONE,
+        BLEND_SRC_COLOR,                //@@ = GL_SRC_COLOR,
+        BLEND_ONE_MINUS_SRC_COLOR,      //@@ = GL_ONE_MINUS_SRC_COLOR,
+        BLEND_DST_COLOR,                //@@ = GL_DST_COLOR,
+        BLEND_ONE_MINUS_DST_COLOR,      //@@ = GL_ONE_MINUS_DST_COLOR,
+        BLEND_SRC_ALPHA,                //@@ = GL_SRC_ALPHA,
+        BLEND_ONE_MINUS_SRC_ALPHA,      //@@ = GL_ONE_MINUS_SRC_ALPHA,
+        BLEND_DST_ALPHA,                //@@ = GL_DST_ALPHA,
+        BLEND_ONE_MINUS_DST_ALPHA,      //@@ = GL_ONE_MINUS_DST_ALPHA,
+        BLEND_CONSTANT_ALPHA,           //@@ = GL_CONSTANT_ALPHA,
+        BLEND_ONE_MINUS_CONSTANT_ALPHA, //@@ = GL_ONE_MINUS_CONSTANT_ALPHA,
+        BLEND_SRC_ALPHA_SATURATE,       //@@ = GL_SRC_ALPHA_SATURATE
     };
 
     /**
@@ -193,14 +194,14 @@ public:
      */
     enum DepthFunction
     {
-        DEPTH_NEVER = GL_NEVER,
-        DEPTH_LESS = GL_LESS,
-        DEPTH_EQUAL = GL_EQUAL,
-        DEPTH_LEQUAL = GL_LEQUAL,
-        DEPTH_GREATER = GL_GREATER,
-        DEPTH_NOTEQUAL = GL_NOTEQUAL,
-        DEPTH_GEQUAL = GL_GEQUAL,
-        DEPTH_ALWAYS = GL_ALWAYS
+        DEPTH_NEVER,        //@@ = GL_NEVER,
+        DEPTH_LESS,         //@@ = GL_LESS,
+        DEPTH_EQUAL,        //@@ = GL_EQUAL,
+        DEPTH_LEQUAL,       //@@ = GL_LEQUAL,
+        DEPTH_GREATER,      //@@ = GL_GREATER,
+        DEPTH_NOTEQUAL,     //@@ = GL_NOTEQUAL,
+        DEPTH_GEQUAL,       //@@ = GL_GEQUAL,
+        DEPTH_ALWAYS,       //@@ = GL_ALWAYS
     };
 
     /**
@@ -436,6 +437,7 @@ public:
 
         void bindNoRestore();
 
+        static void apply(Mesh::PrimitiveType primitiveType);
         static void restore(long stateOverrideBits);
 
         static void enableDepthWrite();
@@ -605,7 +607,7 @@ protected:
      * Binds the render state for this RenderState and any of its parents, top-down, 
      * for the given pass.
      */
-    void bind(Pass* pass);
+    void bind(Pass* pass, Mesh::PrimitiveType primitiveType);
 
     /**
      * Returns the topmost RenderState in the hierarchy below the given RenderState.

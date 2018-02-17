@@ -8,6 +8,7 @@ namespace gameplay
 {
 
 class Matrix;
+class BGFXGpuProgram;
 
 #define DRAW_DEBUG_TEXT bgfx::dbgTextPrintf
 
@@ -123,7 +124,7 @@ public:
     void setVSync(bool enable);
     bool isVSync() { return _isVsync; }
 
-    //void submit(const BGFXGpuProgram * gpuProgram) override;
+    void submit(const BGFXGpuProgram * gpuProgram);
 
     void beginFrame();
     void endFrame();

@@ -152,7 +152,11 @@ SOURCES += src/AbsoluteLayout.cpp \
     src/BGFX/BGFXRenderer.cpp \
     src/BGFX/BGFXGpuProgram.cpp \
     src/BGFX/BGFXUniform.cpp \
-    src/BGFX/BGFXTexture.cpp
+    src/BGFX/BGFXTexture.cpp \
+    src/BGFX/BGFXIndexBuffer.cpp \
+    src/BGFX/BGFXVertexBuffer.cpp \
+    src/BGFX/GeometryBuffer.cpp \
+    src/BGFX/MemoryBuffer.cpp
 
 #SOURCES += \
 #    src/lua/lua_all_bindings.cpp \
@@ -408,7 +412,11 @@ HEADERS += src/AbsoluteLayout.h \
     src/Renderer.h \
     src/BGFX/BGFXGpuProgram.h \
     src/BGFX/BGFXUniform.h \
-    src/BGFX/BGFXTexture.h
+    src/BGFX/BGFXTexture.h \
+    src/BGFX/BGFXIndexBuffer.h \
+    src/BGFX/BGFXVertexBuffer.h \
+    src/BGFX/GeometryBuffer.h \
+    src/BGFX/MemoryBuffer.h
 
 
 #HEADERS += \
