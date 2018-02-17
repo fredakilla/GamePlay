@@ -68,17 +68,17 @@ public:
     /**
      * Sets the value of this parameter to an integer value.
      */
-    void setValue(int value);
+    //@@void setValue(int value);
 
     /**
      * Stores a pointer/array of float values in this parameter.
      */
-    void setValue(const float* values, unsigned int count = 1);
+    //@@void setValue(const float* values, unsigned int count = 1);
 
     /**
      * Stores a pointer/array of integer values in this parameter.
      */
-    void setValue(const int* values, unsigned int count = 1);
+    //@@void setValue(const int* values, unsigned int count = 1);
 
     /**
      * Stores a copy of the specified Vector2 value in this parameter.
@@ -88,7 +88,7 @@ public:
     /**
      * Stores a pointer/array of Vector2 values in this parameter.
      */
-    void setValue(const Vector2* values, unsigned int count = 1);
+    //@@void setValue(const Vector2* values, unsigned int count = 1);
 
     /**
      * Stores a copy of the specified Vector3 value in this parameter.
@@ -98,7 +98,8 @@ public:
     /**
      * Stores a pointer/array of Vector3 values in this parameter.
      */
-    void setValue(const Vector3* values, unsigned int count = 1);
+    //@@void setValue(const Vector3* values, unsigned int count = 1);
+
 
     /**
      * Stores a copy of the specified Vector4 value in this parameter.
@@ -149,6 +150,7 @@ public:
      */
     void setFloat(float value);
 
+#if 0//@@
     /**
      * Stores an array of float values in this parameter.
      *
@@ -171,6 +173,7 @@ public:
      * Stores an array of integer values in this parameter.
      */
     void setIntArray(const int* values, unsigned int count, bool copy = false);
+#endif//@@
 
     /**
      * Stores a Vector2 value in this parameter.
@@ -188,7 +191,7 @@ public:
      *      to point to the passed in array/pointer (which must be valid for the lifetime
      *      of the MaterialParameter).
      */
-    void setVector2Array(const Vector2* values, unsigned int count, bool copy = false);
+    //@@void setVector2Array(const Vector2* values, unsigned int count, bool copy = false);
 
     /**
      * Stores a Vector3 value in this parameter.
@@ -200,7 +203,7 @@ public:
     /**
      * Stores an array of Vector3 values in this parameter.
      */
-    void setVector3Array(const Vector3* values, unsigned int count, bool copy = false);
+    //@@void setVector3Array(const Vector3* values, unsigned int count, bool copy = false);
 
     /**
      * Stores a Vector4 value in this parameter.
@@ -436,6 +439,8 @@ private:
 
     void cloneInto(MaterialParameter* materialParameter) const;
 
+    void setElementValue(const Vector4& value, unsigned int index);
+
     enum LOGGER_DIRTYBITS
     {
         UNIFORM_NOT_FOUND = 0x01,
@@ -476,11 +481,32 @@ private:
         METHOD
     } _type;
     
-    unsigned int _count;
-    bool _dynamic;
-    std::string _name;
-    Uniform* _uniform;
-    char _loggerDirtyBits;
+    unsigned int _count;                // number of element for arrays
+    bool _dynamic;                      // dynamic allocated data or ptr to data
+    std::string _name;                  // name of thie parameter
+    Uniform* _uniform;                  // uniform where to bind parameter
+    char _loggerDirtyBits;              // flag state used by logger
+
+
+    // BGFX port :
+    //
+    // 1 . Modifying code was necessary to support MaterialParameter naming using array index : "u_directionalLightColor[0]"
+    // because bgfx uniform name doesn't support array index in syntax.
+    // Modification consist to attach parameters with array index syntax to parent parameters that are real parameters binded to uniforms.
+    // The parent parameter is a std::vector<ValueType> and each elements is another parameter used as entry in this array.
+    // The elements parameters store a new info "_index" ; used to update relative entry in its array parent.
+    //
+    // 2 . bgfx only support vec4, mat4, mat3 and sampler uniform types
+    // setValue() for float, int, Vector2, Vector3 was removed.
+    //
+    // 3. TODO: implement std::vector<Matrix> _valuesMatrix (same as _valuesVec4) if necessary,
+    // to support array index in matrix parameters name "u_myMatrices[0]"
+
+    std::string _uniformName;           // uniform name where to bind this parameter
+    std::vector<Vector4> _valuesVec4;   // used to store values of type vector4 array
+    unsigned int _index;                // index of array if this paremeter is an element of an array
+    MaterialParameter* _parent;         // when this parameter is only an element of an array, this parameter is attached to a parent (the array container)
+
 };
 
 template <class ClassType, class ParameterType>
@@ -512,7 +538,17 @@ MaterialParameter::MethodValueBinding<ClassType, ParameterType>::MethodValueBind
 template <class ClassType, class ParameterType>
 void MaterialParameter::MethodValueBinding<ClassType, ParameterType>::setValue(Effect* effect)
 {
-    effect->setValue(_parameter->_uniform, (_instance->*_valueMethod)());
+    //@@effect->setValue(_parameter->_uniform, (_instance->*_valueMethod)());
+    //_parameter->_uniform->setValue((_instance->*_valueMethod)());
+
+    if(_parameter->_parent)
+    {
+        _parameter->setValue((_instance->*_valueMethod)());
+    }
+    else
+    {
+        _parameter->_uniform->setValue((_instance->*_valueMethod)());
+    }
 }
 
 template <class ClassType, class ParameterType>
@@ -524,7 +560,17 @@ MaterialParameter::MethodArrayBinding<ClassType, ParameterType>::MethodArrayBind
 template <class ClassType, class ParameterType>
 void MaterialParameter::MethodArrayBinding<ClassType, ParameterType>::setValue(Effect* effect)
 {
-    effect->setValue(_parameter->_uniform, (_instance->*_valueMethod)(), (_instance->*_countMethod)());
+    //@@effect->setValue(_parameter->_uniform, (_instance->*_valueMethod)(), (_instance->*_countMethod)());
+    //_parameter->_uniform->setValue((_instance->*_valueMethod)(), (_instance->*_countMethod)());
+
+    if(_parameter->_parent)
+    {
+        _parameter->setValue((_instance->*_valueMethod)(), (_instance->*_countMethod)());
+    }
+    else
+    {
+        _parameter->_uniform->setValue((_instance->*_valueMethod)(), (_instance->*_countMethod)());
+    }
 }
 
 }

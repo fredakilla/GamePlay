@@ -7,6 +7,7 @@
 #include "Vector4.h"
 #include "Matrix.h"
 #include "Texture.h"
+#include "Renderer.h"
 
 namespace gameplay
 {
@@ -88,7 +89,7 @@ public:
      * @return The number of active uniforms.
      */
     unsigned int getUniformCount() const;
-
+#if 0
     /**
      * Sets a float uniform value.
      *
@@ -209,7 +210,7 @@ public:
      * @script{ignore}
      */
     void setValue(Uniform* uniform, const Texture::Sampler** values, unsigned int count);
-
+#endif
     /**
      * Binds this effect to make it the currently active effect for the rendering system.
      */
@@ -246,65 +247,15 @@ private:
     std::map<std::string, VertexAttribute> _vertexAttributes;
     mutable std::map<std::string, Uniform*> _uniforms;
     static Uniform _emptyUniform;
-};
 
-/**
- * Represents a uniform variable within an effect.
- */
-class Uniform
-{
-    friend class Effect;
 
+//@@
 public:
-
-    /**
-     * Returns the name of this uniform.
-     * 
-     * @return The name of the uniform.
-     */
-    const char* getName() const;
-
-    /**
-     * Returns the OpenGL uniform type.
-     * 
-     * @return The OpenGL uniform type.
-     */
-    const GLenum getType() const;
-
-    /**
-     * Returns the effect for this uniform.
-     *
-     * @return The uniform's effect.
-     */
-    Effect* getEffect() const;
+    const BGFXGpuProgram * getGpuProgram() const;
 
 private:
+    BGFXGpuProgram * _gpuProgram;
 
-    /**
-     * Constructor.
-     */
-    Uniform();
-
-    /**
-     * Copy constructor.
-     */
-    Uniform(const Uniform& copy);
-
-    /**
-     * Destructor.
-     */
-    ~Uniform();
-
-    /**
-     * Hidden copy assignment operator.
-     */
-    Uniform& operator=(const Uniform&);
-
-    std::string _name;
-    GLint _location;
-    GLenum _type;
-    unsigned int _index;
-    Effect* _effect;
 };
 
 }

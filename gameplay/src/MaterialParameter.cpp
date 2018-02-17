@@ -6,7 +6,16 @@ namespace gameplay
 {
 
 MaterialParameter::MaterialParameter(const char* name) :
-_type(MaterialParameter::NONE), _count(1), _dynamic(false), _name(name ? name : ""), _uniform(NULL), _loggerDirtyBits(0)
+    _type(MaterialParameter::NONE)
+  , _count(1)
+  , _dynamic(false)
+  , _name(name ? name : "")
+  , _uniform(NULL)
+  , _loggerDirtyBits(0)
+
+  , _uniformName("")
+  , _index(0)
+  , _parent(nullptr)
 {
     clearValue();
 }
@@ -89,6 +98,7 @@ Texture::Sampler* MaterialParameter::getSampler(unsigned int index) const
     return NULL;
 }
 
+#if 0//@@
 void MaterialParameter::setValue(float value)
 {
     clearValue();
@@ -170,19 +180,56 @@ void MaterialParameter::setValue(const Vector3* values, unsigned int count)
     _count = count;
     _type = MaterialParameter::VECTOR3;
 }
+#endif//@@
+
+
+void MaterialParameter::setElementValue(const Vector4& value, unsigned int index)
+{
+    if(_valuesVec4.size() < index+1)
+        _valuesVec4.resize(index+1);
+    _valuesVec4[index] = value;
+
+    _value.floatPtrValue = &_valuesVec4.data()->x;
+    _dynamic = false;
+    _count = _valuesVec4.size();
+    _type = MaterialParameter::VECTOR4;
+}
+
+
+void MaterialParameter::setValue(float value)
+{
+    setValue(Vector4(value, 0.0f, 0.0f, 0.0f));
+}
+
+void MaterialParameter::setValue(const Vector2& value)
+{
+    setValue(Vector4(value.x, value.y, 0.0f, 0.0f));
+}
+
+void MaterialParameter::setValue(const Vector3& value)
+{
+    setValue(Vector4(value.x, value.y, value.z, 0.0f));
+}
 
 void MaterialParameter::setValue(const Vector4& value)
 {
-    clearValue();
+    if(_parent)
+    {
+        _parent->setElementValue(value, _index);
+    }
+    else
+    {
+        clearValue();
 
-    // Copy data by-value into a dynamic array.
-    float* array = new float[4];
-    memcpy(array, &value.x, sizeof(float) * 4);
+        // Copy data by-value into a dynamic array.
+        float* array = new float[4];
+        memcpy(array, &value.x, sizeof(float) * 4);
 
-    _value.floatPtrValue = array;
-    _dynamic = true;
-    _count = 1;
-    _type = MaterialParameter::VECTOR4;
+        _value.floatPtrValue = array;
+        _dynamic = true;
+        _count = 1;
+        _type = MaterialParameter::VECTOR4;
+    }
 }
 
 void MaterialParameter::setValue(const Vector4* values, unsigned int count)
@@ -266,6 +313,7 @@ void MaterialParameter::setFloat(float value)
     setValue(value);
 }
 
+#if 0//@@
 void MaterialParameter::setFloatArray(const float* values, unsigned int count, bool copy)
 {
     GP_ASSERT(values);
@@ -359,6 +407,17 @@ void MaterialParameter::setVector3Array(const Vector3* values, unsigned int coun
 
     _count = count;
     _type = MaterialParameter::VECTOR3;
+}
+#endif//@@
+
+void MaterialParameter::setVector2(const Vector2& value)
+{
+    setValue(Vector4(value.x, value.y, 0.0f, 0.0f));
+}
+
+void MaterialParameter::setVector3(const Vector3& value)
+{
+    setValue(Vector4(value.x, value.y, value.z, 0.0f));
 }
 
 void MaterialParameter::setVector4(const Vector4& value)
@@ -454,7 +513,8 @@ void MaterialParameter::bind(Effect* effect)
     // we need to update our uniform to point to the new effect's uniform.
     if (!_uniform || _uniform->getEffect() != effect)
     {
-        _uniform = effect->getUniform(_name.c_str());
+        //@@_uniform = effect->getUniform(_name.c_str());
+        _uniform = effect->getUniform(_uniformName.c_str());
 
         if (!_uniform)
         {
@@ -471,34 +531,40 @@ void MaterialParameter::bind(Effect* effect)
     switch (_type)
     {
     case MaterialParameter::FLOAT:
-        effect->setValue(_uniform, _value.floatValue);
+        GP_ASSERT(0);
+        //@@_uniform->setValue(_value.floatValue);
         break;
     case MaterialParameter::FLOAT_ARRAY:
-        effect->setValue(_uniform, _value.floatPtrValue, _count);
+        GP_ASSERT(0);
+        //@@_uniform->setValue(_value.floatPtrValue, _count);
         break;
     case MaterialParameter::INT:
-        effect->setValue(_uniform, _value.intValue);
+        GP_ASSERT(0);
+        //@@_uniform->setValue(_value.intValue);
         break;
     case MaterialParameter::INT_ARRAY:
-        effect->setValue(_uniform, _value.intPtrValue, _count);
+        GP_ASSERT(0);
+        //@@_uniform->setValue(_value.intPtrValue, _count);
         break;
     case MaterialParameter::VECTOR2:
-        effect->setValue(_uniform, reinterpret_cast<Vector2*>(_value.floatPtrValue), _count);
+        GP_ASSERT(0);
+        //@@_uniform->setValue(reinterpret_cast<Vector4*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::VECTOR3:
-        effect->setValue(_uniform, reinterpret_cast<Vector3*>(_value.floatPtrValue), _count);
+        GP_ASSERT(0);
+        //@@_uniform->setValue(reinterpret_cast<Vector3*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::VECTOR4:
-        effect->setValue(_uniform, reinterpret_cast<Vector4*>(_value.floatPtrValue), _count);
+        _uniform->setValue(reinterpret_cast<Vector4*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::MATRIX:
-        effect->setValue(_uniform, reinterpret_cast<Matrix*>(_value.floatPtrValue), _count);
+        _uniform->setValue(reinterpret_cast<Matrix*>(_value.floatPtrValue), _count);
         break;
     case MaterialParameter::SAMPLER:
-        effect->setValue(_uniform, _value.samplerValue);
+        _uniform->setValue(_value.samplerValue);
         break;
     case MaterialParameter::SAMPLER_ARRAY:
-        effect->setValue(_uniform, _value.samplerArrayValue, _count);
+        _uniform->setValue(_value.samplerArrayValue, _count);
         break;
     case MaterialParameter::METHOD:
         if (_value.method)
@@ -761,6 +827,11 @@ void MaterialParameter::cloneInto(MaterialParameter* materialParameter) const
     materialParameter->_count = _count;
     materialParameter->_dynamic = _dynamic;
     materialParameter->_uniform = _uniform;
+
+    materialParameter->_index = _index;
+    materialParameter->_uniformName = _uniformName;
+    materialParameter->_parent = _parent;
+
     switch (_type)
     {
     case NONE:
@@ -769,44 +840,59 @@ void MaterialParameter::cloneInto(MaterialParameter* materialParameter) const
         materialParameter->setValue(_value.floatValue);
         break;
     case FLOAT_ARRAY:
-        materialParameter->setValue(_value.floatPtrValue, _count);
+        GP_ASSERT(0);
+        //@@materialParameter->setValue(_value.floatPtrValue, _count);
         break;
     case INT:
-        materialParameter->setValue(_value.intValue);
+        GP_ASSERT(0);
+        //@@materialParameter->setValue(_value.intValue);
         break;
     case INT_ARRAY:
-        materialParameter->setValue(_value.intPtrValue, _count);
+        GP_ASSERT(0);
+        //@@materialParameter->setValue(_value.intPtrValue, _count);
         break;
     case VECTOR2:
     {
-        Vector2* value = reinterpret_cast<Vector2*>(_value.floatPtrValue);
-        if (_count == 1)
-        {
-            GP_ASSERT(value);
-            materialParameter->setValue(*value);
-        }
-        else
-        {
-            materialParameter->setValue(value, _count);
-        }
-        break;
+        GP_ASSERT(0);
+        //@@Vector2* value = reinterpret_cast<Vector2*>(_value.floatPtrValue);
+        //@@if (_count == 1)
+        //@@{
+        //@@    GP_ASSERT(value);
+        //@@    materialParameter->setValue(*value);
+        //@@}
+        //@@else
+        //@@{
+        //@@    materialParameter->setValue(value, _count);
+        //@@}
+        //@@break;
     }   
     case VECTOR3:
     {
-        Vector3* value = reinterpret_cast<Vector3*>(_value.floatPtrValue);
-        if (_count == 1)
-        {
-            GP_ASSERT(value);
-            materialParameter->setValue(*value);
-        }
-        else
-        {
-            materialParameter->setValue(value, _count);
-        }
-        break;
+        GP_ASSERT(0);
+        //@@Vector3* value = reinterpret_cast<Vector3*>(_value.floatPtrValue);
+        //@@if (_count == 1)
+        //@@{
+        //@@    GP_ASSERT(value);
+        //@@    materialParameter->setValue(*value);
+        //@@}
+        //@@else
+        //@@{
+        //@@    materialParameter->setValue(value, _count);
+        //@@}
+        //@@break;
     }
     case VECTOR4:
     {
+        if(_valuesVec4.size() > 0)
+        {
+            materialParameter->_valuesVec4 = _valuesVec4;
+            materialParameter->_count = _valuesVec4.size();
+
+            Vector4* values = const_cast<Vector4*>(_valuesVec4.data());
+            materialParameter->setVector4Array(values, _valuesVec4.size(), true);
+            break;
+        }
+
         Vector4* value = reinterpret_cast<Vector4*>(_value.floatPtrValue);
         if (_count == 1)
         {

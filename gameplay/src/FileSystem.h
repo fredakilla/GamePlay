@@ -255,6 +255,13 @@ public:
      */
     static std::string getExtension(const char* path);
 
+    /**
+     * Get basename file.
+     * @param path File path.
+     * @return the filename without extension and without path.
+     */
+    static std::string getBaseName(const char* path);
+
 private:
 
     /**

@@ -64,6 +64,68 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
         return itr->second;
     }
 
+
+
+
+
+
+    // Fill ShaderFiles struct.
+    ShaderFiles shaderFiles;
+    shaderFiles.vertex = vshPath;
+    shaderFiles.fragment = fshPath;
+
+    if(defines)
+        shaderFiles.defines = defines;
+
+    // Create gpu program.
+    BGFXGpuProgram * _gpuProgram = new BGFXGpuProgram();
+    _gpuProgram->set(shaderFiles);
+
+    // Create and return the new Effect.
+    Effect* effect = new Effect();
+    effect->_gpuProgram = _gpuProgram;
+
+
+    // Query and store uniforms from the program.
+    unsigned int activeUniforms = _gpuProgram->getUniformsInfo().size();
+    if (activeUniforms > 0)
+    {
+        unsigned int samplerIndex = 0;
+        for (int i = 0; i < activeUniforms; ++i)
+        {
+            UniformInfo info = _gpuProgram->getUniformsInfo()[i];
+
+            BGFXUniform* uniform = new BGFXUniform(info.name.c_str(), info.type, info.num);
+            uniform->_effect = effect;
+            uniform->_name = info.name;
+            //uniform->_location = info.uniformLocation;
+            uniform->_type = info.type;
+            if (info.type == UniformType::UT_SAMPLER)
+            {
+                uniform->_index = samplerIndex++;
+                //samplerIndex += info.uniformSize;
+            }
+            else
+            {
+                uniform->_index = 0;
+            }
+
+            effect->_uniforms[info.name] = uniform;
+        }
+    }
+
+
+
+    // Store this effect in the cache.
+    effect->_id = uniqueId;
+    __effectCache[uniqueId] = effect;
+
+    return effect;
+
+
+    //@@------------------------------
+    /*
+
     // Read source from file.
     char* vshSource = FileSystem::readAll(vshPath);
     if (vshSource == NULL)
@@ -96,6 +158,9 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
     }
 
     return effect;
+
+    */
+    //@@------------------------------
 }
 
 Effect* Effect::createFromSource(const char* vshSource, const char* fshSource, const char* defines)
@@ -482,32 +547,32 @@ Uniform* Effect::getUniform(const char* name) const
 		return itr->second;
 	}
 
-    GLint uniformLocation;
-    GL_ASSERT( uniformLocation = glGetUniformLocation(_program, name) );
-    if (uniformLocation > -1)
-	{
-		// Check for array uniforms ("u_directionalLightColor[0]" -> "u_directionalLightColor")
-		char* parentname = new char[strlen(name)+1];
-		strcpy(parentname, name);
-		if (strtok(parentname, "[") != NULL) {
-			std::map<std::string, Uniform*>::const_iterator itr = _uniforms.find(parentname);
-			if (itr != _uniforms.end()) {
-				Uniform* puniform = itr->second;
-
-				Uniform* uniform = new Uniform();
-				uniform->_effect = const_cast<Effect*>(this);
-				uniform->_name = name;
-				uniform->_location = uniformLocation;
-				uniform->_index = 0;
-				uniform->_type = puniform->getType();
-				_uniforms[name] = uniform;
-
-				SAFE_DELETE_ARRAY(parentname);
-				return uniform;
-			}
-		}
-		SAFE_DELETE_ARRAY(parentname);
-    }
+    //@@GLint uniformLocation;
+    //@@GL_ASSERT( uniformLocation = glGetUniformLocation(_program, name) );
+    //@@if (uniformLocation > -1)
+    //@@{
+    //@@	// Check for array uniforms ("u_directionalLightColor[0]" -> "u_directionalLightColor")
+    //@@	char* parentname = new char[strlen(name)+1];
+    //@@	strcpy(parentname, name);
+    //@@	if (strtok(parentname, "[") != NULL) {
+    //@@		std::map<std::string, Uniform*>::const_iterator itr = _uniforms.find(parentname);
+    //@@		if (itr != _uniforms.end()) {
+    //@@			Uniform* puniform = itr->second;
+    //@@
+    //@@			Uniform* uniform = new Uniform();
+    //@@			uniform->_effect = const_cast<Effect*>(this);
+    //@@			uniform->_name = name;
+    //@@			uniform->_location = uniformLocation;
+    //@@			uniform->_index = 0;
+    //@@			uniform->_type = puniform->getType();
+    //@@			_uniforms[name] = uniform;
+    //@@
+    //@@			SAFE_DELETE_ARRAY(parentname);
+    //@@			return uniform;
+    //@@		}
+    //@@	}
+    //@@	SAFE_DELETE_ARRAY(parentname);
+    //@@}
 
 	// No uniform variable found - return NULL
 	return NULL;
@@ -530,7 +595,7 @@ unsigned int Effect::getUniformCount() const
 {
     return (unsigned int)_uniforms.size();
 }
-
+#if 0
 void Effect::setValue(Uniform* uniform, float value)
 {
     GP_ASSERT(uniform);
@@ -648,10 +713,15 @@ void Effect::setValue(Uniform* uniform, const Texture::Sampler** values, unsigne
     // Pass texture unit array to GL
     GL_ASSERT( glUniform1iv(uniform->_location, count, units) );
 }
+#endif
+const BGFXGpuProgram *Effect::getGpuProgram() const
+{
+    return _gpuProgram;
+}
 
 void Effect::bind()
 {
-   GL_ASSERT( glUseProgram(_program) );
+   //@@GL_ASSERT( glUseProgram(_program) );
 
     __currentEffect = this;
 }
@@ -661,29 +731,6 @@ Effect* Effect::getCurrentEffect()
     return __currentEffect;
 }
 
-Uniform::Uniform() :
-    _location(-1), _type(0), _index(0), _effect(NULL)
-{
-}
 
-Uniform::~Uniform()
-{
-    // hidden
-}
-
-Effect* Uniform::getEffect() const
-{
-    return _effect;
-}
-
-const char* Uniform::getName() const
-{
-    return _name.c_str();
-}
-
-const GLenum Uniform::getType() const
-{
-    return _type;
-}
 
 }

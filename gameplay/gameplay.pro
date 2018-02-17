@@ -149,7 +149,10 @@ SOURCES += src/AbsoluteLayout.cpp \
     src/VertexAttributeBinding.cpp \
     src/VertexFormat.cpp \
     src/VerticalLayout.cpp \
-    src/BGFX/BGFXRenderer.cpp
+    src/BGFX/BGFXRenderer.cpp \
+    src/BGFX/BGFXGpuProgram.cpp \
+    src/BGFX/BGFXUniform.cpp \
+    src/BGFX/BGFXTexture.cpp
 
 #SOURCES += \
 #    src/lua/lua_all_bindings.cpp \
@@ -402,7 +405,10 @@ HEADERS += src/AbsoluteLayout.h \
     src/VertexFormat.h \
     src/VerticalLayout.h \
     src/BGFX/BGFXRenderer.h \
-    src/Renderer.h
+    src/Renderer.h \
+    src/BGFX/BGFXGpuProgram.h \
+    src/BGFX/BGFXUniform.h \
+    src/BGFX/BGFXTexture.h
 
 
 #HEADERS += \

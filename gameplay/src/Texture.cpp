@@ -2,6 +2,7 @@
 #include "Image.h"
 #include "Texture.h"
 #include "FileSystem.h"
+#include "Renderer.h"
 
 // PVRTC (GL_IMG_texture_compression_pvrtc) : Imagination based gpus
 #ifndef GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG
@@ -1254,10 +1255,37 @@ Texture* Texture::Sampler::getTexture() const
     return _texture;
 }
 
-void Texture::Sampler::bind()
+void Texture::Sampler::bind(Uniform * uniform)
 {
     GP_ASSERT( _texture );
 
+
+    if (_texture->_minFilter != _minFilter)
+    {
+        _texture->_minFilter = _minFilter;
+    }
+    if (_texture->_magFilter != _magFilter)
+    {
+        _texture->_magFilter = _magFilter;
+    }
+    if (_texture->_wrapS != _wrapS)
+    {
+        _texture->_wrapS = _wrapS;
+    }
+    if (_texture->_wrapT != _wrapT)
+    {
+        _texture->_wrapT = _wrapT;
+    }
+    if (_texture->_wrapR != _wrapR)
+    {
+        _texture->_wrapR = _wrapR;
+    }
+
+    _texture->_gpuTtexture->bind(uniform);
+
+
+    //@@
+#if 0
     GLenum target = (GLenum)_texture->_type;
     if (__currentTextureId != _texture->_handle)
     {
@@ -1298,6 +1326,8 @@ void Texture::Sampler::bind()
             GL_ASSERT( glTexParameteri(target, GL_TEXTURE_WRAP_R, (GLenum)_wrapR) );
     }
 #endif
+#endif
+    //@@
 }
 
 }
