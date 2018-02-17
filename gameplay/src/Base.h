@@ -234,6 +234,7 @@ using std::va_list;
         #define GLEW_STATIC
         #include <GL/glew.h>
         #define GP_USE_VAO
+        #include <bgfx/bgfx.h>
 #elif __APPLE__
     #include "TargetConditionals.h"
     #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
@@ -311,12 +312,13 @@ typedef unsigned long GamepadHandle;
 #if defined(NDEBUG) || (defined(__APPLE__) && !defined(DEBUG))
 #define GL_ASSERT( gl_code ) gl_code
 #else
-#define GL_ASSERT( gl_code ) do \
-    { \
-        gl_code; \
-        __gl_error_code = glGetError(); \
-        GP_ASSERT(__gl_error_code == GL_NO_ERROR); \
-    } while(0)
+//@@#define GL_ASSERT( gl_code ) do \
+//@@    { \
+//@@        gl_code; \
+//@@        __gl_error_code = glGetError(); \
+//@@        GP_ASSERT(__gl_error_code == GL_NO_ERROR); \
+//@@    } while(0)
+#define GL_ASSERT( gl_code ) GP_ASSERT(0)
 #endif
 
 /** Global variable to hold GL errors

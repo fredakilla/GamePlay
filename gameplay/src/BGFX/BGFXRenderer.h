@@ -118,6 +118,7 @@ public:
     void toggleDebugStats();
     void toggleVSync();
     void setVSync(bool enable);
+    bool isVSync() { return _isVsync; }
 
     //void submit(const BGFXGpuProgram * gpuProgram) override;
 
