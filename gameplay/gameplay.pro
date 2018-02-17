@@ -401,7 +401,8 @@ HEADERS += src/AbsoluteLayout.h \
     src/VertexAttributeBinding.h \
     src/VertexFormat.h \
     src/VerticalLayout.h \
-    src/BGFX/BGFXRenderer.h
+    src/BGFX/BGFXRenderer.h \
+    src/Renderer.h
 
 
 #HEADERS += \

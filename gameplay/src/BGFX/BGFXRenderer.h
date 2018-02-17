@@ -114,8 +114,11 @@ public:
     static void initInstance();
 
     void queryCaps();
+    const Caps getCaps() const { return _caps; }
+
     void updateWindowSize(unsigned int width, unsigned height);
     void toggleDebugStats();
+
     void toggleVSync();
     void setVSync(bool enable);
     bool isVSync() { return _isVsync; }

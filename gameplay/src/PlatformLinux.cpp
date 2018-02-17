@@ -25,7 +25,7 @@
 #include <gtk/gtk.h>
 
 #include <bgfx/platform.h>
-#include "BGFX/BGFXRenderer.h"
+#include "Renderer.h"
 
 
 #define TOUCH_COUNT_MAX     4

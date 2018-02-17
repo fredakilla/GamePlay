@@ -228,6 +228,7 @@ static void writeShaderToErrorFile(const char* filePath, const char* source)
 
 Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, const char* fshPath, const char* fshSource, const char* defines)
 {
+#if 0//@@
     GP_ASSERT(vshSource);
     GP_ASSERT(fshSource);
 
@@ -456,6 +457,9 @@ Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, con
     }
 
     return effect;
+
+#endif//@@
+    return 0;
 }
 
 const char* Effect::getId() const
