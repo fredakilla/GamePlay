@@ -481,11 +481,13 @@ void Game::updateOnce()
 void Game::setViewport(const Rectangle& viewport)
 {
     _viewport = viewport;
-    glViewport((GLuint)viewport.x, (GLuint)viewport.y, (GLuint)viewport.width, (GLuint)viewport.height);
+    //@@glViewport((GLuint)viewport.x, (GLuint)viewport.y, (GLuint)viewport.width, (GLuint)viewport.height);
+     bgfx::setViewRect(0, viewport.x, viewport.y, viewport.width, viewport.height);
 }
 
 void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, int clearStencil)
 {
+#if 0//@@
     GLbitfield bits = 0;
     if (flags & CLEAR_COLOR)
     {
@@ -525,6 +527,14 @@ void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, 
         bits |= GL_STENCIL_BUFFER_BIT;
     }
     glClear(bits);
+#endif//@@
+
+    bgfx::setViewClear(0
+                            , BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH
+                            , 0x303030ff
+                            , 1.0f
+                            , 0);
+
 }
 
 void Game::clear(ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil)

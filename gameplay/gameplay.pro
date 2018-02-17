@@ -562,7 +562,7 @@ INCLUDEPATH += $$PWD/../external-deps/include
 DEFINES += GP_USE_GAMEPAD GP_NO_LUA_BINDINGS
 
 linux: PRE_TARGETDEPS += $$PWD/../external-deps/lib/linux/x86_64/libgameplay-deps.a
-linux: SOURCES += src/PlatformLinux.cpp
+linux: SOURCES += src/PlatformSDL2.cpp
 linux: SOURCES += src/gameplay-main-linux.cpp
 linux: QMAKE_CXXFLAGS += -lstdc++ -pthread -w
 linux: DEFINES += __linux__

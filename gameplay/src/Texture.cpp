@@ -49,7 +49,7 @@ namespace gameplay
 {
 
 static std::vector<Texture*> __textureCache;
-static TextureHandle __currentTextureId = 0;
+//@@static TextureHandle __currentTextureId = 0;
 static Texture::Type __currentTextureType = Texture::TEXTURE_2D;
 
 Texture::Texture() :
