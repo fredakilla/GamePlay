@@ -1,3 +1,15 @@
+#--------------------------------------------------------------------
+# output directory
+#--------------------------------------------------------------------
+
+CONFIG(debug,debug|release){
+    DESTDIR = $$PWD/../BUILD
+} else {
+    DESTDIR = $$PWD/../BUILD
+}
+
+QMAKE_CLEAN += $$DESTDIR/$$TARGET
+
 #-------------------------------------------------
 #
 # Project created by QtCreator
@@ -137,6 +149,7 @@ SOURCES += src/AbsoluteLayout.cpp \
     src/VertexAttributeBinding.cpp \
     src/VertexFormat.cpp \
     src/VerticalLayout.cpp \
+    src/BGFX/BGFXRenderer.cpp
 
 #SOURCES += \
 #    src/lua/lua_all_bindings.cpp \
@@ -388,6 +401,7 @@ HEADERS += src/AbsoluteLayout.h \
     src/VertexAttributeBinding.h \
     src/VertexFormat.h \
     src/VerticalLayout.h \
+    src/BGFX/BGFXRenderer.h
 
 
 #HEADERS += \
@@ -532,6 +546,7 @@ INCLUDEPATH += $$PWD/../gameplay/src
 INCLUDEPATH += $$PWD/../external-deps/include
 DEFINES += GP_USE_GAMEPAD GP_NO_LUA_BINDINGS
 
+linux: PRE_TARGETDEPS += $$PWD/../external-deps/lib/linux/x86_64/libgameplay-deps.a
 linux: SOURCES += src/PlatformLinux.cpp
 linux: SOURCES += src/gameplay-main-linux.cpp
 linux: QMAKE_CXXFLAGS += -lstdc++ -pthread -w

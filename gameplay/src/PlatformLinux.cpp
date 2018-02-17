@@ -24,6 +24,10 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
+#include <bgfx/platform.h>
+#include "BGFX/BGFXRenderer.h"
+
+
 #define TOUCH_COUNT_MAX     4
 #define MAX_GAMEPADS 4
 
@@ -569,6 +573,8 @@ Platform* Platform::create(Game* game)
     FileSystem::setResourcePath("./");
     Platform* platform = new Platform(game);
 
+    XInitThreads();
+
     // Get the display and initialize
     __display = XOpenDisplay(NULL);
     if (__display == NULL)
@@ -707,6 +713,37 @@ Platform* Platform::create(Game* game)
     }
 
     XStoreName(__display, __window, title ? title : "");
+
+
+
+    bgfx::RendererType::Enum supportedTypes[bgfx::RendererType::Count];
+    uint8_t count =  bgfx::getSupportedRenderers(bgfx::RendererType::Count, supportedTypes);
+    for(uint8_t i=0; i<count; i++)
+        print("supported type [%d] = %s\n", i, bgfx::getRendererName(supportedTypes[i]));
+
+
+    // Init bgfx
+    bgfx::PlatformData pd;
+    pd.ndt          = (void*)__display;
+    pd.nwh          = (void*)__window;
+    pd.context      = NULL;
+    pd.backBuffer   = NULL;
+    pd.backBufferDS = NULL;
+    bgfx::setPlatformData(pd);
+
+    bgfx::init(bgfx::RendererType::OpenGL);
+    uint32_t debug = BGFX_DEBUG_TEXT;
+    uint32_t reset = BGFX_RESET_VSYNC;
+    bgfx::reset(__width, __height, reset);
+
+    // Enable debug text.
+    bgfx::setDebug(debug);
+
+    Renderer::initInstance();
+    Renderer::getInstance().queryCaps();
+
+
+
 
     __context = glXCreateContext(__display, visualInfo, NULL, True);
     if (!__context)

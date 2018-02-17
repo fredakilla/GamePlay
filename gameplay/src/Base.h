@@ -289,6 +289,9 @@ typedef GLuint FrameBufferHandle;
 /** Render buffer handle. */
 typedef GLuint RenderBufferHandle;
 
+class BGFXRenderer;
+typedef BGFXRenderer Renderer;
+
 /** Gamepad handle */
 #ifdef __ANDROID__
 typedef unsigned int GamepadHandle;
