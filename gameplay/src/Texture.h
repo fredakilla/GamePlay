@@ -236,7 +236,7 @@ public:
      * @return The new texture.
      * @script{create}
      */
-    static Texture* create(TextureHandle handle, int width, int height, Format format = UNKNOWN);
+    static Texture* create(BGFXTexture *handle, int width, int height, Format format = UNKNOWN);
 
     /**
      * Set texture data to replace current texture image.
@@ -304,7 +304,7 @@ public:
      *
      * @return The texture handle.
      */
-    TextureHandle getHandle() const;
+    BGFXTexture * getHandle() const;
 
 private:
 
@@ -341,8 +341,7 @@ private:
     static GLenum getFormatTexel(Format format);
     static size_t getFormatBPP(Format format);
 
-    std::string _path;
-    TextureHandle _handle;
+    std::string _path;    
     BGFXTexture * _gpuTtexture;
     Format _format;
     Type _type;

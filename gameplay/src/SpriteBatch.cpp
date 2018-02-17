@@ -86,7 +86,7 @@ SpriteBatch* SpriteBatch::create(Texture* texture,  Effect* effect, unsigned int
     for (unsigned int i = 0, count = effect->getUniformCount(); i < count; ++i)
     {
         Uniform* uniform = effect->getUniform(i);
-        if (uniform && uniform->getType() == GL_SAMPLER_2D)
+        if (uniform && uniform->getType() == UT_SAMPLER)
         {
             samplerUniform = uniform;
             break;
