@@ -21,7 +21,7 @@ precision mediump float;
 
 ///////////////////////////////////////////////////////////
 // Uniforms
-uniform vec3 u_ambientColor;
+uniform vec4 u_ambientColor;
 uniform vec4 u_diffuseColor;
 
 #if defined(LIGHTMAP)
@@ -31,26 +31,26 @@ uniform sampler2D u_lightmapTexture;
 #if defined(LIGHTING)
 
 #if (DIRECTIONAL_LIGHT_COUNT > 0)
-uniform vec3 u_directionalLightColor[DIRECTIONAL_LIGHT_COUNT];
-uniform vec3 u_directionalLightDirection[DIRECTIONAL_LIGHT_COUNT];
+uniform vec4 u_directionalLightColor[DIRECTIONAL_LIGHT_COUNT];
+uniform vec4 u_directionalLightDirection[DIRECTIONAL_LIGHT_COUNT];
 #endif
 
 #if (POINT_LIGHT_COUNT > 0)
-uniform vec3 u_pointLightColor[POINT_LIGHT_COUNT];
-uniform vec3 u_pointLightPosition[POINT_LIGHT_COUNT];
-uniform float u_pointLightRangeInverse[POINT_LIGHT_COUNT];
+uniform vec4 u_pointLightColor[POINT_LIGHT_COUNT];
+uniform vec4 u_pointLightPosition[POINT_LIGHT_COUNT];
+uniform vec4 u_pointLightRangeInverse[POINT_LIGHT_COUNT];
 #endif
 
 #if (SPOT_LIGHT_COUNT > 0)
-uniform vec3 u_spotLightColor[SPOT_LIGHT_COUNT];
-uniform vec3 u_spotLightDirection[SPOT_LIGHT_COUNT];
-uniform float u_spotLightRangeInverse[SPOT_LIGHT_COUNT];
-uniform float u_spotLightInnerAngleCos[SPOT_LIGHT_COUNT];
-uniform float u_spotLightOuterAngleCos[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightColor[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightDirection[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightRangeInverse[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightInnerAngleCos[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightOuterAngleCos[SPOT_LIGHT_COUNT];
 #endif
 
 #if defined(SPECULAR)
-uniform float u_specularExponent;
+uniform vec4 u_specularExponent;
 #endif
 
 #endif
@@ -60,7 +60,7 @@ uniform vec4 u_modulateColor;
 #endif
 
 #if defined(MODULATE_ALPHA)
-uniform float u_modulateAlpha;
+uniform vec4 u_modulateAlpha;
 #endif
 
 ///////////////////////////////////////////////////////////
@@ -139,6 +139,6 @@ void main()
     #endif
 
 	#if defined(MODULATE_ALPHA)
-    gl_FragColor.a *= u_modulateAlpha;
+    gl_FragColor.a *= u_modulateAlpha.x;
     #endif
 }

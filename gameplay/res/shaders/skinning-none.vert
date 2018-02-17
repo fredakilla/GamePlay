@@ -18,7 +18,7 @@ vec3 getTangent()
 
 vec3 getBinormal()
 {
-    return a_binormal;
+    return a_bitangent;
 }
 #endif
 

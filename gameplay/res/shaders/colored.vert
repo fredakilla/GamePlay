@@ -21,7 +21,7 @@ attribute vec4 a_blendIndices;
 #endif
 
 #if defined(LIGHTMAP)
-attribute vec2 a_texCoord1;
+attribute vec2 a_texcoord1;
 #endif
 
 #if defined(LIGHTING)
@@ -29,7 +29,7 @@ attribute vec3 a_normal;
 #endif
 
 #if defined(VERTEX_COLOR)
-attribute vec3 a_color;
+attribute vec3 a_color0;
 #endif
 
 ///////////////////////////////////////////////////////////
@@ -48,20 +48,20 @@ uniform mat4 u_worldViewMatrix;
 #endif
 
 #if (DIRECTIONAL_LIGHT_COUNT > 0)
-uniform vec3 u_directionalLightDirection[DIRECTIONAL_LIGHT_COUNT];
+uniform vec4 u_directionalLightDirection[DIRECTIONAL_LIGHT_COUNT];
 #endif
 
 #if (POINT_LIGHT_COUNT > 0) 
-uniform vec3 u_pointLightPosition[POINT_LIGHT_COUNT];
+uniform vec4 u_pointLightPosition[POINT_LIGHT_COUNT];
 #endif
 
 #if (SPOT_LIGHT_COUNT > 0)
-uniform vec3 u_spotLightPosition[SPOT_LIGHT_COUNT];
-uniform vec3 u_spotLightDirection[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightPosition[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightDirection[SPOT_LIGHT_COUNT];
 #endif
 
 #if defined(SPECULAR)
-uniform vec3 u_cameraPosition;
+uniform vec4 u_cameraPosition;
 #endif
 
 #endif
@@ -135,12 +135,12 @@ void main()
 
     // Pass the lightmap texture coordinate
     #if defined(LIGHTMAP)
-    v_texCoord1 = a_texCoord1;
+    v_texCoord1 = a_texcoord1;
     #endif
     
     // Pass the vertex color
     #if defined(VERTEX_COLOR)
-	v_color = a_color;
+	v_color = a_color0;
     #endif
     
     #if defined(CLIP_PLANE)

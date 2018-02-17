@@ -17,7 +17,7 @@ attribute vec4 a_position;
 #if !defined(NORMAL_MAP) && defined(LIGHTING)
 attribute vec3 a_normal;
 #endif
-attribute vec2 a_texCoord0;
+attribute vec2 a_texcoord0;
 
 ///////////////////////////////////////////////////////////
 // Uniforms
@@ -35,16 +35,16 @@ uniform mat4 u_worldViewMatrix;
 #endif
 
 #if (DIRECTIONAL_LIGHT_COUNT > 0)
-uniform vec3 u_directionalLightDirection[DIRECTIONAL_LIGHT_COUNT];
+uniform vec4 u_directionalLightDirection[DIRECTIONAL_LIGHT_COUNT];
 #endif
 
 #if (POINT_LIGHT_COUNT > 0) 
-uniform vec3 u_pointLightPosition[POINT_LIGHT_COUNT];
+uniform vec4 u_pointLightPosition[POINT_LIGHT_COUNT];
 #endif
 
 #if (SPOT_LIGHT_COUNT > 0)
-uniform vec3 u_spotLightPosition[SPOT_LIGHT_COUNT];
-uniform vec3 u_spotLightDirection[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightPosition[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightDirection[SPOT_LIGHT_COUNT];
 #endif
 
 #endif
@@ -99,16 +99,16 @@ void main()
     #endif
 
     // Pass base texture coord
-    v_texCoord0 = a_texCoord0;
+    v_texCoord0 = a_texcoord0;
 
     // Pass repeated texture coordinates for each layer
     #if LAYER_COUNT > 0
-    v_texCoordLayer0 = a_texCoord0 * TEXTURE_REPEAT_0;
+    v_texCoordLayer0 = a_texcoord0 * TEXTURE_REPEAT_0;
     #endif
     #if LAYER_COUNT > 1
-    v_texCoordLayer1 = a_texCoord0 * TEXTURE_REPEAT_1;
+    v_texCoordLayer1 = a_texcoord0 * TEXTURE_REPEAT_1;
     #endif
     #if LAYER_COUNT > 2
-    v_texCoordLayer2 = a_texCoord0 * TEXTURE_REPEAT_2;
+    v_texCoordLayer2 = a_texcoord0 * TEXTURE_REPEAT_2;
     #endif
 }

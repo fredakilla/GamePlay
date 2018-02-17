@@ -21,27 +21,27 @@ precision mediump float;
 
 ///////////////////////////////////////////////////////////
 // Uniforms
-uniform vec3 u_ambientColor; 
+uniform vec4 u_ambientColor; 
 
 #if defined(LIGHTING)
 
 #if (DIRECTIONAL_LIGHT_COUNT > 0)
-uniform vec3 u_directionalLightColor[DIRECTIONAL_LIGHT_COUNT];
-uniform vec3 u_directionalLightDirection[DIRECTIONAL_LIGHT_COUNT];
+uniform vec4 u_directionalLightColor[DIRECTIONAL_LIGHT_COUNT];
+uniform vec4 u_directionalLightDirection[DIRECTIONAL_LIGHT_COUNT];
 #endif
 
 #if (POINT_LIGHT_COUNT > 0)
-uniform vec3 u_pointLightColor[POINT_LIGHT_COUNT];
-uniform vec3 u_pointLightPosition[POINT_LIGHT_COUNT];
-uniform float u_pointLightRangeInverse[POINT_LIGHT_COUNT];
+uniform vec4 u_pointLightColor[POINT_LIGHT_COUNT];
+uniform vec4 u_pointLightPosition[POINT_LIGHT_COUNT];
+uniform vec4 u_pointLightRangeInverse[POINT_LIGHT_COUNT];
 #endif
 
 #if (SPOT_LIGHT_COUNT > 0)
-uniform vec3 u_spotLightColor[SPOT_LIGHT_COUNT];
-uniform vec3 u_spotLightDirection[SPOT_LIGHT_COUNT];
-uniform float u_spotLightRangeInverse[SPOT_LIGHT_COUNT];
-uniform float u_spotLightInnerAngleCos[SPOT_LIGHT_COUNT];
-uniform float u_spotLightOuterAngleCos[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightColor[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightDirection[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightRangeInverse[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightInnerAngleCos[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightOuterAngleCos[SPOT_LIGHT_COUNT];
 #endif
 
 #if defined (NORMAL_MAP)
@@ -52,8 +52,8 @@ uniform mat4 u_normalMatrix;
 #endif
 
 #if defined(DEBUG_PATCHES)
-uniform float u_row;
-uniform float u_column;
+uniform vec4 u_row;
+uniform vec4 u_column;
 #endif
 
 #if (LAYER_COUNT > 0)
@@ -130,7 +130,7 @@ void main()
     #endif
 
     #if defined(DEBUG_PATCHES)
-    float tint = mod(u_row + mod(u_column, 2.0), 2.0);
+    float tint = mod(u_row.x + mod(u_column.x, 2.0), 2.0);
     _baseColor.rgb = _baseColor.rgb * 0.75 + vec3(1.0-tint, tint, 0) * 0.25;
     #endif
 

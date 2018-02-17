@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////////////
 // Attributes
 attribute vec3 a_position;
-attribute vec2 a_texCoord;
-attribute vec4 a_color;
+attribute vec2 a_texcoord0;
+attribute vec4 a_color0;
 
 ///////////////////////////////////////////////////////////
 // Uniforms
@@ -17,6 +17,6 @@ varying vec4 v_color;
 void main()
 {
     gl_Position = u_projectionMatrix * vec4(a_position, 1);
-    v_texCoord = a_texCoord;
-    v_color = a_color;
+    v_texCoord = vec2(a_texcoord0.x, 1.0 - a_texcoord0.y);
+    v_color = a_color0;
 }

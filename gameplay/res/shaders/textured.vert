@@ -20,10 +20,10 @@ attribute vec4 a_blendWeights;
 attribute vec4 a_blendIndices;
 #endif
 
-attribute vec2 a_texCoord;
+attribute vec2 a_texcoord0;
 
 #if defined(LIGHTMAP)
-attribute vec2 a_texCoord1; 
+attribute vec2 a_texcoord1; 
 #endif
 
 #if defined(LIGHTING)
@@ -31,7 +31,7 @@ attribute vec3 a_normal;
 
 #if defined(BUMPED)
 attribute vec3 a_tangent;
-attribute vec3 a_binormal;
+attribute vec3 a_bitangent;
 #endif
 
 #endif
@@ -51,32 +51,32 @@ uniform mat4 u_worldViewMatrix;
 #endif
 
 #if defined(BUMPED) && (DIRECTIONAL_LIGHT_COUNT > 0)
-uniform vec3 u_directionalLightDirection[DIRECTIONAL_LIGHT_COUNT];
+uniform vec4 u_directionalLightDirection[DIRECTIONAL_LIGHT_COUNT];
 #endif
 
 #if (POINT_LIGHT_COUNT > 0)
-uniform vec3 u_pointLightPosition[POINT_LIGHT_COUNT];
+uniform vec4 u_pointLightPosition[POINT_LIGHT_COUNT];
 #endif
 
 #if (SPOT_LIGHT_COUNT > 0) 
-uniform vec3 u_spotLightPosition[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightPosition[SPOT_LIGHT_COUNT];
 #if defined(BUMPED)
-uniform vec3 u_spotLightDirection[SPOT_LIGHT_COUNT];
+uniform vec4 u_spotLightDirection[SPOT_LIGHT_COUNT];
 #endif
 #endif
 
 #if defined(SPECULAR)
-uniform vec3 u_cameraPosition;
+uniform vec4 u_cameraPosition;
 #endif
 
 #endif
 
 #if defined(TEXTURE_REPEAT)
-uniform vec2 u_textureRepeat;
+uniform vec4 u_textureRepeat;
 #endif
 
 #if defined(TEXTURE_OFFSET)
-uniform vec2 u_textureOffset;
+uniform vec4 u_textureOffset;
 #endif
 
 #if defined(CLIP_PLANE)
@@ -158,20 +158,20 @@ void main()
     
     #endif
     
-    #endif 
+    #endif    
     
-    v_texCoord = a_texCoord;
+    v_texCoord = vec2(a_texcoord0.x, 1.0 - a_texcoord0.y);
     
     #if defined(TEXTURE_REPEAT)
-    v_texCoord *= u_textureRepeat;
+    v_texCoord *= u_textureRepeat.xy;
     #endif
     
     #if defined(TEXTURE_OFFSET)
-    v_texCoord += u_textureOffset;
+    v_texCoord += u_textureOffset.xy;
     #endif
     
     #if defined(LIGHTMAP)
-    v_texCoord1 = a_texCoord1;
+    v_texCoord1 = a_texcoord1;
     #endif
     
     #if defined(CLIP_PLANE)
