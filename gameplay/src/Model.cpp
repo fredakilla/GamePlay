@@ -361,8 +361,6 @@ unsigned int Model::draw(bool wireframe)
     }
     else
     {
-        _mesh->_vertexBuffer->bind();
-
         for (unsigned int i = 0; i < partCount; ++i)
         {
             MeshPart* part = _mesh->getPart(i);
@@ -383,7 +381,7 @@ unsigned int Model::draw(bool wireframe)
 
                     //@@GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->_indexBuffer->getHandle()) );
 
-                    //_mesh->_vertexBuffer->bind();
+                    _mesh->_vertexBuffer->bind();
                     part->_indexBuffer->bind();
 
                     if (!wireframe || !drawWireframe(part))

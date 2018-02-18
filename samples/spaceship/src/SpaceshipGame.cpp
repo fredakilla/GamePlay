@@ -120,22 +120,22 @@ void SpaceshipGame::initializeSpaceship()
     // Setup spaceship model
     // Part 0
     _shipNode = _scene->findNode("pSpaceShip");
-    material = dynamic_cast<Model*>(_shipNode->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT 1", 0);
+    material = dynamic_cast<Model*>(_shipNode->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT=1", 0);
     material->getParameter("u_diffuseColor")->setValue(Vector4(0.53544f, 0.53544f, 0.53544f, 1.0f));
     initializeMaterial(material, true, true);
     // Part 1
-    material = dynamic_cast<Model*>(_shipNode->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT 1", 1);
+    material = dynamic_cast<Model*>(_shipNode->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT=1", 1);
     material->getParameter("u_diffuseColor")->setValue(Vector4(0.8f, 0.8f, 0.8f, 1.0f));
     _shipSpecularParameter = material->getParameter("u_specularExponent");
     initializeMaterial(material, true, true);
     // Part 2
-    material = dynamic_cast<Model*>(_shipNode->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT 1", 2);
+    material = dynamic_cast<Model*>(_shipNode->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT=1", 2);
     material->getParameter("u_diffuseColor")->setValue(Vector4(0.280584f, 0.5584863f, 0.6928f, 1.0f));
     initializeMaterial(material, true, true);
 
     // Setup spaceship propulsion model
     _propulsionNode = _scene->findNode("pPropulsion");
-    material = dynamic_cast<Model*>(_propulsionNode->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT 1");
+    material = dynamic_cast<Model*>(_propulsionNode->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT=1");
     material->getParameter("u_diffuseColor")->setValue(Vector4(0.8f, 0.8f, 0.8f, 1.0f));
     initializeMaterial(material, true, true);
 
@@ -164,7 +164,7 @@ void SpaceshipGame::initializeEnvironment()
     for (size_t i = 0, count = nodes.size(); i < count; ++i)
     {
         Node* pGround = nodes[i];
-        material = dynamic_cast<Model*>(pGround->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT 1");
+        material = dynamic_cast<Model*>(pGround->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT=1");
         material->getParameter("u_diffuseColor")->setValue(Vector4(0.280584f, 0.5584863f, 0.6928f, 1.0f));
         initializeMaterial(material, true, true);
     }
@@ -175,7 +175,7 @@ void SpaceshipGame::initializeEnvironment()
     for (size_t i = 0, count = nodes.size(); i < count; ++i)
     {
         Node* pRoof = nodes[i];
-        material = dynamic_cast<Model*>(pRoof->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT 1");
+        material = dynamic_cast<Model*>(pRoof->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT=1");
         material->getParameter("u_diffuseColor")->setValue(Vector4(0.280584f, 0.5584863f, 0.6928f, 1.0f));
         initializeMaterial(material, true, true);
     }
@@ -183,7 +183,7 @@ void SpaceshipGame::initializeEnvironment()
     // Setup background model
     nodes.clear();
     Node* pBackground = _scene->findNode("pBackground");
-    material = dynamic_cast<Model*>(pBackground->getDrawable())->setMaterial("res/shaders/textured.vert", "res/shaders/textured.frag", "DIRECTIONAL_LIGHT_COUNT 1");
+    material = dynamic_cast<Model*>(pBackground->getDrawable())->setMaterial("res/shaders/textured.vert", "res/shaders/textured.frag", "DIRECTIONAL_LIGHT_COUNT=1");
     material->getParameter("u_diffuseTexture")->setValue("res/background.png", true);
     initializeMaterial(material, true, false);
 }
