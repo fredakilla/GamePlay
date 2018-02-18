@@ -23,7 +23,7 @@ material terrain
         {
             vertexShader = res/shaders/terrain.vert
             fragmentShader = res/shaders/terrain.frag
-            defines = DIRECTIONAL_LIGHT_COUNT 1
+            defines = DIRECTIONAL_LIGHT_COUNT=1
         }
     }
 }

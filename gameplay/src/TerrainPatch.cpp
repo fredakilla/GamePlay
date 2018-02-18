@@ -489,8 +489,8 @@ std::string TerrainPatch::passCreated(Pass* pass)
     // non-constant array access in the shader. This is due to the fact that non-constant array access
     // in GLES is very slow on some hardware.
     std::ostringstream defines;
-    defines << "LAYER_COUNT " << _layers.size();
-    defines << ";SAMPLER_COUNT " << _samplers.size();
+    defines << "LAYER_COUNT=" << _layers.size();
+    defines << ";SAMPLER_COUNT=" << _samplers.size();
 
     if (_terrain->isFlagSet(Terrain::DEBUG_PATCHES))
     {
@@ -514,13 +514,13 @@ std::string TerrainPatch::passCreated(Pass* pass)
     {
         Layer* layer = *itr;
 
-        defines << ";TEXTURE_INDEX_" << layerIndex << " " << layer->textureIndex;
-        defines << ";TEXTURE_REPEAT_" << layerIndex << " vec2(" << layer->textureRepeat.x << "," << layer->textureRepeat.y << ")";
+        defines << ";TEXTURE_INDEX_" << layerIndex << "=" << layer->textureIndex;
+        defines << ";TEXTURE_REPEAT_" << layerIndex << "=vec2(" << layer->textureRepeat.x << "," << layer->textureRepeat.y << ")";
 
         if (layerIndex > 0)
         {
-            defines << ";BLEND_INDEX_" << layerIndex << " " << layer->blendIndex;
-            defines << ";BLEND_CHANNEL_" << layerIndex << " " << layer->blendChannel;
+            defines << ";BLEND_INDEX_" << layerIndex << "=" << layer->blendIndex;
+            defines << ";BLEND_CHANNEL_" << layerIndex << "=" << layer->blendChannel;
         }
     }
 
