@@ -901,7 +901,7 @@ void RenderState::StateBlock::enableDepthWrite()
     // next frame leaves depth writing disabled.
     if (!_defaultState->_depthWriteEnabled)
     {
-        GL_ASSERT( glDepthMask(GL_TRUE) );
+        //@@GL_ASSERT( glDepthMask(GL_TRUE) );
         _defaultState->_bits &= ~RS_DEPTH_WRITE;
         _defaultState->_depthWriteEnabled = true;
     }

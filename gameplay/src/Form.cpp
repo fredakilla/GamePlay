@@ -254,7 +254,7 @@ unsigned int Form::draw(bool wireframe)
     else
     {
         // Drawing in 2D, so we need to clear the depth buffer
-        Game::getInstance()->clear(Game::CLEAR_DEPTH, Vector4::zero(), 1, 0);
+        //@@Game::getInstance()->clear(Game::CLEAR_DEPTH, Vector4::zero(), 1, 0);
 
         // Setup an ortho matrix that maps to the current viewport
         const Rectangle& viewport = Game::getInstance()->getViewport();
