@@ -14,17 +14,17 @@ void skinPosition(float blendWeight, int matrixIndex)
 vec4 getPosition()
 {
     _skinnedPosition = vec4(0.0);
-    float blendWeight = a_blendWeights[0];
-    int matrixIndex = int (a_blendIndices[0]) * 3;
+    float blendWeight = a_weight[0];
+    int matrixIndex = int (a_indices[0]) * 3;
     skinPosition(blendWeight, matrixIndex);
-    blendWeight = a_blendWeights[1];
-    matrixIndex = int(a_blendIndices[1]) * 3;
+    blendWeight = a_weight[1];
+    matrixIndex = int(a_indices[1]) * 3;
     skinPosition(blendWeight, matrixIndex);
-    blendWeight = a_blendWeights[2];
-    matrixIndex = int(a_blendIndices[2]) * 3;
+    blendWeight = a_weight[2];
+    matrixIndex = int(a_indices[2]) * 3;
     skinPosition(blendWeight, matrixIndex);
-    blendWeight = a_blendWeights[3];
-    matrixIndex = int(a_blendIndices[3]) * 3;
+    blendWeight = a_weight[3];
+    matrixIndex = int(a_indices[3]) * 3;
     skinPosition(blendWeight, matrixIndex);
     return _skinnedPosition;    
 }
@@ -46,17 +46,17 @@ vec3 getTangentSpaceVector(vec3 vector)
 {
     _skinnedNormal = vec3(0.0);
     // Transform normal to view space using matrix palette with four matrices used to transform a vertex.
-    float blendWeight = a_blendWeights[0];
-    int matrixIndex = int (a_blendIndices[0]) * 3;
+    float blendWeight = a_weight[0];
+    int matrixIndex = int (a_indices[0]) * 3;
     skinTangentSpaceVector(vector, blendWeight, matrixIndex);
-    blendWeight = a_blendWeights[1];
-    matrixIndex = int(a_blendIndices[1]) * 3;
+    blendWeight = a_weight[1];
+    matrixIndex = int(a_indices[1]) * 3;
     skinTangentSpaceVector(vector, blendWeight, matrixIndex);
-    blendWeight = a_blendWeights[2];
-    matrixIndex = int(a_blendIndices[2]) * 3;
+    blendWeight = a_weight[2];
+    matrixIndex = int(a_indices[2]) * 3;
     skinTangentSpaceVector(vector, blendWeight, matrixIndex);
-    blendWeight = a_blendWeights[3];
-    matrixIndex = int(a_blendIndices[3]) * 3;
+    blendWeight = a_weight[3];
+    matrixIndex = int(a_indices[3]) * 3;
     skinTangentSpaceVector(vector, blendWeight, matrixIndex);
     return _skinnedNormal;
 }
@@ -75,7 +75,7 @@ vec3 getTangent()
 
 vec3 getBinormal()
 {
-    return getTangentSpaceVector(a_binormal);
+    return getTangentSpaceVector(a_bitangent);
 }
 
 #endif

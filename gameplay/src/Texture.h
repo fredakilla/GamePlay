@@ -11,6 +11,7 @@ class Image;
 class Uniform;
 class BGFXTexture;
 
+
 /**
  * Defines a standard texture.
  */
@@ -84,7 +85,7 @@ public:
         POSITIVE_Z,
         NEGATIVE_Z
     };
-    
+
     /**
      * Defines a texture sampler.
      *
@@ -182,7 +183,7 @@ public:
      *
      * @param path The image resource path.
      * @param generateMipmaps true to auto-generate a full mipmap chain, false otherwise.
-     * 
+     *
      * @return The new texture, or NULL if the texture could not be loaded/created.
      * @script{create}
      */
@@ -207,7 +208,7 @@ public:
      * @param format Format of the texture data.
      * @param width Width of the texture data. If type is TEX_CUBE, then this is the cube face width.
      * @param height Height of the texture data. If type is TEX_CUBE, then this is the cube face height.
-     * @param data Raw texture data (expected to be tightly packed). If the type parameter is set 
+     * @param data Raw texture data (expected to be tightly packed). If the type parameter is set
      *   to TEXTURE_CUBE, then data is expected to be each face stored back contiguously within the
      *   array.
      * @param generateMipmaps True to generate a full mipmap chain, false otherwise.
@@ -240,8 +241,8 @@ public:
 
     /**
      * Set texture data to replace current texture image.
-     * 
-     * @param data Raw texture data (expected to be tightly packed). If the type parameter is set 
+     *
+     * @param data Raw texture data (expected to be tightly packed). If the type parameter is set
      *   to TEXTURE_CUBE, then data is expected to be each face stored back contiguously within the
      *   array.
      */
@@ -328,20 +329,20 @@ private:
      */
     Texture& operator=(const Texture&);
 
-    static Texture* createCompressedPVRTC(const char* path);
+    //@@static Texture* createCompressedPVRTC(const char* path);
+    //@@static Texture* createCompressedDDS(const char* path);
+    static Texture* createBIMG(const char* path);
 
-    static Texture* createCompressedDDS(const char* path);
+    //@@static GLubyte* readCompressedPVRTC(const char* path, Stream* stream, GLsizei* width, GLsizei* height, GLenum* format, unsigned int* mipMapCount, unsigned int* faceCount, GLenum faces[6]);
 
-    static GLubyte* readCompressedPVRTC(const char* path, Stream* stream, GLsizei* width, GLsizei* height, GLenum* format, unsigned int* mipMapCount, unsigned int* faceCount, GLenum faces[6]);
-
-    static GLubyte* readCompressedPVRTCLegacy(const char* path, Stream* stream, GLsizei* width, GLsizei* height, GLenum* format, unsigned int* mipMapCount, unsigned int* faceCount, GLenum faces[6]);
+    //@@static GLubyte* readCompressedPVRTCLegacy(const char* path, Stream* stream, GLsizei* width, GLsizei* height, GLenum* format, unsigned int* mipMapCount, unsigned int* faceCount, GLenum faces[6]);
 
     static int getMaskByteIndex(unsigned int mask);
     static GLint getFormatInternal(Format format);
     static GLenum getFormatTexel(Format format);
     static size_t getFormatBPP(Format format);
 
-    std::string _path;    
+    std::string _path;
     BGFXTexture * _gpuTtexture;
     Format _format;
     Type _type;

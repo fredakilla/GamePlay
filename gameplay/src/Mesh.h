@@ -33,9 +33,9 @@ public:
      */
     enum IndexFormat
     {
-        INDEX8 = GL_UNSIGNED_BYTE,
-        INDEX16 = GL_UNSIGNED_SHORT,
-        INDEX32 = GL_UNSIGNED_INT
+        INDEX8  = 0x1401, //@@GL_UNSIGNED_BYTE,
+        INDEX16 = 0x1403, //@@GL_UNSIGNED_SHORT,
+        INDEX32 = 0x1405, //@@GL_UNSIGNED_INT
     };
 
     /**
@@ -43,13 +43,12 @@ public:
      */
     enum PrimitiveType
     {
-        TRIANGLES,          //@@= GL_TRIANGLES,
-        TRIANGLE_STRIP,     //@@= GL_TRIANGLE_STRIP,
-        LINES,              //@@= GL_LINES,
-        LINE_STRIP,         //@@= GL_LINE_STRIP,
-        POINTS,             //@@= GL_POINTS
-
-        PrimitiveTypeUnknow,
+        TRIANGLES               = 0x0004, //@@= GL_TRIANGLES,
+        TRIANGLE_STRIP          = 0x0005, //@@= GL_TRIANGLE_STRIP,
+        LINES                   = 0x0001, //@@= GL_LINES,
+        LINE_STRIP              = 0x0003, //@@= GL_LINE_STRIP,
+        POINTS                  = 0x0000, //@@= GL_POINTS
+        PrimitiveTypeUnknow     = 0x0009
     };
 
     /**

@@ -56,6 +56,8 @@ Texture::Format BGFXTexture::toGp3dFormat(bimg::TextureFormat::Enum bimgTextureF
     case bgfx::TextureFormat::D16       : return Texture::Format::DEPTH;
 
     case bgfx::TextureFormat::BC2       : return Texture::Format::RGBA;
+    case bgfx::TextureFormat::BC3       : return Texture::Format::RGBA;
+    case bgfx::TextureFormat::BC5       : return Texture::Format::RGBA;
 
     default:
         GP_ASSERT(!"bimg texture format not supported.");

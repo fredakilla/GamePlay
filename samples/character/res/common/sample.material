@@ -35,7 +35,7 @@ material texturedSpecular
         {
             vertexShader = res/shaders/textured.vert
             fragmentShader = res/shaders/textured.frag
-			defines = SPECULAR;DIRECTIONAL_LIGHT_COUNT 1
+			defines = SPECULAR;DIRECTIONAL_LIGHT_COUNT=1
 
             u_worldViewProjectionMatrix = WORLD_VIEW_PROJECTION_MATRIX
             u_inverseTransposeWorldViewMatrix = INVERSE_TRANSPOSE_WORLD_VIEW_MATRIX
@@ -70,7 +70,7 @@ material texturedTransparent
         {
             vertexShader = res/shaders/textured.vert
             fragmentShader = res/shaders/textured.frag
-            defines = DIRECTIONAL_LIGHT_COUNT 1
+            defines = DIRECTIONAL_LIGHT_COUNT=1
 
             u_worldViewProjectionMatrix = WORLD_VIEW_PROJECTION_MATRIX
             u_inverseTransposeWorldViewMatrix = INVERSE_TRANSPOSE_WORLD_VIEW_MATRIX
@@ -104,7 +104,7 @@ material colored
         {
             vertexShader = res/shaders/colored.vert
             fragmentShader = res/shaders/colored.frag
-            defines = DIRECTIONAL_LIGHT_COUNT 1
+            defines = DIRECTIONAL_LIGHT_COUNT=1
 
             u_worldViewProjectionMatrix = WORLD_VIEW_PROJECTION_MATRIX
             u_inverseTransposeWorldViewMatrix = INVERSE_TRANSPOSE_WORLD_VIEW_MATRIX
@@ -124,7 +124,7 @@ material boy : texturedTransparent
     {
         pass
         {
-            defines = SKINNING;SKINNING_JOINT_COUNT 31;MODULATE_ALPHA;DIRECTIONAL_LIGHT_COUNT 1
+            defines = SKINNING;SKINNING_JOINT_COUNT=31;MODULATE_ALPHA;DIRECTIONAL_LIGHT_COUNT=1
             u_matrixPalette = MATRIX_PALETTE
             u_modulateAlpha = 1.0
 

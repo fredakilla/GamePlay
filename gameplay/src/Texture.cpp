@@ -2,7 +2,20 @@
 #include "Image.h"
 #include "Texture.h"
 #include "FileSystem.h"
-#include "Renderer.h"
+#include "BGFX/BGFXTexture.h"
+
+
+
+#ifdef GP_USE_MEM_LEAK_DETECTION
+#undef new
+    #include <bx/allocator.h>
+#define new DEBUG_NEW
+#else
+    #include <bx/allocator.h>
+#endif
+
+
+#include <bimg/decode.h>
 
 // PVRTC (GL_IMG_texture_compression_pvrtc) : Imagination based gpus
 #ifndef GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG
@@ -114,35 +127,8 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
         }
     }
 
-    Texture* texture = NULL;
-
-    // Filter loading based on file extension.
-    const char* ext = strrchr(FileSystem::resolvePath(path), '.');
-    if (ext)
-    {
-        switch (strlen(ext))
-        {
-        case 4:
-            if (tolower(ext[1]) == 'p' && tolower(ext[2]) == 'n' && tolower(ext[3]) == 'g')
-            {
-                Image* image = Image::create(path);
-                if (image)
-                    texture = create(image, generateMipmaps);
-                SAFE_RELEASE(image);
-            }
-            else if (tolower(ext[1]) == 'p' && tolower(ext[2]) == 'v' && tolower(ext[3]) == 'r')
-            {
-                // PowerVR Compressed Texture RGBA.
-                texture = createCompressedPVRTC(path);
-            }
-            else if (tolower(ext[1]) == 'd' && tolower(ext[2]) == 'd' && tolower(ext[3]) == 's')
-            {
-                // DDS file format (DXT/S3TC) compressed textures
-                texture = createCompressedDDS(path);
-            }
-            break;
-        }
-    }
+    // Create texture.
+    Texture* texture = createBIMG(path);
 
     if (texture)
     {
@@ -189,7 +175,7 @@ GLint Texture::getFormatInternal(Format format)
         case Texture::RGBA5551:
             return GL_RGBA;
         case Texture::ALPHA:
-            return GL_ALPHA;
+            return GL_RED;
         case Texture::DEPTH:
 #if !defined(OPENGL_ES) || defined(GL_ES_VERSION_3_0)
             return GL_DEPTH_COMPONENT32F;
@@ -247,7 +233,7 @@ size_t Texture::getFormatBPP(Format format)
 
 Texture* Texture::create(Format format, unsigned int width, unsigned int height, const unsigned char* data, bool generateMipmaps, Texture::Type type)
 {
-    GP_ASSERT( type == Texture::TEXTURE_2D || type == Texture::TEXTURE_CUBE );
+    //@@GP_ASSERT( type == Texture::TEXTURE_2D || type == Texture::TEXTURE_CUBE );
 
     GLenum target = (GLenum)type;
 
@@ -304,24 +290,24 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
     Filter minFilter;
     if (format == Texture::DEPTH)
     {
-    	minFilter = NEAREST;
+        minFilter = NEAREST;
         /*@@GL_ASSERT( glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST) );
-    	GL_ASSERT( glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST) );
-    	GL_ASSERT( glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE) );
-    	GL_ASSERT( glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE) );
+        GL_ASSERT( glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST) );
+        GL_ASSERT( glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE) );
+        GL_ASSERT( glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE) );
 #if !defined(OPENGL_ES) || defined(GL_ES_VERSION_3_0) && GL_ES_VERSION_3_0
-    	GL_ASSERT( glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_NONE) );
+        GL_ASSERT( glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_NONE) );
 #endif
     @@*/
     }
     else
     {
-    	minFilter = generateMipmaps ? NEAREST_MIPMAP_LINEAR : LINEAR;
+        minFilter = generateMipmaps ? NEAREST_MIPMAP_LINEAR : LINEAR;
         //@@GL_ASSERT( glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter) );
     }
 
     Texture* texture = new Texture();
-    //@@texture->_handle = textureId;    
+    //@@texture->_handle = textureId;
     texture->_format = format;
     texture->_type = type;
     texture->_width = width;
@@ -458,6 +444,8 @@ static unsigned int computePVRTCDataSize(int width, int height, int bpp)
     return widthBlocks * heightBlocks * ((blockSize  * bpp) >> 3);
 }
 
+//@@
+#if 0
 Texture* Texture::createCompressedPVRTC(const char* path)
 {
     std::unique_ptr<Stream> stream(FileSystem::open(path));
@@ -521,7 +509,7 @@ Texture* Texture::createCompressedPVRTC(const char* path)
     GL_ASSERT( glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter) );
 
     Texture* texture = new Texture();
-    //@@texture->_textureHandle = textureId;
+    texture->_textureHandle = textureId;
     texture->_type = faceCount > 1 ? TEXTURE_CUBE : TEXTURE_2D;
     texture->_width = width;
     texture->_height = height;
@@ -554,7 +542,10 @@ Texture* Texture::createCompressedPVRTC(const char* path)
 
     return texture;
 }
+#endif
+//@@
 
+#if 0 //@@
 GLubyte* Texture::readCompressedPVRTC(const char* path, Stream* stream, GLsizei* width, GLsizei* height, GLenum* format, unsigned int* mipMapCount, unsigned int* faceCount, GLenum* faces)
 {
     GP_ASSERT( stream );
@@ -733,6 +724,7 @@ GLubyte* Texture::readCompressedPVRTC(const char* path, Stream* stream, GLsizei*
     return data;
 }
 
+
 GLubyte* Texture::readCompressedPVRTCLegacy(const char* path, Stream* stream, GLsizei* width, GLsizei* height, GLenum* format, unsigned int* mipMapCount, unsigned int* faceCount, GLenum* faces)
 {
     char PVRTCIdentifier[] = "PVR!";
@@ -823,6 +815,7 @@ GLubyte* Texture::readCompressedPVRTCLegacy(const char* path, Stream* stream, GL
 
     return data;
 }
+#endif //@@
 
 int Texture::getMaskByteIndex(unsigned int mask)
 {
@@ -841,6 +834,75 @@ int Texture::getMaskByteIndex(unsigned int mask)
     }
 }
 
+
+
+bx::AllocatorI* getDefaultAllocator()
+{
+    static bx::DefaultAllocator s_allocator;
+    return &s_allocator;
+}
+
+/*
+static void imageReleaseCb(void* _ptr, void* _userData)
+{
+    BX_UNUSED(_ptr);
+    bimg::ImageContainer* imageContainer = (bimg::ImageContainer*)_userData;
+    bimg::imageFree(imageContainer);
+}*/
+
+
+Texture* Texture::createBIMG(const char* path)
+{
+    GP_ASSERT( path );
+
+    // Read file
+    int fileSize = 0;
+    char * fileData = FileSystem::readAll(path, &fileSize);
+    if (fileData == NULL)
+    {
+        GP_ERROR("Failed to read image from file '%s'.", path);
+        return NULL;
+    }
+
+    // Parse data
+    bimg::ImageContainer* imageContainer = nullptr;
+    imageContainer = bimg::imageParse(getDefaultAllocator(), (void*)fileData, fileSize);
+    if(imageContainer == nullptr)
+    {
+        GP_ERROR("Failed to parse image data from file '%s'.", path);
+        return NULL;
+    }
+
+    Filter minFilter = imageContainer->m_numMips > 1 ? NEAREST_MIPMAP_LINEAR : LINEAR;
+    Format format = BGFXTexture::toGp3dFormat(imageContainer->m_format);
+    size_t bpp = getFormatBPP(format);
+    Type type = TEXTURE_2D;
+
+    // Create gameplay texture.
+    Texture* texture = new Texture();
+    texture->_format = format;
+    texture->_type = type;
+    texture->_width = imageContainer->m_width;
+    texture->_height = imageContainer->m_height;
+    texture->_compressed = false;
+    texture->_mipmapped = imageContainer->m_numMips > 1;
+    texture->_minFilter = minFilter;
+    texture->_bpp = bpp;
+
+    // create bgfx texture
+    unsigned int textureSize = texture->_width * texture->_height * bpp;
+    texture->_gpuTtexture = new BGFXTexture(texture, type, imageContainer);
+
+    // free file data
+    free(fileData);
+    bimg::imageFree(imageContainer);
+
+    return texture;
+}
+
+
+
+#if 0 //@@
 Texture* Texture::createCompressedDDS(const char* path)
 {
     GP_ASSERT( path );
@@ -1201,6 +1263,8 @@ Texture* Texture::createCompressedDDS(const char* path)
 
     return texture;
 }
+#endif //@@
+
 
 Texture::Format Texture::getFormat() const
 {
@@ -1236,17 +1300,24 @@ void Texture::generateMipmaps()
 {
     if (!_mipmapped)
     {
-        //@@GLenum target = (GLenum)_type;
-        //@@GL_ASSERT( glBindTexture(target, _handle) );
-        //@@GL_ASSERT( glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST) );
-        //@@if( std::addressof(glGenerateMipmap) )
-        //@@    GL_ASSERT( glGenerateMipmap(target) );
-
         _mipmapped = true;
-
-        //@@// Restore the texture id
-        //@@GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
     }
+
+
+
+    //@@if (!_mipmapped)
+    //@@{
+    //@@    GLenum target = (GLenum)_type;
+    //@@    GL_ASSERT( glBindTexture(target, _handle) );
+    //@@    GL_ASSERT( glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST) );
+    //@@    if( std::addressof(glGenerateMipmap) )
+    //@@        GL_ASSERT( glGenerateMipmap(target) );
+    //@@
+    //@@    _mipmapped = true;
+    //@@
+    //@@    // Restore the texture id
+    //@@    GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
+    //@@}
 }
 
 bool Texture::isMipmapped() const
@@ -1275,7 +1346,7 @@ Texture::Sampler::~Sampler()
 Texture::Sampler* Texture::Sampler::create(Texture* texture)
 {
     GP_ASSERT( texture );
-    GP_ASSERT( texture->_type == Texture::TEXTURE_2D || texture->_type == Texture::TEXTURE_CUBE );
+    GP_ASSERT( texture->_type == Texture::TEXTURE_2D || texture->_type == Texture::TEXTURE_CUBE || texture->_type == Texture::TEXTURE_RT);
     texture->addRef();
     return new Sampler(texture);
 }
