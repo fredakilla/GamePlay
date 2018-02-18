@@ -83,6 +83,11 @@ public:
     static Vector4 fromColor(unsigned int color);
 
     /**
+     * Return color packed to a 32-bit integer, with A component in the lowest 8 bits. Components are clamped to [0, 1] range.
+     */
+    unsigned toUInt() const;
+
+    /**
      * Destructor.
      */
     ~Vector4();

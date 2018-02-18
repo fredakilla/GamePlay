@@ -487,8 +487,7 @@ void Game::setViewport(const Rectangle& viewport)
 
 void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, int clearStencil)
 {
-#if 0//@@
-    GLbitfield bits = 0;
+    uint16_t bits = 0;
     if (flags & CLEAR_COLOR)
     {
         if (clearColor.x != _clearColor.x ||
@@ -496,20 +495,21 @@ void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, 
             clearColor.z != _clearColor.z ||
             clearColor.w != _clearColor.w )
         {
-            glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
+
+            //@@glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
             _clearColor.set(clearColor);
         }
-        bits |= GL_COLOR_BUFFER_BIT;
+        bits |= BGFX_CLEAR_COLOR;
     }
 
     if (flags & CLEAR_DEPTH)
     {
         if (clearDepth != _clearDepth)
         {
-            glClearDepth(clearDepth);
+            //@@glClearDepth(clearDepth);
             _clearDepth = clearDepth;
         }
-        bits |= GL_DEPTH_BUFFER_BIT;
+        bits |= BGFX_CLEAR_DEPTH;
 
         // We need to explicitly call the static enableDepthWrite() method on StateBlock
         // to ensure depth writing is enabled before clearing the depth buffer (and to
@@ -521,20 +521,13 @@ void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, 
     {
         if (clearStencil != _clearStencil)
         {
-            glClearStencil(clearStencil);
+            //@@glClearStencil(clearStencil);
             _clearStencil = clearStencil;
         }
-        bits |= GL_STENCIL_BUFFER_BIT;
+        bits |= BGFX_CLEAR_STENCIL;
     }
-    glClear(bits);
-#endif//@@
-
-    bgfx::setViewClear(0
-                            , BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH
-                            , 0x303030ff
-                            , 1.0f
-                            , 0);
-
+    //@@glClear(bits);
+    bgfx::setViewClear(0, bits, _clearColor.toUInt(), _clearDepth, _clearStencil);
 }
 
 void Game::clear(ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil)

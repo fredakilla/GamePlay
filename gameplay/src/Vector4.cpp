@@ -44,6 +44,15 @@ Vector4 Vector4::fromColor(unsigned int color)
     return value;
 }
 
+unsigned Vector4::toUInt() const
+{
+    auto r = (unsigned)MATH_CLAMP(((int)(x * 255.0f)), 0, 255);
+    auto g = (unsigned)MATH_CLAMP(((int)(y * 255.0f)), 0, 255);
+    auto b = (unsigned)MATH_CLAMP(((int)(z * 255.0f)), 0, 255);
+    auto a = (unsigned)MATH_CLAMP(((int)(w * 255.0f)), 0, 255);
+    return (r << 24) | (g << 16) | (b << 8) | a;
+}
+
 Vector4::~Vector4()
 {
 }
