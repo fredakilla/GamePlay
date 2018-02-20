@@ -89,7 +89,7 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
     }
 
     // Create texture.
-    Texture* texture = createBIMG(path);
+    Texture* texture = BGFXTexture::createFromFile(path);
 
     if (texture)
     {
@@ -267,6 +267,8 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
         //@@GL_ASSERT( glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter) );
     }
 
+#if 0
+
     Texture* texture = new Texture();
     //@@texture->_handle = textureId;
     texture->_format = format;
@@ -279,6 +281,7 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
     texture->_bpp = bpp;
     if (generateMipmaps)
         texture->generateMipmaps();
+
 
     // create bgfx texture
 
@@ -314,6 +317,21 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
     //@@GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
 
     return texture;
+
+#else
+
+
+    GPTextureInfos textureInfo;
+    textureInfo.width = width;
+    textureInfo.height = height;
+    textureInfo.bytePerPixel = getFormatBPP(format);
+
+    Texture* texture = BGFXTexture::createFromData(data, textureInfo);
+    if (generateMipmaps)
+        texture->generateMipmaps();
+
+    return texture;
+#endif
 }
 
 Texture* Texture::create(BGFXTexture *handle, int width, int height, Format format)
@@ -408,7 +426,7 @@ Texture* Texture::createBIMG(const char* path)
 {
     GP_ASSERT( path );
 
-    // Read file
+    /*// Read file
     int fileSize = 0;
     char * fileData = FileSystem::readAll(path, &fileSize);
     if (fileData == NULL)
@@ -429,27 +447,34 @@ Texture* Texture::createBIMG(const char* path)
     Filter minFilter = imageContainer->m_numMips > 1 ? NEAREST_MIPMAP_LINEAR : LINEAR;
     Format format = BGFXTexture::toGp3dFormat(imageContainer->m_format);
     size_t bpp = getFormatBPP(format);
-    Type type = TEXTURE_2D;
+    Type type = TEXTURE_2D;*/
+
+    //bgfx::TextureInfo infos;
+    Texture* texture = BGFXTexture::createFromFile(path);
+
+
+
 
     // Create gameplay texture.
-    Texture* texture = new Texture();
-    texture->_format = format;
-    texture->_type = type;
-    texture->_width = imageContainer->m_width;
-    texture->_height = imageContainer->m_height;
+    /*Texture* texture = new Texture();
+    texture->_format = BGFXTexture::toGp3dFormat(infos.format);
+    texture->_type = TEXTURE_2D;
+    texture->_width = infos.width;
+    texture->_height = infos.height;
     texture->_compressed = false;
-    texture->_mipmapped = imageContainer->m_numMips > 1;
-    texture->_minFilter = minFilter;
-    texture->_bpp = bpp;
+    texture->_mipmapped = infos.numMips > 1;
+    //texture->_minFilter = minFilter;
+    texture->_bpp = infos.bitsPerPixel / 8;
     texture->_path = path;
+    texture->_gpuTtexture = bgfxTexture;*/
 
     // create bgfx texture
-    unsigned int textureSize = texture->_width * texture->_height * bpp;
-    texture->_gpuTtexture = new BGFXTexture(path, texture);//, type, imageContainer);
+    //unsigned int textureSize = texture->_width * texture->_height * bpp;
+    //texture->_gpuTtexture = new BGFXTexture(path, texture);//, type, imageContainer);
 
     // free file data
-    free(fileData);
-    bimg::imageFree(imageContainer);
+    //free(fileData);
+   // bimg::imageFree(imageContainer);
 
     return texture;
 }
@@ -578,7 +603,6 @@ void Texture::Sampler::bind(Uniform * uniform)
 {
     GP_ASSERT( _texture );
 
-
     if (_texture->_minFilter != _minFilter)
     {
         _texture->_minFilter = _minFilter;
@@ -601,6 +625,7 @@ void Texture::Sampler::bind(Uniform * uniform)
     }
 
     _texture->_gpuTtexture->bind(uniform);
+
 
 
     //@@

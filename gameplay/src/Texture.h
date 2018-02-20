@@ -87,6 +87,17 @@ public:
     };
 
     /**
+     * Texture information record
+     */
+    struct GPTextureInfos
+    {
+        unsigned int width;
+        unsigned int height;
+        Format format;
+        unsigned int bytePerPixel;
+    };
+
+    /**
      * Defines a texture sampler.
      *
      * A texture sampler is basically an instance of a texture that can be
