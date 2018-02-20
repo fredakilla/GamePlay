@@ -264,8 +264,6 @@ Texture * BGFXTexture::createFromFile(const char * path)
     texture->_path = path;
     texture->_gpuTtexture = bgfxTexture;
 
-    bgfxTexture->_texture = texture;
-
     return texture;
 }
 
@@ -313,21 +311,19 @@ Texture* BGFXTexture::createFromData(const unsigned char* data, Texture::GPTextu
     texture->_bpp = bgfxInfo.bitsPerPixel / 8;
     texture->_gpuTtexture = bgfxTexture;
 
-    bgfxTexture->_texture = texture;
-
     return texture;
 }
 
-void BGFXTexture::bind(Uniform * uniform)
+void BGFXTexture::bind(Uniform * uniform, Texture * texture)
 {
     BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
 
     uint32_t flags = BGFX_TEXTURE_NONE
-            | MIN_FILTER[_texture->_minFilter]
-            | MAG_FILTER[_texture->_magFilter]
-            | WRAP_S[_texture->_wrapS]
-            | WRAP_T[_texture->_wrapT]
-            | WRAP_R[_texture->_wrapR];
+            | MIN_FILTER[texture->_minFilter]
+            | MAG_FILTER[texture->_magFilter]
+            | WRAP_S[texture->_wrapS]
+            | WRAP_T[texture->_wrapT]
+            | WRAP_R[texture->_wrapR];
 
     bgfx::setTexture(uniform->getIndex(), bgfxUniform->getHandle(), _handle, flags);
 }

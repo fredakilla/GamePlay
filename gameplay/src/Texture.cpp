@@ -533,7 +533,7 @@ void Texture::Sampler::bind(Uniform * uniform)
         _texture->_wrapR = _wrapR;
     }
 
-    _texture->_gpuTtexture->bind(uniform);
+    _texture->_gpuTtexture->bind(uniform, _texture);
 
 
 

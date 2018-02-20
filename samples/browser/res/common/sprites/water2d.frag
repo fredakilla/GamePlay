@@ -14,7 +14,7 @@ const float SPEED = 0.5;
 // Uniforms
 uniform sampler2D u_texture;
 uniform sampler2D u_texture_noise;
-uniform float u_time;
+uniform vec4 u_time;
 
 ///////////////////////////////////////////////////////////
 // Varyings
@@ -25,7 +25,7 @@ varying vec4 v_color;
 void main()
 {
     vec2 displacement = texture2D (u_texture_noise, v_texCoord / 6.0).xy;
-    float t = v_texCoord.y + displacement.y * 0.1 - 0.10 + (sin (v_texCoord.x * FREQUENCY + (u_time * SPEED)) * AMPLITUDE);
+    float t = v_texCoord.y + displacement.y * 0.1 - 0.10 + (sin (v_texCoord.x * FREQUENCY + (u_time.x * SPEED)) * AMPLITUDE);
     gl_FragColor = v_color * texture2D(u_texture, vec2(v_texCoord.x, t));
 }
 
