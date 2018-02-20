@@ -107,6 +107,7 @@ linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/game.config $$DESTDIR$$escape
 linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/../../gameplay/res/shaders $$DESTDIR/res$$escape_expand(\n\t))
 linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/../../gameplay/res/ui $$DESTDIR/res$$escape_expand(\n\t))
 linux: QMAKE_POST_LINK += $$quote(cp -rf $$PWD/../../gameplay/res/logo_powered_white.png $$DESTDIR/res$$escape_expand(\n\t))
+linux: QMAKE_POST_LINK += $$quote(mkdir -p $$DESTDIR/tmpshaders$$escape_expand(\n\t))
 
 macx: QMAKE_CXXFLAGS += -x c++ -x objective-c++ -stdlib=libc++ -w -arch x86_64
 macx: LIBS += -L$$PWD/../../gameplay/Debug/ -lgameplay

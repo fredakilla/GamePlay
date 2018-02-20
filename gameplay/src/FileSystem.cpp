@@ -362,6 +362,8 @@ Stream* FileSystem::open(const char* path, size_t streamMode)
     char modeStr[] = "rb";
     if ((streamMode & WRITE) != 0)
         modeStr[0] = 'w';
+    if ((streamMode & APPEND) != 0)
+        modeStr[0] = 'a';
 #ifdef __ANDROID__
     std::string fullPath(__resourcePath);
     fullPath += resolvePath(path);

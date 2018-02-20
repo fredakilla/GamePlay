@@ -130,8 +130,11 @@ std::string compileShader(std::string shaderFile, std::string defines)
     //argv[argc++] = "--profile";
     //argv[argc++] = SM[shader->type]; //"vs_5_0";
     //argv[argc++] = "--raw";
-    argv[argc++] = "--define";
-    argv[argc++] = defines.c_str();
+    if(!defines.empty())
+    {
+        argv[argc++] = "--define";
+        argv[argc++] = defines.c_str();
+    }
 
     // invoke shaderc compiler (static library version)
     int ret = bgfx::compileShader(argc, argv);
@@ -139,8 +142,12 @@ std::string compileShader(std::string shaderFile, std::string defines)
 
     // log shaderc build command to a file (for compile time usage).
     std::string commandLineStr= "$SHADERC ";
-    for (int i=0;i<argc;i++) commandLineStr.append(argv[i]).append(" ");
-    Stream * stream = FileSystem::open("tmpshaders/build-shader.txt", FileSystem::WRITE);
+    for (int i=0;i<argc;i++)
+        commandLineStr.append(argv[i]).append(" ");
+    commandLineStr.append("\n");
+
+    // write shaderc commands to file
+    Stream * stream = FileSystem::open("tmpshaders/build-shader.txt", FileSystem::APPEND);
     stream->write(commandLineStr.c_str(), 1, commandLineStr.size());
 
     // return ouput compiled shader filename

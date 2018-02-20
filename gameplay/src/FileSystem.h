@@ -24,7 +24,8 @@ public:
     enum StreamMode
     {
         READ = 1,
-        WRITE = 2
+        WRITE = 2,
+        APPEND = 4
     };
 
     /**
