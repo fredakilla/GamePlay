@@ -96,13 +96,12 @@ void BGFXRenderer::endFrame()
 
 void BGFXRenderer::submit(const BGFXGpuProgram *gpuProgram)
 {
-    const BGFXGpuProgram * bgfxGpuProgram = static_cast<const BGFXGpuProgram*>(gpuProgram);
-    GP_ASSERT(bgfx::isValid(bgfxGpuProgram->getProgram()));
-    bgfx::submit(0, bgfxGpuProgram->getProgram());
+    GP_ASSERT(gpuProgram && bgfx::isValid(gpuProgram->getProgram()));
+    bgfx::submit(0, gpuProgram->getProgram());
 }
 
 
-
+// in test
 
 void BGFXRenderer::setViewTransform(Matrix &view, Matrix &proj, unsigned short viewId)
 {
