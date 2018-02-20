@@ -329,15 +329,8 @@ private:
      */
     Texture& operator=(const Texture&);
 
-    //@@static Texture* createCompressedPVRTC(const char* path);
-    //@@static Texture* createCompressedDDS(const char* path);
+
     static Texture* createBIMG(const char* path);
-
-    //@@static GLubyte* readCompressedPVRTC(const char* path, Stream* stream, GLsizei* width, GLsizei* height, GLenum* format, unsigned int* mipMapCount, unsigned int* faceCount, GLenum faces[6]);
-
-    //@@static GLubyte* readCompressedPVRTCLegacy(const char* path, Stream* stream, GLsizei* width, GLsizei* height, GLenum* format, unsigned int* mipMapCount, unsigned int* faceCount, GLenum faces[6]);
-
-    static int getMaskByteIndex(unsigned int mask);
     static GLint getFormatInternal(Format format);
     static GLenum getFormatTexel(Format format);
     static size_t getFormatBPP(Format format);
