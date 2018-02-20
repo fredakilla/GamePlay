@@ -11,6 +11,10 @@ namespace gameplay
 class BGFXTexture
 {
 public:
+
+    BGFXTexture(const char * path, Texture *texture);
+    BGFXTexture(Texture* texture, const unsigned char *data, Texture::Type type);
+
     BGFXTexture(Texture *texture, Texture::Type type, bimg::ImageContainer * imageContainer);
     ~BGFXTexture();
 

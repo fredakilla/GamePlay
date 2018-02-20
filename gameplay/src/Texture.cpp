@@ -304,7 +304,8 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
     imageContainer->m_orientation = bimg::Orientation::R0;
 
     unsigned int textureSize = width * height * bpp;
-    texture->_gpuTtexture = new BGFXTexture(texture, type, imageContainer);
+    //texture->_gpuTtexture = new BGFXTexture(texture, type, imageContainer);
+    texture->_gpuTtexture = new BGFXTexture(texture, data, type);
 
     delete imageContainer;
     //bimg::imageFree(imageContainer);
@@ -444,7 +445,7 @@ Texture* Texture::createBIMG(const char* path)
 
     // create bgfx texture
     unsigned int textureSize = texture->_width * texture->_height * bpp;
-    texture->_gpuTtexture = new BGFXTexture(texture, type, imageContainer);
+    texture->_gpuTtexture = new BGFXTexture(path, texture);//, type, imageContainer);
 
     // free file data
     free(fileData);
