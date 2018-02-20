@@ -1,13 +1,8 @@
 #include "../BGFX/BGFXTexture.h"
 #include "../Texture.h"
 #include "../BGFX/BGFXUniform.h"
+#include "../FileSystem.h"
 
-//#include <bx/allocator.h>
-//#include <bimg/decode.h>
-//#include <bgfx/platform.h>
-
-
-#include "FileSystem.h"
 #ifdef GP_USE_MEM_LEAK_DETECTION
 #undef new
     #include <bx/allocator.h>
@@ -17,18 +12,12 @@
 #endif
 #include <bimg/decode.h>
 
-bx::AllocatorI* getDefaultAllocator()
-{
-    static bx::DefaultAllocator s_allocator;
-    return &s_allocator;
-}
 
 namespace gameplay {
 
-
-
-
-/*  GP3D <=> BGFX - texture format
+/**
+----------------------------------------------------------------------
+  GP3D <=> BGFX - texture format
 ----------------------------------------------------------------------
     Texture::Format::UNKNOWN   == bgfx::TextureFormat::Unknown
     Texture::Format::RGB       == bgfx::TextureFormat::RGB8
@@ -84,7 +73,6 @@ Texture::Format BGFXTexture::toGp3dFormat(bgfx::TextureFormat::Enum bimgTextureF
     }
 }
 
-
 uint32_t MIN_FILTER[] =
 {
     BGFX_TEXTURE_MIN_POINT,         //NEAREST = GL_NEAREST,
@@ -134,9 +122,11 @@ uint32_t WRAP_R[] =
 
 
 
-
-
-
+bx::AllocatorI* getDefaultAllocator()
+{
+    static bx::DefaultAllocator s_allocator;
+    return &s_allocator;
+}
 
 /*static void imageReleaseCb(void* _ptr, void* _userData)
 {
@@ -195,7 +185,6 @@ bgfx::TextureHandle createTexture(bimg::ImageContainer* imageContainer, uint32_t
                     );
     }
 
-
     if (NULL != info)
     {
         bgfx::calcTextureSize(
@@ -210,26 +199,18 @@ bgfx::TextureHandle createTexture(bimg::ImageContainer* imageContainer, uint32_t
                     );
     }
 
-
-    GP_ASSERT(bgfx::isValid(handle));
     return handle;
 }
 
-
-
-
-
 bgfx::TextureHandle loadTexture(const char* filePath, uint32_t flags, bgfx::TextureInfo* info = NULL, bimg::Orientation::Enum* orientation = NULL)
 {
-    bgfx::TextureHandle handle = BGFX_INVALID_HANDLE;
-
     // Read file
     int size = 0;
     char * data = FileSystem::readAll(filePath, &size);
     if (data == NULL)
     {
         GP_ERROR("Failed to read image from file '%s'.", filePath);
-        return handle;
+        return BGFX_INVALID_HANDLE;
     }
 
     // Parse data
@@ -237,213 +218,19 @@ bgfx::TextureHandle loadTexture(const char* filePath, uint32_t flags, bgfx::Text
     if(imageContainer == nullptr)
     {
         GP_ERROR("Failed to parse image data from file '%s'.", filePath);
-        return handle;
+        return BGFX_INVALID_HANDLE;
     }
 
     // create bgfx texture
-    handle = createTexture(imageContainer, flags, info);
+    bgfx::TextureHandle handle = createTexture(imageContainer, flags, info);
+    GP_ASSERT(bgfx::isValid(handle));
 
-
+    // free texture data
     free(data);
-    //bimg::imageFree(imageContainer);
-
-
 
     return handle;
-
-/*
-
-    // create bgfx texture
-    if (NULL != imageContainer)
-    {
-        if (NULL != orientation)
-        {
-            *orientation = imageContainer->m_orientation;
-        }
-
-        const bgfx::Memory* mem = bgfx::makeRef(
-                    imageContainer->m_data
-                    , imageContainer->m_size
-                    , 0
-                    , imageContainer
-                    );
-        free(data);
-
-        if (imageContainer->m_cubeMap)
-        {
-            handle = bgfx::createTextureCube(
-                        uint16_t(imageContainer->m_width)
-                        , 1 < imageContainer->m_numMips
-                        , imageContainer->m_numLayers
-                        , bgfx::TextureFormat::Enum(imageContainer->m_format)
-                        , flags
-                        , mem
-                        );
-        }
-        else if (1 < imageContainer->m_depth)
-        {
-            handle = bgfx::createTexture3D(
-                        uint16_t(imageContainer->m_width)
-                        , uint16_t(imageContainer->m_height)
-                        , uint16_t(imageContainer->m_depth)
-                        , 1 < imageContainer->m_numMips
-                        , bgfx::TextureFormat::Enum(imageContainer->m_format)
-                        , flags
-                        , mem
-                        );
-        }
-        else
-        {
-            handle = bgfx::createTexture2D(
-                        uint16_t(imageContainer->m_width)
-                        , uint16_t(imageContainer->m_height)
-                        , 1 < imageContainer->m_numMips
-                        , imageContainer->m_numLayers
-                        , bgfx::TextureFormat::Enum(imageContainer->m_format)
-                        , flags
-                        , mem
-                        );
-        }
-
-        bgfx::setName(handle, filePath);
-
-        if (NULL != info)
-        {
-            bgfx::calcTextureSize(
-                        *info
-                        , uint16_t(imageContainer->m_width)
-                        , uint16_t(imageContainer->m_height)
-                        , uint16_t(imageContainer->m_depth)
-                        , imageContainer->m_cubeMap
-                        , 1 < imageContainer->m_numMips
-                        , imageContainer->m_numLayers
-                        , bgfx::TextureFormat::Enum(imageContainer->m_format)
-                        );
-        }
-    }
-
-    return handle;
-
-    */
 }
 
-
-
-
-
-
-
-BGFXTexture::BGFXTexture(const char * path, Texture* texture)
-{
-    GP_ASSERT(path);
-    GP_ASSERT(texture);
-
-    _texture = texture;
-
-    uint32_t flags = BGFX_TEXTURE_NONE
-            | MIN_FILTER[_texture->_minFilter]
-            | MAG_FILTER[_texture->_magFilter]
-            | WRAP_S[_texture->_wrapS]
-            | WRAP_T[_texture->_wrapT]
-            | WRAP_R[_texture->_wrapR];
-    _flags = flags;
-
-    _handle = loadTexture(path, flags);
-}
-
-
-
-
-
-BGFXTexture::BGFXTexture(Texture* texture, const unsigned char* data, Texture::Type type)
-{
-    GP_ASSERT(texture);
-    GP_ASSERT(data);
-
-    _texture = texture;
-
-    uint32_t flags = BGFX_TEXTURE_NONE
-            | MIN_FILTER[_texture->_minFilter]
-            | MAG_FILTER[_texture->_magFilter]
-            | WRAP_S[_texture->_wrapS]
-            | WRAP_T[_texture->_wrapT]
-            | WRAP_R[_texture->_wrapR];
-    _flags = flags;
-
-
-
-
-
-    unsigned int width = texture->_width;
-    unsigned int height = texture->_height;
-
-
-    uint32_t imgSize = width * height * texture->_bpp;
-    // or
-    //uint32_t textureSize = bimg::imageGetSize(0, width, height, 0, false, false, 1, bgfxFormat);
-
-
-    bimg::TextureFormat::Enum bgfxFormat = (bimg::TextureFormat::Enum)toBgfxFormat(texture->_format);
-    uint8_t numMips = bimg::imageGetNumMips(bgfxFormat, width, height);
-    //uint32_t imgSize = bimg::imageGetSize(0, width, height, 1, false, false, 1, bgfxFormat);
-
-
-    bimg::ImageContainer * imageContainer = new bimg::ImageContainer();
-    imageContainer->m_size = imgSize; //width * height * bpp;
-    imageContainer->m_offset = 0;
-    imageContainer->m_width = width;
-    imageContainer->m_height = height;
-    imageContainer->m_depth = 1;
-    imageContainer->m_numLayers = 1;
-    imageContainer->m_numMips = 1;
-    imageContainer->m_hasAlpha = texture->_bpp > 3 ? true : false;
-    imageContainer->m_cubeMap = false;
-    imageContainer->m_ktx = false;
-    imageContainer->m_ktxLE = false;
-    imageContainer->m_srgb = false;
-    imageContainer->m_format = bgfxFormat;
-    //imageContainer->m_data = (void*)data;
-    imageContainer->m_orientation = bimg::Orientation::R0;
-
-    //const bgfx::Memory* mem = bgfx::copy(imageContainer->m_data, imageContainer->m_size);
-
-
-    const bgfx::Memory* mem = bgfx::copy(data, imgSize);
-    imageContainer->m_data = mem->data;
-
-    //memcpy(imageContainer->m_data, data, imgSize);
-
-
-
-
-    /*bgfx::TextureInfo info;
-    bgfx::calcTextureSize(
-                info
-                , uint16_t(imageContainer->m_width)
-                , uint16_t(imageContainer->m_height)
-                , uint16_t(imageContainer->m_depth)
-                , imageContainer->m_cubeMap
-                , 1 < imageContainer->m_numMips
-                , imageContainer->m_numLayers
-                , bgfx::TextureFormat::Enum(imageContainer->m_format));
-    GP_ASSERT(info.storageSize == imageContainer->m_size);*/
-
-
-
-
-
-
-    _handle = createTexture(imageContainer, flags);
-
-
-
-
-}
-
-
-
-
-// ----------------
 
 
 BGFXTexture::BGFXTexture() :
@@ -451,6 +238,11 @@ BGFXTexture::BGFXTexture() :
 {
 }
 
+BGFXTexture::~BGFXTexture()
+{
+    if(bgfx::isValid(_handle))
+        bgfx::destroy(_handle);
+}
 
 Texture * BGFXTexture::createFromFile(const char * path)
 {
@@ -477,7 +269,6 @@ Texture * BGFXTexture::createFromFile(const char * path)
     return texture;
 }
 
-
 Texture* BGFXTexture::createFromData(const unsigned char* data, Texture::GPTextureInfos infos)
 {
     BGFXTexture * bgfxTexture = new BGFXTexture();
@@ -485,14 +276,9 @@ Texture* BGFXTexture::createFromData(const unsigned char* data, Texture::GPTextu
 
     unsigned int width = infos.width;
     unsigned int height = infos.height;
-    //uint32_t imgSize = width * height * infos.bytePerPixel;
+    uint32_t imgSize = width * height * infos.bytePerPixel;
     bimg::TextureFormat::Enum bgfxFormat = (bimg::TextureFormat::Enum)toBgfxFormat(infos.format);
-
-
-
-    uint32_t imgSize = bimg::imageGetSize(0, width, height, 1, false, false, 1, bgfxFormat);
-
-
+    //uint32_t imgSize = bimg::imageGetSize(0, width, height, 1, false, false, 1, bgfxFormat);
 
     bimg::ImageContainer * imageContainer = new bimg::ImageContainer();
     imageContainer->m_size = imgSize;
@@ -508,7 +294,6 @@ Texture* BGFXTexture::createFromData(const unsigned char* data, Texture::GPTextu
     imageContainer->m_ktxLE = false;
     imageContainer->m_srgb = false;
     imageContainer->m_format = bgfxFormat;
-    //imageContainer->m_data = (void*)data;
     imageContainer->m_orientation = bimg::Orientation::R0;
 
     const bgfx::Memory* mem = bgfx::copy(data, imgSize);
@@ -517,10 +302,9 @@ Texture* BGFXTexture::createFromData(const unsigned char* data, Texture::GPTextu
     bgfx::TextureInfo bgfxInfo;
     bgfxTexture->_handle = createTexture(imageContainer, BGFX_TEXTURE_NONE, &bgfxInfo);
 
-
     // create gameplay3d texture
     Texture* texture = new Texture();
-    texture->_format = infos.format; //BGFXTexture::toGp3dFormat(bgfxInfo.format);
+    texture->_format = BGFXTexture::toGp3dFormat(bgfxInfo.format);
     texture->_type = Texture::TEXTURE_2D;
     texture->_width = bgfxInfo.width;
     texture->_height = bgfxInfo.height;
@@ -532,127 +316,6 @@ Texture* BGFXTexture::createFromData(const unsigned char* data, Texture::GPTextu
     bgfxTexture->_texture = texture;
 
     return texture;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#if 1
-BGFXTexture::BGFXTexture(Texture* texture, Texture::Type type, bimg::ImageContainer *imageContainer)
-{
-    GP_ASSERT(texture);
-
-    _texture = texture;
-    _flags = BGFX_TEXTURE_NONE;
-
-
-    if( strcmp(texture->getPath(), "") )
-    {
-        bimg::Orientation::Enum orientation;
-        _handle = loadTexture(texture->getPath(), BGFX_TEXTURE_NONE, NULL, &orientation);
-        return;
-    }
-
-
-
-    bgfx::TextureFormat::Enum bgfxTextureFormat = toBgfxFormat(texture->getFormat());
-    GP_ASSERT(bgfxTextureFormat != bgfx::TextureFormat::Unknown);
-
-
-
-    if(type == Texture::Type::TEXTURE_2D)
-    {
-        uint32_t flags = BGFX_TEXTURE_NONE
-                | MIN_FILTER[_texture->_minFilter]
-                | MAG_FILTER[_texture->_magFilter]
-                | WRAP_S[_texture->_wrapS]
-                | WRAP_T[_texture->_wrapT]
-                | WRAP_R[_texture->_wrapR];
-        _flags = flags;
-
-        bgfx::TextureInfo info;
-        bgfx::calcTextureSize(
-                    info
-                    , uint16_t(imageContainer->m_width)
-                    , uint16_t(imageContainer->m_height)
-                    , uint16_t(imageContainer->m_depth)
-                    , imageContainer->m_cubeMap
-                    , 1 < imageContainer->m_numMips
-                    , imageContainer->m_numLayers
-                    , bgfx::TextureFormat::Enum(imageContainer->m_format));
-        GP_ASSERT(info.storageSize == imageContainer->m_size);
-
-
-       // const bgfx::Memory* mem = bgfx::makeRef(
-       //                           imageContainer->m_data
-       //                         , imageContainer->m_size
-       //                         , 0//imageReleaseCb
-       //                         , imageContainer
-       //     );
-
-
-
-        //const bgfx::Memory * mem = bgfx::alloc(info.storageSize);
-        //memcpy(mem->data, imageContainer->m_data, imageContainer->m_size);
-
-
-
-
-       const bgfx::Memory* mem = bgfx::copy(imageContainer->m_data, imageContainer->m_size);
-
-
-        _handle = bgfx::createTexture2D(
-                    uint16_t(imageContainer->m_width)
-                    , uint16_t(imageContainer->m_height)
-                    , 1 < imageContainer->m_numMips
-                    , imageContainer->m_numLayers
-                    , bgfx::TextureFormat::Enum(imageContainer->m_format)
-                    , _flags
-                    , mem
-                    );
-
-    }
-    else if(type == Texture::Type::TEXTURE_RT)
-    {
-        _handle = bgfx::createTexture2D(
-              texture->getWidth()
-            , texture->getHeight()
-            , false
-            , 1
-            , bgfx::TextureFormat::BGRA8
-            , BGFX_TEXTURE_RT
-            );
-    }
-    else
-    {
-        GP_ERROR("Not defined");
-    }
-
-    GP_ASSERT(bgfx::isValid(_handle));
-}
-
-
-#endif
-
-
-
-
-
-
-BGFXTexture::~BGFXTexture()
-{
-    if(bgfx::isValid(_handle))
-        bgfx::destroy(_handle);
 }
 
 void BGFXTexture::bind(Uniform * uniform)

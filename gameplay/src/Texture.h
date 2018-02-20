@@ -341,7 +341,6 @@ private:
     Texture& operator=(const Texture&);
 
 
-    static Texture* createBIMG(const char* path);
     static GLint getFormatInternal(Format format);
     static GLenum getFormatTexel(Format format);
     static size_t getFormatBPP(Format format);

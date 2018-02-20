@@ -5,20 +5,6 @@
 #include "BGFX/BGFXTexture.h"
 
 
-
-#ifdef GP_USE_MEM_LEAK_DETECTION
-#undef new
-    #include <bx/allocator.h>
-#define new DEBUG_NEW
-#else
-    #include <bx/allocator.h>
-#endif
-
-
-#include <bimg/decode.h>
-
-
-
 namespace gameplay
 {
 
@@ -194,6 +180,23 @@ size_t Texture::getFormatBPP(Format format)
 
 Texture* Texture::create(Format format, unsigned int width, unsigned int height, const unsigned char* data, bool generateMipmaps, Texture::Type type)
 {
+    GPTextureInfos textureInfo;
+    textureInfo.width = width;
+    textureInfo.height = height;
+    textureInfo.format = format;
+    textureInfo.bytePerPixel = getFormatBPP(format);
+
+    Texture* texture = BGFXTexture::createFromData(data, textureInfo);
+    if (generateMipmaps)
+        texture->generateMipmaps();
+
+    return texture;
+}
+
+
+#if 0
+Texture* Texture::create(Format format, unsigned int width, unsigned int height, const unsigned char* data, bool generateMipmaps, Texture::Type type)
+{
     //@@GP_ASSERT( type == Texture::TEXTURE_2D || type == Texture::TEXTURE_CUBE );
 
     GLenum target = (GLenum)type;
@@ -267,7 +270,7 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
         //@@GL_ASSERT( glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter) );
     }
 
-#if 0
+
 
     Texture* texture = new Texture();
     //@@texture->_handle = textureId;
@@ -318,21 +321,9 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
 
     return texture;
 
-#else
-
-
-    GPTextureInfos textureInfo;
-    textureInfo.width = width;
-    textureInfo.height = height;
-    textureInfo.bytePerPixel = getFormatBPP(format);
-
-    Texture* texture = BGFXTexture::createFromData(data, textureInfo);
-    if (generateMipmaps)
-        texture->generateMipmaps();
-
-    return texture;
-#endif
 }
+#endif
+
 
 Texture* Texture::create(BGFXTexture *handle, int width, int height, Format format)
 {
@@ -400,88 +391,6 @@ void Texture::setData(const unsigned char* data)
     // Restore the texture id
     GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
 }
-
-
-
-
-
-bx::AllocatorI* getDefaultAllocator()
-{
-    static bx::DefaultAllocator s_allocator;
-    return &s_allocator;
-}
-
-/*
-static void imageReleaseCb(void* _ptr, void* _userData)
-{
-    BX_UNUSED(_ptr);
-    bimg::ImageContainer* imageContainer = (bimg::ImageContainer*)_userData;
-    bimg::imageFree(imageContainer);
-}*/
-
-
-
-
-Texture* Texture::createBIMG(const char* path)
-{
-    GP_ASSERT( path );
-
-    /*// Read file
-    int fileSize = 0;
-    char * fileData = FileSystem::readAll(path, &fileSize);
-    if (fileData == NULL)
-    {
-        GP_ERROR("Failed to read image from file '%s'.", path);
-        return NULL;
-    }
-
-    // Parse data
-    bimg::ImageContainer* imageContainer = nullptr;
-    imageContainer = bimg::imageParse(getDefaultAllocator(), (void*)fileData, fileSize);
-    if(imageContainer == nullptr)
-    {
-        GP_ERROR("Failed to parse image data from file '%s'.", path);
-        return NULL;
-    }
-
-    Filter minFilter = imageContainer->m_numMips > 1 ? NEAREST_MIPMAP_LINEAR : LINEAR;
-    Format format = BGFXTexture::toGp3dFormat(imageContainer->m_format);
-    size_t bpp = getFormatBPP(format);
-    Type type = TEXTURE_2D;*/
-
-    //bgfx::TextureInfo infos;
-    Texture* texture = BGFXTexture::createFromFile(path);
-
-
-
-
-    // Create gameplay texture.
-    /*Texture* texture = new Texture();
-    texture->_format = BGFXTexture::toGp3dFormat(infos.format);
-    texture->_type = TEXTURE_2D;
-    texture->_width = infos.width;
-    texture->_height = infos.height;
-    texture->_compressed = false;
-    texture->_mipmapped = infos.numMips > 1;
-    //texture->_minFilter = minFilter;
-    texture->_bpp = infos.bitsPerPixel / 8;
-    texture->_path = path;
-    texture->_gpuTtexture = bgfxTexture;*/
-
-    // create bgfx texture
-    //unsigned int textureSize = texture->_width * texture->_height * bpp;
-    //texture->_gpuTtexture = new BGFXTexture(path, texture);//, type, imageContainer);
-
-    // free file data
-    //free(fileData);
-   // bimg::imageFree(imageContainer);
-
-    return texture;
-}
-
-
-
-
 
 Texture::Format Texture::getFormat() const
 {
