@@ -851,6 +851,8 @@ static void imageReleaseCb(void* _ptr, void* _userData)
 }*/
 
 
+
+
 Texture* Texture::createBIMG(const char* path)
 {
     GP_ASSERT( path );
@@ -888,6 +890,7 @@ Texture* Texture::createBIMG(const char* path)
     texture->_mipmapped = imageContainer->m_numMips > 1;
     texture->_minFilter = minFilter;
     texture->_bpp = bpp;
+    texture->_path = path;
 
     // create bgfx texture
     unsigned int textureSize = texture->_width * texture->_height * bpp;
