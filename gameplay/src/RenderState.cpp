@@ -733,12 +733,12 @@ void RenderState::StateBlock::apply(Mesh::PrimitiveType primitiveType)
             */
 
 
-    bgfxBits |= BGFX_STATE_RGB_WRITE;
-    bgfxBits |= BGFX_STATE_ALPHA_WRITE;
+    bgfxBits |= BGFX_STATE_WRITE_RGB;
+    bgfxBits |= BGFX_STATE_WRITE_A;
 
     if (_defaultState->_depthWriteEnabled)
     {
-        bgfxBits |= BGFX_STATE_DEPTH_WRITE;
+        bgfxBits |=  BGFX_STATE_WRITE_Z;
     }
 
     if(_defaultState->_depthTestEnabled)
