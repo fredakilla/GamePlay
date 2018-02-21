@@ -15,7 +15,7 @@ public:
     virtual ~BGFXIndexBuffer();
     void set(const void* data, unsigned int count, unsigned int start);
     void bind();
-    void * lock(unsigned start, unsigned count, bool discard=false);
+    void * lock(unsigned start, unsigned count);
     void unLock();
 
 private:

@@ -113,11 +113,11 @@ void BGFXIndexBuffer::bind()
     }
 }
 
-void * BGFXIndexBuffer::lock(unsigned start, unsigned count, bool discard)
+void * BGFXIndexBuffer::lock(unsigned start, unsigned count)
 {
     GP_ASSERT(_dynamic && bgfx::isValid(_dibh));
 
-    return GeometryBuffer::lock(start, count, discard);
+    return GeometryBuffer::lock(start, count);
 }
 
 void BGFXIndexBuffer::unLock()

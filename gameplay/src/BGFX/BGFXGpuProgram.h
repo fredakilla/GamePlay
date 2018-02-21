@@ -7,7 +7,6 @@
 namespace gameplay
 {
 
-
 struct ShaderFiles
 {
     std::string vertex;

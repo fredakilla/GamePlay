@@ -13,7 +13,7 @@ public:
     virtual ~GeometryBuffer();
     virtual void set(const void* data, unsigned int count, unsigned int start);
     virtual void bind();
-    virtual void * lock(unsigned start, unsigned count, bool discard=false);
+    virtual void * lock(unsigned start, unsigned count);
     virtual void unLock();
     const unsigned int getElementCount() const { return _elementCount; }
     bool isDynamic() { return _dynamic; }

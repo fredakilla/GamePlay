@@ -33,14 +33,9 @@ void GeometryBuffer::initialize(unsigned int elementSize, unsigned int elementCo
     _memoryBuffer.create(memSize);
 }
 
-
-
 void GeometryBuffer::set(const void* data, unsigned int count, unsigned int start)
 {
-    bool needResize = false;
-
-    if(_elementCount < count)
-        needResize = true;
+    bool needResize = _elementCount < count;
 
     _elementCount = count;
     _elementStart = start;
@@ -67,14 +62,13 @@ void GeometryBuffer::set(const void* data, unsigned int count, unsigned int star
 
 void GeometryBuffer::bind()
 {
-
 }
 
-void * GeometryBuffer::lock(unsigned start, unsigned count, bool discard)
+void * GeometryBuffer::lock(unsigned start, unsigned count)
 {
     if (_lockState != LOCK_NONE)
     {
-        GP_ERROR("Vertex buffer already locked");
+        GP_ERROR("Buffer already locked.");
         return nullptr;
     }
 
@@ -102,7 +96,7 @@ void GeometryBuffer::unLock()
     }
     else
     {
-        GP_ERROR("GeometryBuffer::unLock() - buffer was not locked.");
+        GP_ERROR("Buffer was not locked.");
     }
 }
 

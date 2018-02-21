@@ -58,7 +58,7 @@ void getBgfxAttribute(const VertexFormat::Element& element, bgfx::Attrib::Enum& 
     }
 }
 
-bgfx::AttribType::Enum getBgfxAttributeType2(const VertexFormat::AttribType type)
+bgfx::AttribType::Enum getBgfxAttributeType(const VertexFormat::AttribType type)
 {
     switch (type)
     {
@@ -88,7 +88,7 @@ void BGFXVertexBuffer::createVertexDecl(const VertexFormat &vertexFormat, bgfx::
         bgfx::Attrib::Enum attrib;
         getBgfxAttribute(element, attrib);
 
-        bgfx::AttribType::Enum type = getBgfxAttributeType2(element.type);
+        bgfx::AttribType::Enum type = getBgfxAttributeType(element.type);
         bool normalized = element.normalized;
         uint8_t num = element.size;
 
@@ -159,9 +159,9 @@ void BGFXVertexBuffer::bind()
     }
 }
 
-void * BGFXVertexBuffer::lock(unsigned start, unsigned count, bool discard)
+void * BGFXVertexBuffer::lock(unsigned start, unsigned count)
 {
-    return GeometryBuffer::lock(start, count, discard);
+    return GeometryBuffer::lock(start, count);
 }
 
 void BGFXVertexBuffer::unLock()

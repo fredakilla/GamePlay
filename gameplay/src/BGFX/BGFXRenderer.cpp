@@ -5,15 +5,11 @@
 
 #include <bgfx/bgfx.h>
 
-
 #define GP_DRAW_DEBUG   // allow debug text
-
-
 
 namespace gameplay {
 
 BGFXRenderer *BGFXRenderer::_instance = nullptr;
-
 
 BGFXRenderer::BGFXRenderer()
 {
