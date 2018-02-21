@@ -1,19 +1,18 @@
-#include "../Base.h"
 #include "../BGFX/GeometryBuffer.h"
 
-namespace gameplay {
-
-GeometryBuffer::GeometryBuffer()
+namespace gameplay
 {
-    _elementSize = 0;
-    _elementCount = 0;
-    _dynamic = false;
-    _elementStart = 0;
 
-    _lockState = LOCK_NONE;
-    _lockStart = 0;
-    _lockCount = 0;
-    _lockScratchData = nullptr;
+GeometryBuffer::GeometryBuffer() :
+    _elementSize(0)
+    , _elementCount(0)
+    , _elementStart(0)
+    , _dynamic(false)
+    , _lockState(LOCK_NONE)
+    , _lockStart(0)
+    , _lockCount(0)
+    , _lockScratchData(nullptr)
+{
 }
 
 GeometryBuffer::~GeometryBuffer()
@@ -21,7 +20,7 @@ GeometryBuffer::~GeometryBuffer()
     _memoryBuffer.destroy();
 }
 
-void GeometryBuffer::initialize(unsigned int elementSize, unsigned int elementCount, bool dynamic)
+void GeometryBuffer::initialize(uint32_t elementSize, uint32_t elementCount, bool dynamic)
 {
     _elementSize = elementSize;
     _elementCount = elementCount;
@@ -29,11 +28,11 @@ void GeometryBuffer::initialize(unsigned int elementSize, unsigned int elementCo
     _elementStart = 0;
 
     // allocate memory buffer
-    unsigned int memSize = elementSize * elementCount;
+    uint32_t memSize = elementSize * elementCount;
     _memoryBuffer.create(memSize);
 }
 
-void GeometryBuffer::set(const void* data, unsigned int count, unsigned int start)
+void GeometryBuffer::set(const void* data, uint32_t count, uint32_t start)
 {
     bool needResize = _elementCount < count;
 
@@ -51,7 +50,7 @@ void GeometryBuffer::set(const void* data, unsigned int count, unsigned int star
         }
     }
 
-    // copy vertex data to memory buffer
+    // copy vertex data into memory buffer
     if(data)
     {
         uint32_t memSize = _elementSize * count;
@@ -64,7 +63,7 @@ void GeometryBuffer::bind()
 {
 }
 
-void * GeometryBuffer::lock(unsigned start, unsigned count)
+void * GeometryBuffer::lock(uint32_t start, uint32_t count)
 {
     if (_lockState != LOCK_NONE)
     {

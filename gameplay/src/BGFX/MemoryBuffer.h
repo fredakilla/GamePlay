@@ -1,51 +1,46 @@
-#ifndef MEMORYBUFFER_H_
-#define MEMORYBUFFER_H_
+#pragma once
+
+#include "../Base.h"
 
 namespace gameplay
 {
 
-/// Vertex/index buffer lock state.
-enum LockState
-{
-    LOCK_NONE = 0,
-    LOCK_ACTIVE,
-};
-
-/// Base Buffer
+/**
+ * The IBuffer interface
+ */
 class IBuffer
 {
 public:
     IBuffer();
     virtual ~IBuffer();
-    void resize(int newSize);
-    int getSize() { return _size; }
+    void resize(uint32_t newSize);
+    uint32_t getSize();
 
 protected:
-    virtual void create(int newSize);
+    virtual void create(uint32_t newSize);
     virtual void destroy();
-    virtual void* map(int stride) { return nullptr; }
-    virtual void unmap() {}
+    virtual void* map(uint32_t stride = 0);
+    virtual void unmap();
 
-protected:
-    int _size;
+    uint32_t _size;
 };
 
 
-/// Memory buffer
+/**
+ * The MemoryBuffer class
+ */
 class MemoryBuffer : public IBuffer
 {
 public:
     MemoryBuffer();
     ~MemoryBuffer();
-    void create(int newSize);
-    void destroy();
-    void* map(int stride) { return buffer; }
-    void unmap() {}
+    void create(uint32_t newSize) override;
+    void destroy() override;
+    void* map(uint32_t stride = 0) override;
+    void unmap() override;
 
 private:
     char* buffer;
 };
 
 }
-
-#endif

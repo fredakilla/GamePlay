@@ -13,7 +13,19 @@ IBuffer::~IBuffer()
     destroy();
 }
 
-void IBuffer::create(int newSize)
+void IBuffer::resize(uint32_t newSize)
+{
+    if (_size < newSize)
+        create(newSize);
+    _size = newSize;
+}
+
+uint32_t IBuffer::getSize()
+{
+    return _size;
+}
+
+void IBuffer::create(uint32_t newSize)
 {
     destroy();
     _size = newSize;
@@ -24,18 +36,24 @@ void IBuffer::destroy()
     _size = 0;
 }
 
-void IBuffer::resize(int newSize)
+void* IBuffer::map(uint32_t stride)
 {
-    if (_size < newSize)
-        create(newSize);
-    _size = newSize;
+    return nullptr;
 }
 
-// --------------------------------
-
-MemoryBuffer::MemoryBuffer() : IBuffer()
+void IBuffer::unmap()
 {
-    buffer = nullptr;
+
+}
+
+//---------------------------------------------------------
+//---------------------------------------------------------
+
+MemoryBuffer::MemoryBuffer() :
+    IBuffer()
+  , buffer(nullptr)
+{
+
 }
 
 MemoryBuffer::~MemoryBuffer()
@@ -43,7 +61,7 @@ MemoryBuffer::~MemoryBuffer()
     destroy();
 }
 
-void MemoryBuffer::create(int newSize)
+void MemoryBuffer::create(uint32_t newSize)
 {
     IBuffer::create(newSize);
     buffer = new char[newSize];
@@ -60,5 +78,15 @@ void MemoryBuffer::destroy()
     }
 }
 
+void* MemoryBuffer::map(uint32_t stride)
+{
+    return &buffer[stride];
+}
+
+
+void MemoryBuffer::unmap()
+{
+
+}
 
 }
