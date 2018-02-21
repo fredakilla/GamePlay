@@ -316,8 +316,6 @@ Texture* BGFXTexture::createFromData(const unsigned char* data, Texture::GPTextu
 
 void BGFXTexture::bind(Uniform * uniform, Texture * texture)
 {
-    BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
-
     uint32_t flags = BGFX_TEXTURE_NONE
             | MIN_FILTER[texture->_minFilter]
             | MAG_FILTER[texture->_magFilter]
@@ -325,7 +323,8 @@ void BGFXTexture::bind(Uniform * uniform, Texture * texture)
             | WRAP_T[texture->_wrapT]
             | WRAP_R[texture->_wrapR];
 
-    bgfx::setTexture(uniform->getIndex(), bgfxUniform->getHandle(), _handle, flags);
+    BGFXUniform * bgfxUniform = static_cast<BGFXUniform*>(uniform);
+    bgfx::setTexture(bgfxUniform->getIndex(), bgfxUniform->getHandle(), _handle, flags);
 }
 
 } // end namespace gameplay
