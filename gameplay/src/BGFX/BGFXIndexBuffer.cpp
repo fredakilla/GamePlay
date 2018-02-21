@@ -3,12 +3,11 @@
 
 namespace gameplay {
 
-BGFXIndexBuffer::BGFXIndexBuffer(const Mesh::IndexFormat indexFormat, unsigned int indexCount, bool dynamic)
+BGFXIndexBuffer::BGFXIndexBuffer(const Mesh::IndexFormat indexFormat, uint32_t indexCount, bool dynamic) :
+    _sibh(BGFX_INVALID_HANDLE)
+  , _dibh(BGFX_INVALID_HANDLE)
+  , _indexFormat(indexFormat)
 {
-    _sibh = BGFX_INVALID_HANDLE;
-    _dibh = BGFX_INVALID_HANDLE;
-
-    _indexFormat = indexFormat;
     switch (indexFormat)
     {
     case Mesh::INDEX8:
@@ -49,18 +48,6 @@ BGFXIndexBuffer::~BGFXIndexBuffer()
     }
 }
 
-void BGFXIndexBuffer::createDynamicBuffer()
-{
-    GP_ASSERT(_dynamic);
-
-    uint16_t flags = /*BGFX_BUFFER_NONE; //*/BGFX_BUFFER_ALLOW_RESIZE;
-    if(_indexFormat == Mesh::INDEX32)
-        flags |= BGFX_BUFFER_INDEX32;
-
-    _dibh = bgfx::createDynamicIndexBuffer(_elementCount, flags);
-    GP_ASSERT(bgfx::isValid(_dibh));
-}
-
 void BGFXIndexBuffer::createStaticBuffer()
 {
     GP_ASSERT(!_dynamic && !bgfx::isValid(_sibh));
@@ -78,7 +65,19 @@ void BGFXIndexBuffer::createStaticBuffer()
     GP_ASSERT(bgfx::isValid(_sibh));
 }
 
-void BGFXIndexBuffer::set(const void* data, unsigned int count, unsigned int start)
+void BGFXIndexBuffer::createDynamicBuffer()
+{
+    GP_ASSERT(_dynamic);
+
+    uint16_t flags = /*BGFX_BUFFER_NONE; //*/BGFX_BUFFER_ALLOW_RESIZE;
+    if(_indexFormat == Mesh::INDEX32)
+        flags |= BGFX_BUFFER_INDEX32;
+
+    _dibh = bgfx::createDynamicIndexBuffer(_elementCount, flags);
+    GP_ASSERT(bgfx::isValid(_dibh));
+}
+
+void BGFXIndexBuffer::set(const void* data, uint32_t count, uint32_t start)
 {
     GeometryBuffer::set(data, count, start);
 
@@ -88,7 +87,6 @@ void BGFXIndexBuffer::set(const void* data, unsigned int count, unsigned int sta
         GP_ASSERT(bgfx::isValid(_dibh));
         const bgfx::Memory* mem = bgfx::makeRef(_memoryBuffer.map(0), _memoryBuffer.getSize());
         bgfx::updateDynamicIndexBuffer(_dibh, _elementStart, mem);
-
     }
     else
     {
@@ -96,7 +94,6 @@ void BGFXIndexBuffer::set(const void* data, unsigned int count, unsigned int sta
         if(!bgfx::isValid(_sibh))
             createStaticBuffer();
     }
-
 }
 
 void BGFXIndexBuffer::bind()
@@ -113,7 +110,7 @@ void BGFXIndexBuffer::bind()
     }
 }
 
-void * BGFXIndexBuffer::lock(unsigned start, unsigned count)
+void * BGFXIndexBuffer::lock(uint32_t start, uint32_t count)
 {
     GP_ASSERT(_dynamic && bgfx::isValid(_dibh));
 
