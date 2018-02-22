@@ -22,9 +22,8 @@ public:
     virtual void unLock();
     const uint32_t getElementCount() const { return _elementCount; }
     bool isDynamic() { return _dynamic; }
-
-protected:
     void initialize(uint32_t elementSize, uint32_t elementCount, bool dynamic);
+    bool setRange(uint32_t start, uint32_t count);
 
 protected:
     uint32_t _elementSize;
@@ -35,7 +34,7 @@ protected:
     LockState _lockState;
     uint32_t _lockStart;
     uint32_t _lockCount;
-    void* _lockScratchData;
+    void* _lockData;
 };
 
 }

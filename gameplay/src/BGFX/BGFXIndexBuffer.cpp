@@ -123,7 +123,7 @@ void BGFXIndexBuffer::unLock()
 
     if (_lockState == LOCK_ACTIVE)
     {
-        bgfx::updateDynamicIndexBuffer(_dibh, _lockStart, bgfx::makeRef(_lockScratchData, _memoryBuffer.getSize()) );
+        bgfx::updateDynamicIndexBuffer(_dibh, _lockStart, bgfx::makeRef(_lockData, _lockCount * _elementSize));//_memoryBuffer.getSize()));
         GeometryBuffer::unLock();
     }
 }

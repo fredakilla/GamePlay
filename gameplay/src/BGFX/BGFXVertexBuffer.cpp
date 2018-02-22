@@ -166,7 +166,7 @@ void BGFXVertexBuffer::unLock()
 
     if (_lockState == LOCK_ACTIVE)
     {
-        bgfx::updateDynamicVertexBuffer(_dvbh, _lockStart, bgfx::makeRef(_lockScratchData, _memoryBuffer.getSize()));
+        bgfx::updateDynamicVertexBuffer(_dvbh, _lockStart, bgfx::makeRef(_lockData, _lockCount * _elementSize)); //_memoryBuffer.getSize()));
         GeometryBuffer::unLock();
     }    
 }

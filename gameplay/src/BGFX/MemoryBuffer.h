@@ -40,7 +40,7 @@ public:
     void unmap() override;
 
 private:
-    char* buffer;
+    unsigned char* buffer;
 };
 
 }

@@ -64,7 +64,7 @@ MemoryBuffer::~MemoryBuffer()
 void MemoryBuffer::create(uint32_t newSize)
 {
     IBuffer::create(newSize);
-    buffer = new char[newSize];
+    buffer = new unsigned char[newSize];
 }
 
 void MemoryBuffer::destroy()
@@ -80,6 +80,8 @@ void MemoryBuffer::destroy()
 
 void* MemoryBuffer::map(uint32_t stride)
 {
+    GP_ASSERT(buffer);
+    GP_ASSERT(stride < _size);
     return &buffer[stride];
 }
 
