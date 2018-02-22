@@ -86,7 +86,7 @@ void BGFXIndexBuffer::set(const void* data, uint32_t count, uint32_t start)
         // if dynamic, update vertex buffer with memory buffer
         GP_ASSERT(bgfx::isValid(_dibh));
         const bgfx::Memory* mem = bgfx::makeRef(_memoryBuffer.map(0), _memoryBuffer.getSize());
-        bgfx::updateDynamicIndexBuffer(_dibh, _elementStart, mem);
+        bgfx::updateDynamicIndexBuffer(_dibh, 0, mem);
     }
     else
     {

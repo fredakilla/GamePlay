@@ -52,11 +52,10 @@ void GeometryBuffer::set(const void* data, uint32_t count, uint32_t start)
 
     if(_dynamic)
     {
-        _elementCount = start + count;
-
         // need to resize memory buffer ?
         if(needResize)
         {
+            _elementCount = start + count;
             uint32_t newSize = _elementSize * _elementCount;
             if(newSize > _memoryBuffer.getSize())
                 _memoryBuffer.resize(newSize);
@@ -98,12 +97,8 @@ void* GeometryBuffer::lock(uint32_t start, uint32_t count)
         return nullptr;
     }
 
-
-
-    //_lockStart = start;
-    //_lockCount = count;
     _lockState = LOCK_ACTIVE;
-    _lockData = _memoryBuffer.map(start);
+    _lockData = _memoryBuffer.map(_lockStart);
 
     return _lockData;
 }

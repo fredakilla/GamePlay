@@ -370,7 +370,7 @@ private:
 
 public:
     void draw();
-    bool setDrawRange(uint32_t start, uint32_t count);
+    bool setDrawRange(uint32_t vertexStart, uint32_t vertexCount);
 
 };
 

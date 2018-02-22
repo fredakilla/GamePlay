@@ -44,9 +44,9 @@ void Mesh::set(const VertexFormat& vertexFormat, unsigned int vertexCount, bool 
     _vertexBuffer = new BGFXVertexBuffer(vertexFormat, vertexCount, dynamic);
 }
 
-bool Mesh::setDrawRange(uint32_t start, uint32_t count)
+bool Mesh::setDrawRange(uint32_t vertexStart, uint32_t vertexCount)
 {
-    return _vertexBuffer->setRange(start, count);
+    return _vertexBuffer->setRange(vertexStart, vertexCount);
 }
 
 Mesh* Mesh::createMesh(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic)
