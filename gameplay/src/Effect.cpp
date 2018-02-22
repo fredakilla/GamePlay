@@ -66,20 +66,9 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
 
 
 
-
-
-
-    // Fill ShaderFiles struct.
-    ShaderFiles shaderFiles;
-    shaderFiles.vertex = vshPath;
-    shaderFiles.fragment = fshPath;
-
-    if(defines)
-        shaderFiles.defines = defines;
-
     // Create gpu program.
     BGFXGpuProgram * _gpuProgram = new BGFXGpuProgram();
-    _gpuProgram->set(shaderFiles);
+    _gpuProgram->set(vshPath, fshPath, defines);
 
     // Create and return the new Effect.
     Effect* effect = new Effect();

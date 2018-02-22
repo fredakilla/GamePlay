@@ -1,5 +1,4 @@
-#ifndef BGFXGPUPROGRAM_H
-#define BGFXGPUPROGRAM_H
+#pragma once
 
 #include "../Base.h"
 #include "../BGFX/BGFXUniform.h"
@@ -7,27 +6,12 @@
 namespace gameplay
 {
 
-struct ShaderFiles
-{
-    std::string vertex;
-    std::string fragment;
-    std::string defines;
-};
-
-enum ShaderType
-{
-    ST_VERTEX,              /// Vertex Shader.
-    ST_FRAGMENT,            /// Fragment Shader.
-    ST_COMPUTE              /// Compute Shader.
-};
-
-
 class BGFXGpuProgram
 {
 public:
     BGFXGpuProgram();
     ~BGFXGpuProgram();
-    virtual void set(ShaderFiles shaderFiles);
+    void set(const char* vshPath, const char* fshPath, const char* defines);
     void bind();
     const bgfx::ProgramHandle getProgram() const;
     const std::vector<UniformInfo> getUniformsInfo() const { return _uniformsInfo; }
@@ -45,6 +29,5 @@ private:
     bgfx::ProgramHandle _program;
 };
 
-} // end namespace gameplay
+}
 
-#endif // BGFXGPUPROGRAM_H

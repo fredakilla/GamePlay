@@ -13,12 +13,13 @@ namespace bgfx
 
 namespace gameplay {
 
-BGFXGpuProgram::BGFXGpuProgram()
+BGFXGpuProgram::BGFXGpuProgram() :
+    _vsh(BGFX_INVALID_HANDLE)
+    , _fsh(BGFX_INVALID_HANDLE)
+    , _csh(BGFX_INVALID_HANDLE)
+    , _program(BGFX_INVALID_HANDLE)
 {
-    _vsh = BGFX_INVALID_HANDLE;
-    _fsh = BGFX_INVALID_HANDLE;
-    _csh = BGFX_INVALID_HANDLE;
-    _program = BGFX_INVALID_HANDLE;
+
 }
 
 BGFXGpuProgram::~BGFXGpuProgram()
@@ -69,23 +70,25 @@ unsigned long hash_djb2(const char *str)
     return hash;
 }
 
-std::string compileShader(std::string shaderFile, std::string defines)
+std::string compileShader(const char* file, const char* defines)
 {
     // get shader file upper extension (.VS or .FS)
-    std::string extension = FileSystem::getExtension(shaderFile.c_str());
+    std::string extension = FileSystem::getExtension(file);
 
     // varyingDef name is same that shader filename but with .io extension
-    std::string varyingDef = FileSystem::getBaseName(shaderFile.c_str()) + ".io";
+    std::string varyingDef = FileSystem::getBaseName(file) + ".io";
 
     // get shader basename without path and without extension
-    std::string base_filename = shaderFile.substr(shaderFile.find_last_of("/\\") + 1);
+    std::string base_filename(file);
+    base_filename = base_filename.substr(base_filename.find_last_of("/\\") + 1);
     std::string::size_type const p(base_filename.find_last_of('.'));
     std::string file_without_extension = base_filename.substr(0, p);
 
     // format ouput compiled shader filename using basename + hash key based on defines
     std::string outFileName = "tmpshaders/" + file_without_extension;  
-    outFileName += "_";
-    outFileName += std::to_string(hash_djb2(defines.c_str()));
+    if(defines)
+        outFileName += "_" + std::to_string(hash_djb2(defines));
+
 
     // add to ouput name, shader type extension
     unsigned char type = 255;
@@ -107,7 +110,7 @@ std::string compileShader(std::string shaderFile, std::string defines)
     GP_ASSERT(type != 255);
 
 
-    // shaderc --type : shader type (v = vertex, f = fragment, c = compute)
+    // shaderc --type : (v = vertex, f = fragment, c = compute)
     static const char ST[9][2] = {"", "f", "v", "", "g", "", "", "", "c"};
 
     // shaderc --profile : shader model (f.e. ps_3_0)
@@ -118,7 +121,7 @@ std::string compileShader(std::string shaderFile, std::string defines)
     int argc = 0;
     const char* argv[16];
     argv[argc++] = "-f";
-    argv[argc++] = shaderFile.c_str();
+    argv[argc++] = file;
     argv[argc++] = "-o";
     argv[argc++] = outFileName.c_str();
     argv[argc++] = "--varyingdef";
@@ -130,17 +133,17 @@ std::string compileShader(std::string shaderFile, std::string defines)
     //argv[argc++] = "--profile";
     //argv[argc++] = SM[shader->type]; //"vs_5_0";
     //argv[argc++] = "--raw";
-    if(!defines.empty())
+    if(defines)
     {
         argv[argc++] = "--define";
-        argv[argc++] = defines.c_str();
+        argv[argc++] = defines;
     }
 
     // invoke shaderc compiler (static library version)
     int ret = bgfx::compileShader(argc, argv);
     GP_ASSERT(ret == 0);
 
-    // log shaderc build command to a file (for compile time usage).
+    // log shaderc build command to a file (for a next compile time usage).
     std::string commandLineStr= "$SHADERC ";
     for (int i=0;i<argc;i++)
         commandLineStr.append(argv[i]).append(" ");
@@ -154,41 +157,23 @@ std::string compileShader(std::string shaderFile, std::string defines)
     return outFileName;
 }
 
-
-void BGFXGpuProgram::set(ShaderFiles shaderFiles)
+void BGFXGpuProgram::set(const char* vshPath, const char* fshPath, const char* defines)
 {
-    // try to detect shaderc signature in shader files, if not, try to compile shader.
+    // Try to detect shaderc signature in file.
+    // If not found we need to compile file with the bgfx-shaderc,
+    // else file is already by bgfx-shaderc.
 
-    if(!detectShadercSignature(shaderFiles.vertex))
-    {
-         std::string vertFile = compileShader(shaderFiles.vertex, shaderFiles.defines);
-         if(!vertFile.empty())
-             shaderFiles.vertex = vertFile;
-    }
+    std::string vsFile = vshPath;
+    if(!detectShadercSignature(vshPath))
+        vsFile = compileShader(vshPath, defines);
 
-    if(!detectShadercSignature(shaderFiles.fragment))
-    {
-         std::string fragFile = compileShader(shaderFiles.fragment, shaderFiles.defines);
-         if(!fragFile.empty())
-             shaderFiles.fragment = fragFile;
-    }
-
-    /*// try shaderc compilation
-    // if fails, presume shader is already compiled (extension .vert or .frag) and fallback to shader creation
-    std::string vertFile = compileShader(shaderFiles.vertex, shaderFiles.defines);
-    std::string fragFile = compileShader(shaderFiles.fragment, shaderFiles.defines);
-    if(!vertFile.empty() && !fragFile.empty())
-    {
-        // shaderc compilation successfull.
-        shaderFiles.vertex = vertFile;
-        shaderFiles.fragment = fragFile;
-    }*/
-
-
+    std::string fsFile = fshPath;
+    if(!detectShadercSignature(fshPath))
+        fsFile = compileShader(fshPath, defines);
 
     // Create bgfx shaders from compiled shaderc output files.
-    createShader(shaderFiles.vertex.c_str(), _vsh);
-    createShader(shaderFiles.fragment.c_str(), _fsh);
+    createShader(vsFile.c_str(), _vsh);
+    createShader(fsFile.c_str(), _fsh);
 
     // Create bgfx program.
     _program = bgfx::createProgram(_vsh,_fsh,false);
@@ -227,7 +212,7 @@ void BGFXGpuProgram::getUniformsFromShader(bgfx::ShaderHandle shaderHandle)
                 uinfo.type = UniformType::UT_MATRIX4;
                 break;
             default:
-                GP_ERROR("BGFXGpuProgram::addUniformsFromShader: Uniform type unknown.");
+                GP_ERROR("Uniform type is unknown.");
         };
 
         _uniformsInfo.push_back(uinfo);        
