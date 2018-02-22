@@ -48,6 +48,9 @@ bool GeometryBuffer::setRange(uint32_t start, uint32_t count)
 
 void GeometryBuffer::set(const void* data, uint32_t count, uint32_t start)
 {
+    count = count == 0 ? _elementCount : count;
+    start = start == 0 ? _elementStart : start;
+
     bool needResize = start + count > _elementCount;
 
     if(_dynamic)
