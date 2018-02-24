@@ -128,11 +128,11 @@ bool PhysicsCollisionObjectSample::bindLights(Node* node)
         Material* material = model->getMaterial();
         if (material)
         {
-            MaterialParameter* ambientColorParam = material->getParameter("u_ambientColor");
-            if (ambientColorParam)
-            {
-                ambientColorParam->setValue(_scene->getAmbientColor());
-            }
+            //@@MaterialParameter* ambientColorParam = material->getParameter("u_ambientColor");
+            //@@if (ambientColorParam)
+            //@@{
+            //@@    ambientColorParam->setValue(_scene->getAmbientColor());
+            //@@}
 
             if (_lightNode && _lightNode->getLight())
             {
