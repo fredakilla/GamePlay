@@ -1152,8 +1152,11 @@ int Platform::enterMessagePump()
                 case SDLK_ESCAPE:
                     loop = false;
                     break;
-                case SDLK_F2:
+                case SDLK_F1:
                     Renderer::getInstance().toggleDebugStats();
+                    break;
+                case SDLK_F3:
+                    Renderer::getInstance().toggleWireFrame();
                     break;
                 case SDLK_F7:
                     Renderer::getInstance().toggleVSync();

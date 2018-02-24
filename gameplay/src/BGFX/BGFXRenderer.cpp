@@ -50,6 +50,16 @@ void BGFXRenderer::toggleDebugStats()
     bgfx::setDebug(_debug_flags);
 }
 
+void BGFXRenderer::toggleWireFrame()
+{
+    if ((_debug_flags & BGFX_DEBUG_WIREFRAME) == 0)
+        _debug_flags |= BGFX_DEBUG_WIREFRAME;
+    else
+        _debug_flags &= ~BGFX_DEBUG_WIREFRAME;
+
+    bgfx::setDebug(_debug_flags);
+}
+
 void BGFXRenderer::toggleVSync()
 {
     if (_isVsync)
