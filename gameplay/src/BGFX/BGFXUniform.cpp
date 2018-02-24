@@ -177,7 +177,9 @@ void BGFXUniform::setValue(const Texture::Sampler** values, unsigned int count)
         GP_ASSERT(values[i]);
 
         // Bind the sampler - this binds the texture and applies sampler state
-        const_cast<Texture::Sampler*>(values[i])->bind(this);
+
+        //@@
+        //const_cast<Texture::Sampler*>(values[i])->bind(this);
     }
 }
 
