@@ -1,3 +1,15 @@
+#--------------------------------------------------------------------
+# output directory
+#--------------------------------------------------------------------
+
+CONFIG(debug,debug|release){
+    DESTDIR = $$PWD/GAMEPLAY_PATH/BUILD
+} else {
+    DESTDIR = $$PWD/GAMEPLAY_PATH/BUILD
+}
+
+QMAKE_CLEAN += $$DESTDIR/$$TARGET
+
 #-------------------------------------------------
 #
 # Project created by QtCreator
@@ -32,12 +44,17 @@ linux: INCLUDEPATH += /usr/lib/x86_64-linux-gnu/glib-2.0/include
 linux: INCLUDEPATH += /usr/include/pixman-1
 linux: INCLUDEPATH += /usr/include/libpng12
 linux: INCLUDEPATH += /usr/include/harfbuzz
-linux: LIBS += -L$$PWD/GAMEPLAY_PATH/gameplay/Debug/ -lgameplay
+linux: LIBS += -L$$DESTDIR -lgameplay
 linux: LIBS += -L$$PWD/GAMEPLAY_PATH/external-deps/lib/linux/x86_64/ -lgameplay-deps
-linux: LIBS += -lm -lGL -lrt -ldl -lX11 -lpthread -lgtk-x11-2.0 -lglib-2.0 -lgobject-2.0
-linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/GAMEPLAY_PATH/gameplay/res/shaders ../res$$escape_expand(\n\t))
-linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/GAMEPLAY_PATH/gameplay/res/ui ../res$$escape_expand(\n\t))
-linux: QMAKE_POST_LINK += $$quote(cp -rf $$PWD/GAMEPLAY_PATH/gameplay/res/logo_powered_white.png ../res$$escape_expand(\n\t))
+linux: LIBS += -lm -lGL -lrt -ldl -lX11 -lpthread -lgtk-x11-2.0 -lglib-2.0 -lgobject-2.0 -lsndio
+#linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/GAMEPLAY_PATH/gameplay/res/shaders ../res$$escape_expand(\n\t))
+#linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/GAMEPLAY_PATH/gameplay/res/ui ../res$$escape_expand(\n\t))
+#linux: QMA#KE_POST_LINK += $$quote(cp -rf $$PWD/GAMEPLAY_PATH/gameplay/res/logo_powered_white.png ../res$$escape_expand(\n\t))
+linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/res $$DESTDIR$$escape_expand(\n\t))
+linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/game.config $$DESTDIR$$escape_expand(\n\t))
+linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/GAMEPLAY_PATH/gameplay/res/shaders $$DESTDIR/res$$escape_expand(\n\t))
+linux: QMAKE_POST_LINK += $$quote(rsync -rau $$PWD/GAMEPLAY_PATH/gameplay/res/ui $$DESTDIR/res$$escape_expand(\n\t))
+
 
 macx: QMAKE_CXXFLAGS += -x c++ -stdlib=libc++ -w -arch x86_64
 macx: QMAKE_OBJECTIVE_CFLAGS += -x objective-c++ -stdlib=libc++ -w -arch x86_64

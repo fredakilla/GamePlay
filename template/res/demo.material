@@ -31,7 +31,7 @@ material lambert2 : colored
     {
         pass 
         {
-            defines = DIRECTIONAL_LIGHT_COUNT 1
+            defines = DIRECTIONAL_LIGHT_COUNT=1
         }
     }
 }
