@@ -21,7 +21,6 @@ protected:
 
 private:
     void getUniformsFromShader(bgfx::ShaderHandle shaderHandle);
-    void createShader(const char * binFile, bgfx::ShaderHandle& shader);
 
     bgfx::ShaderHandle _vsh;
     bgfx::ShaderHandle _fsh;

@@ -29,7 +29,7 @@ BGFXGpuProgram::~BGFXGpuProgram()
 
 void BGFXGpuProgram::set(const char* vshPath, const char* fshPath, const char* defines)
 {
-    // Comile shaders using brtshaderc library
+    // Compile shaders using brtshaderc library
     const bgfx::Memory* memVsh = shaderc::compileShader(shaderc::ST_VERTEX, vshPath, defines, "res/shaders/varying.def.sc");
     const bgfx::Memory* memFsh = shaderc::compileShader(shaderc::ST_FRAGMENT, fshPath, defines, "res/shaders/varying.def.sc");
 
@@ -82,26 +82,6 @@ void BGFXGpuProgram::getUniformsFromShader(bgfx::ShaderHandle shaderHandle)
 
         _uniformsInfo.push_back(uinfo);        
     }
-}
-
-void BGFXGpuProgram::createShader(const char * binFile, bgfx::ShaderHandle& shader)
-{
-    int shSize = 0;
-    char * shSource = FileSystem::readAll(binFile, &shSize);
-    if (shSource == NULL)
-    {
-        GP_ERROR("Failed to read shader from file '%s'.", binFile);
-        return;
-    }
-
-    const bgfx::Memory* mem = bgfx::alloc(shSize + 1);
-    memcpy((void *)mem->data, (void *)shSource, shSize);
-    delete shSource;
-
-    mem->data[mem->size - 1] = '\0';
-
-    shader = bgfx::createShader(mem);
-    GP_ASSERT(bgfx::isValid(shader));
 }
 
 void BGFXGpuProgram::bind()
