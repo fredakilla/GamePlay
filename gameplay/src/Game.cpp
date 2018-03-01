@@ -65,7 +65,7 @@ Game::Game()
       _clearDepth(1.0f), _clearStencil(0), _properties(NULL),
       _animationController(NULL), _audioController(NULL),
       _physicsController(NULL), _aiController(NULL), _audioListener(NULL),
-      _timeEvents(NULL), _scriptController(NULL), _scriptTarget(NULL)
+      _timeEvents(NULL), _scriptController(NULL), _scriptTarget(NULL), _curentViewId(0)
 {
     GP_ASSERT(__gameInstance == NULL);
 
@@ -162,7 +162,7 @@ bool Game::startup()
 
     setViewport(Rectangle(0.0f, 0.0f, (float)_width, (float)_height));
     RenderState::initialize();
-    FrameBuffer::initialize();
+    //@@FrameBuffer::initialize();
 
     _animationController = new AnimationController();
     _animationController->initialize();
@@ -279,7 +279,7 @@ void Game::shutdown()
 
         SAFE_DELETE(_audioListener);
 
-        FrameBuffer::finalize();
+        //@@FrameBuffer::finalize();
         RenderState::finalize();
 
         SAFE_DELETE(_properties);
@@ -527,7 +527,7 @@ void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, 
         bits |= BGFX_CLEAR_STENCIL;
     }
     //@@glClear(bits);
-    bgfx::setViewClear(0, bits, _clearColor.toUInt(), _clearDepth, _clearStencil);
+    bgfx::setViewClear(_curentViewId, bits, _clearColor.toUInt(), _clearDepth, _clearStencil);
 }
 
 void Game::clear(ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil)
@@ -823,6 +823,22 @@ void Game::loadGamepads()
 void Game::ShutdownListener::timeEvent(long timeDiff, void* cookie)
 {
 	Game::getInstance()->shutdown();
+}
+
+
+void Game::insertView(uint16_t index, View view)
+{
+    _views.insert(std::pair<uint16_t, View>(index, view));
+
+    bgfx::setViewClear(index, view.clearFlags, view.clearColor, view.depth, view.stencil);
+    bgfx::setViewRect(index, view.rectangle.x, view.rectangle.y, view.rectangle.width, view.rectangle.height);
+}
+
+void Game::bindView(uint16_t viewIndex)
+{
+    GP_ASSERT(_views.count(viewIndex));
+    _curentViewId = viewIndex;
+    bgfx::touch(_curentViewId);
 }
 
 }

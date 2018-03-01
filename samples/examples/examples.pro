@@ -29,7 +29,8 @@ SOURCES += \
     src/Example.cpp \
     src/Cube.cpp \
     src/Sponza.cpp \
-    src/FirstPersonCamera.cpp
+    src/FirstPersonCamera.cpp \
+    src/RenderToTexture.cpp
 
 HEADERS += \
     src/SamplesGame.h \
@@ -39,7 +40,8 @@ HEADERS += \
     src/Example.h \
     src/Cube.h \
     src/Sponza.h \
-    src/FirstPersonCamera.h
+    src/FirstPersonCamera.h \
+    src/RenderToTexture.h
 
 INCLUDEPATH += ../../gameplay/src
 INCLUDEPATH += ../../external-deps/include

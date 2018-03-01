@@ -8,6 +8,46 @@
 namespace gameplay
 {
 
+
+
+FrameBuffer::FrameBuffer(const char* id, unsigned int width, unsigned int height)
+{
+
+}
+
+FrameBuffer* FrameBuffer::create(const char* id, unsigned int width, unsigned int height, std::vector<Texture*> textures)
+{
+    uint8_t num = (uint8_t)textures.size();
+
+    // collect texture handles
+    bgfx::TextureHandle* textureHandles = new bgfx::TextureHandle[num];
+    for(size_t i=0; i<textures.size(); i++)
+    {
+        textureHandles[i] = textures[i]->getGpuTexture()->getHandle();
+    }
+
+    // create frame buffer
+    FrameBuffer* frameBuffer = new FrameBuffer(id, width, height);
+    frameBuffer->_frameBufferHandle = bgfx::createFrameBuffer(num, textureHandles);
+    frameBuffer->_textures = textures;
+
+    delete textureHandles;
+
+    return frameBuffer;
+}
+
+
+FrameBuffer* FrameBuffer::bind()
+{
+    bgfx::setViewFrameBuffer(Game::getInstance()->_curentViewId, _frameBufferHandle);
+}
+
+
+
+
+
+#if 0//@@
+
 unsigned int FrameBuffer::_maxRenderTargets = 0;
 std::vector<FrameBuffer*> FrameBuffer::_frameBuffers;
 FrameBuffer* FrameBuffer::_defaultFrameBuffer = NULL;
@@ -332,5 +372,7 @@ FrameBuffer* FrameBuffer::getCurrent()
 {
     return _currentFrameBuffer;
 }
+
+#endif//@@
 
 }

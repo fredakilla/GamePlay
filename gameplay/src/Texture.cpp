@@ -180,15 +180,33 @@ size_t Texture::getFormatBPP(Format format)
 
 Texture* Texture::create(Format format, unsigned int width, unsigned int height, const unsigned char* data, bool generateMipmaps, Texture::Type type)
 {
-    GPTextureInfos textureInfo;
+    GPTextureInfo textureInfo;
     textureInfo.width = width;
     textureInfo.height = height;
     textureInfo.format = format;
     textureInfo.bytePerPixel = getFormatBPP(format);
+    textureInfo.type = type;
+    textureInfo.id = "";
 
     Texture* texture = BGFXTexture::createFromData(data, textureInfo);
     if (generateMipmaps)
         texture->generateMipmaps();
+
+    return texture;
+}
+
+
+Texture* Texture::create(const char* id, unsigned int width, unsigned int height, Format format, Type type)
+{
+    GPTextureInfo textureInfo;
+    textureInfo.width = width;
+    textureInfo.height = height;
+    textureInfo.format = format;
+    textureInfo.bytePerPixel = getFormatBPP(format);
+    textureInfo.type = type;
+    textureInfo.id = id;
+
+    Texture* texture = BGFXTexture::createFromData(0, textureInfo);
 
     return texture;
 }

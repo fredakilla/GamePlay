@@ -58,8 +58,8 @@ public:
     void endFrame();
 
 
-    void setViewTransform(Matrix& view, Matrix& proj, unsigned short viewId = 0);
-    void setModelTransform(Matrix * matrix, unsigned short count = 1);
+    //void setViewTransform(Matrix& view, Matrix& proj, unsigned short viewId = 0);
+    //void setModelTransform(Matrix * matrix, unsigned short count = 1);
 
 
 

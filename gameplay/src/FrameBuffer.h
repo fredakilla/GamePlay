@@ -9,6 +9,52 @@
 namespace gameplay
 {
 
+
+class FrameBuffer : public Ref
+{
+public:
+
+    static FrameBuffer* create(const char* id, unsigned int width, unsigned int height, std::vector<Texture*> textures);
+    FrameBuffer* bind();
+
+
+
+
+
+    Texture* getRenderTarget(uint16_t id)
+    {
+        GP_ASSERT(id >= 0);
+
+        if(id <= _textures.size())
+        {
+           return _textures[id];
+        }
+        return nullptr;
+    }
+
+    Texture* getRenderTarget(std::string id)
+    {
+        for(Texture* texture : _textures)
+        {
+            if(texture->getPath() == id)
+                return texture;
+        }
+        return nullptr;
+    }
+
+
+private:
+    FrameBuffer(const char* id, unsigned int width, unsigned int height);
+
+
+    bgfx::FrameBufferHandle _frameBufferHandle;
+    std::vector<Texture*> _textures;
+};
+
+
+
+#if 0//@@
+
 /**
  * Defines a frame buffer object that may contain one or more render targets and optionally
  * a depth-stencil target.
@@ -228,6 +274,8 @@ private:
     static FrameBuffer* _defaultFrameBuffer;
     static FrameBuffer* _currentFrameBuffer;
 };
+
+#endif//@@
 
 }
 

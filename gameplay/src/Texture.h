@@ -89,12 +89,14 @@ public:
     /**
      * Texture information record
      */
-    struct GPTextureInfos
+    struct GPTextureInfo
     {
         unsigned int width;
         unsigned int height;
         Format format;
         unsigned int bytePerPixel;
+        Type type;
+        std::string id;
     };
 
     /**
@@ -229,6 +231,12 @@ public:
      * @script{create}
      */
     static Texture* create(Format format, unsigned int width, unsigned int height, const unsigned char* data, bool generateMipmaps = false, Type type = TEXTURE_2D);
+
+
+
+    static Texture* create(const char* id, unsigned int width, unsigned int height, Format format, Type type = TEXTURE_2D);
+
+    BGFXTexture* getGpuTexture() { return _gpuTtexture; }
 
     /**
      * Creates a texture object to wrap the specified pre-created native texture handle.
