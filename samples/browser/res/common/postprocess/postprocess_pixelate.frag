@@ -6,7 +6,7 @@ precision mediump float;
 uniform sampler2D u_texture;
 
 // Inputs
-varying vec2 v_texCoord;
+varying vec2 v_texcoord0;
 
 
 float discretize(float f, float d)
@@ -21,7 +21,7 @@ vec2 discretize(vec2 v, float d)
 
 void main()
 {
-    vec2 texCoord = discretize(v_texCoord, 128.0);
+    vec2 texCoord = discretize(v_texcoord0, 128.0);
     gl_FragColor = texture2D(u_texture, texCoord);
 }
 

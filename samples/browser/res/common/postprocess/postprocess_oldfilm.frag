@@ -4,18 +4,18 @@ precision mediump float;
 
 // Uniforms
 uniform sampler2D u_texture;
-uniform float u_sepiaValue;
-uniform float u_noiseValue;
-uniform float u_scratchValue;
-uniform float u_innerVignetting;
-uniform float u_outerVignetting;
+uniform vec4 u_sepiaValue;
+uniform vec4 u_noiseValue;
+uniform vec4 u_scratchValue;
+uniform vec4 u_innerVignetting;
+uniform vec4 u_outerVignetting;
 
-uniform float u_elapsedTime;
-uniform float u_random;
+uniform vec4 u_elapsedTime;
+uniform vec4 u_random;
 
 
 // Varying
-varying vec2 v_texCoord;
+varying vec2 v_texcoord0;
 
 
 
@@ -89,13 +89,13 @@ float snoise (vec2 v)
     return 130.0 * dot(m, g);
 }
 
-void main ()
+void main()
 {
     // Sepia RGB value
     vec3 sepia = vec3(112.0 / 255.0, 66.0 / 255.0, 20.0 / 255.0);
 
     // Step 1: Convert to grayscale
-    vec3 colour = texture2D(u_texture, v_texCoord).xyz;
+    vec3 colour = texture2D(u_texture, v_texcoord0).xyz;
     float gray = (colour.x + colour.y + colour.z) / 3.0;
     vec3 grayscale = vec3(gray);
     
@@ -103,31 +103,31 @@ void main ()
     vec3 finalColour = overlay(sepia, grayscale);
     
     // Step 3: Lerp final sepia colour
-    finalColour = grayscale + u_sepiaValue * (finalColour - grayscale);
+    finalColour = grayscale + u_sepiaValue.x * (finalColour - grayscale);
     
     // Step 4: Add noise
-    float noise = snoise(v_texCoord * vec2(1024.0 + u_random * 512.0, 1024.0 + u_random * 512.0)) * 0.5;
-    finalColour += noise * u_noiseValue;
+    float noise = snoise(v_texcoord0 * vec2(1024.0 + u_random.x * 512.0, 1024.0 + u_random.x * 512.0)) * 0.5;
+    finalColour += noise * u_noiseValue.x;
     
     // Optionally add noise as an overlay, simulating ISO on the camera
     //vec3 noiseOverlay = overlay(finalColour, vec3(noise));
-    //finalColour = finalColour + u_noiseValue * (finalColour - noiseOverlay);
+    //finalColour = finalColour + u_noiseValue.x * (finalColour - noiseOverlay);
     
     // Step 5: Apply scratches
-    if ( u_random < u_scratchValue )
+    if ( u_random.x < u_scratchValue.x )
     {
         // Pick a random spot to show scratches
-        float dist = 1.0 / u_scratchValue;
-        float d = distance(v_texCoord, vec2(u_random * dist, u_random * dist));
+        float dist = 1.0 / u_scratchValue.x;
+        float d = distance(v_texcoord0, vec2(u_random.x * dist, u_random.x * dist));
         if ( d < 0.4 )
         {
             // Generate the scratch
             float xPeriod = 8.0;
             float yPeriod = 1.0;
             float pi = 3.141592;
-            float phase = u_elapsedTime;
-            float turbulence = snoise(v_texCoord * 2.5);
-            float vScratch = 0.5 + (sin(((v_texCoord.x * xPeriod + v_texCoord.y * yPeriod + turbulence)) * pi + phase) * 0.5);
+            float phase = u_elapsedTime.x;
+            float turbulence = snoise(v_texcoord0 * 2.5);
+            float vScratch = 0.5 + (sin(((v_texcoord0.x * xPeriod + v_texcoord0.y * yPeriod + turbulence)) * pi + phase) * 0.5);
             vScratch = clamp((vScratch * 10000.0) + 0.35, 0.0, 1.0);
 
             finalColour.xyz *= vScratch;
@@ -135,8 +135,8 @@ void main ()
     }
     
     // Step 6: Apply vignetting - Max distance from centre to corner is ~0.7. Scale that to 1.0.
-    float d = distance(vec2(0.5, 0.5), v_texCoord) * 1.414213;
-    float vignetting = clamp((u_outerVignetting - d) / (u_outerVignetting - u_innerVignetting), 0.0, 1.0);
+    float d = distance(vec2(0.5, 0.5), v_texcoord0) * 1.414213;
+    float vignetting = clamp((u_outerVignetting.x - d) / (u_outerVignetting.x - u_innerVignetting.x), 0.0, 1.0);
     finalColour.xyz *= vignetting;
     
     // Apply colour
