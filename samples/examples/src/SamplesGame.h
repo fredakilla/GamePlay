@@ -2,7 +2,7 @@
 #define SAMPLESGAME_H_
 
 #include "gameplay.h"
-#include "Examples.h"
+#include "Example.h"
 
 using namespace gameplay;
 
@@ -168,7 +168,7 @@ private:
     typedef std::vector<SampleRecord> SampleRecordList;
     static std::vector<SampleRecordList>* _samples;
 
-    Examples* _activeSample;
+    Example* _activeSample;
     Font* _font;
     Form* _sampleSelectForm;
 };

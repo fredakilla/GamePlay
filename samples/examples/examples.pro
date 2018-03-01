@@ -23,13 +23,23 @@ CONFIG -= qt
 
 SOURCES += \
     src/SamplesGame.cpp \
-    src/TriangleSample.cpp \
-    src/Examples.cpp
+    src/DrawStress.cpp \
+    src/DynamicMesh.cpp \
+    src/Instancing.cpp \
+    src/Example.cpp \
+    src/Cube.cpp \
+    src/Sponza.cpp \
+    src/FirstPersonCamera.cpp
 
 HEADERS += \
     src/SamplesGame.h \
-    src/TriangleSample.h \
-    src/Examples.h
+    src/DrawStress.h \
+    src/DynamicMesh.h \
+    src/Instancing.h \
+    src/Example.h \
+    src/Cube.h \
+    src/Sponza.h \
+    src/FirstPersonCamera.h
 
 INCLUDEPATH += ../../gameplay/src
 INCLUDEPATH += ../../external-deps/include

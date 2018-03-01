@@ -23,9 +23,6 @@ void SamplesGame::initialize()
         std::sort((*_samples)[i].begin(), (*_samples)[i].end());
     }
 
-    // Load camera script
-    getScriptController()->loadScript("res/common/camera.lua");
-
     // Create the selection form
     _sampleSelectForm = Form::create("sampleSelect", NULL, Layout::LAYOUT_VERTICAL);
     _sampleSelectForm->setWidth(220);
@@ -91,7 +88,6 @@ void SamplesGame::update(float elapsedTime)
             return;
         }
 
-        getScriptController()->executeFunction<void>("camera_update", "f", NULL, elapsedTime);
         _activeSample->update(elapsedTime);
         return;
     }
@@ -131,7 +127,6 @@ void SamplesGame::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int c
         }
         else
         {
-            getScriptController()->executeFunction<void>("camera_touchEvent", "[Touch::TouchEvent]iiui", NULL, evt, x, y, contactIndex);
             _activeSample->touchEvent(evt, x, y, contactIndex);
         }
         return;
@@ -149,7 +144,6 @@ void SamplesGame::keyEvent(Keyboard::KeyEvent evt, int key)
         }
         else
         {
-            getScriptController()->executeFunction<void>("camera_keyEvent", "[Keyboard::KeyEvent][Keyboard::Key]", NULL, evt, key);
             _activeSample->keyEvent(evt, key);
         }
         return;
@@ -247,7 +241,7 @@ void SamplesGame::runSample(void* func)
     
     SampleGameCreatePtr p = (SampleGameCreatePtr)func;
 
-    _activeSample = reinterpret_cast<Examples*>(p());
+    _activeSample = reinterpret_cast<Example*>(p());
     _activeSample->initialize();
     resume();
 }

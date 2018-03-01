@@ -1,0 +1,547 @@
+material textured
+{
+    u_worldViewProjectionMatrix = WORLD_VIEW_PROJECTION_MATRIX
+    
+    sampler u_diffuseTexture
+    {
+        mipmap = true
+        wrapS = CLAMP
+        wrapT = CLAMP
+        minFilter = LINEAR_MIPMAP_LINEAR
+        magFilter = LINEAR
+    }
+
+    renderState
+    {
+        cullFace = true
+        depthTest = true
+    }
+    
+    technique
+    {
+        pass 
+        {
+            vertexShader = res/shaders/textured.vert
+            fragmentShader = res/shaders/textured.frag
+        }
+    }
+}
+
+material colored
+{
+    u_worldViewProjectionMatrix = WORLD_VIEW_PROJECTION_MATRIX
+    
+    renderState
+    {
+        cullFace = true
+        depthTest = true
+    }
+    
+    technique
+    {
+        pass 
+        {
+            vertexShader = res/shaders/colored.vert
+            fragmentShader = res/shaders/colored.frag
+        }
+    }
+}
+
+material m0Material__25 : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/lion.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m10column_c : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_column_c_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m11details : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_details_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m12fabric_a : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_fabric_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m13fabric_c : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_curtain_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m14fabric_d : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_fabric_blue_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m15fabric_e : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_fabric_green_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m16fabric_f : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_curtain_green_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m17fabric_g : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_curtain_blue_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m18flagpole : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_flagpole_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m19floor : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_floor_a_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m1Material__298 : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/background.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m20leaf : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_thorn_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m21roof : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_roof_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m22vase : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/vase_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m23vase_hanging : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/vase_hanging_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m24vase_round : textured
+{
+    u_cameraPosition = CAMERA_WORLD_POSITION
+    u_inverseTransposeWorldViewMatrix = INVERSE_TRANSPOSE_WORLD_VIEW_MATRIX
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/vase_round.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m2Material__47 : colored
+{
+    u_cameraPosition = CAMERA_WORLD_POSITION
+    u_diffuseColor = 0.735, 0.735, 0.735, 1
+    u_inverseTransposeWorldViewMatrix = INVERSE_TRANSPOSE_WORLD_VIEW_MATRIX
+    u_specularExponent = 7.45098
+    
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m3Material__57 : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/vase_plant.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m4arch : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_arch_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m5bricks : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/spnza_bricks_a_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m6ceiling : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_ceiling_a_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m7chain : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/chain_texture.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m8column_a : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_column_a_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
+material m9column_b : textured
+{
+    u_specularExponent = 7.45098
+    
+    sampler u_diffuseTexture
+    {
+        path = sponza/sponza_column_b_diff.dds
+        wrapS = REPEAT
+        wrapT = REPEAT
+    }
+
+    technique
+    {
+        pass 
+        {
+            defines = SPECULAR
+        }
+    }
+}
+
