@@ -1,14 +1,14 @@
 /////////////////////////////
 // Attributes
 attribute vec4 a_position;
-attribute vec2 a_texCoord;
+attribute vec2 a_texcoord0;
 
 /////////////////////////////
 // Uniforms
 uniform mat4 u_worldMatrix;
 uniform mat4 u_worldViewProjectionMatrix;
 uniform mat4 u_worldViewProjectionReflectionMatrix;
-uniform vec3 u_cameraPosition;
+uniform vec4 u_cameraPosition;
 
 /////////////////////////////
 // Varyings
@@ -25,7 +25,7 @@ void main()
 
     gl_Position = v_vertexRefractionPosition;
 
-    v_texCoord = a_texCoord;
+    v_texCoord = a_texcoord0;
 
-    v_eyePosition = u_cameraPosition - (u_worldMatrix * a_position).xyz;
+    v_eyePosition = u_cameraPosition.xyz - (u_worldMatrix * a_position).xyz;
 }

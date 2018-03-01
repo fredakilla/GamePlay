@@ -7,7 +7,7 @@ precision highp float;
 uniform sampler2D u_refractionTexture;
 uniform sampler2D u_reflectionTexture;
 uniform sampler2D u_normalMap;
-uniform float u_time;
+uniform vec4 u_time;
 
 //////////////////////////
 // Varyings
@@ -34,7 +34,7 @@ vec2 fromClipSpace(vec4 position)
 void main()
 {	
     // Get normal
-    vec4 normal = texture2D(u_normalMap, v_texCoord * textureRepeat + u_time);
+    vec4 normal = texture2D(u_normalMap, v_texCoord * textureRepeat + u_time.x);
     normal = normalize(normal * 2.0 - 1.0);
     
     // Distortion offset
