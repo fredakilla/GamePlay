@@ -14,7 +14,7 @@ Node* addQuadModelAndNode(Scene* scene, Mesh* mesh)
     return node;
 }
 
-Node* addQuadModelAndNode(Scene* scene, float x, float y, float width, float height, 
+Node* addQuadModelAndNode(Scene* scene, float x, float y, float width, float height,
                           float s1 = 0.0f, float t1 = 0.0f, float s2 = 1.0f, float t2 = 1.0f)
 {
     Mesh* mesh = Mesh::createQuad(x, y, width, height, s1, t1, s2, t2);
@@ -43,7 +43,7 @@ Material* setTextureUnlitMaterial(Model* model, const char* texturePath, bool mi
 
 TextureSample::TextureSample()
     : _font(NULL), _scene(NULL), _zOffset(0.0f)
-{   
+{
 }
 
 void TextureSample::initialize()
@@ -75,7 +75,7 @@ void TextureSample::initialize()
         node->setTranslation(-25, cubeSize, 0);
         // Find the position of the node in screen space
         _scene->getActiveCamera()->project(getViewport(), node->getTranslationWorld(), &x, &y);
-        
+
         //_text.push_back(Text::create("res/ui/arial.gpb", "Quad: Textured", Rectangle(x, y, textWidth, fontSize), Vector4::one(), fontSize, Font::ALIGN_TOP_HCENTER, false));
     }
     // Textured quad points
@@ -129,6 +129,57 @@ void TextureSample::initialize()
         _scene->getActiveCamera()->project(getViewport(), node->getTranslationWorld(), &x, &y);
         //_text.push_back(_font->createText("MipMap: On", Rectangle(x, y, textWidth, fontSize), Vector4::one(), fontSize, Font::ALIGN_HCENTER, false));
     }
+
+
+    // Wrap modes
+
+    int xstart = -25;
+    int xoffset = 11;
+
+    Texture::Wrap WRAP[] = { Texture::REPEAT, Texture::CLAMP, Texture::BORDER, Texture::MIRROR };
+    const char * WRAP_NAME[] = { "REPEAT", "CLAMP", "BORDER", "MIRROR" };
+
+
+    for(int i=0; i<4; i++)
+    {
+        Node* node = addQuadModelAndNode(_scene, 0, 0, cubeSize, cubeSize, -1, -1, 2, 2);
+        setTextureUnlitMaterial(dynamic_cast<Model*>(node->getDrawable()), "res/png/smiley.jpg");
+        node->setId("wrapmodel");
+        Texture::Sampler* sampler = dynamic_cast<Model*>(node->getDrawable())->getMaterial()->getParameter("u_diffuseTexture")->getSampler();
+        if (sampler)
+        {
+            Texture::Wrap wrap = WRAP[i];
+            sampler->setWrapMode(wrap, wrap);
+        }
+        node->setTranslation(xstart + xoffset*i, -15, 0);
+        _scene->getActiveCamera()->project(getViewport(), node->getTranslationWorld(), &x, &y);
+        //_text.push_back(_font->createText("Wrap: Repeat", Rectangle(x, y, textWidth, fontSize), Vector4::one(), fontSize, Font::ALIGN_HCENTER, false));
+    }
+
+    // Linear filter
+    {
+        Node* node = addQuadModelAndNode(_scene, 0, 0, cubeSize, cubeSize, 0.25, 0.25, 0.70, 0.70);
+        setTextureUnlitMaterial(dynamic_cast<Model*>(node->getDrawable()), "res/png/smiley.jpg");
+        node->setTranslation(22, 1, 0);
+        Texture::Sampler* sampler = dynamic_cast<Model*>(node->getDrawable())->getMaterial()->getParameter("u_diffuseTexture")->getSampler();
+        if (sampler)
+        {
+            sampler->setFilterMode(Texture::LINEAR, Texture::LINEAR);
+        }
+    }
+
+    // Nearest filter
+    {
+        Node* node = addQuadModelAndNode(_scene, 0, 0, cubeSize, cubeSize, 0.25, 0.25, 0.70, 0.70);
+        setTextureUnlitMaterial(dynamic_cast<Model*>(node->getDrawable()), "res/png/smiley.jpg");
+        node->setTranslation(22, -10, 0);
+        Texture::Sampler* sampler = dynamic_cast<Model*>(node->getDrawable())->getMaterial()->getParameter("u_diffuseTexture")->getSampler();
+        if (sampler)
+        {
+            sampler->setFilterMode(Texture::NEAREST, Texture::NEAREST);
+        }
+    }
+
 }
 
 void TextureSample::finalize()
