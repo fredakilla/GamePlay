@@ -60,19 +60,43 @@ void WaterSample::initialize()
     SAFE_RELEASE(camera);
     SAFE_RELEASE(camPitchNode);
 
-    // Render buffer and preview for refraction
-    _refractBuffer = FrameBuffer::create("refractBuffer", BUFFER_SIZE, BUFFER_SIZE);
-    DepthStencilTarget* refractDepthTarget = DepthStencilTarget::create("refractDepth", DepthStencilTarget::DEPTH, BUFFER_SIZE, BUFFER_SIZE);
-    _refractBuffer->setDepthStencilTarget(refractDepthTarget);
-    SAFE_RELEASE(refractDepthTarget);
-    _refractBatch = SpriteBatch::create(_refractBuffer->getRenderTarget()->getTexture());
+    //@@// Render buffer and preview for refraction
+    //@@_refractBuffer = FrameBuffer::create("refractBuffer", BUFFER_SIZE, BUFFER_SIZE);
+    //@@DepthStencilTarget* refractDepthTarget = DepthStencilTarget::create("refractDepth", DepthStencilTarget::DEPTH, BUFFER_SIZE, BUFFER_SIZE);
+    //@@_refractBuffer->setDepthStencilTarget(refractDepthTarget);
+    //@@SAFE_RELEASE(refractDepthTarget);
+    //@@_refractBatch = SpriteBatch::create(_refractBuffer->getRenderTarget()->getTexture());
+    //@@
+    //@@// Render buffer and preview for reflection
+    //@@_reflectBuffer = FrameBuffer::create("reflectBuffer", BUFFER_SIZE, BUFFER_SIZE);
+    //@@DepthStencilTarget* reflectDepthTarget = DepthStencilTarget::create("reflectDepth", DepthStencilTarget::DEPTH, BUFFER_SIZE, BUFFER_SIZE);
+    //@@_reflectBuffer->setDepthStencilTarget(reflectDepthTarget);
+    //@@SAFE_RELEASE(reflectDepthTarget);
+    //@@_reflectBatch = SpriteBatch::create(_reflectBuffer->getRenderTarget()->getTexture());
 
-    // Render buffer and preview for reflection
-    _reflectBuffer = FrameBuffer::create("reflectBuffer", BUFFER_SIZE, BUFFER_SIZE);
-    DepthStencilTarget* reflectDepthTarget = DepthStencilTarget::create("reflectDepth", DepthStencilTarget::DEPTH, BUFFER_SIZE, BUFFER_SIZE);
-    _reflectBuffer->setDepthStencilTarget(reflectDepthTarget);
-    SAFE_RELEASE(reflectDepthTarget);
-    _reflectBatch = SpriteBatch::create(_reflectBuffer->getRenderTarget()->getTexture());
+    {
+    Texture* texColor = Texture::create("targetColor", BUFFER_SIZE, BUFFER_SIZE, Texture::Format::RGBA, Texture::Type::TEXTURE_RT);
+    Texture* texDepth = Texture::create("targetDepth", BUFFER_SIZE, BUFFER_SIZE, Texture::Format::DEPTH, Texture::Type::TEXTURE_RT);
+    std::vector<Texture*> textures;
+    textures.push_back(texColor);
+    textures.push_back(texDepth);
+    _refractBuffer = FrameBuffer::create("refractBuffer", BUFFER_SIZE, BUFFER_SIZE, textures);
+    _refractBatch = SpriteBatch::create(_refractBuffer->getRenderTarget("targetColor"));
+    }
+
+    {
+    Texture* texColor = Texture::create("targetColor", BUFFER_SIZE, BUFFER_SIZE, Texture::Format::RGBA, Texture::Type::TEXTURE_RT);
+    Texture* texDepth = Texture::create("targetDepth", BUFFER_SIZE, BUFFER_SIZE, Texture::Format::DEPTH, Texture::Type::TEXTURE_RT);
+    std::vector<Texture*> textures;
+    textures.push_back(texColor);
+    textures.push_back(texDepth);
+    _reflectBuffer = FrameBuffer::create("reflectBatch", BUFFER_SIZE, BUFFER_SIZE, textures);
+    _reflectBatch = SpriteBatch::create(_reflectBuffer->getRenderTarget("targetColor"));
+    }
+
+
+
+
 
     // Add a node to provide light direction
     Node* lightNode = Node::create("lightNode");
@@ -84,10 +108,10 @@ void WaterSample::initialize()
     groundMaterial->getParameter("u_clipPlane")->bindValue(this, &WaterSample::getClipPlane);
     groundMaterial->getParameter("u_directionalLightDirection[0]")->bindValue(lightNode, &Node::getForwardVectorView);
     auto waterMaterial = dynamic_cast<Model*>(_scene->findNode("Water")->getDrawable())->getMaterial();
-    auto refractSampler = Texture::Sampler::create(_refractBuffer->getRenderTarget()->getTexture());
+    auto refractSampler = Texture::Sampler::create(_refractBuffer->getRenderTarget("targetColor"));
     waterMaterial->getParameter("u_refractionTexture")->setSampler(refractSampler);
     SAFE_RELEASE(refractSampler);
-    auto reflectSampler = Texture::Sampler::create(_reflectBuffer->getRenderTarget()->getTexture());
+    auto reflectSampler = Texture::Sampler::create(_reflectBuffer->getRenderTarget("targetColor"));
     waterMaterial->getParameter("u_reflectionTexture")->setSampler(reflectSampler);
     SAFE_RELEASE(reflectSampler);
     waterMaterial->getParameter("u_worldViewProjectionReflectionMatrix")->bindValue(this, &WaterSample::getReflectionMatrix);
@@ -100,6 +124,41 @@ void WaterSample::initialize()
     _gamepad = getGamepad(0);
     if (_gamepad && _gamepad->isVirtual())
         _gamepad->getForm()->setEnabled(true);
+
+
+
+    // Set views
+
+    Game * game = Game::getInstance();
+
+    const Vector4 clearColour(0.84f, 0.89f, 1.f, 1.f);
+
+    View defaultView;
+    defaultView.id = 0;
+    defaultView.clearColor = clearColour.toUInt();
+    defaultView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
+    defaultView.depth = 1.0f;
+    defaultView.stencil = 0;
+    defaultView.rectangle = Rectangle(game->getWidth(), game->getHeight());
+    game->insertView(0, defaultView);
+
+    View reflectView;
+    reflectView.id = 0;
+    reflectView.clearColor = clearColour.toUInt();
+    reflectView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
+    reflectView.depth = 1.0f;
+    reflectView.stencil = 0;
+    reflectView.rectangle = Rectangle(BUFFER_SIZE, BUFFER_SIZE);
+    game->insertView(1, reflectView);
+
+    View refractView;
+    refractView.id = 2;
+    refractView.clearColor = clearColour.toUInt();
+    refractView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
+    refractView.depth = 1.0f;
+    refractView.stencil = 0;
+    refractView.rectangle = Rectangle(BUFFER_SIZE, BUFFER_SIZE);
+    game->insertView(2, refractView);
 
 }
 
@@ -149,8 +208,53 @@ void WaterSample::update(float elapsedTime)
 
 void WaterSample::render(float elapsedTime)
 {
+    // Update the refract buffer
+    Game::getInstance()->bindView(2);
+    _refractBuffer->bind();
+    _clipPlane.y = -1.f;
+    _clipPlane.w = _waterHeight + WATER_OFFSET;
+    _scene->visit(this, &WaterSample::drawScene, false);
+
+    // Switch plane direction and camera, and update reflection buffer
+    Game::getInstance()->bindView(1);
+    _reflectBuffer->bind();
+    _clipPlane.y = 1.f;
+    _clipPlane.w = -_waterHeight + WATER_OFFSET;
+    Camera* defaultCamera = _scene->getActiveCamera();
+    _scene->setActiveCamera(_reflectCameraNode->getFirstChild()->getCamera());
+
+    // Store the mvp matrix here as it is only valid when reflect camera is active
+    m_worldViewProjectionReflection = _scene->findNode("Water")->getWorldViewProjectionMatrix();
+    _scene->visit(this, &WaterSample::drawScene, false);
+
+    // Draw the final scene
+    Game::getInstance()->bindView(0);
+    _clipPlane = Vector4::zero();
+    _scene->setActiveCamera(defaultCamera);
+    _scene->visit(this, &WaterSample::drawScene, true);
+
+    // Draw preview if enabled
+    if (_showBuffers)
+    {
+        _refractBatch->start();
+        _refractBatch->draw(Vector3(0.f, 4.f, 0.f), Rectangle(BUFFER_SIZE, BUFFER_SIZE), Vector2(426.f, 240.f));
+        _refractBatch->finish();
+        _reflectBatch->start();
+        _reflectBatch->draw(Vector3(430.f, 4.f, 0.f), Rectangle(BUFFER_SIZE, BUFFER_SIZE), Vector2(426.f, 240.f));
+        _reflectBatch->finish();
+    }
+
+    // Draw the gamepad
+    _gamepad->draw();
+
+    drawFrameRate(_font, Vector4(0, 0.5f, 1, 1), 5, 1, getFrameRate());
+}
+
+#if 0//@@
+void WaterSample::render(float elapsedTime)
+{
     const Vector4 clearColour(0.84f, 0.89f, 1.f, 1.f);
-    
+
     // Update the refract buffer
     FrameBuffer* defaultBuffer = _refractBuffer->bind();
     Rectangle defaultViewport = getViewport();
@@ -196,6 +300,7 @@ void WaterSample::render(float elapsedTime)
 
     drawFrameRate(_font, Vector4(0, 0.5f, 1, 1), 5, 1, getFrameRate());
 }
+#endif//@@
 
 void WaterSample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex)
 {
