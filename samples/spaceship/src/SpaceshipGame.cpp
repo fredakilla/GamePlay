@@ -80,9 +80,6 @@ void SpaceshipGame::initialize()
     _stateBlock = RenderState::StateBlock::create();
     _stateBlock->setDepthTest(true);
     _stateBlock->setCullFace(true);
-    _stateBlock->setBlend(true);
-    _stateBlock->setBlendSrc(RenderState::BLEND_SRC_ALPHA);
-    _stateBlock->setBlendDst(RenderState::BLEND_ONE_MINUS_SRC_ALPHA);
 
     // Load our scene from file
     _scene = Scene::load("res/spaceship.gpb");
@@ -145,6 +142,15 @@ void SpaceshipGame::initializeSpaceship()
     material->getParameter("u_diffuseTexture")->setValue("res/propulsion_glow.png", true);
     _glowDiffuseParameter = material->getParameter("u_modulateColor");
     initializeMaterial(material, false, false);
+    // don't use the default state block for this one because we wants to add blending
+    RenderState::StateBlock* glowStateBlock = RenderState::StateBlock::create();
+    glowStateBlock->setDepthTest(true);
+    glowStateBlock->setCullFace(true);
+    glowStateBlock->setBlend(true);
+    glowStateBlock->setBlendSrc(RenderState::BLEND_SRC_ALPHA);
+    glowStateBlock->setBlendDst(RenderState::BLEND_ONE_MINUS_SRC_ALPHA);
+    material->setStateBlock(glowStateBlock);
+
 
     // Setup the sound
     _spaceshipSound = AudioSource::create("res/spaceship.wav");
