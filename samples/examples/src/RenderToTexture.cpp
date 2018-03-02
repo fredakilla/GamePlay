@@ -152,7 +152,7 @@ void RenderToTexture::initialize()
     textures.push_back(texColor);
     //textures.push_back(texDepth);
 
-    _frameBuffer = FrameBuffer::create(textures);
+    _frameBuffer = FrameBuffer::create("myFrameBuffer", textures);
 
 
 

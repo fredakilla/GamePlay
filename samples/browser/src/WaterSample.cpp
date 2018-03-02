@@ -80,7 +80,7 @@ void WaterSample::initialize()
     std::vector<Texture*> textures;
     textures.push_back(texColor);
     textures.push_back(texDepth);
-    _refractBuffer = FrameBuffer::create(textures);
+    _refractBuffer = FrameBuffer::create("refractBuffer", textures);
     _refractBatch = SpriteBatch::create(_refractBuffer->getRenderTarget("targetColor"));
     }
 
@@ -90,7 +90,7 @@ void WaterSample::initialize()
     std::vector<Texture*> textures;
     textures.push_back(texColor);
     textures.push_back(texDepth);
-    _reflectBuffer = FrameBuffer::create(textures);
+    _reflectBuffer = FrameBuffer::create("reflectBuffer", textures);
     _reflectBatch = SpriteBatch::create(_reflectBuffer->getRenderTarget("targetColor"));
     }
 
@@ -207,7 +207,9 @@ void WaterSample::render(float elapsedTime)
 {
     // Update the refract buffer
     Game::getInstance()->bindView(2);
-    _refractBuffer->bind();
+    //_refractBuffer->bind();
+    // or
+    FrameBuffer::getFrameBuffer("refractBuffer")->bind();
     _clipPlane.y = -1.f;
     _clipPlane.w = _waterHeight + WATER_OFFSET;
     _scene->visit(this, &WaterSample::drawScene, false);

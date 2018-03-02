@@ -6,7 +6,7 @@ CONFIG = ordered
 
 SUBDIRS += \
     gameplay/gameplay.pro \
-    #samples/browser/sample-browser.pro \
+    samples/browser/sample-browser.pro \
     samples/examples/examples.pro
     #samples/character/sample-character.pro \
     #samples/spaceship/sample-spaceship.pro \
