@@ -25,7 +25,6 @@ class ScriptController;
 
 struct View
 {
-    uint16_t        id;
     Rectangle       rectangle;
     uint32_t        clearColor;
     uint16_t        clearFlags;
@@ -34,9 +33,8 @@ struct View
     const char *    name;
 
     View() :
-        id(0)
-      , rectangle(Rectangle())
-      , clearColor(0xff0000ff)
+      rectangle(Rectangle())
+      , clearColor(0x00000000)
       , clearFlags(BGFX_CLEAR_NONE)
       , depth(1.0f)
       , stencil(0)

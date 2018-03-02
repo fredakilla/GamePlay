@@ -109,7 +109,7 @@ void PostProcessSample::initialize()
     std::vector<Texture*> textures;
     textures.push_back(texColor);
     textures.push_back(texDepth);
-    _frameBuffer = FrameBuffer::create("myFrameBuffer", FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT, textures);
+    _frameBuffer = FrameBuffer::create(textures);
 
 
     // Create our compositors that all output to the default framebuffer.
@@ -152,7 +152,6 @@ void PostProcessSample::initialize()
     Game * game = Game::getInstance();
 
     View defaultView;
-    defaultView.id = 0;
     defaultView.clearColor = 0x00000000;
     defaultView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
     defaultView.depth = 1.0f;
@@ -161,7 +160,6 @@ void PostProcessSample::initialize()
     game->insertView(0, defaultView);
 
     View secondView;
-    secondView.id = 1;
     secondView.clearColor = 0x00000000;
     secondView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
     secondView.depth = 1.0f;
@@ -176,13 +174,12 @@ void PostProcessSample::initialize()
     Rectangle offsetViewport = Rectangle(getWidth() - quarterWidth, 0, quarterWidth, quarterHeight);
 
     View miniView;
-    secondView.id = 2;
-    secondView.clearColor = 0x00000000;
-    secondView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
-    secondView.depth = 1.0f;
-    secondView.stencil = 0;
-    secondView.rectangle = offsetViewport;
-    game->insertView(2, secondView);
+    miniView.clearColor = 0x00000000;
+    miniView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
+    miniView.depth = 1.0f;
+    miniView.stencil = 0;
+    miniView.rectangle = offsetViewport;
+    game->insertView(2, miniView);
 
 }
 

@@ -152,7 +152,7 @@ void RenderToTexture::initialize()
     textures.push_back(texColor);
     //textures.push_back(texDepth);
 
-    _frameBuffer = FrameBuffer::create("myFrameBuffer", BUFFER_SIZE, BUFFER_SIZE, textures);
+    _frameBuffer = FrameBuffer::create(textures);
 
 
 
@@ -204,7 +204,6 @@ void RenderToTexture::initialize()
     Game * game = Game::getInstance();
 
     View defaultView;
-    defaultView.id = 0;
     defaultView.clearColor = 0x111122ff;
     defaultView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
     defaultView.depth = 1.0f;
@@ -213,7 +212,6 @@ void RenderToTexture::initialize()
     game->insertView(0, defaultView);
 
     View secondView;
-    secondView.id = 1;
     secondView.clearColor = 0xaaaaaaff;
     secondView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
     secondView.depth = 1.0f;

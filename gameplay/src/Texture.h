@@ -19,6 +19,7 @@ class Texture : public Ref
 {
     friend class Sampler;
     friend class BGFXTexture;
+    friend class FrameBuffer;
 
 public:
 

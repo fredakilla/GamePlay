@@ -14,38 +14,18 @@ class FrameBuffer : public Ref
 {
 public:
 
-    static FrameBuffer* create(const char* id, unsigned int width, unsigned int height, std::vector<Texture*> textures);
+    /// simple frame buffer with a single render target
+    static FrameBuffer* create(uint16_t width, uint16_t height, Texture::Format format);
+
+    /// mrt frame buffer with multiple render target
+    static FrameBuffer* create(std::vector<Texture*> textures);
+
     FrameBuffer* bind();
-
-
-
-
-
-    Texture* getRenderTarget(uint16_t id)
-    {
-        GP_ASSERT(id >= 0);
-
-        if(id <= _textures.size())
-        {
-           return _textures[id];
-        }
-        return nullptr;
-    }
-
-    Texture* getRenderTarget(std::string id)
-    {
-        for(Texture* texture : _textures)
-        {
-            if(texture->getPath() == id)
-                return texture;
-        }
-        return nullptr;
-    }
-
+    Texture* getRenderTarget(uint16_t id);
+    Texture* getRenderTarget(std::string id);
 
 private:
-    FrameBuffer(const char* id, unsigned int width, unsigned int height);
-
+    FrameBuffer();
 
     bgfx::FrameBufferHandle _frameBufferHandle;
     std::vector<Texture*> _textures;

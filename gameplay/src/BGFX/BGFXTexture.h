@@ -9,6 +9,7 @@ namespace gameplay
 
 class BGFXTexture
 {
+    friend class FrameBuffer;
 public:
     ~BGFXTexture();
 

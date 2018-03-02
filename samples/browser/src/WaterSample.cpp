@@ -80,7 +80,7 @@ void WaterSample::initialize()
     std::vector<Texture*> textures;
     textures.push_back(texColor);
     textures.push_back(texDepth);
-    _refractBuffer = FrameBuffer::create("refractBuffer", BUFFER_SIZE, BUFFER_SIZE, textures);
+    _refractBuffer = FrameBuffer::create(textures);
     _refractBatch = SpriteBatch::create(_refractBuffer->getRenderTarget("targetColor"));
     }
 
@@ -90,7 +90,7 @@ void WaterSample::initialize()
     std::vector<Texture*> textures;
     textures.push_back(texColor);
     textures.push_back(texDepth);
-    _reflectBuffer = FrameBuffer::create("reflectBatch", BUFFER_SIZE, BUFFER_SIZE, textures);
+    _reflectBuffer = FrameBuffer::create(textures);
     _reflectBatch = SpriteBatch::create(_reflectBuffer->getRenderTarget("targetColor"));
     }
 
@@ -134,7 +134,6 @@ void WaterSample::initialize()
     const Vector4 clearColour(0.84f, 0.89f, 1.f, 1.f);
 
     View defaultView;
-    defaultView.id = 0;
     defaultView.clearColor = clearColour.toUInt();
     defaultView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
     defaultView.depth = 1.0f;
@@ -143,7 +142,6 @@ void WaterSample::initialize()
     game->insertView(0, defaultView);
 
     View reflectView;
-    reflectView.id = 0;
     reflectView.clearColor = clearColour.toUInt();
     reflectView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
     reflectView.depth = 1.0f;
@@ -152,7 +150,6 @@ void WaterSample::initialize()
     game->insertView(1, reflectView);
 
     View refractView;
-    refractView.id = 2;
     refractView.clearColor = clearColour.toUInt();
     refractView.clearFlags = BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH;
     refractView.depth = 1.0f;

@@ -9,33 +9,70 @@ namespace gameplay
 {
 
 
-
-FrameBuffer::FrameBuffer(const char* id, unsigned int width, unsigned int height)
+FrameBuffer::FrameBuffer() :
+    _frameBufferHandle(BGFX_INVALID_HANDLE)
 {
 
 }
 
-FrameBuffer* FrameBuffer::create(const char* id, unsigned int width, unsigned int height, std::vector<Texture*> textures)
+FrameBuffer* FrameBuffer::create(uint16_t width, uint16_t height, Texture::Format format)
 {
-    uint8_t num = (uint8_t)textures.size();
+    uint32_t textureFlags = BGFX_TEXTURE_U_CLAMP | BGFX_TEXTURE_V_CLAMP;
+    bgfx::TextureFormat::Enum bgfxFormat = BGFXTexture::toBgfxFormat(format);
 
-    // collect texture handles
-    bgfx::TextureHandle* textureHandles = new bgfx::TextureHandle[num];
-    for(size_t i=0; i<textures.size(); i++)
-    {
-        textureHandles[i] = textures[i]->getGpuTexture()->getHandle();
-    }
+    // create simple frame buffer
+    FrameBuffer* frameBuffer = new FrameBuffer();
+    frameBuffer->_frameBufferHandle = bgfx::createFrameBuffer(width, height, bgfxFormat, textureFlags);
 
-    // create frame buffer
-    FrameBuffer* frameBuffer = new FrameBuffer(id, width, height);
-    frameBuffer->_frameBufferHandle = bgfx::createFrameBuffer(num, textureHandles);
-    frameBuffer->_textures = textures;
-
-    delete textureHandles;
+    // create a texture to store framebuffer attachment using bgfx texture handle
+    Texture* texture = Texture::create(format, width, height, 0);
+    texture->_gpuTtexture->_handle = bgfx::getTexture(frameBuffer->_frameBufferHandle);
+    frameBuffer->_textures.push_back(texture);
 
     return frameBuffer;
 }
 
+FrameBuffer* FrameBuffer::create(std::vector<Texture*> textures)
+{
+    uint8_t num = (uint8_t)textures.size();
+
+    // collect texture handles
+    bgfx::TextureHandle* tmpTextureHandles = new bgfx::TextureHandle[num];
+    for(size_t i=0; i<textures.size(); i++)
+    {
+        tmpTextureHandles[i] = textures[i]->getGpuTexture()->getHandle();
+    }
+
+    // create MRT frame buffer
+    FrameBuffer* frameBuffer = new FrameBuffer();
+    frameBuffer->_frameBufferHandle = bgfx::createFrameBuffer(num, tmpTextureHandles);
+    frameBuffer->_textures = textures;
+
+    delete tmpTextureHandles;
+
+    return frameBuffer;
+}
+
+Texture* FrameBuffer::getRenderTarget(uint16_t id)
+{
+    GP_ASSERT(id >= 0);
+
+    if(id <= _textures.size())
+    {
+       return _textures[id];
+    }
+    return nullptr;
+}
+
+Texture* FrameBuffer::getRenderTarget(std::string id)
+{
+    for(Texture* texture : _textures)
+    {
+        if(texture->getPath() == id)
+            return texture;
+    }
+    return nullptr;
+}
 
 FrameBuffer* FrameBuffer::bind()
 {
