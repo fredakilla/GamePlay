@@ -674,7 +674,7 @@ Platform* Platform::create(Game* game)
     }
 
     // Create our window centered
-    __window = SDL_CreateWindow("SDL2",
+    __window = SDL_CreateWindow(title,
                                   SDL_WINDOWPOS_CENTERED,
                                   SDL_WINDOWPOS_CENTERED,
                                   __width,
@@ -1149,9 +1149,6 @@ int Platform::enterMessagePump()
             {
                 switch (event.key.keysym.sym)
                 {
-                case SDLK_ESCAPE:
-                    loop = false;
-                    break;
                 case SDLK_F1:
                     Renderer::getInstance().toggleDebugStats();
                     break;
