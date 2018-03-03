@@ -101,7 +101,7 @@ Texture* FrameBuffer::getRenderTarget(std::string id)
     return nullptr;
 }
 
-FrameBuffer* FrameBuffer::bind()
+void FrameBuffer::bind()
 {
     bgfx::setViewFrameBuffer(Game::getInstance()->_curentViewId, _frameBufferHandle);
 }

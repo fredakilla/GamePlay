@@ -103,8 +103,7 @@ macx
 }
 
 win32: DEFINES += WIN32 _WINDOWS _UNICODE UNICODE
-win32: CONFIG(debug, debug|release): LIBS += -L$$PWD/../../gameplay/Debug/debug/ -lgameplay
-win32: CONFIG(release, debug|release): LIBS += -L$$PWD/../../gameplay/Release/release/ -lgameplay
+win32: LIBS += -L$$DESTDIR -lgameplay
 win32: CONFIG(debug, debug|release): LIBS += -L$$PWD/../../external-deps/lib/windows/x86_64/Debug/ -lgameplay-deps
 win32: CONFIG(release, debug|release): LIBS += -L$$PWD/../../external-deps/lib/windows/x86_64/Release/ -lgameplay-deps
 win32: LIBS += -lOpenGL32 -lGLU32 -lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lodbc32 -lodbccp32
@@ -115,3 +114,6 @@ win32: QMAKE_CXXFLAGS_WARN_ON -= -w34189
 win32: QMAKE_POST_LINK += $$quote(xcopy ..\../..\gameplay\res\shaders res\shaders\* /s /y /d$$escape_expand(\n\t))
 win32: QMAKE_POST_LINK += $$quote(xcopy ..\../..\gameplay\res\ui res\ui\* /s /y /d$$escape_expand(\n\t))
 win32: QMAKE_POST_LINK += $$quote(copy ..\../..\gameplay\res\logo_powered_white.png res$$escape_expand(\n\t))
+
+win32: INCLUDEPATH += $$PWD/../../external-deps/include/compat/msvc
+win32: LIBS += -ldinput8 -ldxguid  -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -luuid

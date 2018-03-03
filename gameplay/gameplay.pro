@@ -594,10 +594,12 @@ macx: LIBS += -F/System/Library/Frameworks -framework OpenGL
 macx: LIBS += -F/System/Library/Frameworks -framework Cocoa
 macx: LIBS += -F/System/Library/Frameworks -framework Foundation
 
-win32: SOURCES += src/PlatformWindows.cpp
+win32: PRE_TARGETDEPS += $$PWD/../external-deps/lib/windows/x86_64/Debug/gameplay-deps.lib
+win32: SOURCES += src/PlatformSDL2.cpp
 win32: SOURCES += src/gameplay-main-windows.cpp
 win32: DEFINES += WIN32 _UNICODE UNICODE
 win32: INCLUDEPATH += $$(DXSDK_DIR)/Include
+win32: INCLUDEPATH += $$PWD/../external-deps/include/compat/msvc
 win32: QMAKE_CXXFLAGS_WARN_ON -= -w34100
 win32: QMAKE_CXXFLAGS_WARN_ON -= -w34189
 win32: QMAKE_CXXFLAGS_WARN_ON -= -w4302

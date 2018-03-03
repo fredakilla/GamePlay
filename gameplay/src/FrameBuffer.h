@@ -22,7 +22,7 @@ public:
     /// mrt frame buffer with multiple render target
     static FrameBuffer* create(const char *id, std::vector<Texture*> textures);
 
-    FrameBuffer* bind();
+    void bind();
     Texture* getRenderTarget(uint16_t id);
     Texture* getRenderTarget(std::string id);
 

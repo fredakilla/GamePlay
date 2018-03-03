@@ -230,6 +230,7 @@ using std::va_list;
         #define GLEW_STATIC
         #include <GL/glew.h>
         #define GP_USE_VAO
+        #include <bgfx/bgfx.h>
 #elif __linux__
         #define GLEW_STATIC
         #include <GL/glew.h>
