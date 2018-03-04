@@ -9,8 +9,10 @@
 
 #include "Renderer.h"
 
+#if !defined(GP_PLATFORM_WINDOWS)
 int __argc = 0;
 char** __argv = 0;
+#endif
 
 
 namespace gameplay {
@@ -67,7 +69,7 @@ extern void print(const char* format, ...)
         vsprintf(buf, format, argptr);
         buf[sz] = 0;
         OutputDebugStringA(buf);
-        GP_SAFE_DELETE_ARRAY(buf);
+        SAFE_DELETE_ARRAY(buf);
     }
     va_end(argptr);
 #elif defined (GP_PLATFORM_LINUX) || defined (GP_PLATFORM_MACOS)

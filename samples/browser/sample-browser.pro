@@ -137,17 +137,26 @@ macx
     QMAKE_BUNDLE_DATA += res
 }
 
+win32: PRE_TARGETDEPS += $$DESTDIR/gameplay.lib
+win32: CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../external-deps/lib/windows/x86_64/Debug/gameplay-deps.lib
+win32: CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../external-deps/lib/windows/x86_64/Release/gameplay-deps.lib
 win32: DEFINES += WIN32 _WINDOWS _UNICODE UNICODE
-win32: CONFIG(debug, debug|release): LIBS += -L$$PWD/../../gameplay/Debug/debug/ -lgameplay
-win32: CONFIG(release, debug|release): LIBS += -L$$PWD/../../gameplay/Release/release/ -lgameplay
+win32: LIBS += -L$$DESTDIR -lgameplay
 win32: CONFIG(debug, debug|release): LIBS += -L$$PWD/../../external-deps/lib/windows/x86_64/Debug/ -lgameplay-deps
 win32: CONFIG(release, debug|release): LIBS += -L$$PWD/../../external-deps/lib/windows/x86_64/Release/ -lgameplay-deps
-win32: LIBS += -lOpenGL32 -lGLU32 -lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lodbc32 -lodbccp32
-win32: LIBS += -L$$(DXSDK_DIR)Lib\x64 -lXInput
+win32: LIBS += -lopengl32 -lkernel32 -luser32 -lwinmm -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -limm32 -lole32 -loleaut32 -luuid -lversion -lodbc32 -lodbccp32
+#win32: LIBS += -L$$(DXSDK_DIR)Lib\x64 -lXInput
 win32: INCLUDEPATH += $$(DXSDK_DIR)Include
+win32: INCLUDEPATH += $$PWD/../../external-deps/include/compat/msvc
 win32: QMAKE_CXXFLAGS_WARN_ON -= -w34100
 win32: QMAKE_CXXFLAGS_WARN_ON -= -w34189
 win32: QMAKE_CXXFLAGS_WARN_ON -= -w4302
-win32: QMAKE_POST_LINK += $$quote(xcopy ..\..\..\gameplay\res\shaders res\shaders\* /s /y /d$$escape_expand(\n\t))
-win32: QMAKE_POST_LINK += $$quote(xcopy ..\..\..\gameplay\res\ui res\ui\* /s /y /d$$escape_expand(\n\t))
-win32: QMAKE_POST_LINK += $$quote(copy ..\..\..\gameplay\res\logo_powered_white.png res$$escape_expand(\n\t))
+PWD_WIN = $${PWD}
+PWD_WIN ~= s,/,\\,g
+PWD_DEST_WIN = $$DESTDIR
+PWD_DEST_WIN ~= s,/,\\,g
+win32: QMAKE_POST_LINK += $$quote(xcopy ..\..\..\gameplay\res\shaders $$PWD_DEST_WIN\res\shaders\* /s /y /d$$escape_expand(\n\t))
+win32: QMAKE_POST_LINK += $$quote(xcopy ..\..\..\gameplay\res\ui $$PWD_DEST_WIN\res\ui\* /s /y /d$$escape_expand(\n\t))
+win32: QMAKE_POST_LINK += $$quote(copy ..\..\..\gameplay\res\logo_powered_white.png $$PWD_DEST_WIN\res$$escape_expand(\n\t))
+win32: QMAKE_POST_LINK += $$quote(xcopy $$PWD_WIN\res $$PWD_DEST_WIN\res\ /s /y /d$$escape_expand(\n\t))
+win32: QMAKE_POST_LINK += $$quote(xcopy $$PWD_WIN\game.config $$PWD_DEST_WIN\game.config* /y /d$$escape_expand(\n\t))
