@@ -34,6 +34,21 @@
 #include <chrono>
 #include "Logger.h"
 
+#ifdef __ANDROID__
+    #define GP_PLATFORM_ANDROID		1
+#elif WIN32
+    #define GP_PLATFORM_WINDOWS		1
+#elif __linux__
+    #define GP_PLATFORM_LINUX		1
+#elif __APPLE__
+    #include "TargetConditionals.h"
+    #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+        #define GP_PLATFORM_IOS		1
+    #elif TARGET_OS_MAC
+        #define GP_PLATFORM_MACOS	1
+    #endif
+#endif
+
 // Bring common functions from C into global namespace
 using std::memcpy;
 using std::fabs;
