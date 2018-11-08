@@ -67,17 +67,17 @@
 //#include "UIVideoView.h"
 
 // Graphics
-#include "Graphics.h"
+#include "BGFX/Graphics.h"
 #include "Format.h"
-#include "Buffer.h"
-#include "Texture.h"
-#include "RenderPass.h"
-#include "Sampler.h"
-#include "Shader.h"
+#include "BGFX/Buffer.h"
+#include "BGFX/Texture.h"
+#include "BGFX/RenderPass.h"
+#include "BGFX/Sampler.h"
+#include "BGFX/Shader.h"
 #include "VertexLayout.h"
-#include "DescriptorSet.h"
-#include "RenderPipeline.h"
-#include "CommandBuffer.h"
+#include "BGFX/DescriptorSet.h"
+#include "BGFX/RenderPipeline.h"
+#include "BGFX/CommandBuffer.h"
 #include "Semaphore.h"
 
 // Assets

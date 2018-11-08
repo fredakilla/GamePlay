@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vulkan/vulkan.h>
-
 namespace gameplay
 {
 
@@ -27,7 +25,6 @@ public:
 
 private:
 
-    VkSemaphore _semaphore;
 };
 
 }

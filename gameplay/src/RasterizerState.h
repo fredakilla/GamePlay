@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Texture.h"
+#include "BGFX/Texture.h"
 
 namespace gameplay
 {

@@ -3,8 +3,9 @@
 #include "Activator.h"
 #include "FileSystem.h"
 #include "SerializerJson.h"
-#include "Graphics.h"
 #include "Light.h"
+
+#include "BGFX/Graphics.h"
 
 namespace gameplay
 {

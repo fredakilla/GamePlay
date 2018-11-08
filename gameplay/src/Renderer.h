@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Component.h"
-#include "Graphics.h"
 #include "Material.h"
+#include "BGFX/Graphics.h"
 
 namespace gameplay
 {

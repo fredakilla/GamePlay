@@ -3,8 +3,8 @@
 #include "Input.h"
 
 #define SDL_MAIN_HANDLED
-#include <sdl/SDL.h>
-#include <sdl/SDL_syswm.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_syswm.h>
 #if GP_PLATFORM_LINUX
 #undef Bool
 #undef CursorShape

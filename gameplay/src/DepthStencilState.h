@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Sampler.h"
+#include "BGFX/Sampler.h"
 
 namespace gameplay
 {

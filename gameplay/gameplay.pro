@@ -7,6 +7,29 @@ CONFIG -= qt
 CONFIG(debug, debug|release): DEFINES += _DEBUG
 
 SOURCES += \
+    src/BGFX/Buffer.cpp \
+    src/BGFX/CommandBuffer.cpp \
+    src/BGFX/DescriptorSet.cpp \
+    src/BGFX/Graphics.cpp \
+    src/BGFX/RenderPass.cpp \
+    src/BGFX/RenderPipeline.cpp \
+    src/BGFX/Sampler.cpp \
+    src/BGFX/Shader.cpp \
+    src/BGFX/Texture.cpp \
+
+HEADERS += \
+    src/BGFX/Buffer.h \
+    src/BGFX/CommandBuffer.h \
+    src/BGFX/DescriptorSet.h \
+    src/BGFX/Graphics.h \
+    src/BGFX/GraphicsUtil.h \
+    src/BGFX/RenderPass.h \
+    src/BGFX/RenderPipeline.h \
+    src/BGFX/Sampler.h \
+    src/BGFX/Shader.h \
+    src/BGFX/Texture.h \
+
+SOURCES += \
     src/Activator.cpp \
     src/Animation.cpp \
     src/Asset.cpp \
@@ -18,16 +41,12 @@ SOURCES += \
     src/AudioSource.cpp \
     src/BoundingBox.cpp \
     src/BoundingSphere.cpp \
-    src/Buffer.cpp \
     src/Camera.cpp \
-    src/CommandBuffer.cpp \
     src/Component.cpp \
     src/Curve.cpp \
-    src/DescriptorSet.cpp \
     src/FileSystem.cpp \
     src/Frustum.cpp \
     src/Game.cpp \
-    src/Graphics.cpp \
     src/Heightfield.cpp \
     src/Input.cpp \
     src/Light.cpp \
@@ -56,9 +75,6 @@ SOURCES += \
     src/Ray.cpp \
     src/Rectangle.cpp \
     src/Renderer.cpp \
-    src/RenderPass.cpp \
-    src/RenderPipeline.cpp \
-    src/Sampler.cpp \
     src/Scene.cpp \
     src/SceneLoader.cpp \
     src/SceneObject.cpp \
@@ -67,10 +83,8 @@ SOURCES += \
     src/Serializer.cpp \
     src/SerializerBinary.cpp \
     src/SerializerJson.cpp \
-    src/Shader.cpp \
     src/Sprite.cpp \
     src/Text.cpp \
-    src/Texture.cpp \
     src/TextureLoader.cpp \
     src/Tileset.cpp \
     src/Vector2.cpp \
@@ -91,20 +105,15 @@ HEADERS += \
     src/Base.h \
     src/BoundingBox.h \
     src/BoundingSphere.h \
-    src/Buffer.h \
     src/Camera.h \
     src/ColorBlendState.h \
-    src/CommandBuffer.h \
     src/Component.h \
     src/Curve.h \
     src/DepthStencilState.h \
-    src/DescriptorSet.h \
     src/FileSystem.h \
     src/Format.h \
     src/Frustum.h \
     src/Game.h \
-    src/Graphics.h \
-    src/GraphicsUtil.h \
     src/Heightfield.h \
     src/Light.h \
     src/Logger.h \
@@ -133,9 +142,6 @@ HEADERS += \
     src/Ray.h \
     src/Rectangle.h \
     src/Renderer.h \
-    src/RenderPass.h \
-    src/RenderPipeline.h \
-    src/Sampler.h \
     src/Scene.h \
     src/SceneLoader.h \
     src/SceneObject.h \
@@ -149,7 +155,6 @@ HEADERS += \
     src/Sprite.h \
     src/Stream.h \
     src/Text.h \
-    src/Texture.h \
     src/TextureLoader.h \
     src/Tileset.h \
     src/Vector2.h \
@@ -163,8 +168,8 @@ INCLUDEPATH += $$PWD/../external-deps/include
 
 win32 {
     DEFINES += _WINDOWS WIN32 _WIN32
-    DEFINES += VK_USE_PLATFORM_WIN32_KHR
-    INCLUDEPATH += $$(VULKAN_SDK)/Include
+    #DEFINES += VK_USE_PLATFORM_WIN32_KHR
+    #INCLUDEPATH += $$(VULKAN_SDK)/Include
     QMAKE_CXXFLAGS_WARN_ON -= -w34100
     QMAKE_CXXFLAGS_WARN_ON -= -w34189
     QMAKE_CXXFLAGS_WARN_ON -= -w4302
@@ -174,13 +179,13 @@ win32 {
 
 linux {
     DEFINES += SDL_VIDEO_DRIVER_X11
-    DEFINES += VK_USE_PLATFORM_XLIB_KHR
-    INCLUDEPATH += $$(VULKAN_SDK)/include
+    #DEFINES += VK_USE_PLATFORM_XLIB_KHR
+    #INCLUDEPATH += $$(VULKAN_SDK)/include
     QMAKE_CXXFLAGS += -lstdc++ -pthread -w
 }
 
 macx {
     QMAKE_CXXFLAGS += -x c++ -x objective-c++ -stdlib=libc++ -w
-    DEFINES += VK_USE_PLATFORM_MACOS_MVK
-    INCLUDEPATH += "$$(HOME)/vulkansdk-macos-1.0.69.0/macOS/include"
+    #DEFINES += VK_USE_PLATFORM_MACOS_MVK
+    #INCLUDEPATH += "$$(HOME)/vulkansdk-macos-1.0.69.0/macOS/include"
 }

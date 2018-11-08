@@ -2,7 +2,7 @@
 
 #include "Serializer.h"
 #define JSON_LIBRARY
-#include "json/libjson.h"
+#include <libjson/libjson.h>
 
 namespace gameplay
 {
