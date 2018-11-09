@@ -107,6 +107,13 @@ void Graphics::render(float elapsedTime)
     // TODO: Render scene...
 }
 
+void Graphics::presentFrame()
+{
+    // Advance to next frame. Rendering thread will be kicked to
+    // process submitted rendering primitives.
+    bgfx::frame();
+}
+
 
 
 

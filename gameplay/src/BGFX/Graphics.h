@@ -48,6 +48,13 @@ public:
      */
     ~Graphics();
 
+
+    /**
+     * Present the image along with any unsubmitted work.
+     */
+    void presentFrame();
+
+private:
     void initialize();
     void finalize();
     void resize(size_t width, size_t height);

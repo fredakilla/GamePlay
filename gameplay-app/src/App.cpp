@@ -91,7 +91,13 @@ void App::onUpdate(float elapsedTime)
 
     std::shared_ptr<Graphics> graphics = getGraphics();
 
-    /*_renderPass = graphics->acquireNextFrame();
+
+    graphics->presentFrame();
+
+
+
+#if VULKAN
+    _renderPass = graphics->acquireNextFrame();
     
     std::shared_ptr<CommandBuffer> commandBuffer = graphics->beginCommands();
     graphics->cmdSetViewport(commandBuffer, 0, 0, getWidth(), getHeight(), 0.0f, 1.0f);
@@ -107,7 +113,8 @@ void App::onUpdate(float elapsedTime)
     
     graphics->submit(commandBuffer, graphics->getSemaphorePresentComplete(), graphics->getSemaphoreRenderComplete());
 
-    graphics->presentFrame(graphics->getSemaphoreRenderComplete());*/
+    graphics->presentFrame(graphics->getSemaphoreRenderComplete());
+#endif
 }
 
 }
