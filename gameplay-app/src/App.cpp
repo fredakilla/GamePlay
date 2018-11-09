@@ -1,5 +1,7 @@
 #include "App.h"
 
+#include <bgfx/bgfx.h>
+
 namespace gameplay
 {
 
@@ -29,6 +31,7 @@ void App::onInitialize()
     
     // Testing immediate mode rendering
     std::shared_ptr<Graphics> graphics = getGraphics();
+
 #if 0
     // Create the vertex and fragment shaders
     _vertShader = graphics->createShader("color.vert");
@@ -85,12 +88,22 @@ void App::onResize(size_t width, size_t height)
     // TODO:
 }
 
+
+
 void App::onUpdate(float elapsedTime)
 {
     Game::onUpdate(elapsedTime);
 
     std::shared_ptr<Graphics> graphics = getGraphics();
 
+
+    //bgfx::setViewClear(0, BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH, 0xff3030ff, 1.0f, 0);
+    //bgfx::setViewRect(0, 0, 0, uint16_t(getWidth()), uint16_t(getHeight()) );
+    //bgfx::touch(0);
+    //bgfx::frame();
+
+
+    graphics->acquireNextFrame();
 
     graphics->presentFrame();
 

@@ -12,7 +12,6 @@
 #include "CommandBuffer.h"
 #include "Semaphore.h"
 
-
 namespace gameplay
 {
 
@@ -51,13 +50,20 @@ public:
 
 
     /**
-     * Present the image along with any unsubmitted work.
+     * Acquire next frame.
+     */
+    void acquireNextFrame();
+
+    /**
+     * Advance to next frame.
      */
     void presentFrame();
+
 
 private:
     void initialize();
     void finalize();
+    bool createDevice();
     void resize(size_t width, size_t height);
     void render(float elapsedTime);
 
@@ -70,6 +76,7 @@ private:
     bool _fullscreen;
     bool _vsync;
     bool _multisampling;
+    std::string _graphics;
 
     Graphics::API _api;
     uint32_t _resetFlags;

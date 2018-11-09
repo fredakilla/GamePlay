@@ -15,7 +15,7 @@ SOURCES += \
     src/BGFX/RenderPipeline.cpp \
     src/BGFX/Sampler.cpp \
     src/BGFX/Shader.cpp \
-    src/BGFX/Texture.cpp \
+    src/BGFX/Texture.cpp
 
 HEADERS += \
     src/BGFX/Buffer.h \
@@ -27,7 +27,7 @@ HEADERS += \
     src/BGFX/RenderPipeline.h \
     src/BGFX/Sampler.h \
     src/BGFX/Shader.h \
-    src/BGFX/Texture.h \
+    src/BGFX/Texture.h
 
 SOURCES += \
     src/Activator.cpp \

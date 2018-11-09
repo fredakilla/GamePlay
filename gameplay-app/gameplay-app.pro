@@ -33,7 +33,6 @@ linux {
     CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../build/gameplay/Debug/libgameplay.a
     CONFIG(release, debug|release): PRE_TARGETDEPS += $$$PWD/../build/gameplay/Release/libgameplay.a
     DEFINES += SDL_VIDEO_DRIVER_X11
-    DEFINES += VK_USE_PLATFORM_XLIB_KHR
     SOURCES += src/main-linux.cpp
     INCLUDEPATH += /usr/include/gtk-2.0
     INCLUDEPATH += /usr/lib/x86_64-linux-gnu/gtk-2.0/include

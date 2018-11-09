@@ -44,40 +44,27 @@ bool isRendererTypeSupported(bgfx::RendererType::Enum requestRendererType)
     return false;
 }
 
-void Graphics::initialize()
+bool Graphics::createDevice()
 {
-    if (_initialized)
-        return;
-
-    _api = API::API_NULL;
-    bgfx::RendererType::Enum rendererType = bgfx::RendererType::Noop;
-
-    std::shared_ptr<Game::Config> config = Game::getInstance()->getConfig();
-    _width = config->width;
-    _height = config->height;
-    _fullscreen = config->fullscreen;
-    _vsync = config->vsync;
-    _multisampling = config->multisampling;
-
     _api = API::API_AUTO;
-    rendererType = bgfx::RendererType::Count;
+    bgfx::RendererType::Enum rendererType = bgfx::RendererType::Count;
 
-    if (config->graphics.compare(GP_GRAPHICS_OPENGL) == 0)
+    if (_graphics.compare(GP_GRAPHICS_OPENGL) == 0)
     {
         _api = API::API_OPENGL;
         rendererType = bgfx::RendererType::OpenGL;
     }
-    else if (config->graphics.compare(GP_GRAPHICS_DIRECT3D12) == 0)
+    else if (_graphics.compare(GP_GRAPHICS_DIRECT3D12) == 0)
     {
         _api = API::API_DIRECT3D12;
         rendererType = bgfx::RendererType::Direct3D12;
     }
-    else if (config->graphics.compare(GP_GRAPHICS_VULKAN) == 0)
+    else if (_graphics.compare(GP_GRAPHICS_VULKAN) == 0)
     {
         _api = API::API_VULKAN;
         rendererType = bgfx::RendererType::Vulkan;
     }
-    else if (config->graphics.compare(GP_GRAPHICS_METAL) == 0)
+    else if (_graphics.compare(GP_GRAPHICS_METAL) == 0)
     {
         _api = API::API_METAL;
         rendererType = bgfx::RendererType::Metal;
@@ -87,11 +74,10 @@ void Graphics::initialize()
     {
         // requested renderer is not supported.
         // fallback to default renderer for current platform.
-
-        GP_WARN("Renderer [%s] is not supported on this platform, fallback to default renderer.", config->graphics.c_str());
-
         _api = API::API_AUTO;
         rendererType = bgfx::RendererType::Count;
+
+        GP_WARN("Renderer [%s] is not supported on this platform, fallback to default renderer.", _graphics.c_str());
     }
 
     bgfx::PlatformData pd;
@@ -104,13 +90,38 @@ void Graphics::initialize()
 
     bgfx::Init init;
     init.type = rendererType;
-    bgfx::init(init);
+    if (!bgfx::init(init))
+        return false;
 
     _resetFlags = BGFX_RESET_VSYNC;
-    bgfx::reset(config->width, config->height, _resetFlags);
+    bgfx::reset(_width, _height, _resetFlags);
 
     _debugFlags = BGFX_DEBUG_TEXT | BGFX_DEBUG_STATS;
     bgfx::setDebug(_debugFlags);
+
+    return true;
+}
+
+void Graphics::initialize()
+{
+    if (_initialized)
+        return;
+
+    // get config
+    std::shared_ptr<Game::Config> config = Game::getInstance()->getConfig();
+    _width = config->width;
+    _height = config->height;
+    _fullscreen = config->fullscreen;
+    _vsync = config->vsync;
+    _multisampling = config->multisampling;
+    _graphics = config->graphics;
+
+    if(!createDevice())
+        exit(-1);
+
+    // set default view
+    bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0xaa3030ff, 1.0f, 0);
+    bgfx::setViewRect(0, 0, 0, uint16_t(_width), uint16_t(_height));
 
     _initialized = true;
 }
@@ -122,7 +133,7 @@ void Graphics::finalize()
 
 void Graphics::resize(size_t width, size_t height)
 {
-
+    bgfx::reset(width, height, _resetFlags);
 }
 
 void Graphics::render(float elapsedTime)
@@ -132,13 +143,17 @@ void Graphics::render(float elapsedTime)
     // TODO: Render scene...
 }
 
-void Graphics::presentFrame()
+void Graphics::acquireNextFrame()
 {
-    // Advance to next frame. Rendering thread will be kicked to
-    // process submitted rendering primitives.
-    bgfx::frame();
+    // This dummy draw call is here to make sure that view 0 is cleared
+    // if no other draw calls are submitted to view 0.
+    bgfx::touch(0);
 }
 
+void Graphics::presentFrame()
+{
+    bgfx::frame();
+}
 
 
 
