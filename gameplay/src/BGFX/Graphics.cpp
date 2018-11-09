@@ -6,11 +6,18 @@
 #include "SceneObject.h"
 #include "FileSystem.h"
 
+#include <bgfx/platform.h>
+#include <bgfx/bgfx.h>
+
+
 namespace gameplay
 {
 
 Graphics::Graphics() :
-    _initialized(false)
+    _initialized(false),
+    _api(API::API_NULL),
+    _resetFlags(BGFX_RESET_VSYNC),
+    _debugFlags(BGFX_DEBUG_NONE)
 {
 
 }
@@ -24,6 +31,68 @@ void Graphics::initialize()
 {
     if (_initialized)
         return;
+
+    _api = API::API_NULL;
+    bgfx::RendererType::Enum rendererType = bgfx::RendererType::Noop;
+
+    std::shared_ptr<Game::Config> config = Game::getInstance()->getConfig();
+    _width = config->width;
+    _height = config->height;
+    _fullscreen = config->fullscreen;
+    _vsync = config->vsync;
+    _multisampling = config->multisampling;
+
+    bgfx::RendererType::Enum supportedTypes[bgfx::RendererType::Count];
+    uint8_t count =  bgfx::getSupportedRenderers(bgfx::RendererType::Count, supportedTypes);
+    for(uint8_t i=0; i<count; i++)
+        print("BGFX supported render type [%d] = %s\n", i, bgfx::getRendererName(supportedTypes[i]));
+
+    if (config->graphics.compare(GP_GRAPHICS_OPENGL) == 0)
+    {
+        _api = API::API_OPENGL;
+        rendererType = bgfx::RendererType::OpenGL;
+    }
+    else if (config->graphics.compare(GP_GRAPHICS_DIRECT3D12) == 0)
+    {
+        _api = API::API_DIRECT3D12;
+        rendererType = bgfx::RendererType::Direct3D12;
+    }
+    else if (config->graphics.compare(GP_GRAPHICS_VULKAN) == 0)
+    {
+        _api = API::API_VULKAN;
+        rendererType = bgfx::RendererType::Vulkan;
+    }
+    else if (config->graphics.compare(GP_GRAPHICS_METAL) == 0)
+    {
+        _api = API::API_METAL;
+        rendererType = bgfx::RendererType::Metal;
+    }
+
+
+    bgfx::PlatformData pd;
+    pd.ndt          = (void*)Platform::getPlatform()->getNativeConnection();
+    pd.nwh          = (void*)(uintptr_t)Platform::getPlatform()->getNativeWindow();
+    pd.context      = NULL;
+    pd.backBuffer   = NULL;
+    pd.backBufferDS = NULL;
+    bgfx::setPlatformData(pd);
+
+    bgfx::Init init;
+    init.type = rendererType;
+    bgfx::init(init);
+
+    _resetFlags = BGFX_RESET_VSYNC;
+    bgfx::reset(config->width, config->height, _resetFlags);
+
+    _debugFlags = BGFX_DEBUG_TEXT | BGFX_DEBUG_STATS;
+    bgfx::setDebug(_debugFlags);
+
+    _initialized = true;
+}
+
+void Graphics::finalize()
+{
+    bgfx::shutdown();
 }
 
 void Graphics::resize(size_t width, size_t height)

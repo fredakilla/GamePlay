@@ -258,12 +258,12 @@ public:
         static std::shared_ptr<Serializable> createObject();
 
         std::string title;
+        std::string graphics;
         int width;
         int height;
         bool fullscreen;
         bool vsync;
         size_t multisampling;
-        bool validation;
         std::string homePath;
         std::vector<SplashScreen> splashScreens;
         std::string mainScene;

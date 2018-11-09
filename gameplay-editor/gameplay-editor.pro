@@ -81,6 +81,7 @@ win32 {
 linux {
     DEFINES += SDL_VIDEO_DRIVER_X11
     #DEFINES += VK_USE_PLATFORM_XLIB_KHR
+    QMAKE_CXXFLAGS += -Wall
     QMAKE_CXXFLAGS += -lstdc++ -pthread -w
     INCLUDEPATH += /usr/include/gtk-2.0
     INCLUDEPATH += /usr/lib/x86_64-linux-gnu/gtk-2.0/include

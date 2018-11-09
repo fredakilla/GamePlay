@@ -181,6 +181,7 @@ linux {
     DEFINES += SDL_VIDEO_DRIVER_X11
     #DEFINES += VK_USE_PLATFORM_XLIB_KHR
     #INCLUDEPATH += $$(VULKAN_SDK)/include
+    QMAKE_CXXFLAGS += -Wall
     QMAKE_CXXFLAGS += -lstdc++ -pthread -w
 }
 

@@ -206,6 +206,7 @@ void Game::onInitialize()
 
 void Game::onFinalize()
 {
+    _graphics->finalize();
 }
 
 void Game::onResize(size_t width, size_t height)
@@ -322,7 +323,7 @@ Game::Config::Config() :
     fullscreen(GP_GRAPHICS_FULLSCREEN),
     vsync(GP_GRAPHICS_VSYNC),
     multisampling(GP_GRAPHICS_MULTISAMPLING),
-    validation(GP_GRAPHICS_VALIDATION),
+    graphics(GP_GRAPHICS_OPENGL),
     homePath(GP_ENGINE_HOME_PATH),
     mainScene("main.scene")
 {
@@ -345,12 +346,12 @@ std::string Game::Config::getClassName()
 void Game::Config::onSerialize(Serializer* serializer)
 {
     serializer->writeString("title", title.c_str(), "");
+    serializer->writeString("graphics", graphics.c_str(), "");
     serializer->writeInt("width", width, 0);
     serializer->writeInt("height", height, 0);
     serializer->writeBool("fullscreen", fullscreen, false);
     serializer->writeBool("vsync", vsync, false);
     serializer->writeInt("multisampling", (uint32_t)multisampling, 0);
-    serializer->writeBool("validation", validation, false);
     serializer->writeString("homePath", homePath.c_str(), GP_ENGINE_HOME_PATH);
     serializer->writeStringList("splashScreens", splashScreens.size());
     for (size_t i = 0; i < splashScreens.size(); i++)
@@ -364,12 +365,12 @@ void Game::Config::onSerialize(Serializer* serializer)
 void Game::Config::onDeserialize(Serializer* serializer)
 {
     serializer->readString("title", title, "");
+    serializer->readString("graphics", graphics, "");
     width = serializer->readInt("width", 0);
     height = serializer->readInt("height", 0);
     fullscreen = serializer->readBool("fullscreen", false);
     vsync = serializer->readBool("vsync", false);
     multisampling = serializer->readInt("multisampling", 0);
-    validation = serializer->readBool("validation", false);
     serializer->readString("homePath", homePath, "");
     size_t splashScreensCount = serializer->readStringList("splashScreens");
     for (size_t i = 0; i < splashScreensCount; i++)

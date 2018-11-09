@@ -27,6 +27,18 @@ class Graphics
 public:
 
     /**
+     * Defines the low-level graphics api.
+     */
+    enum API
+    {
+        API_NULL,
+        API_OPENGL,
+        API_DIRECT3D12,
+        API_VULKAN,
+        API_METAL
+    };
+
+    /**
      * Constructor.
      */
     Graphics();
@@ -37,12 +49,23 @@ public:
     ~Graphics();
 
     void initialize();
+    void finalize();
     void resize(size_t width, size_t height);
     void render(float elapsedTime);
 
 private:
 
     bool _initialized;
+    bool _resized;
+    uint32_t _width;
+    uint32_t _height;
+    bool _fullscreen;
+    bool _vsync;
+    bool _multisampling;
+
+    Graphics::API _api;
+    uint32_t _resetFlags;
+    uint32_t _debugFlags;
 
 #if 0
 
