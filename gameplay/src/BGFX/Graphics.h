@@ -32,6 +32,7 @@ public:
     enum API
     {
         API_NULL,
+        API_AUTO,
         API_OPENGL,
         API_DIRECT3D12,
         API_VULKAN,

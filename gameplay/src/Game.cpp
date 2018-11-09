@@ -323,7 +323,7 @@ Game::Config::Config() :
     fullscreen(GP_GRAPHICS_FULLSCREEN),
     vsync(GP_GRAPHICS_VSYNC),
     multisampling(GP_GRAPHICS_MULTISAMPLING),
-    graphics(GP_GRAPHICS_OPENGL),
+    graphics(GP_GRAPHICS_AUTO),
     homePath(GP_ENGINE_HOME_PATH),
     mainScene("main.scene")
 {

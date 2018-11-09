@@ -248,6 +248,7 @@ operator^=(E& lhs,E rhs){
 #define GP_GRAPHICS_VULKAN                          "Vulkan"
 #define GP_GRAPHICS_DIRECT3D12                      "Direct3D12"
 #define GP_GRAPHICS_METAL                           "Metal"
+#define GP_GRAPHICS_AUTO                            "Auto"
 #define GP_GRAPHICS                                 GP_GRAPHICS_NULL
 
 // Graphics limits

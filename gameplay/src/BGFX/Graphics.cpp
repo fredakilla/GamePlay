@@ -27,6 +27,23 @@ Graphics::~Graphics()
 
 }
 
+bool isRendererTypeSupported(bgfx::RendererType::Enum requestRendererType)
+{
+    if(requestRendererType == bgfx::RendererType::Count)
+        return true;
+
+    bgfx::RendererType::Enum supportedTypes[bgfx::RendererType::Count];
+    uint8_t count =  bgfx::getSupportedRenderers(bgfx::RendererType::Count, supportedTypes);
+
+    for(int i=0; i<count; ++i)
+    {
+        if(supportedTypes[i] == requestRendererType)
+            return true;
+    }
+
+    return false;
+}
+
 void Graphics::initialize()
 {
     if (_initialized)
@@ -42,10 +59,8 @@ void Graphics::initialize()
     _vsync = config->vsync;
     _multisampling = config->multisampling;
 
-    bgfx::RendererType::Enum supportedTypes[bgfx::RendererType::Count];
-    uint8_t count =  bgfx::getSupportedRenderers(bgfx::RendererType::Count, supportedTypes);
-    for(uint8_t i=0; i<count; i++)
-        print("BGFX supported render type [%d] = %s\n", i, bgfx::getRendererName(supportedTypes[i]));
+    _api = API::API_AUTO;
+    rendererType = bgfx::RendererType::Count;
 
     if (config->graphics.compare(GP_GRAPHICS_OPENGL) == 0)
     {
@@ -68,6 +83,16 @@ void Graphics::initialize()
         rendererType = bgfx::RendererType::Metal;
     }
 
+    if (!isRendererTypeSupported(rendererType))
+    {
+        // requested renderer is not supported.
+        // fallback to default renderer for current platform.
+
+        GP_WARN("Renderer [%s] is not supported on this platform, fallback to default renderer.", config->graphics.c_str());
+
+        _api = API::API_AUTO;
+        rendererType = bgfx::RendererType::Count;
+    }
 
     bgfx::PlatformData pd;
     pd.ndt          = (void*)Platform::getPlatform()->getNativeConnection();
